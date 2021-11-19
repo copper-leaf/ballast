@@ -1,0 +1,9 @@
+package com.copperleaf.ballast.internal
+
+import com.copperleaf.ballast.SideEffectScope
+
+internal class RestartableSideEffect<Inputs : Any, Events : Any, State : Any>(
+    val key: String?,
+    val onRestarted: suspend () -> Unit,
+    val block: SideEffectScope<Inputs, Events, State>.(State) -> Unit,
+)
