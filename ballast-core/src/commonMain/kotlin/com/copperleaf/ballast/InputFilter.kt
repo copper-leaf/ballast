@@ -15,6 +15,6 @@ public interface InputFilter<Inputs : Any, Events : Any, State : Any> {
 
     public enum class Result {
         Accept,
-        Drop,
+        Reject,
     }
 }

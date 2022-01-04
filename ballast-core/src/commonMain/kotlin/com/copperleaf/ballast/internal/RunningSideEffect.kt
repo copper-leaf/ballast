@@ -1,12 +1,19 @@
 package com.copperleaf.ballast.internal
 
 import com.copperleaf.ballast.SideEffectScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 internal class RunningSideEffect<Inputs : Any, Events : Any, State : Any>(
-    val sideEffect: RestartableSideEffect<Inputs, Events, State>,
-    val scope: SideEffectScope<Inputs, Events, State>,
+    internal val sideEffect: RestartableSideEffect<Inputs, Events, State>,
+    internal val coroutineScope: CoroutineScope,
+    internal val scope: SideEffectScope<Inputs, Events, State>,
 ) {
+    internal var job: Job? = null
     fun start(latestState: State) {
-        sideEffect.block(scope, latestState)
+        job = coroutineScope.launch {
+            sideEffect.block(scope, latestState)
+        }
     }
 }

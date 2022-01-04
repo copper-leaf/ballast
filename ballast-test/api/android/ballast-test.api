@@ -1,0 +1,70 @@
+public final class com/copperleaf/ballast/test/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/test/RunKt {
+	public static final fun viewModelTest (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/EventHandler;Lcom/copperleaf/ballast/InputFilter;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun viewModelTest$default (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/EventHandler;Lcom/copperleaf/ballast/InputFilter;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/test/TestResults {
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component10 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Ljava/util/List;
+	public final fun component7 ()Ljava/util/List;
+	public final fun component8 ()Ljava/util/List;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lcom/copperleaf/ballast/test/TestResults;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/test/TestResults;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/test/TestResults;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAcceptedInputs ()Ljava/util/List;
+	public final fun getCancelledInputs ()Ljava/util/List;
+	public final fun getDroppedInputs ()Ljava/util/List;
+	public final fun getEventHandlerErrors ()Ljava/util/List;
+	public final fun getEvents ()Ljava/util/List;
+	public final fun getInputHandlerErrors ()Ljava/util/List;
+	public final fun getLatestState ()Ljava/lang/Object;
+	public final fun getRejectedInputs ()Ljava/util/List;
+	public final fun getStates ()Ljava/util/List;
+	public final fun getSuccessfulInputs ()Ljava/util/List;
+	public final fun getUnhandledErrors ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/test/ViewModelTestScenarioInputSequenceScope {
+	public abstract fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun sendAndAwait (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun unaryMinus (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun unaryPlus (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/test/ViewModelTestScenarioInputSequenceScope$DefaultImpls {
+	public static fun unaryMinus (Lcom/copperleaf/ballast/test/ViewModelTestScenarioInputSequenceScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun unaryPlus (Lcom/copperleaf/ballast/test/ViewModelTestScenarioInputSequenceScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/copperleaf/ballast/test/ViewModelTestScenarioScope {
+	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun given (Lkotlin/jvm/functions/Function0;)V
+	public abstract fun logger (Lkotlin/jvm/functions/Function1;)V
+	public abstract fun resultsIn (Lkotlin/jvm/functions/Function1;)V
+	public abstract fun running (Lkotlin/jvm/functions/Function2;)V
+	public abstract fun timeout-LRDsOJo (J)V
+}
+
+public abstract interface class com/copperleaf/ballast/test/ViewModelTestSuiteScope {
+	public abstract fun defaultInitialState (Lkotlin/jvm/functions/Function0;)V
+	public abstract fun defaultTimeout-LRDsOJo (J)V
+	public abstract fun logger (Lkotlin/jvm/functions/Function1;)V
+	public abstract fun scenario (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+}
+

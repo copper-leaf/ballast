@@ -40,17 +40,4 @@ public class IosViewModel<Inputs : Any, Events : Any, State : Any> private const
             impl.attachEventHandler(handler)
         }
     }
-
-    /**
-     * Cancel state and events observers from [onViewWillAppear]. Corresponds to `onStop` in Android
-     */
-    public fun onViewWillDisappear() {
-    }
-
-    /**
-     * Cancel entire coroutine scope and prevent it from being resumed. Corresponds to `onDestroy` in Android
-     */
-    public fun onViewDestroyed() {
-        impl.onCleared()
-    }
 }

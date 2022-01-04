@@ -7,9 +7,9 @@ import com.copperleaf.ballast.InputFilter
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -23,14 +23,14 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.job
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
-internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
+public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     initialState: State,
     private val config: BallastViewModelConfiguration<Inputs, Events, State>,
     private val _inputs: Channel<Inputs> = Channel(Channel.BUFFERED, BufferOverflow.DROP_LATEST),
@@ -55,9 +55,21 @@ internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Core MVI pattern API
 // ---------------------------------------------------------------------------------------------------------------------
 
-    fun onCleared() {
+    @ExperimentalCoroutinesApi
+    public suspend fun awaitSideEffectsCompletion() {
+        sideEffects.values
+            .mapNotNull { it.job }
+            .let { joinAll(*it.toTypedArray()) }
+    }
+
+    override fun onCleared() {
         check(started) { "VM is not started!" }
         started = false
+
+        for (value in sideEffects.values) {
+            value.job?.cancel()
+            value.job = null
+        }
 
         // side-effects are already bound by the viewModelScope, and will get cancelled
         // automatically, but we still need to clear the registry
@@ -87,9 +99,9 @@ internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Utilities
 // ---------------------------------------------------------------------------------------------------------------------
 
-    internal fun start(coroutineScope: CoroutineScope) {
+    public fun start(coroutineScope: CoroutineScope) {
         check(!started) { "VM is already started" }
-        viewModelScope = coroutineScope
+        viewModelScope = coroutineScope + uncaughtExceptionHandler
         startInternal()
     }
 
@@ -97,7 +109,7 @@ internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         started = true
 
         // updates to current state post a new event with the new state
-        viewModelScope.launch(uncaughtExceptionHandler) {
+        viewModelScope.launch {
             _state.collect { state ->
                 interceptor?.onStateEmitted(state)
                 outputStates.emit(state)
@@ -107,12 +119,12 @@ internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         // observe and process Inputs. Input events are emitted on the main dispatcher, but collected and processed on
         // the io dispatcher. Inputs are collected via the [collectLatest] operator, which cancels currently-running
         // tasks before starting to execute the next input.
-        viewModelScope.launch(uncaughtExceptionHandler) {
+        viewModelScope.launch {
             _inputs
                 .receiveAsFlow()
                 .filter { input ->
                     val shouldAcceptInput = filterInput(_state.value, input)
-                    if (shouldAcceptInput == InputFilter.Result.Drop) {
+                    if (shouldAcceptInput == InputFilter.Result.Reject) {
                         interceptor?.onInputRejected(input)
                     }
 
@@ -152,14 +164,15 @@ internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
                         // if we have a side-effect already running, cancel its coroutine scope
                         sideEffects[actualSideEffectKey]?.let {
-                            it.scope.cancel()
+                            it.job?.cancel()
+                            it.job = null
                             it.sideEffect.onRestarted()
                         }
 
                         // go through and remove any side-effects that have completed (either by
                         // cancellation or because they finished on their own)
                         sideEffects.entries
-                            .filterNot { it.value.scope.isActive }
+                            .filterNot { it.value.job?.isActive == true }
                             .map { it.key }
                             .forEach { sideEffects.remove(it) }
 
@@ -171,17 +184,18 @@ internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         // Consumers of this side-effect can launch many jobs, and all will be cancelled together when the
                         // side-effect is restarted or the viewModelScope is cancelled.
                         sideEffects[actualSideEffectKey] = RunningSideEffect(
-                            sideEffect,
-                            SideEffectScopeImpl(
-                                viewModelScope +
-                                    uncaughtExceptionHandler +
-                                    SupervisorJob(parent = viewModelScope.coroutineContext[Job]),
+                            sideEffect = sideEffect,
+                            coroutineScope = viewModelScope +
+                                SupervisorJob(parent = viewModelScope.coroutineContext[Job]),
+                            scope = SideEffectScopeImpl(
                                 this@BallastViewModelImpl,
                                 _events
-                            )
+                            ),
                         ).also { it.start(_state.value) }
                     }
                 }
+
+                interceptor?.onInputHandledSuccessfully(input)
             }
         } catch (e: CancellationException) {
             // when the coroutine is cancelled for any reason, we must assume the input did not
@@ -194,7 +208,7 @@ internal class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    internal suspend fun attachEventHandler(
+    public suspend fun attachEventHandler(
         handler: EventHandler<Inputs, Events, State>
     ) {
         coroutineContext.job.invokeOnCompletion {

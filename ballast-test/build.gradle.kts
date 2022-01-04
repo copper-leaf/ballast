@@ -67,6 +67,7 @@ kotlin {
         // Common Sourcesets
         val commonMain by getting {
             dependencies {
+                implementation(project(":ballast-core"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
             }
         }
@@ -74,8 +75,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation(project(":ballast-test"))
-//                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
             }
         }
 
@@ -95,9 +94,6 @@ kotlin {
         // Android JVM Sourcesets
         val androidMain by getting {
             dependencies {
-                implementation("androidx.lifecycle:lifecycle-common:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
             }
         }
         val androidAndroidTestRelease by getting { }

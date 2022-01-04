@@ -1,0 +1,23 @@
+package com.copperleaf.ballast
+
+import com.copperleaf.ballast.test.ViewModelTestSuiteScope
+import com.copperleaf.ballast.test.viewModelTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlin.time.ExperimentalTime
+
+@ExperimentalTime
+@ExperimentalCoroutinesApi
+fun <Inputs : Any, Events : Any, State : Any> runBlockingViewModelTest(
+    inputHandler: InputHandler<Inputs, Events, State>,
+    eventHandler: EventHandler<Inputs, Events, State>,
+    filter: InputFilter<Inputs, Events, State>? = null,
+    block: ViewModelTestSuiteScope<Inputs, Events, State>.() -> Unit
+) = runBlocking<Unit> {
+    viewModelTest(
+        inputHandler = inputHandler,
+        eventHandler = eventHandler,
+        filter = filter,
+        block = block,
+    )
+}

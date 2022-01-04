@@ -56,7 +56,7 @@ public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private
         }
     }
 
-    public fun onCleared() {
+    public override fun onCleared() {
         impl.viewModelScope.cancel()
         impl.onCleared()
     }

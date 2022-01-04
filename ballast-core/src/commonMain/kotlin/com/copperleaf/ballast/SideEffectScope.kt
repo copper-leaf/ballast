@@ -1,7 +1,5 @@
 package com.copperleaf.ballast
 
-import kotlinx.coroutines.CoroutineScope
-
 /**
  * A scope to perform side-effects in. This scope is itself a coroutine scope, which is the same scope as that of the
  * originating Viewmodel, so if the ViewModel is cancelled, its side-effects will also be cancelled.
@@ -12,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
  * post new Inputs back to the VM, to be processed at their proper point in time.
  */
 @BallastDsl
-public interface SideEffectScope<Inputs : Any, Events : Any, State : Any> : CoroutineScope {
+public interface SideEffectScope<Inputs : Any, Events : Any, State : Any> {
 
     /**
      * After performing a side-effect, dispatch a new Input back to the ViewModel (to update the State independently of

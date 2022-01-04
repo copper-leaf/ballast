@@ -14,6 +14,7 @@ public final class com/copperleaf/ballast/firebase/FirebaseCrashlyticsIntercepto
 	public fun onInputAccepted (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun onInputCancelled (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun onInputDropped (Ljava/lang/Object;)V
+	public fun onInputHandledSuccessfully (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun onInputHandlerError (Ljava/lang/Object;Ljava/lang/Throwable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun onInputRejected (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun onStateEmitted (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

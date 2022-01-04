@@ -1,9 +1,9 @@
 package com.copperleaf.ballast
 
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 /**
  * Observe a Flow of Inputs that will run asynchronously in this MviSideEffectScope. This will
@@ -14,12 +14,14 @@ import kotlinx.coroutines.launch
  * it may terminate itself before then when the Flow completes.
  */
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <Inputs : Any, Events : Any, State : Any> SideEffectScope<Inputs, Events, State>.observeFlow(
+public suspend inline fun <Inputs : Any, Events : Any, State : Any> SideEffectScope<Inputs, Events, State>.observeFlow(
     inputs: Flow<Inputs>
 ) {
-    inputs
-        .onEach { postInput(it) }
-        .launchIn(this)
+    coroutineScope {
+        inputs
+            .onEach { postInput(it) }
+            .launchIn(this)
+    }
 }
 
 /**
@@ -45,9 +47,11 @@ public inline fun <
         key = Inputs::class.simpleName,
         onRestarted = onRestarted,
     ) {
-        inputs
-            .onEach { postInput(it) }
-            .launchIn(this)
+        coroutineScope {
+            inputs
+                .onEach { postInput(it) }
+                .launchIn(this)
+        }
     }
 }
 
@@ -64,9 +68,7 @@ public inline fun <Inputs : Any, Events : Any, State : Any> InputHandlerScope<In
     input: Inputs
 ) {
     sideEffect(key = input.toString()) {
-        launch {
-            this@sideEffect.postInput(input)
-        }
+        this@sideEffect.postInput(input)
     }
 }
 
