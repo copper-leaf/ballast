@@ -11,7 +11,7 @@ jobs:
   buildCachesOnAll:
     strategy:
       matrix:
-        os: ['ubuntu-latest', 'macos-latest']
+        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
     name: 'Build on ${{ matrix.os }} JDK 11'
     runs-on: '${{ matrix.os }}'
     steps:
@@ -35,7 +35,7 @@ jobs:
     strategy:
       matrix:
         java: [11, 16]
-        os: ['ubuntu-latest', 'macos-latest']
+        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
     name: 'Test on ${{ matrix.os }} JDK ${{ matrix.java }}'
     runs-on: '${{ matrix.os }}'
     steps:
@@ -57,6 +57,15 @@ jobs:
   publishOnMacOs:
     runs-on: 'macos-latest'
     needs: ['testOnAll']
+    env:
+      GITHUB_ACTOR: '${{ github.actor }}'
+      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      OSSRH_USERNAME: '${{ secrets.OSSRH_USERNAME }}'
+      OSSRH_PASSWORD: '${{ secrets.OSSRH_PASSWORD }}'
+      STAGING_PROFILE_ID: '${{ secrets.STAGING_PROFILE_ID }}'
+      SIGNING_KEY_ID: '${{ secrets.SIGNING_KEY_ID }}'
+      SIGNING_KEY: '${{ secrets.SIGNING_KEY }}'
+      SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
     steps:
       - uses: 'actions/checkout@v2'
       - run: 'git fetch --prune --unshallow --tags'
@@ -71,13 +80,13 @@ jobs:
           path: '~/.gradle/caches'
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: '${{ runner.os }}-gradle'
-      - name: 'Publish to GitHub Packages'
-        run: './gradlew publish --no-daemon --stacktrace -Prelease -PorchidEnvironment=prod'
-        env:
-          GITHUB_ACTOR: '${{ github.actor }}'
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-          OSSRH_USERNAME: '${{ secrets.OSSRH_USERNAME }}'
-          OSSRH_PASSWORD: '${{ secrets.OSSRH_PASSWORD }}'
-          SIGNING_KEY_ID: '${{ secrets.SIGNING_KEY_ID }}'
-          SIGNING_KEY: '${{ secrets.SIGNING_KEY }}'
-          SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
+      - name: 'Assemble Artifacts'
+        run: './gradlew assemble --stacktrace -Prelease -PorchidEnvironment=prod'
+      - name: 'Open Sonatype Staging Repository'
+        run: './gradlew openSonatypeStagingRepository --stacktrace -Prelease -PorchidEnvironment=prod'
+      - name: 'Publish Artifacts'
+        run: './gradlew publishAllPublicationsToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
+      - name: 'Publish Documentation'
+        run: './gradlew :docs:publish --stacktrace -Prelease -PorchidEnvironment=prod'
+      - name: 'Close Sonatype Staging Repository'
+        run: './gradlew closeSonatypeStagingRepository --stacktrace -Prelease -PorchidEnvironment=prod'

@@ -23,11 +23,10 @@ dependencies {
 
 val ghUser: String by extra
 val ghToken: String by extra
-val releaseVersion: String by extra
 
 orchid {
     githubToken = ghToken
-    version = releaseVersion
+    version = Config.projectVersion(project).documentationVersion
 }
 
 val build by tasks
