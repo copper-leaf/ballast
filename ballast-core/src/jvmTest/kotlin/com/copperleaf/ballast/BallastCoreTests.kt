@@ -1,5 +1,8 @@
 package com.copperleaf.ballast
 
+import com.copperleaf.ballast.core.FifoInputStrategy
+import com.copperleaf.ballast.core.LifoInputStrategy
+import com.copperleaf.ballast.core.ParallelInputStrategy
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -339,6 +342,74 @@ class BallastCoreTests {
                 )
 
                 assertEquals(State(intValue = 1, stringValue = "three"), latestState)
+            }
+        }
+
+        scenario("LIFO strategy with quick multiple updates") {
+            inputStrategy { LifoInputStrategy() }
+            running {
+                -Inputs.MultipleStateUpdates
+                -Inputs.MultipleStateUpdates
+                +Inputs.MultipleStateUpdates
+            }
+            resultsIn {
+                assertEquals(
+                    listOf(
+                        Inputs.MultipleStateUpdates,
+                    ),
+                    successfulInputs,
+                )
+                assertEquals(
+                    listOf(
+                        Inputs.MultipleStateUpdates,
+                        Inputs.MultipleStateUpdates,
+                    ),
+                    cancelledInputs,
+                )
+
+                assertEquals(State(intValue = 2), latestState)
+            }
+        }
+
+        scenario("FIFO strategy with quick multiple updates") {
+            inputStrategy { FifoInputStrategy() }
+            running {
+                -Inputs.MultipleStateUpdates
+                -Inputs.MultipleStateUpdates
+                -Inputs.MultipleStateUpdates
+            }
+            resultsIn {
+                assertEquals(
+                    listOf(
+                        Inputs.MultipleStateUpdates,
+                        Inputs.MultipleStateUpdates,
+                        Inputs.MultipleStateUpdates,
+                    ),
+                    successfulInputs
+                )
+
+                assertEquals(State(intValue = 6), latestState)
+            }
+        }
+
+        scenario("Parallel strategy with quick multiple updates") {
+            inputStrategy { ParallelInputStrategy() }
+            running {
+                -Inputs.MultipleStateUpdates
+                -Inputs.MultipleStateUpdates
+                +Inputs.MultipleStateUpdates
+            }
+            resultsIn {
+                assertEquals(
+                    listOf(
+                        Inputs.MultipleStateUpdates,
+                        Inputs.MultipleStateUpdates,
+                        Inputs.MultipleStateUpdates,
+                    ),
+                    inputHandlerErrors.map { it.first }
+                )
+
+                assertEquals(State(intValue = 6), latestState)
             }
         }
     }

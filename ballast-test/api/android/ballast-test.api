@@ -55,15 +55,17 @@ public final class com/copperleaf/ballast/test/ViewModelTestScenarioInputSequenc
 public abstract interface class com/copperleaf/ballast/test/ViewModelTestScenarioScope {
 	public abstract fun getName ()Ljava/lang/String;
 	public abstract fun given (Lkotlin/jvm/functions/Function0;)V
+	public abstract fun inputStrategy (Lkotlin/jvm/functions/Function0;)V
 	public abstract fun logger (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun resultsIn (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun running (Lkotlin/jvm/functions/Function2;)V
-	public abstract fun timeout-LRDsOJo (J)V
+	public abstract fun timeout (Lkotlin/jvm/functions/Function0;)V
 }
 
 public abstract interface class com/copperleaf/ballast/test/ViewModelTestSuiteScope {
 	public abstract fun defaultInitialState (Lkotlin/jvm/functions/Function0;)V
-	public abstract fun defaultTimeout-LRDsOJo (J)V
+	public abstract fun defaultInputStrategy (Lkotlin/jvm/functions/Function0;)V
+	public abstract fun defaultTimeout (Lkotlin/jvm/functions/Function0;)V
 	public abstract fun logger (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun scenario (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
 }

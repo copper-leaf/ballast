@@ -4,6 +4,7 @@ import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputFilter
+import com.copperleaf.ballast.InputStrategy
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +21,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.job
@@ -119,29 +119,30 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         // observe and process Inputs. Input events are emitted on the main dispatcher, but collected and processed on
         // the io dispatcher. Inputs are collected via the [collectLatest] operator, which cancels currently-running
         // tasks before starting to execute the next input.
-        viewModelScope.launch {
-            _inputs
-                .receiveAsFlow()
-                .filter { input ->
-                    val shouldAcceptInput = filterInput(_state.value, input)
-                    if (shouldAcceptInput == InputFilter.Result.Reject) {
-                        interceptor?.onInputRejected(input)
+        with(config.inputStrategy) {
+            viewModelScope.launch {
+                val filteredInputsFlow = _inputs
+                    .receiveAsFlow()
+                    .filter { input ->
+                        val shouldAcceptInput = filter?.filterInput(_state.value, input) ?: InputFilter.Result.Accept
+                        if (shouldAcceptInput == InputFilter.Result.Reject) {
+                            interceptor?.onInputRejected(input)
+                        }
+
+                        return@filter shouldAcceptInput == InputFilter.Result.Accept
                     }
 
-                    return@filter shouldAcceptInput == InputFilter.Result.Accept
-                }
-                .collectLatest { input ->
-                    interceptor?.onInputAccepted(input)
-                    safelyHandleInput(input)
-                }
+                processInputs(
+                    filteredInputsFlow,
+                    ::safelyHandleInput
+                )
+            }
         }
     }
 
-    private fun filterInput(state: State, event: Inputs): InputFilter.Result {
-        return filter?.filterInput(state, event) ?: InputFilter.Result.Accept
-    }
+    private suspend fun safelyHandleInput(input: Inputs, onCompleted: (InputStrategy.InputResult) -> Unit) {
+        interceptor?.onInputAccepted(input)
 
-    private suspend fun safelyHandleInput(input: Inputs) {
         val stateBeforeCancellation = _state.value
         try {
             coroutineScope {
@@ -195,14 +196,21 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     }
                 }
 
-                interceptor?.onInputHandledSuccessfully(input)
+                try {
+                    onCompleted(handlerScope.getResult())
+                    interceptor?.onInputHandledSuccessfully(input)
+                } catch (t: Throwable) {
+                    interceptor?.onInputHandlerError(input, t)
+                }
             }
         } catch (e: CancellationException) {
             // when the coroutine is cancelled for any reason, we must assume the input did not
             // complete and may have left the State in a bad, erm..., state. We should reset it and
             // try to forget that we ever tried to process it in the first place
             interceptor?.onInputCancelled(input)
-            _state.value = stateBeforeCancellation
+            if (config.inputStrategy.rollbackOnCancellation) {
+                _state.value = stateBeforeCancellation
+            }
         } catch (e: Throwable) {
             interceptor?.onInputHandlerError(input, e)
         }

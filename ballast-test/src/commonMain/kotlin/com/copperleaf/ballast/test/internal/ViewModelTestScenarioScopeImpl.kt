@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.test.internal
 
+import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.test.TestResults
 import com.copperleaf.ballast.test.ViewModelTestScenarioInputSequenceScope
 import com.copperleaf.ballast.test.ViewModelTestScenarioScope
@@ -14,15 +15,21 @@ internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State 
     internal lateinit var onInputSequenceBlock:
         suspend ViewModelTestScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit
     internal lateinit var verifyBlock: TestResults<Inputs, Events, State>.() -> Unit
+
     internal var logger: ((String) -> Unit)? = null
     internal var timeout: Duration? = null
+    internal var inputStrategy: InputStrategy? = null
 
     override fun logger(block: (String) -> Unit) {
-        logger = block
+        this.logger = block
     }
 
-    override fun timeout(timeout: Duration) {
-        this.timeout = timeout
+    override fun timeout(timeout: () -> Duration) {
+        this.timeout = timeout()
+    }
+
+    override fun inputStrategy(inputStrategy: () -> InputStrategy) {
+        this.inputStrategy = inputStrategy()
     }
 
     override fun given(block: () -> State) {

@@ -3,6 +3,7 @@ package com.copperleaf.ballast.test.internal.vm
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputHandler
+import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.core.DelegatingInterceptor
 import com.copperleaf.ballast.core.LoggingInterceptor
@@ -15,6 +16,7 @@ internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal c
     internal val initialState: State,
     internal val inputHandler: InputHandler<Inputs, Events, State>,
     internal val filter: InputFilter<TestViewModel.Inputs<Inputs, State>, Events, State>?,
+    internal val inputStrategy: InputStrategy,
     internal val impl: BallastViewModelImpl<TestViewModel.Inputs<Inputs, State>, Events, State> = BallastViewModelImpl(
         initialState,
         DefaultViewModelConfiguration(
@@ -27,6 +29,7 @@ internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal c
                 )
             ),
             filter = filter,
+            inputStrategy = inputStrategy,
         ),
     ),
 ) : BallastViewModel<TestViewModel.Inputs<Inputs, State>, Events, State> by impl {

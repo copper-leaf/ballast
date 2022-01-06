@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.test
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -18,7 +19,12 @@ public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : 
     /**
      * Set the timeout for waiting for test side-effects to complete for this test scenario.
      */
-    public fun timeout(timeout: Duration)
+    public fun timeout(timeout: () -> Duration)
+
+    /**
+     * Set the input strategy to use for this test.
+     */
+    public fun inputStrategy(inputStrategy: () -> InputStrategy)
 
     /**
      * Provide an alternative starting state for this scenario. Overrides the default starting state provided to the

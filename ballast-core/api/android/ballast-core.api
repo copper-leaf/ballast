@@ -43,6 +43,7 @@ public final class com/copperleaf/ballast/BallastViewModel$DefaultImpls {
 public abstract interface class com/copperleaf/ballast/BallastViewModelConfiguration {
 	public abstract fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public abstract fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
+	public abstract fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
 	public abstract fun getInterceptor ()Lcom/copperleaf/ballast/BallastInterceptor;
 }
 
@@ -84,6 +85,22 @@ public abstract interface class com/copperleaf/ballast/InputHandlerScope {
 
 public final class com/copperleaf/ballast/InputHandlerScope$DefaultImpls {
 	public static synthetic fun sideEffect$default (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+}
+
+public abstract interface class com/copperleaf/ballast/InputStrategy {
+	public abstract fun getRollbackOnCancellation ()Z
+	public abstract fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/InputStrategy$InputResult {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/InputStrategy$InputResult;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/InputStrategy$InputResult;IILjava/lang/Object;)Lcom/copperleaf/ballast/InputStrategy$InputResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getStateUpdatesPerformed ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class com/copperleaf/ballast/SideEffectScope {
@@ -152,12 +169,13 @@ public final class com/copperleaf/ballast/core/BuildConfig {
 }
 
 public final class com/copperleaf/ballast/core/DefaultViewModelConfiguration : com/copperleaf/ballast/BallastViewModelConfiguration {
-	public fun <init> (Lcom/copperleaf/ballast/FilteredInputHandler;Lcom/copperleaf/ballast/BallastInterceptor;)V
-	public synthetic fun <init> (Lcom/copperleaf/ballast/FilteredInputHandler;Lcom/copperleaf/ballast/BallastInterceptor;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun <init> (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Lcom/copperleaf/ballast/BallastInterceptor;)V
-	public synthetic fun <init> (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Lcom/copperleaf/ballast/BallastInterceptor;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/copperleaf/ballast/FilteredInputHandler;Lcom/copperleaf/ballast/BallastInterceptor;Lcom/copperleaf/ballast/InputStrategy;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/FilteredInputHandler;Lcom/copperleaf/ballast/BallastInterceptor;Lcom/copperleaf/ballast/InputStrategy;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Lcom/copperleaf/ballast/BallastInterceptor;Lcom/copperleaf/ballast/InputStrategy;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Lcom/copperleaf/ballast/BallastInterceptor;Lcom/copperleaf/ballast/InputStrategy;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
+	public fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
 	public fun getInterceptor ()Lcom/copperleaf/ballast/BallastInterceptor;
 }
 
@@ -177,6 +195,12 @@ public final class com/copperleaf/ballast/core/DelegatingInterceptor : com/coppe
 	public fun onUnhandledError (Ljava/lang/Throwable;)V
 }
 
+public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperleaf/ballast/InputStrategy {
+	public fun <init> ()V
+	public fun getRollbackOnCancellation ()Z
+	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/copperleaf/ballast/core/FilterInterceptor : com/copperleaf/ballast/BallastInterceptor {
 	public fun <init> (Lcom/copperleaf/ballast/BallastInterceptor;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/BallastInterceptor;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -192,6 +216,12 @@ public final class com/copperleaf/ballast/core/FilterInterceptor : com/copperlea
 	public fun onInputRejected (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun onStateEmitted (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun onUnhandledError (Ljava/lang/Throwable;)V
+}
+
+public final class com/copperleaf/ballast/core/LifoInputStrategy : com/copperleaf/ballast/InputStrategy {
+	public fun <init> ()V
+	public fun getRollbackOnCancellation ()Z
+	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperleaf/ballast/BallastInterceptor {
@@ -210,6 +240,12 @@ public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperle
 	public fun onUnhandledError (Ljava/lang/Throwable;)V
 }
 
+public final class com/copperleaf/ballast/core/ParallelInputStrategy : com/copperleaf/ballast/InputStrategy {
+	public fun <init> ()V
+	public fun getRollbackOnCancellation ()Z
+	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/copperleaf/ballast/BallastViewModel, com/copperleaf/ballast/BallastViewModelConfiguration, kotlinx/coroutines/channels/SendChannel {
 	public fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/channels/Channel;)V
 	public synthetic fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/channels/Channel;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -218,6 +254,7 @@ public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/co
 	public fun close (Ljava/lang/Throwable;)Z
 	public fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
+	public fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
 	public fun getInterceptor ()Lcom/copperleaf/ballast/BallastInterceptor;
 	public fun getOnSend ()Lkotlinx/coroutines/selects/SelectClause2;
 	public fun invokeOnClose (Lkotlin/jvm/functions/Function1;)V

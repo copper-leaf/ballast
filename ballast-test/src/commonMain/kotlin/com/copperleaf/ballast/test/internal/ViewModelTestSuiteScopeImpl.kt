@@ -3,6 +3,8 @@ package com.copperleaf.ballast.test.internal
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputHandler
+import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.test.ViewModelTestScenarioScope
 import com.copperleaf.ballast.test.ViewModelTestSuiteScope
 import com.copperleaf.ballast.test.internal.vm.TestEventHandler
@@ -31,16 +33,21 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
 
     private var suiteLogger: (String) -> Unit = { }
     private var defaultTimeout: Duration = Duration.seconds(30)
+    private var inputStrategy: InputStrategy = LifoInputStrategy()
 
     private var defaultInitialStateBlock: (() -> State)? = null
     private val scenarioBlocks = mutableListOf<ViewModelTestScenarioScopeImpl<Inputs, Events, State>>()
 
     override fun logger(block: (String) -> Unit) {
-        suiteLogger = block
+        this.suiteLogger = block
     }
 
-    override fun defaultTimeout(timeout: Duration) {
-        defaultTimeout = timeout
+    override fun defaultTimeout(timeout: () -> Duration) {
+        this.defaultTimeout = timeout()
+    }
+
+    override fun defaultInputStrategy(inputStrategy: () -> InputStrategy) {
+        this.inputStrategy = inputStrategy()
     }
 
     override fun defaultInitialState(block: () -> State) {
@@ -54,6 +61,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
     private suspend fun runScenario(scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>) = supervisorScope {
         val scenarioLogger = scenario.logger ?: suiteLogger
         val scenarioTimeout = scenario.timeout ?: defaultTimeout
+        val scenarioInputStrategy = scenario.inputStrategy ?: inputStrategy
 
         scenarioLogger("Scenario '${scenario.name}'")
         scenarioLogger("before runScenario")
@@ -65,6 +73,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
                 ?: error("No initial state given"),
             inputHandler = inputHandler,
             filter = filter?.let { TestInputFilter(it) },
+            inputStrategy = scenarioInputStrategy,
         )
 
         // start running the VM in the background
