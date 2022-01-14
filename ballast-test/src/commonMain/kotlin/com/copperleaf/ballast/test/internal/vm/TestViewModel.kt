@@ -15,9 +15,9 @@ internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal c
     internal val interceptor: TestInterceptor<Inputs, Events, State>,
     internal val initialState: State,
     internal val inputHandler: InputHandler<Inputs, Events, State>,
-    internal val filter: InputFilter<TestViewModel.Inputs<Inputs, State>, Events, State>?,
+    internal val filter: InputFilter<TestViewModel.Inputs<Inputs>, Events, State>?,
     internal val inputStrategy: InputStrategy,
-    internal val impl: BallastViewModelImpl<TestViewModel.Inputs<Inputs, State>, Events, State> = BallastViewModelImpl(
+    internal val impl: BallastViewModelImpl<TestViewModel.Inputs<Inputs>, Events, State> = BallastViewModelImpl(
         initialState,
         DefaultViewModelConfiguration(
             inputHandler = TestInputHandler(logger, inputHandler),
@@ -32,21 +32,21 @@ internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal c
             inputStrategy = inputStrategy,
         ),
     ),
-) : BallastViewModel<TestViewModel.Inputs<Inputs, State>, Events, State> by impl {
+) : BallastViewModel<TestViewModel.Inputs<Inputs>, Events, State> by impl {
 
-    sealed class Inputs<BaseInputs : Any, State : Any> {
-        data class ProcessInput<BaseInputs : Any, State : Any>(
+    sealed class Inputs<BaseInputs : Any> {
+        data class ProcessInput<BaseInputs : Any>(
             val normalInput: BaseInputs,
             val processingStarted: CompletableDeferred<Unit>,
-        ) : Inputs<BaseInputs, State>()
+        ) : Inputs<BaseInputs>()
 
-        data class AwaitInput<BaseInputs : Any, State : Any>(
+        data class AwaitInput<BaseInputs : Any>(
             val normalInput: BaseInputs,
-            val processingFinished: CompletableDeferred<State>,
-        ) : Inputs<BaseInputs, State>()
+            val processingFinished: CompletableDeferred<Unit>,
+        ) : Inputs<BaseInputs>()
 
-        data class TestCompleted<BaseInputs : Any, State : Any>(
-            val processingFinished: CompletableDeferred<State>
-        ) : Inputs<BaseInputs, State>()
+        data class TestCompleted<BaseInputs : Any>(
+            val processingFinished: CompletableDeferred<Unit>
+        ) : Inputs<BaseInputs>()
     }
 }

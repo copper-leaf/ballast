@@ -6,10 +6,10 @@ import com.copperleaf.ballast.InputHandlerScope
 internal class TestInputHandler<Inputs : Any, Events : Any, State : Any>(
     private val logger: (String) -> Unit,
     private val inputHandlerDelegate: InputHandler<Inputs, Events, State>,
-) : InputHandler<TestViewModel.Inputs<Inputs, State>, Events, State> {
+) : InputHandler<TestViewModel.Inputs<Inputs>, Events, State> {
 
-    override suspend fun InputHandlerScope<TestViewModel.Inputs<Inputs, State>, Events, State>.handleInput(
-        input: TestViewModel.Inputs<Inputs, State>
+    override suspend fun InputHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>.handleInput(
+        input: TestViewModel.Inputs<Inputs>
     ) {
         try {
             doHandleInput(input)
@@ -19,11 +19,11 @@ internal class TestInputHandler<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    private suspend fun InputHandlerScope<TestViewModel.Inputs<Inputs, State>, Events, State>.doHandleInput(
-        input: TestViewModel.Inputs<Inputs, State>
+    private suspend fun InputHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>.doHandleInput(
+        input: TestViewModel.Inputs<Inputs>
     ) {
         when (input) {
-            is TestViewModel.Inputs.ProcessInput<Inputs, State> -> {
+            is TestViewModel.Inputs.ProcessInput<Inputs> -> {
                 logger("            before handling normal input")
                 input.processingStarted.complete(Unit)
 
@@ -34,19 +34,19 @@ internal class TestInputHandler<Inputs : Any, Events : Any, State : Any>(
                 logger("            after handling normal input")
                 Unit
             }
-            is TestViewModel.Inputs.AwaitInput<Inputs, State> -> {
+            is TestViewModel.Inputs.AwaitInput<Inputs> -> {
                 logger("            before handling normal input")
                 val scopeDelegate = TestInputHandlerScope(this)
                 with(inputHandlerDelegate) {
                     scopeDelegate.handleInput(input.normalInput)
                 }
-                input.processingFinished.complete(getCurrentState())
+                input.processingFinished.complete(Unit)
                 logger("            after handling normal input")
                 Unit
             }
-            is TestViewModel.Inputs.TestCompleted<Inputs, State> -> {
+            is TestViewModel.Inputs.TestCompleted<Inputs> -> {
                 logger("            before completing test")
-                input.processingFinished.complete(getCurrentState())
+                input.processingFinished.complete(Unit)
                 logger("            after completing test")
                 noOp()
                 Unit
@@ -54,20 +54,20 @@ internal class TestInputHandler<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    private suspend fun InputHandlerScope<TestViewModel.Inputs<Inputs, State>, Events, State>.recoverFromError(
-        input: TestViewModel.Inputs<Inputs, State>
+    private suspend fun InputHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>.recoverFromError(
+        input: TestViewModel.Inputs<Inputs>
     ) {
         when (input) {
-            is TestViewModel.Inputs.ProcessInput<Inputs, State> -> {
+            is TestViewModel.Inputs.ProcessInput<Inputs> -> {
                 input.processingStarted.complete(Unit)
                 Unit
             }
-            is TestViewModel.Inputs.AwaitInput<Inputs, State> -> {
-                input.processingFinished.complete(getCurrentState())
+            is TestViewModel.Inputs.AwaitInput<Inputs> -> {
+                input.processingFinished.complete(Unit)
                 Unit
             }
-            is TestViewModel.Inputs.TestCompleted<Inputs, State> -> {
-                input.processingFinished.complete(getCurrentState())
+            is TestViewModel.Inputs.TestCompleted<Inputs> -> {
+                input.processingFinished.complete(Unit)
                 Unit
             }
         }

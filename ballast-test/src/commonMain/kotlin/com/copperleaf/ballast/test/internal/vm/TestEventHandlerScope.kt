@@ -4,7 +4,7 @@ import com.copperleaf.ballast.EventHandlerScope
 import kotlinx.coroutines.CompletableDeferred
 
 internal class TestEventHandlerScope<Inputs : Any, Events : Any, State : Any>(
-    private val eventHandlerScopeDelegate: EventHandlerScope<TestViewModel.Inputs<Inputs, State>, Events, State>
+    private val eventHandlerScopeDelegate: EventHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>
 ) : EventHandlerScope<Inputs, Events, State> {
     override suspend fun postInput(input: Inputs) {
         val deferred = CompletableDeferred<Unit>()

@@ -5,9 +5,9 @@ import com.copperleaf.ballast.EventHandlerScope
 
 internal class TestEventHandler<Inputs : Any, Events : Any, State : Any>(
     private val eventHandlerDelegate: EventHandler<Inputs, Events, State>
-) : EventHandler<TestViewModel.Inputs<Inputs, State>, Events, State> {
+) : EventHandler<TestViewModel.Inputs<Inputs>, Events, State> {
 
-    override suspend fun EventHandlerScope<TestViewModel.Inputs<Inputs, State>, Events, State>.handleEvent(
+    override suspend fun EventHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>.handleEvent(
         event: Events
     ) {
         with(eventHandlerDelegate) {

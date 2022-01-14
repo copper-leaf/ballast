@@ -1,3 +1,9 @@
+## 0.4.0 - 2022-01-14
+
+- Tweaks API a bit
+- SideEffects must now be the last blocks called while handling an Input, to avoid confusion about dispatching the side
+  effect but not actually running until the Input processing has completed
+
 ## 0.3.0 - 2022-01-06
 
 - Adds different strategies for accepting and processing inputs to allow for other use-cases.

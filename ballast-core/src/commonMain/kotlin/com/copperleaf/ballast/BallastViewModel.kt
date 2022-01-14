@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
  * - [Events] - In addition to persistent state that is displayed directly in the UI, the result of handling an Input
  *      may require some UI-bound action to be peformed, such as navigating to a new screen or displaying an ephemeral
  *      UI element that is not necessarily bound directly to the View state. Such "notifications" are sent from the
- *      [MviViewModel] as Events, which are processed only when the View is in a valid lifecycle state.
+ *      [BallastViewModel] as Events, which are processed only when the View is in a valid lifecycle state.
  *
  * The above are the main _types_ which declaratively describe the entirely of a single screen/Fragment, and are typically
  * all declared together within a single "Contract" class, with the naming convention of <ScreenName>Contract.State,
@@ -49,16 +49,16 @@ import kotlinx.coroutines.flow.StateFlow
  *      with Android Android UI- or lifecycle-bound objects, and is commonly used to handle Navigation requests.
  * - [InputFilter] - When Inputs are sent to the ViewModel, they are are expected to be handled immediately. But because of
  *      the suspending, asynchronous nature of the InputHandler, it may be the case that an Input is still being processed
- *      when a new Input is received; in this case, the MviInputFilter may choose to explicitly ignore that Input, or accept
+ *      when a new Input is received; in this case, the [InputFilter] may choose to explicitly ignore that Input, or accept
  *      it. When an Input is accepted and other is still running, the previous one will be cancelled, the State rolled back,
  *      and the new Input will start processing. The Filter is optional, but can be a very useful tool.
  *
  * The above classes implement the entirety of the MVI pattern, but because of the way everything is handled as discrete
  * classes (rather than just calling methods on the ViewModel, for example), it becomes possible to automatically inspect
  * the flow of Inputs, Events, changes to State, and capture errors, without needing any additional annotation processing
- * or anything like that. By attaching an optional [BallastInterceptor] to your MviViewModel, you will be notified of all
+ * or anything like that. By attaching an optional [BallastInterceptor] to your BallastViewModel, you will be notified of all
  * sorts of relevant points throughout the entire data-processing flow, for purposes like logging, crash reporting, or
- * capturing analytics. Note that MviInterceptors are entirely passive, only being notified of important actions, but cannot
+ * capturing analytics. Note that BallastInterceptors are entirely passive, only being notified of important actions, but cannot
  * directly change anything within the ViewModel as a result, to preserve the well-defined processing of the entire pattern.
  *
  * The entire MVI pattern is structured such that everything is well-defined, things are processed in a predictable order,

@@ -4,13 +4,13 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.test.TestResults
 
 internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
-    BallastInterceptor<TestViewModel.Inputs<Inputs, State>, Events, State> {
+    BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State> {
 
 // Inputs
 // ---------------------------------------------------------------------------------------------------------------------
 
     private val acceptedInputs = mutableListOf<Inputs>()
-    override suspend fun onInputAccepted(input: TestViewModel.Inputs<Inputs, State>) {
+    override suspend fun onInputAccepted(input: TestViewModel.Inputs<Inputs>) {
         when (input) {
             is TestViewModel.Inputs.AwaitInput -> {
                 acceptedInputs += input.normalInput
@@ -24,7 +24,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
     }
 
     private val rejectedInputs = mutableListOf<Inputs>()
-    override suspend fun onInputRejected(input: TestViewModel.Inputs<Inputs, State>) {
+    override suspend fun onInputRejected(input: TestViewModel.Inputs<Inputs>) {
         when (input) {
             is TestViewModel.Inputs.AwaitInput -> {
                 rejectedInputs += input.normalInput
@@ -38,7 +38,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
     }
 
     private val droppedInputs = mutableListOf<Inputs>()
-    override fun onInputDropped(input: TestViewModel.Inputs<Inputs, State>) {
+    override fun onInputDropped(input: TestViewModel.Inputs<Inputs>) {
         when (input) {
             is TestViewModel.Inputs.AwaitInput -> {
                 droppedInputs += input.normalInput
@@ -52,7 +52,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
     }
 
     private val successfulInputs = mutableListOf<Inputs>()
-    override suspend fun onInputHandledSuccessfully(input: TestViewModel.Inputs<Inputs, State>) {
+    override suspend fun onInputHandledSuccessfully(input: TestViewModel.Inputs<Inputs>) {
         when (input) {
             is TestViewModel.Inputs.AwaitInput -> {
                 successfulInputs += input.normalInput
@@ -66,7 +66,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
     }
 
     private val cancelledInputs = mutableListOf<Inputs>()
-    override suspend fun onInputCancelled(input: TestViewModel.Inputs<Inputs, State>) {
+    override suspend fun onInputCancelled(input: TestViewModel.Inputs<Inputs>) {
         when (input) {
             is TestViewModel.Inputs.AwaitInput -> {
                 cancelledInputs += input.normalInput
@@ -80,7 +80,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
     }
 
     private val inputHandlerErrors = mutableListOf<Pair<Inputs, Throwable>>()
-    override suspend fun onInputHandlerError(input: TestViewModel.Inputs<Inputs, State>, exception: Throwable) {
+    override suspend fun onInputHandlerError(input: TestViewModel.Inputs<Inputs>, exception: Throwable) {
         when (input) {
             is TestViewModel.Inputs.AwaitInput -> {
                 inputHandlerErrors += input.normalInput to exception

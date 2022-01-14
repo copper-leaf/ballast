@@ -4,7 +4,7 @@ import com.copperleaf.ballast.SideEffectScope
 import kotlinx.coroutines.CompletableDeferred
 
 internal class TestSideEffectScope<Inputs : Any, Events : Any, State : Any>(
-    private val sideEffectScopeDelegate: SideEffectScope<TestViewModel.Inputs<Inputs, State>, Events, State>
+    private val sideEffectScopeDelegate: SideEffectScope<TestViewModel.Inputs<Inputs>, Events, State>
 ) : SideEffectScope<Inputs, Events, State> {
 
     override suspend fun postInput(input: Inputs) {

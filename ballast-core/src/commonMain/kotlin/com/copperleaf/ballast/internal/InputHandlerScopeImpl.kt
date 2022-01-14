@@ -21,30 +21,36 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private var stateAccesses = 0
 
     override suspend fun getCurrentState(): State {
+        checkNotClosed()
+        checkNoSideEffects()
         stateAccesses++
         return _state.value
     }
 
     override suspend fun updateState(block: (State) -> State) {
         checkNotClosed()
+        checkNoSideEffects()
         stateAccesses++
         _state.update(block).also { usedProperly = true }
     }
 
     override suspend fun updateStateAndGet(block: (State) -> State): State {
         checkNotClosed()
+        checkNoSideEffects()
         stateAccesses++
         return _state.updateAndGet(block).also { usedProperly = true }
     }
 
     override suspend fun getAndUpdateState(block: (State) -> State): State {
         checkNotClosed()
+        checkNoSideEffects()
         stateAccesses++
         return _state.getAndUpdate(block).also { usedProperly = true }
     }
 
     override suspend fun postEvent(event: Events) {
         checkNotClosed()
+        checkNoSideEffects()
         _events.send(event).also { usedProperly = true }
     }
 
@@ -60,7 +66,14 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override fun noOp() {
         checkNotClosed()
+        checkNoSideEffects()
         usedProperly = true
+    }
+
+    private fun checkNoSideEffects() {
+        check(sideEffects.isEmpty()) {
+            "Side-Effects must be the last statements of the InputHandler"
+        }
     }
 
     private fun checkNotClosed() {

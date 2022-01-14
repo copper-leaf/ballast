@@ -4,10 +4,10 @@ import com.copperleaf.ballast.InputFilter
 
 internal class TestInputFilter<Inputs : Any, Events : Any, State : Any>(
     private val filterDelegate: InputFilter<Inputs, Events, State>
-) : InputFilter<TestViewModel.Inputs<Inputs, State>, Events, State> {
+) : InputFilter<TestViewModel.Inputs<Inputs>, Events, State> {
     override fun filterInput(
         state: State,
-        input: TestViewModel.Inputs<Inputs, State>
+        input: TestViewModel.Inputs<Inputs>
     ): InputFilter.Result = when (input) {
         is TestViewModel.Inputs.ProcessInput -> {
             val result = filterDelegate.filterInput(state, input.normalInput)
@@ -22,7 +22,7 @@ internal class TestInputFilter<Inputs : Any, Events : Any, State : Any>(
             val result = filterDelegate.filterInput(state, input.normalInput)
 
             if (result == InputFilter.Result.Reject) {
-                input.processingFinished.complete(state)
+                input.processingFinished.complete(Unit)
             }
 
             result

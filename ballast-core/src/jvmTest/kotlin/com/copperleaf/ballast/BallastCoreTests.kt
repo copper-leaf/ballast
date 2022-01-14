@@ -36,6 +36,8 @@ class BallastCoreTests {
         object EventEmitted : Inputs()
         object SideEffectStartedNoInputOverride : Inputs()
         object SideEffectStartedWithInputOverride : Inputs()
+        object MultipleSideEffects : Inputs()
+        object SideEffectsNotAtEnd : Inputs()
     }
 
     sealed class Events {
@@ -100,6 +102,33 @@ class BallastCoreTests {
 
                     delay(1500)
                 }
+            }
+            is Inputs.MultipleSideEffects -> {
+                sideEffect("one") {
+                    delay(1500)
+                    postInput(Inputs.Increment)
+                    delay(1500)
+                    postInput(Inputs.Increment)
+                    delay(1500)
+                }
+                sideEffect("two") {
+                    delay(1500)
+                    postInput(Inputs.Increment)
+                    delay(1500)
+                    postInput(Inputs.Increment)
+                    delay(1500)
+                }
+            }
+            is Inputs.SideEffectsNotAtEnd -> {
+                sideEffect {
+                    delay(1500)
+                    postInput(Inputs.Increment)
+                    delay(1500)
+                    postInput(Inputs.Increment)
+                    delay(1500)
+                }
+                getCurrentState()
+                Unit
             }
         }
     }
@@ -410,6 +439,42 @@ class BallastCoreTests {
                 )
 
                 assertEquals(State(intValue = 6), latestState)
+            }
+        }
+        scenario("Multiple side effects can be started by 1 input") {
+            inputStrategy { ParallelInputStrategy() }
+            running {
+                +Inputs.MultipleSideEffects
+            }
+            resultsIn {
+                assertEquals(
+                    listOf(
+                        Inputs.MultipleSideEffects,
+                        Inputs.Increment,
+                        Inputs.Increment,
+                        Inputs.Increment,
+                        Inputs.Increment,
+                    ),
+                    successfulInputs,
+                )
+
+                assertEquals(State(intValue = 4), latestState)
+            }
+        }
+        scenario("Side effects called before other inputHandler methods throws an error") {
+            inputStrategy { ParallelInputStrategy() }
+            running {
+                +Inputs.SideEffectsNotAtEnd
+            }
+            resultsIn {
+                assertEquals(
+                    listOf(
+                        Inputs.SideEffectsNotAtEnd,
+                    ),
+                    inputHandlerErrors.map { it.first }
+                )
+
+                assertEquals(State(intValue = 0), latestState)
             }
         }
     }

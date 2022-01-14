@@ -4,7 +4,7 @@ import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.SideEffectScope
 
 internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
-    private val inputHandlerScopeDelegate: InputHandlerScope<TestViewModel.Inputs<Inputs, State>, Events, State>,
+    private val inputHandlerScopeDelegate: InputHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>,
 ) : InputHandlerScope<Inputs, Events, State> {
     override suspend fun getCurrentState(): State {
         return inputHandlerScopeDelegate.getCurrentState()

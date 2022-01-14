@@ -109,7 +109,6 @@ public abstract interface class com/copperleaf/ballast/SideEffectScope {
 }
 
 public final class com/copperleaf/ballast/UtilsKt {
-	public static final fun observeFlow (Lcom/copperleaf/ballast/SideEffectScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun postEventWithState (Lcom/copperleaf/ballast/InputHandlerScope;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun postInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;)V
 }

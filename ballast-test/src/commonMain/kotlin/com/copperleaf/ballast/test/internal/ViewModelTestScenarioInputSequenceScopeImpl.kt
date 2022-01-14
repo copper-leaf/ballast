@@ -22,19 +22,20 @@ internal class ViewModelTestScenarioInputSequenceScopeImpl<Inputs : Any, Events 
 
     override suspend fun sendAndAwait(input: Inputs): State {
         logger("        before send AwaitInput")
-        val deferred = CompletableDeferred<State>()
+        val deferred = CompletableDeferred<Unit>()
         vm.send(
             TestViewModel.Inputs.AwaitInput(input, deferred)
         )
         logger("        after send AwaitInput")
-        val latestStateAfterProcessing = deferred.await()
+        deferred.await()
+        val latestStateAfterProcessing = vm.observeStates().value
         logger("        after await AwaitInput: $latestStateAfterProcessing")
         return latestStateAfterProcessing
     }
 
     internal suspend fun finish() {
         logger("        before send TestCompleted")
-        val deferred = CompletableDeferred<State>()
+        val deferred = CompletableDeferred<Unit>()
         vm.send(
             TestViewModel.Inputs.TestCompleted(deferred)
         )
