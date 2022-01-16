@@ -3,6 +3,7 @@ package com.copperleaf.ballast
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -19,6 +20,12 @@ import kotlinx.coroutines.flow.Flow
  * @see [ParallelInputStrategy]
  */
 public interface InputStrategy {
+
+    /**
+     * Create the ViewModel channel most appropriate for accepting Inputs to the ViewModel and passing them to the
+     * internal processing pipeline.
+     */
+    public fun <T> createChannel(): Channel<T>
 
     /**
      * When an input gets cancelled, should the state be rolled back to where it was before the input was accepted? If

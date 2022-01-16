@@ -1,6 +1,8 @@
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.InputStrategy
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
@@ -23,6 +25,10 @@ import kotlinx.coroutines.flow.collectLatest
  * ViewModel state will roll back to prevent the ViewModel from being left in a bad state.
  */
 public class LifoInputStrategy : InputStrategy {
+
+    override fun <T> createChannel(): Channel<T> {
+        return Channel(Channel.BUFFERED, BufferOverflow.DROP_LATEST)
+    }
 
     override val rollbackOnCancellation: Boolean = true
 

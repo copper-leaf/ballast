@@ -88,6 +88,7 @@ public final class com/copperleaf/ballast/InputHandlerScope$DefaultImpls {
 }
 
 public abstract interface class com/copperleaf/ballast/InputStrategy {
+	public abstract fun createChannel ()Lkotlinx/coroutines/channels/Channel;
 	public abstract fun getRollbackOnCancellation ()Z
 	public abstract fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -175,6 +176,7 @@ public final class com/copperleaf/ballast/core/DelegatingInterceptor : com/coppe
 
 public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
+	public fun createChannel ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -198,6 +200,7 @@ public final class com/copperleaf/ballast/core/FilterInterceptor : com/copperlea
 
 public final class com/copperleaf/ballast/core/LifoInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
+	public fun createChannel ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -220,6 +223,7 @@ public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperle
 
 public final class com/copperleaf/ballast/core/ParallelInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
+	public fun createChannel ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }

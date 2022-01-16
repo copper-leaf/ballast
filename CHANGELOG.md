@@ -1,3 +1,7 @@
+## 0.5.0 - 2022-01-16
+
+- Fixes issue with input Channel buffer that didn't do exactly what I expected
+
 ## 0.4.0 - 2022-01-14
 
 - Tweaks API a bit

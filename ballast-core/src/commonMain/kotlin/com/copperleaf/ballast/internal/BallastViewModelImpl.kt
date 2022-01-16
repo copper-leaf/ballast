@@ -33,7 +33,7 @@ import kotlin.coroutines.coroutineContext
 public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     initialState: State,
     private val config: BallastViewModelConfiguration<Inputs, Events, State>,
-    private val _inputs: Channel<Inputs> = Channel(Channel.BUFFERED, BufferOverflow.DROP_LATEST),
+    private val _inputs: Channel<Inputs> = config.inputStrategy.createChannel(),
 ) : BallastViewModel<Inputs, Events, State>,
     BallastViewModelConfiguration<Inputs, Events, State> by config,
     SendChannel<Inputs> by _inputs {
