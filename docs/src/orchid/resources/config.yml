@@ -62,6 +62,11 @@ allPages:
         - kotlin
         - java
         - groovy
+    - type: "mermaid"
+      selector: 'code.language-mermaid'
+      mermaidSource: 'https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.13.9/mermaid.min.js'
+      extraCss:
+        - 'assets/css/mermaid_bulma.scss'
 
 changelog:
   adapter:

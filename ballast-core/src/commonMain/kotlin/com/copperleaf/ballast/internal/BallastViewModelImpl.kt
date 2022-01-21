@@ -27,6 +27,8 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.coroutineContext
 
@@ -49,6 +51,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     private var started = false
+    private val mutex = Mutex(false)
     private var sideEffects = mutableMapOf<String?, RunningSideEffect<Inputs, Events, State>>()
     internal lateinit var viewModelScope: CoroutineScope
 
@@ -160,39 +163,41 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 val sideEffectsFromInput = handlerScope.close()
 
                 if (sideEffectsFromInput.isNotEmpty()) {
-                    sideEffectsFromInput.forEach { sideEffect ->
-                        val actualSideEffectKey = sideEffect.key
+                    mutex.withLock {
+                        sideEffectsFromInput.forEach { sideEffect ->
+                            val actualSideEffectKey = sideEffect.key
 
-                        // if we have a side-effect already running, cancel its coroutine scope
-                        sideEffects[actualSideEffectKey]?.let {
-                            it.job?.cancel()
-                            it.job = null
-                            it.sideEffect.onRestarted()
+                            // if we have a side-effect already running, cancel its coroutine scope
+                            sideEffects[actualSideEffectKey]?.let {
+                                it.job?.cancel()
+                                it.job = null
+                                it.sideEffect.onRestarted()
+                            }
+
+                            // go through and remove any side-effects that have completed (either by
+                            // cancellation or because they finished on their own)
+                            sideEffects.entries
+                                .filterNot { it.value.job?.isActive == true }
+                                .map { it.key }
+                                .forEach { sideEffects.remove(it) }
+
+                            // launch a new side effect in its own isolated coroutine scope where:
+                            //   1) it is cancelled when the viewModelScope is cancelled
+                            //   2) errors are caught by the uncaughtExceptionHandler for crash reporting
+                            //   3) has a supervisor job, so we can cancel the side-effect without cancelling the whole viewModelScope
+                            //
+                            // Consumers of this side-effect can launch many jobs, and all will be cancelled together when the
+                            // side-effect is restarted or the viewModelScope is cancelled.
+                            sideEffects[actualSideEffectKey] = RunningSideEffect(
+                                sideEffect = sideEffect,
+                                coroutineScope = viewModelScope +
+                                    SupervisorJob(parent = viewModelScope.coroutineContext[Job]),
+                                scope = SideEffectScopeImpl(
+                                    this@BallastViewModelImpl,
+                                    _events
+                                ),
+                            ).also { it.start(_state.value) }
                         }
-
-                        // go through and remove any side-effects that have completed (either by
-                        // cancellation or because they finished on their own)
-                        sideEffects.entries
-                            .filterNot { it.value.job?.isActive == true }
-                            .map { it.key }
-                            .forEach { sideEffects.remove(it) }
-
-                        // launch a new side effect in its own isolated coroutine scope where:
-                        //   1) it is cancelled when the viewModelScope is cancelled
-                        //   2) errors are caught by the uncaughtExceptionHandler for crash reporting
-                        //   3) has a supervisor job, so we can cancel the side-effect without cancelling the whole viewModelScope
-                        //
-                        // Consumers of this side-effect can launch many jobs, and all will be cancelled together when the
-                        // side-effect is restarted or the viewModelScope is cancelled.
-                        sideEffects[actualSideEffectKey] = RunningSideEffect(
-                            sideEffect = sideEffect,
-                            coroutineScope = viewModelScope +
-                                SupervisorJob(parent = viewModelScope.coroutineContext[Job]),
-                            scope = SideEffectScopeImpl(
-                                this@BallastViewModelImpl,
-                                _events
-                            ),
-                        ).also { it.start(_state.value) }
                     }
                 }
 
