@@ -1,3 +1,7 @@
+## 0.6.0 - 2022-01-27
+
+- Improves DSL for restarting SideEffects
+
 ## 0.5.0 - 2022-01-16
 
 - Fixes issue with input Channel buffer that didn't do exactly what I expected

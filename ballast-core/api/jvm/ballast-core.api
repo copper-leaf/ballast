@@ -78,13 +78,13 @@ public abstract interface class com/copperleaf/ballast/InputHandlerScope {
 	public abstract fun getCurrentState (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun noOp ()V
 	public abstract fun postEvent (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun sideEffect (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;)V
+	public abstract fun sideEffect (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)V
 	public abstract fun updateState (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun updateStateAndGet (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/InputHandlerScope$DefaultImpls {
-	public static synthetic fun sideEffect$default (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;ILjava/lang/Object;)V
+	public static synthetic fun sideEffect$default (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)V
 }
 
 public abstract interface class com/copperleaf/ballast/InputStrategy {
@@ -105,8 +105,17 @@ public final class com/copperleaf/ballast/InputStrategy$InputResult {
 }
 
 public abstract interface class com/copperleaf/ballast/SideEffectScope {
+	public abstract fun getCurrentStateWhenStarted ()Ljava/lang/Object;
+	public abstract fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
 	public abstract fun postEvent (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun postInput (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/SideEffectScope$RestartState : java/lang/Enum {
+	public static final field Initial Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public static final field Restarted Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public static fun values ()[Lcom/copperleaf/ballast/SideEffectScope$RestartState;
 }
 
 public final class com/copperleaf/ballast/UtilsKt {

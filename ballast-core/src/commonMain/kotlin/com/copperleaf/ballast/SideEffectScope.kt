@@ -12,6 +12,13 @@ package com.copperleaf.ballast
 @BallastDsl
 public interface SideEffectScope<Inputs : Any, Events : Any, State : Any> {
 
+    public enum class RestartState {
+        Initial, Restarted
+    }
+
+    public val currentStateWhenStarted: State
+    public val restartState: RestartState
+
     /**
      * After performing a side-effect, dispatch a new Input back to the ViewModel (to update the State independently of
      * the current state with data computed during the side-effect).

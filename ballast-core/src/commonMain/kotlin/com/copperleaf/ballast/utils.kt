@@ -26,14 +26,43 @@ public inline fun <
     State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
     vararg inputs: Flow<Inputs>,
     key: String? = Inputs::class.simpleName,
-    noinline onRestarted: suspend () -> Unit = { },
 ) {
     sideEffect(
         key = key,
-        onRestarted = onRestarted,
     ) {
         coroutineScope {
             merge(*inputs)
+                .onEach { postInput(it) }
+                .launchIn(this)
+        }
+    }
+}
+
+/**
+ * Observe a Flow of Inputs that will run asynchronously in its own [SideEffectScope]. This will
+ * allow other Inputs to be processed and not be blocked by this Flow's subscription.
+ *
+ * The Flow subscription will remain active during the whole life of the associated ViewModel
+ * and will be cancelled when the ViewModel is destroyed, when the side-effect is restarted, or
+ * it may terminate itself before then when the Flow completes.
+ *
+ * The side-effect started from the Flow uses the resulting Input's simple class name as
+ * its key.
+ */
+@ExperimentalCoroutinesApi
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <
+    reified Inputs : Any,
+    Events : Any,
+    State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
+    key: String? = Inputs::class.simpleName,
+    crossinline getInputs: SideEffectScope<Inputs, Events, State>.() -> List<Flow<Inputs>>,
+) {
+    sideEffect(
+        key = key,
+    ) {
+        coroutineScope {
+            getInputs().merge()
                 .onEach { postInput(it) }
                 .launchIn(this)
         }

@@ -56,11 +56,10 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override fun sideEffect(
         key: String?,
-        onRestarted: suspend () -> Unit,
-        block: suspend SideEffectScope<Inputs, Events, State>.(State) -> Unit
+        block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
     ) {
         checkNotClosed()
-        sideEffects += RestartableSideEffect(key, onRestarted, block)
+        sideEffects += RestartableSideEffect(key, block)
         usedProperly = true
     }
 

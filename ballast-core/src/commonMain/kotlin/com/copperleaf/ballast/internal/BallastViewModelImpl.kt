@@ -5,6 +5,7 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.SideEffectScope
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -167,11 +168,13 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         sideEffectsFromInput.forEach { sideEffect ->
                             val actualSideEffectKey = sideEffect.key
 
+                            var restartState = SideEffectScope.RestartState.Initial
+
                             // if we have a side-effect already running, cancel its coroutine scope
                             sideEffects[actualSideEffectKey]?.let {
                                 it.job?.cancel()
                                 it.job = null
-                                it.sideEffect.onRestarted()
+                                restartState = SideEffectScope.RestartState.Restarted
                             }
 
                             // go through and remove any side-effects that have completed (either by
@@ -193,10 +196,12 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                                 coroutineScope = viewModelScope +
                                     SupervisorJob(parent = viewModelScope.coroutineContext[Job]),
                                 scope = SideEffectScopeImpl(
-                                    this@BallastViewModelImpl,
-                                    _events
+                                    _inputs = this@BallastViewModelImpl,
+                                    _events = _events,
+                                    currentStateWhenStarted = _state.value,
+                                    restartState = restartState
                                 ),
-                            ).also { it.start(_state.value) }
+                            ).also { it.start() }
                         }
                     }
                 }

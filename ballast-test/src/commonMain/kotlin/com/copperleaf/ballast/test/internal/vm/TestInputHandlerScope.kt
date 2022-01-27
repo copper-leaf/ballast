@@ -28,13 +28,11 @@ internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
 
     override fun sideEffect(
         key: String?,
-        onRestarted: suspend () -> Unit,
-        block: suspend SideEffectScope<Inputs, Events, State>.(State) -> Unit
+        block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
     ) {
         inputHandlerScopeDelegate.sideEffect(
             key = key,
-            onRestarted = onRestarted,
-            block = { TestSideEffectScope(this).block(it) }
+            block = { TestSideEffectScope(this).block() }
         )
     }
 

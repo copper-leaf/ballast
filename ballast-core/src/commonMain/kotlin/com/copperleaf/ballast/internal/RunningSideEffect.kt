@@ -11,9 +11,9 @@ internal class RunningSideEffect<Inputs : Any, Events : Any, State : Any>(
     internal val scope: SideEffectScope<Inputs, Events, State>,
 ) {
     internal var job: Job? = null
-    fun start(latestState: State) {
+    fun start() {
         job = coroutineScope.launch {
-            sideEffect.block(scope, latestState)
+            sideEffect.block(scope)
         }
     }
 }

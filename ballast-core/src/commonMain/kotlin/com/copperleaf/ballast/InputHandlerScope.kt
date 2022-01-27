@@ -64,8 +64,7 @@ public interface InputHandlerScope<Inputs : Any, Events : Any, State : Any> {
      */
     public fun sideEffect(
         key: String? = null,
-        onRestarted: suspend () -> Unit = { },
-        block: suspend SideEffectScope<Inputs, Events, State>.(State) -> Unit
+        block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
     )
 
     /**
