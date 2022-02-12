@@ -16,11 +16,10 @@ public class IosViewModel<Inputs : Any, Events : Any, State : Any> private const
 ) : BallastViewModel<Inputs, Events, State> by impl {
 
     public constructor(
-        initialState: State,
         config: BallastViewModelConfiguration<Inputs, Events, State>,
         handler: EventHandler<Inputs, Events, State>,
     ) : this(
-        BallastViewModelImpl(initialState, config),
+        BallastViewModelImpl(config),
         CoroutineScope(EmptyCoroutineContext),
         handler,
     )

@@ -18,8 +18,8 @@ internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal c
     internal val filter: InputFilter<TestViewModel.Inputs<Inputs>, Events, State>?,
     internal val inputStrategy: InputStrategy,
     internal val impl: BallastViewModelImpl<TestViewModel.Inputs<Inputs>, Events, State> = BallastViewModelImpl(
-        initialState,
         DefaultViewModelConfiguration(
+            initialState = initialState,
             inputHandler = TestInputHandler(logger, inputHandler),
             interceptor = DelegatingInterceptor(
                 interceptor,

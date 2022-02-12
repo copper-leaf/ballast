@@ -18,15 +18,11 @@ public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private
 ) : BallastViewModel<Inputs, Events, State> by impl {
 
     public constructor(
-        initialState: State,
         config: BallastViewModelConfiguration<Inputs, Events, State>,
         eventHandler: EventHandler<Inputs, Events, State>,
         coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
     ) : this(
-        BallastViewModelImpl(
-            initialState,
-            config,
-        ),
+        BallastViewModelImpl(config),
         eventHandler,
         coroutineScope,
     )
@@ -39,8 +35,8 @@ public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private
         coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
     ) : this(
         BallastViewModelImpl(
-            initialState,
             DefaultViewModelConfiguration(
+                initialState = initialState,
                 inputHandler = inputHandler,
                 interceptor = interceptor,
             ),

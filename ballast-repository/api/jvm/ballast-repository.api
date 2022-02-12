@@ -1,0 +1,69 @@
+public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BaseViewModel {
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/BallastInterceptor;Ljava/lang/Object;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/BallastInterceptor;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public abstract interface class com/copperleaf/ballast/repository/bus/EventBus {
+	public abstract fun getEvents ()Lkotlinx/coroutines/flow/SharedFlow;
+	public abstract fun send (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/repository/bus/EventBusEventHandler : com/copperleaf/ballast/EventHandler {
+	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;)V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/repository/bus/EventBusImpl : com/copperleaf/ballast/repository/bus/EventBus {
+	public fun <init> ()V
+	public fun getEvents ()Lkotlinx/coroutines/flow/SharedFlow;
+	public fun send (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract class com/copperleaf/ballast/repository/cache/Cached {
+}
+
+public final class com/copperleaf/ballast/repository/cache/Cached$Fetching : com/copperleaf/ballast/repository/cache/Cached {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun getCachedValue ()Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/repository/cache/Cached$FetchingFailed : com/copperleaf/ballast/repository/cache/Cached {
+	public fun <init> (Ljava/lang/Throwable;Ljava/lang/Object;)V
+	public final fun getCachedValue ()Ljava/lang/Object;
+	public final fun getError ()Ljava/lang/Throwable;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/repository/cache/Cached$NotLoaded : com/copperleaf/ballast/repository/cache/Cached {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Object;)V
+	public synthetic fun <init> (Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getPreviousCachedValue ()Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/repository/cache/Cached$Value : com/copperleaf/ballast/repository/cache/Cached {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun getValue ()Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/repository/cache/DslKt {
+	public static final fun awaitValue (Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun getCachedOrElse (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static final fun getCachedOrEmptyList (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/util/List;
+	public static final fun getCachedOrNull (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/lang/Object;
+	public static final fun getValueOrElse (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static final fun getValueOrNull (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/lang/Object;
+	public static final fun isFirstLoad (Lcom/copperleaf/ballast/repository/cache/Cached;)Z
+	public static final fun isLoading (Lcom/copperleaf/ballast/repository/cache/Cached;)Z
+	public static final fun isValid (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Z
+	public static final fun map (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/repository/cache/Cached;
+}
+
+public final class com/copperleaf/ballast/repository/cache/FetchWithCacheKt {
+	public static final fun fetchWithCache (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun fetchWithCache$default (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+

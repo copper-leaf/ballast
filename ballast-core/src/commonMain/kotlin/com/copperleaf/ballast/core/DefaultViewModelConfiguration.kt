@@ -8,14 +8,16 @@ import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputStrategy
 
 public class DefaultViewModelConfiguration<Inputs : Any, Events : Any, State : Any>(
+    override val initialState: State,
     override val inputHandler: InputHandler<Inputs, Events, State>,
     override val filter: InputFilter<Inputs, Events, State>? = null,
     override val interceptor: BallastInterceptor<Inputs, Events, State>? = null,
     override val inputStrategy: InputStrategy = LifoInputStrategy(),
 ) : BallastViewModelConfiguration<Inputs, Events, State> {
     public constructor(
+        initialState: State,
         inputHandler: FilteredInputHandler<Inputs, Events, State>,
         interceptor: BallastInterceptor<Inputs, Events, State>? = null,
         inputStrategy: InputStrategy = LifoInputStrategy()
-    ) : this(inputHandler, inputHandler, interceptor, inputStrategy)
+    ) : this(initialState, inputHandler, inputHandler, interceptor, inputStrategy)
 }

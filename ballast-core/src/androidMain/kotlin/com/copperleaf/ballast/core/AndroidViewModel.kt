@@ -11,15 +11,14 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 
-public open class AndroidViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
+public open class AndroidViewModel<Inputs : Any, Events : Any, State : Any>
+private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
-) : ViewModel(),
-    BallastViewModel<Inputs, Events, State> by impl {
+) : ViewModel(), BallastViewModel<Inputs, Events, State> by impl {
 
     public constructor(
-        initialState: State,
         config: BallastViewModelConfiguration<Inputs, Events, State>,
-    ) : this(BallastViewModelImpl(initialState, config))
+    ) : this(BallastViewModelImpl(config))
 
     init {
         impl.start(viewModelScope)

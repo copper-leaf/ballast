@@ -1,3 +1,7 @@
+## 0.7.0 - 2022-02-14
+
+- Adds Repository module for app-wide caching and communication
+
 ## 0.6.0 - 2022-01-27
 
 - Improves DSL for restarting SideEffects
