@@ -10,41 +10,40 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 
 internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
+    private val guardian: InputStrategy.Guardian,
     private val _state: MutableStateFlow<State>,
     private val _events: SendChannel<Events>,
 ) : InputHandlerScope<Inputs, Events, State> {
     private var closed = false
     private var usedProperly = false
 
-    private val sideEffects = mutableListOf<RestartableSideEffect<Inputs, Events, State>>()
-
-    private var stateAccesses = 0
+    private val sideEffects = mutableListOf<SideEffectRequest<Inputs, Events, State>>()
 
     override suspend fun getCurrentState(): State {
         checkNotClosed()
         checkNoSideEffects()
-        stateAccesses++
+        guardian.checkStateAccess()
         return _state.value
     }
 
     override suspend fun updateState(block: (State) -> State) {
         checkNotClosed()
         checkNoSideEffects()
-        stateAccesses++
+        guardian.checkStateAccess()
         _state.update(block).also { usedProperly = true }
     }
 
     override suspend fun updateStateAndGet(block: (State) -> State): State {
         checkNotClosed()
         checkNoSideEffects()
-        stateAccesses++
+        guardian.checkStateAccess()
         return _state.updateAndGet(block).also { usedProperly = true }
     }
 
     override suspend fun getAndUpdateState(block: (State) -> State): State {
         checkNotClosed()
         checkNoSideEffects()
-        stateAccesses++
+        guardian.checkStateAccess()
         return _state.getAndUpdate(block).also { usedProperly = true }
     }
 
@@ -55,11 +54,11 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     override fun sideEffect(
-        key: String?,
+        key: String,
         block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
     ) {
         checkNotClosed()
-        sideEffects += RestartableSideEffect(key, block)
+        sideEffects += SideEffectRequest(key, block)
         usedProperly = true
     }
 
@@ -86,14 +85,10 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    internal fun close(): List<RestartableSideEffect<Inputs, Events, State>> {
+    internal fun close(): List<SideEffectRequest<Inputs, Events, State>> {
         checkNotClosed()
         checkUsedProperly()
         closed = true
         return sideEffects.toList()
-    }
-
-    internal fun getResult(): InputStrategy.InputResult {
-        return InputStrategy.InputResult(stateAccesses)
     }
 }

@@ -63,7 +63,7 @@ public interface InputHandlerScope<Inputs : Any, Events : Any, State : Any> {
      * than a key of any other string value.
      */
     public fun sideEffect(
-        key: String? = null,
+        key: String,
         block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
     )
 

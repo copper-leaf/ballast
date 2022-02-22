@@ -41,22 +41,29 @@ public interface InputStrategy {
      * Channel, and have already been filtered according to the ViewModel's [InputFilter] if a filter was provided.
      *
      * Once an input has been received, it should be sent back to the ViewModel through [acceptInput] for internal
-     * processing. Once the internal processing has completed, if it ran to completion successfully, [onCompleted] will
-     * be called with the result of processing, which can be used to determine if the input was handled properly
-     * according to the restrictions of the InputStrategy.
+     * processing. The Strategy will provide a Guardian to the [InputHandlerScope], to ensure the Input is being handled
+     * safely according to its own rules, guarding against potential issues.
      */
     public suspend fun <Inputs : Any> processInputs(
         filteredInputs: Flow<Inputs>,
-        acceptInput: suspend (input: Inputs, onCompleted: (InputStrategy.InputResult) -> Unit) -> Unit,
+        acceptInput: suspend (input: Inputs, guardian: Guardian) -> Unit,
     )
 
     /**
-     * The results of processing an input to completion.
+     * A Guardian protects the integrity of the ViewModel state against potential problems, especially with race
+     * conditions due to parallel processing.
      */
-    public data class InputResult(
+    public interface Guardian {
+
         /**
-         * A count of how many times this input attempted to read and/or update the ViewModel State.
+         * Checked on every call to [InputHandlerScope.getCurrentState].
          */
-        val stateUpdatesPerformed: Int
-    )
+        public fun checkStateAccess() { }
+
+        /**
+         * Checked on every call to [InputHandlerScope.updateState], [InputHandlerScope.getAndUpdateState], or
+         * [InputHandlerScope.updateStateAndGet].
+         */
+        public fun checkStateUpdate() { }
+    }
 }

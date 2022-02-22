@@ -24,8 +24,8 @@ public inline fun <
     reified Inputs : Any,
     Events : Any,
     State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
+    key: String,
     vararg inputs: Flow<Inputs>,
-    key: String? = Inputs::class.simpleName,
 ) {
     sideEffect(
         key = key,
@@ -55,7 +55,7 @@ public inline fun <
     reified Inputs : Any,
     Events : Any,
     State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
-    key: String? = Inputs::class.simpleName,
+    key: String,
     crossinline getInputs: SideEffectScope<Inputs, Events, State>.() -> List<Flow<Inputs>>,
 ) {
     sideEffect(

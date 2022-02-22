@@ -4,31 +4,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
 /**
- * Returns true if this cached variable indicates a state which should show a progress indicator in the UI.
- */
-public fun <T : Any> Cached<T>.isLoading(): Boolean {
-    return when (this) {
-        is Cached.Fetching -> true
-        is Cached.FetchingFailed -> false
-        is Cached.NotLoaded -> true
-        is Cached.Value -> false
-    }
-}
-
-/**
- * Returns true if the Repository has not started fetching from the remote source yet, or if it has started fetching and
- * did not have a prior value (thus, is the first time attempting to load this value).
- */
-public fun <T : Any> Cached<T>.isFirstLoad(): Boolean {
-    return when (this) {
-        is Cached.Fetching -> this.cachedValue == null
-        is Cached.FetchingFailed -> false
-        is Cached.NotLoaded -> true
-        is Cached.Value -> false
-    }
-}
-
-/**
  * Get the value if the remote data source returned valid data. This method will not return previously cached values
  * once the cache has started refreshing, but instead will return the result of [defaultValue].
  */
@@ -50,6 +25,32 @@ public fun <T : Any> Cached<T>.getValueOrNull(): T? {
         is Cached.Fetching -> null
         is Cached.FetchingFailed -> null
         is Cached.NotLoaded -> null
+        is Cached.Value -> value
+    }
+}
+
+/**
+ * Get the value if the remote data source returned valid data. This method will not return previously cached values
+ * once the cache has started refreshing, but instead will throw an Exception.
+ */
+public fun <T : Any> Cached<T>.getValueOrThrow(): T {
+    return when (this) {
+        is Cached.Fetching -> throw NullPointerException("Expected a cached value, got Fetching")
+        is Cached.FetchingFailed -> throw NullPointerException("Expected a cached value, got FetchingFailed")
+        is Cached.NotLoaded -> throw NullPointerException("Expected a cached value, got NotLoaded")
+        is Cached.Value -> value
+    }
+}
+
+/**
+ * Get the value if the remote data source returned valid data. This method will not return previously cached values
+ * once the cache has started refreshing, but instead will return null.
+ */
+public fun <T : Any> Cached<List<T>>.getValueOrEmptyList(): List<T> {
+    return when (this) {
+        is Cached.Fetching -> emptyList()
+        is Cached.FetchingFailed -> emptyList()
+        is Cached.NotLoaded -> emptyList()
         is Cached.Value -> value
     }
 }
@@ -85,6 +86,28 @@ public fun <T : Any> Cached<T>.getCachedOrNull(): T? {
 /**
  * Get the value if the remote data source returned valid data. If the cache is currently refreshing, this will return
  * the previous cached value so the UI can continue displaying it while it adds a progress indicator over it. If there
+ * was no previosuly cached value to be displayed, throw an exception.
+ */
+public fun <T : Any> Cached<T>.getCachedOrThrow(): T {
+    return when (this) {
+        is Cached.Fetching -> {
+            cachedValue ?: throw NullPointerException("Expected a cached value, got Fetching")
+        }
+        is Cached.FetchingFailed -> {
+            cachedValue ?: throw NullPointerException("Expected a cached value, got FetchingFailed")
+        }
+        is Cached.NotLoaded -> {
+            previousCachedValue ?: throw NullPointerException("Expected a cached value, got NotLoaded")
+        }
+        is Cached.Value -> {
+            value
+        }
+    }
+}
+
+/**
+ * Get the value if the remote data source returned valid data. If the cache is currently refreshing, this will return
+ * the previous cached value so the UI can continue displaying it while it adds a progress indicator over it. If there
  * was no previosuly cached value to be displayed, return the result of [defaultValue].
  */
 public fun <T : Any> Cached<List<T>>.getCachedOrEmptyList(): List<T> {
@@ -93,6 +116,31 @@ public fun <T : Any> Cached<List<T>>.getCachedOrEmptyList(): List<T> {
         is Cached.FetchingFailed -> cachedValue ?: emptyList()
         is Cached.NotLoaded -> previousCachedValue ?: emptyList()
         is Cached.Value -> value
+    }
+}
+
+/**
+ * Returns true if this cached variable indicates a state which should show a progress indicator in the UI.
+ */
+public fun <T : Any> Cached<T>.isLoading(): Boolean {
+    return when (this) {
+        is Cached.Fetching -> true
+        is Cached.FetchingFailed -> false
+        is Cached.NotLoaded -> true
+        is Cached.Value -> false
+    }
+}
+
+/**
+ * Returns true if the Repository has not started fetching from the remote source yet, or if it has started fetching and
+ * did not have a prior value (thus, is the first time attempting to load this value).
+ */
+public fun <T : Any> Cached<T>.isFirstLoad(): Boolean {
+    return when (this) {
+        is Cached.Fetching -> this.cachedValue == null
+        is Cached.FetchingFailed -> false
+        is Cached.NotLoaded -> true
+        is Cached.Value -> false
     }
 }
 
@@ -111,15 +159,39 @@ public fun <T : Any> Cached<T>.isValid(validator: (T) -> Boolean): Boolean {
 }
 
 /**
+ * Execute [block] if this Cached value is [Cached.FetchingFailed].
+ */
+public fun <T : Any> Cached<T>.onFailure(block: (Throwable) -> Boolean): Cached<T> {
+    return when (this) {
+        is Cached.Fetching -> this
+        is Cached.FetchingFailed -> this.also { block(error) }
+        is Cached.NotLoaded -> this
+        is Cached.Value -> this
+    }
+}
+
+/**
  * Unwrap the cached value, apply the [transform] function to it if there is a current or previously-cached value, and
  * then wrap it in the same status.
  */
 public fun <T : Any, U : Any> Cached<T>.map(transform: (T) -> U): Cached<U> {
     return when (this) {
-        is Cached.Fetching -> Cached.Fetching(cachedValue?.let { transform(it) })
-        is Cached.FetchingFailed -> Cached.FetchingFailed(error, cachedValue?.let { transform(it) })
-        is Cached.NotLoaded -> Cached.NotLoaded(previousCachedValue?.let { transform(it) })
-        is Cached.Value -> Cached.Value(transform(value))
+        is Cached.Fetching -> {
+            runCatching { Cached.Fetching(cachedValue?.let { transform(it) }) }
+                .getOrElse { Cached.FetchingFailed<U>(it, null) }
+        }
+        is Cached.FetchingFailed -> {
+            runCatching { Cached.FetchingFailed(error, cachedValue?.let { transform(it) }) }
+                .getOrElse { Cached.FetchingFailed<U>(it, null) }
+        }
+        is Cached.NotLoaded -> {
+            runCatching { Cached.NotLoaded(previousCachedValue?.let { transform(it) }) }
+                .getOrElse { Cached.FetchingFailed<U>(it, null) }
+        }
+        is Cached.Value -> {
+            runCatching { Cached.Value(transform(value)) }
+                .getOrElse { Cached.FetchingFailed<U>(it, null) }
+        }
     }
 }
 

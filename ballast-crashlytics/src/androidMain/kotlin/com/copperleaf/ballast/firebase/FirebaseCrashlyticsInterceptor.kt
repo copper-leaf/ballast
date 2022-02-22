@@ -1,13 +1,14 @@
 package com.copperleaf.ballast.firebase
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.core.BallastException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.crashlytics.ktx.KeyValueBuilder
 import com.google.firebase.crashlytics.ktx.setCustomKeys
 import kotlin.reflect.KClass
 
 class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
-    private val name: String,
     private val crashlytics: FirebaseCrashlytics,
 ) : BallastInterceptor<Inputs, Events, State> {
 
@@ -15,6 +16,7 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         const val ViewModelName = "ViewModelName"
         const val InputType = "InputType"
         const val EventType = "EventType"
+        const val SideEffectKey = "SideEffectKey"
         const val ExceptionType = "ExceptionType"
     }
 
@@ -28,40 +30,53 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
     @Target(AnnotationTarget.CLASS)
     annotation class Ignore
 
-    override suspend fun onInputAccepted(input: Inputs) {
-        if (!input.isAnnotatedWith(Ignore::class)) {
-            crashlytics.setCustomKeys {
-                key(Keys.ViewModelName, name)
-                key(Keys.InputType, "$name.${input::class.java.simpleName}")
+    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {
+        when (notification) {
+            is BallastNotification.InputAccepted -> {
+                if (!notification.input.isAnnotatedWith(Ignore::class)) {
+                    crashlytics.setCustomKeys {
+                        key(Keys.ViewModelName, notification.vm.name)
+                        key(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")
+                    }
+                    crashlytics.log("${notification.vm.name}.${notification.input}")
+                }
             }
-            crashlytics.log("$name.$input")
+
+            is BallastNotification.InputHandlerError -> {
+                onError(notification, "Input", notification.throwable, true) {
+                    key(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")
+                }
+            }
+            is BallastNotification.EventHandlerError -> {
+                onError(notification, "Event", notification.throwable, true) {
+                    key(Keys.EventType, "${notification.vm.name}.${notification.event::class.java.simpleName}")
+                }
+            }
+            is BallastNotification.SideEffectError -> {
+                onError(notification, "SideEffect", notification.throwable, true) {
+                    key(Keys.SideEffectKey, "${notification.vm.name}.${notification.key}")
+                }
+            }
+            is BallastNotification.UnhandledError -> {
+                onError(notification, "Unknown", notification.throwable, false) {
+                }
+            }
         }
     }
 
-    override suspend fun onInputHandlerError(input: Inputs, exception: Throwable) {
+    private fun onError(
+        notification: BallastNotification<Inputs, Events, State>,
+        type: String,
+        throwable: Throwable,
+        handled: Boolean,
+        extraKeys: KeyValueBuilder.() -> Unit,
+    ) {
         crashlytics.setCustomKeys {
-            key(Keys.ViewModelName, name)
-            key(Keys.InputType, "$name.${input::class.java.simpleName}")
-            key(Keys.ExceptionType, "Input")
+            key(Keys.ViewModelName, notification.vm.name)
+            key(Keys.ExceptionType, type)
+            extraKeys()
         }
-        crashlytics.recordException(BallastException(exception, true, "[redacted]", emptyList()))
-    }
-
-    override suspend fun onEventHandlerError(event: Events, exception: Throwable) {
-        crashlytics.setCustomKeys {
-            key(Keys.ViewModelName, name)
-            key(Keys.EventType, "$name.${event::class.java.simpleName}")
-            key(Keys.ExceptionType, "Event")
-        }
-        crashlytics.recordException(BallastException(exception, true, "[redacted]", emptyList()))
-    }
-
-    override fun onUnhandledError(exception: Throwable) {
-        crashlytics.setCustomKeys {
-            key(Keys.ViewModelName, name)
-            key(Keys.ExceptionType, "Unknown")
-        }
-        crashlytics.recordException(BallastException(exception, false, "[redacted]", emptyList()))
+        crashlytics.recordException(BallastException(throwable, handled, "[redacted]", emptyList()))
     }
 
     private fun <T : Any, Ann : Annotation> T.isAnnotatedWith(annotationClass: KClass<Ann>): Boolean {

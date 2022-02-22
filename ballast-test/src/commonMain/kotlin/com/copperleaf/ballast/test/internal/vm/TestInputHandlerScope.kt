@@ -27,7 +27,7 @@ internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
     }
 
     override fun sideEffect(
-        key: String?,
+        key: String,
         block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
     ) {
         inputHandlerScopeDelegate.sideEffect(

@@ -1,12 +1,12 @@
 package com.copperleaf.ballast.firebase
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import kotlin.reflect.KClass
 
 class FirebaseAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
-    private val name: String,
     private val analytics: FirebaseAnalytics,
 ) : BallastInterceptor<Inputs, Events, State> {
 
@@ -24,12 +24,14 @@ class FirebaseAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
     @Target(AnnotationTarget.CLASS)
     annotation class TrackInput
 
-    override suspend fun onInputAccepted(input: Inputs) {
-        if (input.isAnnotatedWith(TrackInput::class)) {
-            analytics.logEvent("action") {
-                param(Keys.ViewModelName, name)
-                param(Keys.InputType, "$name.${input::class.java.simpleName}")
-                param(Keys.InputValue, "$name.$input")
+    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {
+        if (notification is BallastNotification.InputAccepted) {
+            if (notification.input.isAnnotatedWith(TrackInput::class)) {
+                analytics.logEvent("action") {
+                    param(Keys.ViewModelName, notification.vm.name)
+                    param(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")
+                    param(Keys.InputValue, "${notification.vm.name}.${notification.input}")
+                }
             }
         }
     }

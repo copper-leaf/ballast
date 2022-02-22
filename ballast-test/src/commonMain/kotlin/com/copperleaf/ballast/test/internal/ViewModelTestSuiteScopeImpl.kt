@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.test.internal
 
+import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputHandler
@@ -10,7 +11,9 @@ import com.copperleaf.ballast.test.ViewModelTestSuiteScope
 import com.copperleaf.ballast.test.internal.vm.TestEventHandler
 import com.copperleaf.ballast.test.internal.vm.TestInputFilter
 import com.copperleaf.ballast.test.internal.vm.TestInterceptor
+import com.copperleaf.ballast.test.internal.vm.TestInterceptorWrapper
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -35,6 +38,9 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
     private var defaultTimeout: Duration = Duration.seconds(30)
     private var inputStrategy: InputStrategy = LifoInputStrategy()
 
+    internal val interceptors: MutableList<() -> BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
+        mutableListOf()
+
     private var defaultInitialStateBlock: (() -> State)? = null
     private val scenarioBlocks = mutableListOf<ViewModelTestScenarioScopeImpl<Inputs, Events, State>>()
 
@@ -44,6 +50,10 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
 
     override fun defaultTimeout(timeout: () -> Duration) {
         this.defaultTimeout = timeout()
+    }
+
+    override fun addInterceptor(interceptor: () -> BallastInterceptor<Inputs, Events, State>) {
+        this.interceptors += { TestInterceptorWrapper(interceptor()) }
     }
 
     override fun defaultInputStrategy(inputStrategy: () -> InputStrategy) {
@@ -58,22 +68,27 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         scenarioBlocks += ViewModelTestScenarioScopeImpl<Inputs, Events, State>(name).apply(block)
     }
 
-    private suspend fun runScenario(scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>) = supervisorScope {
+    private suspend fun runScenario(
+        scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>
+    ) = supervisorScope {
         val scenarioLogger = scenario.logger ?: suiteLogger
         val scenarioTimeout = scenario.timeout ?: defaultTimeout
         val scenarioInputStrategy = scenario.inputStrategy ?: inputStrategy
+        val otherInterceptors = scenario.interceptors + interceptors
 
         scenarioLogger("Scenario '${scenario.name}'")
         scenarioLogger("before runScenario")
         val testViewModel = TestViewModel(
             logger = scenarioLogger,
-            interceptor = TestInterceptor(),
+            testInterceptor = TestInterceptor(),
+            otherInterceptors = otherInterceptors.map { it() },
             initialState = scenario.givenBlock?.invoke()
                 ?: defaultInitialStateBlock?.invoke()
                 ?: error("No initial state given"),
             inputHandler = inputHandler,
             filter = filter?.let { TestInputFilter(it) },
             inputStrategy = scenarioInputStrategy,
+            name = scenario.name,
         )
 
         // start running the VM in the background
@@ -112,7 +127,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         // make assertions on the VM. Errors should get captured and thrown by this coroutine scope, cancelling
         // everything if there are failures
         scenarioLogger("    before verification")
-        scenario.verifyBlock(testViewModel.interceptor.getResults())
+        scenario.verifyBlock(testViewModel.testInterceptor.getResults())
         scenarioLogger("    after verification")
 
         scenarioLogger("after runScenario")
@@ -140,22 +155,44 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
                 return "Scenario '${scenario.name}': Failed ($time)"
             }
         }
+
+        data class Skipped<Inputs : Any, Events : Any, State : Any>(
+            override val scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>,
+        ) : ScenarioResult<Inputs, Events, State>() {
+            override fun printResults(): String {
+                return "Scenario '${scenario.name}': Skipped"
+            }
+        }
     }
 
     internal suspend fun runTest() = supervisorScope {
         val totalTestTime = measureTime {
-            val results: List<ScenarioResult<Inputs, Events, State>> = scenarioBlocks.map { scenario ->
-                async {
-                    val result: Result<Unit>
-                    val scenarioTestTime = measureTime {
-                        result = runCatching { runScenario(scenario) }
+            val hasSoloScenario = scenarioBlocks.any { it.solo }
+
+            val actualScenariosToRun = if (hasSoloScenario) {
+                scenarioBlocks.filter { it.solo }
+            } else {
+                scenarioBlocks
+            }
+
+            val results: List<ScenarioResult<Inputs, Events, State>> = actualScenariosToRun
+                .map { scenario ->
+                    if (scenario.skip) {
+                        CompletableDeferred(ScenarioResult.Skipped(scenario))
+                    } else {
+                        async {
+                            val result: Result<Unit>
+                            val scenarioTestTime = measureTime {
+                                result = runCatching { runScenario(scenario) }
+                            }
+                            result.fold(
+                                onSuccess = { ScenarioResult.Passed(scenario, scenarioTestTime) },
+                                onFailure = { ScenarioResult.Failed(scenario, scenarioTestTime, it) },
+                            )
+                        }
                     }
-                    result.fold(
-                        onSuccess = { ScenarioResult.Passed(scenario, scenarioTestTime) },
-                        onFailure = { ScenarioResult.Failed(scenario, scenarioTestTime, it) },
-                    )
                 }
-            }.awaitAll()
+                .awaitAll()
 
             results.forEach {
                 val scenarioLogger = it.scenario.logger ?: suiteLogger

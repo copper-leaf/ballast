@@ -81,7 +81,7 @@ class BallastCoreTests {
                 postEvent(Events.Notification)
             }
             is Inputs.SideEffectStartedNoInputOverride -> {
-                sideEffect {
+                sideEffect("SideEffectStartedNoInputOverride") {
                     delay(1500)
 
                     flowOf("one", "two", "three")
@@ -93,7 +93,7 @@ class BallastCoreTests {
                 }
             }
             is Inputs.SideEffectStartedWithInputOverride -> {
-                sideEffect {
+                sideEffect("SideEffectStartedWithInputOverride") {
                     delay(1500)
 
                     flowOf("one", "two", "three")
@@ -120,7 +120,7 @@ class BallastCoreTests {
                 }
             }
             is Inputs.SideEffectsNotAtEnd -> {
-                sideEffect {
+                sideEffect("SideEffectsNotAtEnd") {
                     delay(1500)
                     postInput(Inputs.Increment)
                     delay(1500)
@@ -438,15 +438,24 @@ class BallastCoreTests {
                     inputHandlerErrors.map { it.first }
                 )
 
-                assertEquals(State(intValue = 6), latestState)
+                assertEquals(State(intValue = 3), latestState)
             }
         }
+
         scenario("Multiple side effects can be started by 1 input") {
             inputStrategy { ParallelInputStrategy() }
             running {
                 +Inputs.MultipleSideEffects
             }
             resultsIn {
+                assertEquals(
+                    listOf(
+                        "one" to SideEffectScope.RestartState.Initial,
+                        "two" to SideEffectScope.RestartState.Initial,
+                    ),
+                    sideEffects,
+                )
+
                 assertEquals(
                     listOf(
                         Inputs.MultipleSideEffects,
@@ -461,6 +470,40 @@ class BallastCoreTests {
                 assertEquals(State(intValue = 4), latestState)
             }
         }
+
+        scenario("Side effects can be restarted, with previous ones cancelled") {
+            inputStrategy { ParallelInputStrategy() }
+            running {
+                +Inputs.MultipleSideEffects
+                +Inputs.MultipleSideEffects
+            }
+            resultsIn {
+                assertEquals(
+                    listOf(
+                        "one" to SideEffectScope.RestartState.Initial,
+                        "two" to SideEffectScope.RestartState.Initial,
+                        "one" to SideEffectScope.RestartState.Restarted,
+                        "two" to SideEffectScope.RestartState.Restarted,
+                    ),
+                    sideEffects,
+                )
+
+                assertEquals(
+                    listOf(
+                        Inputs.MultipleSideEffects,
+                        Inputs.MultipleSideEffects,
+                        Inputs.Increment,
+                        Inputs.Increment,
+                        Inputs.Increment,
+                        Inputs.Increment,
+                    ),
+                    successfulInputs,
+                )
+
+                assertEquals(State(intValue = 4), latestState)
+            }
+        }
+
         scenario("Side effects called before other inputHandler methods throws an error") {
             inputStrategy { ParallelInputStrategy() }
             running {
@@ -476,6 +519,14 @@ class BallastCoreTests {
 
                 assertEquals(State(intValue = 0), latestState)
             }
+        }
+
+        scenario("Skipped test") {
+            skip()
+            running {
+                +Inputs.Increment
+            }
+            resultsIn {}
         }
     }
 }

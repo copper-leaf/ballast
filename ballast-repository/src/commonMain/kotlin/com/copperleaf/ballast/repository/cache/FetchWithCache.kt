@@ -32,7 +32,7 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
     // continue executing.
     if (getValue(currentState) is Cached.Fetching && !forceRefresh) return
 
-    sideEffect(input::class.simpleName) {
+    sideEffect(input::class.simpleName!!) {
         val initialValue = getValue(currentStateWhenStarted)
         val currentValueUnboxed = initialValue.getCachedOrNull()
         val currentValue = if (forceRefresh) {

@@ -46,15 +46,17 @@ public abstract class BallastRepository<Inputs : Any, State : Any>(
     coroutineScope: CoroutineScope,
     eventBus: EventBus,
     inputHandler: InputHandler<Inputs, Any, State>,
-    interceptor: BallastInterceptor<Inputs, Any, State>? = null,
+    interceptors: List<BallastInterceptor<Inputs, Any, State>> = emptyList(),
     initialState: State,
+    name: String = "$inputHandler-vm",
 ) : BaseViewModel<Inputs, Any, State>(
     coroutineScope = coroutineScope,
     config = DefaultViewModelConfiguration(
         initialState = initialState,
         inputHandler = inputHandler,
         inputStrategy = FifoInputStrategy(),
-        interceptor = interceptor,
+        interceptors = interceptors,
+        name = name,
     ),
     eventHandler = EventBusEventHandler(eventBus),
 )

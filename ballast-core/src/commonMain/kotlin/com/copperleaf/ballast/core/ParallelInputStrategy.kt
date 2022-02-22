@@ -38,7 +38,7 @@ public class ParallelInputStrategy : InputStrategy {
 
     override suspend fun <Inputs : Any> processInputs(
         filteredInputs: Flow<Inputs>,
-        acceptInput: suspend (input: Inputs, onCompleted: (InputStrategy.InputResult) -> Unit) -> Unit,
+        acceptInput: suspend (input: Inputs, InputStrategy.Guardian) -> Unit,
     ) {
         coroutineScope {
             val viewModelScope = this
@@ -46,14 +46,29 @@ public class ParallelInputStrategy : InputStrategy {
             filteredInputs
                 .collect { input ->
                     viewModelScope.launch {
-                        acceptInput(input) { result ->
-                            check(result.stateUpdatesPerformed in 0..1) {
-                                "ParallelInputStrategy requires that inputs only access or update the state at most " +
-                                    "once as a safeguard against race conditions."
-                            }
-                        }
+                        acceptInput(input, Guardian())
                     }
                 }
+        }
+    }
+
+    public class Guardian : InputStrategy.Guardian {
+        private var stateAccesses = 0
+
+        private fun performStateAccessCheck() {
+            check(stateAccesses == 0) {
+                "ParallelInputStrategy requires that inputs only access or update the state at most once as a " +
+                    "safeguard against race conditions."
+            }
+            stateAccesses++
+        }
+
+        override fun checkStateAccess() {
+            performStateAccessCheck()
+        }
+
+        override fun checkStateUpdate() {
+            performStateAccessCheck()
         }
     }
 }

@@ -1,6 +1,7 @@
 public class com/copperleaf/ballast/repository/AndroidBallastRepository : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
 	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/repository/bus/EventBus;)V
 	public fun close (Ljava/lang/Throwable;)Z
+	public fun getName ()Ljava/lang/String;
 	public fun getOnSend ()Lkotlinx/coroutines/selects/SelectClause2;
 	public fun invokeOnClose (Lkotlin/jvm/functions/Function1;)V
 	public fun isClosedForSend ()Z
@@ -12,8 +13,8 @@ public class com/copperleaf/ballast/repository/AndroidBallastRepository : androi
 }
 
 public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BaseViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/BallastInterceptor;Ljava/lang/Object;)V
-	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/BallastInterceptor;Ljava/lang/Object;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Ljava/util/List;Ljava/lang/Object;Ljava/lang/String;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Ljava/util/List;Ljava/lang/Object;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 }
 
 public final class com/copperleaf/ballast/repository/BuildConfig {
@@ -74,12 +75,16 @@ public final class com/copperleaf/ballast/repository/cache/DslKt {
 	public static final fun getCachedOrElse (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
 	public static final fun getCachedOrEmptyList (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/util/List;
 	public static final fun getCachedOrNull (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/lang/Object;
+	public static final fun getCachedOrThrow (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/lang/Object;
 	public static final fun getValueOrElse (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static final fun getValueOrEmptyList (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/util/List;
 	public static final fun getValueOrNull (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/lang/Object;
+	public static final fun getValueOrThrow (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/lang/Object;
 	public static final fun isFirstLoad (Lcom/copperleaf/ballast/repository/cache/Cached;)Z
 	public static final fun isLoading (Lcom/copperleaf/ballast/repository/cache/Cached;)Z
 	public static final fun isValid (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Z
 	public static final fun map (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/repository/cache/Cached;
+	public static final fun onFailure (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/repository/cache/Cached;
 }
 
 public final class com/copperleaf/ballast/repository/cache/FetchWithCacheKt {

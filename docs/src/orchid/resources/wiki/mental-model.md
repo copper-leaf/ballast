@@ -116,8 +116,9 @@ immediately. Alternatively, you may be running an API call that you don't want t
 mechanism to set flags in the State which can be used to selectively ignore Inputs, or you may run those tasks in the
 background so they do not block the Input Loop. These features are explaied in more detail below.
 
+## UI Contract
 
-## Modeling a UI Contract 
+### Modeling a UI Contract 
 
 The convention with Ballast is to use one Ballast ViewModel for each screen in your application, and to create a 
 "contract" for interfacing your UI to the screen's ViewModel. Note that Ballast works well with Compose or other 
@@ -178,7 +179,7 @@ object LoginScreenContract {
 }
 ```
 
-## What Not to put in a UI Contract
+### What Not to put in a UI Contract
 
 Obviously, the initial thought when building out a Contract is to put every single variable into the State, and you 
 absolutely can do that. But with sufficiently large screens, this may become a bit too verbose and introduce a lot of
@@ -316,3 +317,297 @@ need to house every single property. There is nuance to how you structure a Cont
 to read the code and understand what the UI is doing, and if it's getting bloated with a bunch of boilerplate inputs or 
 state properties, you may want to take a step back and ask yourself whether something actually needs to be in the 
 ViewModel or not.
+
+## Async Logic
+
+How to handle async logic within Ballast depends a bit on your specific needs, and will impact how Ballast requires you
+to write your code so that it is always handled safely. When working with Ballast, it is important to keep the following
+2 rules in mind:
+
+1. Only 1 Input will be processed at any given time
+2. Inputs are processed in parallel to the UI, not synchronously. So a new Input may be dispatched to the ViewModel 
+  while one is still running
+
+Ballast has several strategies to enforce these 2 rules and ensure they are well-behaved, or even allows you to customize
+its behavior to break the rules. But it's important to keep in mind these 2 rules and make sure you understand the 
+consequences of breaking them. Let's break these rules down and understand how they impact your app, by considering the
+following example:
+
+We have 2 Inputs which load data from a remote API. Each Input sets `loading` to true until the API call returns, then
+sets it back to false along with its results. Individually, each Input is perfectly well-behaved, but things start to go 
+wrong when we try to send both Inputs at the same time.
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) { 
+    is Inputs.LoadPosts -> { 
+        updateState { it.copy(loading = true) }
+        val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+        updateState { it.copy(loading = false, posts = posts) }
+    }
+    is Inputs.LoadLatestPostContent -> {
+        updateState { it.copy(loading = true) }
+        val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+        updateState { it.copy(loading = false, latestPost = latestPost) }
+    }
+}
+
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
+```
+
+If we consider the user's perspective, they should see a progress indicator displayed for 2 seconds, because that's how
+long it takes to load the posts. The latest post loads more quickly than that, so we'd expect to display the progress
+indicator for as long as anything is still loading.
+
+But with this implementation, if we sent both Inputs at the same time and allowed them to run in parallel, the progress 
+indicator would be dismissed after only 1 second, and 1 second after that the user would see an unpleasant "jank" as the
+list of posts arrived unexpectedly.
+
+The following are some strategies we could employ to provide a better UX to the user, with their pros and cons
+
+### Queue up the Inputs and run them 1 at a time
+
+The first thing we could do is to make sure that only 1 Input is executing at a time. This would ensure no race 
+conditions are possible from interleaved code, but it would also mean that this snippet now takes 3 seconds to complete, 
+instead of 2. It also leaves a tiny amount of time between when `LoadPosts` finished as sets `loading` to `false`, and 
+when `LoadLatestPostContent` starts and sets it back to true. If the device is fast enough, the user might not notice, 
+but slower devices may result in the progress indicator being briefly dismissed, then shown again.
+
+This works to prevent the race conditions, but it introduces another problem: if the user doesn't actually want to see
+these posts, and instead was just passing through this screen to get to another, they are stuck waiting for the whole
+thing to load anyway. Because the Inputs get queued up, the user's request to move to another screen will wait for the
+first two to complete before actually processing the navigation request. Obviously, this is not a great UX, and may 
+leave the user frustrated with the slowness of the app.
+
+### Cancel Inputs so only the latest 1 is running at a time
+
+So we see that having only 1 Input run at a time is good, but the "blocking" queue is not. So instead, why don't we try
+only processing the latest Input we receive at any given time? With Kotlin flows, this is done with the `.mapLatest { }`
+operator, and actually is the default strategy Ballast uses (though it can be changed).
+
+When using `.mapLatest { }`, if the UI is loading some data and the user requests to navigate away, the API calls will 
+be cancelled before they finish, so that Ballast can accept the latest Input and handle the navigation request 
+immediately. 
+
+But this is not without its drawbacks either. Since we sent both "initial" Inputs at the same time, the second one will
+immediately cancel the first. The result is a progress indicator that only displays for 1 second, and we load the latest
+post content but never get the full list of posts from the first Input. While this strategy does provide the best 
+experience to the user, it can be subtly confusing for developers, which is why it's best to structure your app such 
+that you don't encounter this situation.
+
+### Use a single "Initialize" Input to perform all long-running operations
+
+One way to restructure your Inputs to avoid accidental cancellation is to move all long-running "fetch" operations into 
+a single Input, canonically called `Initialize`, and sending that 1 event when the screen starts instead of multiple for
+individual resources.
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) { 
+    is Inputs.Initialize -> {
+        coroutineScope { 
+            updateState { it.copy(loading = true) }
+            val deferredPosts = async { postsRepository.getPosts() } // suspending function, takes 2 seconds
+            val deferredLatestPost = async { postsRepository.getLatestPost() } // suspending function, takes 1 second
+            updateState { it.copy(loading = false, posts = deferredPosts.await(), latestPost = deferredLatestPost.await()) }
+        }
+    }
+}
+
+viewModel.trySend(Inputs.Initialize)
+```
+
+So far, this is definitely the best way to handle this logic. Since we're using coroutines, we can run the fetching 
+operations each in parallel with `async { ... }.await()`, and set a single `loading` flag that works for both endpoints.
+The result is both data sources are loaded, the progress indicator is visible for 2 seconds, and if the user navigates 
+away these API calls will be cancelled and the navigation performed immediately.
+
+This is the preferred pattern for loading data asynchronously in Ballast. But there are a few other use-cases that we'll
+consider in a later section.
+
+## Side Effects
+
+The above section on Async Logic works when you have individual "resources" you are loading, and are reasonably sure the
+only way it could get cancelled is if the user intends for it to be cancelled, such as by navigating to another screen 
+where we do not need those resources.
+
+But real-world applications aren't always that simple. One use-case is observing a stream of events (a Kotlin `Flow`) of
+some data source, rather than a discrete suspending value. For example, rather than the respository directly delivering
+the results of an API call, it may cache it, and send multiple emissions to notify of the cache status (see 
+{{ 'Repository' | anchor }} module). Or you connect to the phone's GPS and receive an endless stream of GPS coordinates
+you need to display on a map. We need a new strategy to handle this kind of use-case: a "side effect".
+
+Until this point, we've been working with the notion that the InputHandler will suspend until the async work completes, 
+and we considered what would happen if a new Input arrived while one was already suspended. But if we have a 
+potentially-infinite data source, we obviously cannot connect to that directly within the InputHandler. Similarly, maybe
+we have a situation where it's not feasible to move all initialization logic into a single Input, but we still want to
+load from multiple APIs in parallel. Both these can be accomplished by moving that work into a `sideEffect { }` block.
+
+Side effects work kind-of like a "thunk" in Redux; they move async logic outside of the normal data flow of the 
+ViewModel, running fully parallel to it, but provide a handle back to the ViewModel where it can post one or more 
+additional Inputs with the results of its data. Since they're running parallel to the ViewModel, we cannot allow a 
+sideEffect to modify the `State`, otherwise we'd run into the same problem we had initially, so instead it needs to just
+send requests back into the proper Input stream to be processed as any other Input, applying the results to the state 
+when they are processed themselves.
+
+### Basic Side Effect Usage
+
+Rewriting the original snippet to load both posts in a sideEffect would look like this:
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
+    is Inputs.PostsLoaded -> { updateState { it.copy(posts = input.posts) } }
+    is Inputs.LatestPostContentLoaded -> { updateState { it.copy(latestPost = input.latestPost) } }
+    is Inputs.LoadPosts -> { 
+        sideEffect {
+            val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+            postInput(Inputs.PostsLoaded(posts))
+        }
+    }
+    is Inputs.LoadLatestPostContent -> {
+        sideEffect {
+            val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+            postInput(Inputs.LatestPostContentLoaded(latestPost))
+        }
+    }
+}
+
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
+```
+
+(I've gone ahead and removed the `loading` flag from these examples, as they will just get in the way of the intent of 
+these snippets from here on out.)
+
+This snippet _almost_ works, but it's ignoring a small, but very important detail of sideEffects: they are restartable.
+The lifecycle of each `sideEffect { }` block still needs to be managed by Ballast, cancelled when the ViewModel is 
+cancelled. However, since MVI is a declarative design pattern, it's reasonable to assume that one could "force a 
+refresh" simply by sending the same Input back to Ballast. With normal Input processing rules, that would cancel the 
+current Input and run the new one. But sideEffects break out of that cycle, and so Ballast requires each sideEffect to
+have a different "key". If any Input tries to launch a sideEffect with the same key, the old sideEffect will be 
+cancelled to accept the new one. This prevents multiple instances of the same block of code being run all in parallel if
+the same Input is sent multiple times.
+
+So the fix is to just provide a key to the `sideEffect` function:
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
+    is Inputs.PostsLoaded -> { updateState { it.copy(posts = input.posts) } }
+    is Inputs.LatestPostContentLoaded -> { updateState { it.copy(latestPost = input.latestPost) } }
+    is Inputs.LoadPosts -> { 
+        sideEffect("LoadPosts") {
+            val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+            postInput(Inputs.PostsLoaded(posts))
+        }
+    }
+    is Inputs.LoadLatestPostContent -> {
+        sideEffect("LoadPosts") {
+            val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+            postInput(Inputs.LatestPostContentLoaded(latestPost))
+        }
+    }
+}
+
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
+
+refreshButton.setOnClickListener {
+    viewModel.trySend(Inputs.LoadPosts)
+    viewModel.trySend(Inputs.LoadLatestPostContent)
+}
+```
+
+### Observing Flows
+
+Now that we have a basic idea of sideEffects, let's apply it to the use-case of observing GPS coordinates from your 
+phone's sensor. Since sideEffects do not block the normal Input stream, there's nothing wrong with observing an infinite
+stream of events in it, so it becomes a simple matter of collecting from the `Flow` and posting all those changes back
+to the ViewModel.
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
+    is Inputs.GpsCoordinatesUpdated -> { updateState { it.copy(coordinates = input.coordinates) } }
+    is Inputs.ObserveGpsSignal -> { 
+        sideEffect("ObserveGpsSignal") {
+            coroutineScope {
+                gpsRepository
+                    .observeLocation() // returns a Flow
+                    .map { Inputs.GpsCoordinatesUpdated(it) }
+                    .onEach { postInput(it) }
+                    .launchIn(this)
+            }
+        }
+    }
+}
+
+viewModel.trySend(Inputs.ObserveGpsSignal)
+```
+
+As this is one of the main use-cases for sideEffects, and Ballast offers a convenient shorthand for you:
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
+    is Inputs.GpsCoordinatesUpdated -> { updateState { it.copy(coordinates = input.coordinates) } }
+    is Inputs.ObserveGpsSignal -> {
+        observeFlows(
+            gpsRepository
+                .observeLocation() // returns a Flow
+                .map { Inputs.GpsCoordinatesUpdated(it) },
+            key = "ObserveGpsSignal"
+        )
+    }
+}
+
+viewModel.trySend(Inputs.ObserveGpsSignal)
+```
+
+### Sending Follow-up Inputs
+
+One final use-case for sideEffects that I haven't yet touched on is sending Inputs, without any further logic.
+
+Consider a pub-sub type architecture, where one Input needs to do some processing, and then dispatch another Input after
+it has finished. Attempting to send a new Input directly from another Input is bad for 2 potential reasons: immediate
+cancellation, or deadlock.
+
+The most likely scenario is that the Input Channel to the ViewModel is buffered. If we allowed an Input to directly send
+another Input, then it will immediately get accepted, and thus cancel the current (sending) Input. But if the Channel 
+was configured to be `RENDEZVOUS` and running in a single-threaded coroutineContext, then the sender would suspend until 
+that Input is read from the channel, but the ViewModel will not able to receive the Input from that channel until the 
+sender has finished, which is a deadlock. These are both hypothetical scenarios, but the danger is certainly there, 
+which is why Ballast simply forbids sending an Input directly from another Input. Instead, Inputs can only be sent back 
+to the ViewModel from a sideEffect or an Event.
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
+    is Inputs.RequestLogout -> {
+        loginRepository.logOut()
+        sideEffect("RequestLogOut") {
+            postInput(Inputs.ClearCache)
+        }
+    }
+    is Inputs.ClearCache -> {
+        updateState { it.copy(user = null) }
+    }
+}
+
+viewModel.trySend(Inputs.RequestLogout)
+```
+
+Like `observeFlows`, this too, has a convenient helper method which makes it look like you are sending an Input directly
+from another Input, but is in fact sending it from a sideEffect block. Since it's a simple sideEffect, it will also 
+derive a key for you based on the Input (it's `.toString()`), so that calling `postInput()` does not accidentally cancel 
+any other sideEffects.
+
+```kotlin
+suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
+    is Inputs.RequestLogout -> {
+        loginRepository.logOut()
+        postInput(Inputs.ClearCache)
+    }
+    is Inputs.ClearCache -> {
+        updateState { it.copy(user = null) }
+    }
+}
+
+viewModel.trySend(Inputs.RequestLogout)
+```
+

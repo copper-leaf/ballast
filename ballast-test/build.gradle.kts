@@ -68,7 +68,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-core"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
             }
         }
         val commonTest by getting {

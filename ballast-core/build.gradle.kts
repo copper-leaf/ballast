@@ -67,7 +67,7 @@ kotlin {
         // Common Sourcesets
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
             }
         }
         val commonTest by getting {
@@ -75,7 +75,6 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(project(":ballast-test"))
-//                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
             }
         }
 

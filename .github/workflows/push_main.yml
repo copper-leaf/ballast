@@ -8,30 +8,7 @@ on:
     branches: ['main']
 
 jobs:
-  buildCachesOnAll:
-    strategy:
-      matrix:
-        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
-    name: 'Build on ${{ matrix.os }} JDK 11'
-    runs-on: '${{ matrix.os }}'
-    steps:
-      - uses: 'actions/checkout@v2'
-      - run: 'git fetch --prune --unshallow --tags'
-      - name: 'Set up JDK 11'
-        uses: 'actions/setup-java@v2'
-        with:
-          distribution: 'temurin'
-          java-version: 11
-      - name: 'Cache Gradle packages'
-        uses: 'actions/cache@v1'
-        with:
-          path: '~/.gradle/caches'
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: '${{ runner.os }}-gradle'
-      - name: 'Assemble with Gradle'
-        run: './gradlew assemble --no-daemon --stacktrace -Prelease -PorchidEnvironment=prod'
   testOnAll:
-    needs: ['buildCachesOnAll']
     strategy:
       matrix:
         java: [11, 16]
@@ -46,15 +23,10 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '${{ matrix.java }}'
-      - name: 'Cache Gradle packages'
-        uses: 'actions/cache@v1'
-        with:
-          path: '~/.gradle/caches'
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: '${{ runner.os }}-gradle'
       - name: 'Run checks with Gradle'
         run: './gradlew check --no-daemon --stacktrace -Prelease -PorchidEnvironment=prod'
-  publishOnMacOs:
+
+  publishArtifactsOnMacOs:
     runs-on: 'macos-latest'
     needs: ['testOnAll']
     env:
@@ -90,3 +62,33 @@ jobs:
         run: './gradlew :docs:publish --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Close Sonatype Staging Repository'
         run: './gradlew closeSonatypeStagingRepository --stacktrace -Prelease -PorchidEnvironment=prod'
+
+  buildDebuggerPackagesOnAll:
+    needs: [ 'testOnAll' ]
+    strategy:
+      matrix:
+        java: [ 16 ]
+        os: [ 'ubuntu-latest', 'macos-latest', 'windows-latest' ]
+    name: 'Build ${{ matrix.os }} packages on JDK ${{ matrix.java }}'
+    runs-on: '${{ matrix.os }}'
+    steps:
+      - uses: 'actions/checkout@v2'
+      - run: 'git fetch --prune --unshallow --tags'
+      - name: 'Set up JDK ${{ matrix.java }}'
+        uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: '${{ matrix.java }}'
+      - name: 'Build packages with Gradle'
+        run: './gradlew :ballast-debugger-ui:package'
+      - name: 'Upload Ballast Debugger UI packages'
+        uses: 'actions/upload-artifact@v2'
+        with:
+          name: 'ballast-debugger-ui-${{ matrix.os }}'
+          path: |
+            ballast-debugger-ui/build/compose/binaries/main/**/*.dmg
+            ballast-debugger-ui/build/compose/binaries/main/**/*.msi
+            ballast-debugger-ui/build/compose/binaries/main/**/*.deb
+          retention-days: 1
+          if-no-files-found: 'error'
+

@@ -11,6 +11,17 @@ public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : 
     public val name: String
 
     /**
+     * Mark this as the only scenario that should be run in the entire suite. Useful for troubleshooting a single
+     * failing test in a large suite without having to comment out the other tests.
+     */
+    public fun solo()
+
+    /**
+     * Do not run this test in the suite.
+     */
+    public fun skip()
+
+    /**
      * A callback function for viewing logs emitted during this test scenario. This includes logs from a
      * [LoggingInterceptor], and additional logs from this test runner.
      */
@@ -25,6 +36,11 @@ public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : 
      * Set the input strategy to use for this test.
      */
     public fun inputStrategy(inputStrategy: () -> InputStrategy)
+
+    /**
+     * Adds the Interceptor to this scenario
+     */
+    public fun addInterceptor(interceptor: () -> BallastInterceptor<Inputs, Events, State>)
 
     /**
      * Provide an alternative starting state for this scenario. Overrides the default starting state provided to the

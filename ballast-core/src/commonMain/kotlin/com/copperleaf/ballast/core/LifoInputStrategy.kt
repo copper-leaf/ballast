@@ -34,11 +34,13 @@ public class LifoInputStrategy : InputStrategy {
 
     override suspend fun <Inputs : Any> processInputs(
         filteredInputs: Flow<Inputs>,
-        acceptInput: suspend (Inputs, (InputStrategy.InputResult) -> Unit) -> Unit,
+        acceptInput: suspend (Inputs, InputStrategy.Guardian) -> Unit,
     ) {
         filteredInputs
             .collectLatest { input ->
-                acceptInput(input) { }
+                acceptInput(input, Guardian())
             }
     }
+
+    public class Guardian : InputStrategy.Guardian
 }

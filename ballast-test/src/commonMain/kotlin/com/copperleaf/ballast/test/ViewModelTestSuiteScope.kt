@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.test
 
+import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlin.time.Duration
@@ -18,6 +19,11 @@ public interface ViewModelTestSuiteScope<Inputs : Any, Events : Any, State : Any
      * Set the default timeout for waiting for test side-effects to complete.
      */
     public fun defaultTimeout(timeout: () -> Duration)
+
+    /**
+     * Adds the Interceptor to all tests in this scenario.
+     */
+    public fun addInterceptor(interceptor: () -> BallastInterceptor<Inputs, Events, State>)
 
     /**
      * Set the default input strategy to use for this test suite. Each scenario may override its own strategy.

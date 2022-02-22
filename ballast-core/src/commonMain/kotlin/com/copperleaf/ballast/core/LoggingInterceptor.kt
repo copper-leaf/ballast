@@ -1,10 +1,12 @@
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.BallastViewModel
 
 public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
-    private val logMessage: (String) -> Unit,
-    private val logError: (BallastException) -> Unit,
+    private val logError: BallastViewModel<Inputs, Events, State>.(BallastException) -> Unit = { },
+    private val logMessage: BallastViewModel<Inputs, Events, State>.(String) -> Unit = { },
 ) : BallastInterceptor<Inputs, Events, State> {
 
     /**
@@ -19,52 +21,38 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
      */
     private var latestState: State? = null
 
-    override suspend fun onInputAccepted(input: Inputs) {
-        inputSequence.add(input)
-        logMessage("Accepting input: $input")
-    }
+    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {
+        val error: BallastException? = when (notification) {
+            is BallastNotification.StateChanged -> {
+                latestState = notification.state
+                null
+            }
+            is BallastNotification.InputAccepted -> {
+                inputSequence += notification.input
+                null
+            }
 
-    override suspend fun onInputRejected(input: Inputs) {
-        logMessage("Rejecting input: $input")
-    }
+            is BallastNotification.InputHandlerError -> {
+                BallastException(notification.throwable, true, latestState, inputSequence)
+            }
+            is BallastNotification.EventHandlerError -> {
+                BallastException(notification.throwable, true, latestState, inputSequence)
+            }
+            is BallastNotification.SideEffectError -> {
+                BallastException(notification.throwable, true, latestState, inputSequence)
+            }
+            is BallastNotification.UnhandledError -> {
+                BallastException(notification.throwable, false, latestState, inputSequence)
+            }
 
-    override fun onInputDropped(input: Inputs) {
-        logMessage("Dropping input: $input")
-    }
+            else -> {
+                null
+            }
+        }
 
-    override suspend fun onEventEmitted(event: Events) {
-        logMessage("Emitting event: $event")
-    }
-
-    override suspend fun onStateEmitted(state: State) {
-        logMessage("State changed: $state")
-        latestState = state
-    }
-
-    override suspend fun onInputCancelled(input: Inputs) {
-        logMessage("Cancelling input: $input")
-    }
-
-    override suspend fun onInputHandlerError(input: Inputs, exception: Throwable) {
-        logMessage("Exception handling Input")
-        logError(BallastException(exception, true, latestState, inputSequence))
-    }
-
-    override suspend fun onEventHandlerError(event: Events, exception: Throwable) {
-        logMessage("Exception handling Event")
-        logError(BallastException(exception, true, latestState, inputSequence))
-    }
-
-    override fun onUnhandledError(exception: Throwable) {
-        logMessage("Uncaught Exception")
-        logError(BallastException(exception, false, latestState, inputSequence))
-    }
-
-    override fun onEventProcessingStarted() {
-        logMessage("Event processing started")
-    }
-
-    override fun onEventProcessingStopped() {
-        logMessage("Event processing stopped")
+        logMessage(notification.vm, notification.toString())
+        if (error != null) {
+            logError(notification.vm, error)
+        }
     }
 }

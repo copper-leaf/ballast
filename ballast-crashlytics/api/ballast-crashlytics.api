@@ -6,19 +6,8 @@ public final class com/copperleaf/ballast/crashlytics/BuildConfig {
 }
 
 public final class com/copperleaf/ballast/firebase/FirebaseCrashlyticsInterceptor : com/copperleaf/ballast/BallastInterceptor {
-	public fun <init> (Ljava/lang/String;Lcom/google/firebase/crashlytics/FirebaseCrashlytics;)V
-	public fun onEventEmitted (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onEventHandlerError (Ljava/lang/Object;Ljava/lang/Throwable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onEventProcessingStarted ()V
-	public fun onEventProcessingStopped ()V
-	public fun onInputAccepted (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onInputCancelled (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onInputDropped (Ljava/lang/Object;)V
-	public fun onInputHandledSuccessfully (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onInputHandlerError (Ljava/lang/Object;Ljava/lang/Throwable;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onInputRejected (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onStateEmitted (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun onUnhandledError (Ljava/lang/Throwable;)V
+	public fun <init> (Lcom/google/firebase/crashlytics/FirebaseCrashlytics;)V
+	public fun onNotify (Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface annotation class com/copperleaf/ballast/firebase/FirebaseCrashlyticsInterceptor$Ignore : java/lang/annotation/Annotation {
