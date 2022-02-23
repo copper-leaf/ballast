@@ -74,7 +74,7 @@ jobs:
           distribution: 'temurin'
           java-version: '${{ matrix.java }}'
       - name: 'Build packages with Gradle'
-        run: './gradlew :ballast-debugger-ui:package'
+        run: './gradlew :ballast-debugger-ui:package -Prelease -PorchidEnvironment=prod'
       - name: 'Upload Ballast Debugger UI packages'
         uses: 'actions/upload-artifact@v2'
         with:
@@ -85,4 +85,3 @@ jobs:
             ballast-debugger-ui/build/compose/binaries/main/**/*.deb
           retention-days: 1
           if-no-files-found: 'error'
-

@@ -1,3 +1,7 @@
+## 0.8.2 - 2022-02-23
+
+- Fix issue with creating desktop packages.
+
 ## 0.8.1 - 2022-02-23
 
 - Fix issue with creating desktop packages.
