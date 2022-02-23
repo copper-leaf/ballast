@@ -10,6 +10,7 @@ import com.copperleaf.ballast.debugger.models.serialize
 import com.copperleaf.ballast.debugger.models.updateInConnection
 import com.copperleaf.ballast.debugger.models.updateInViewModel
 import com.copperleaf.ballast.debugger.models.updateWithDebuggerEvent
+import io.github.copper_leaf.ballast_debugger.BALLAST_VERSION
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngineConfig
@@ -105,6 +106,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                             path = "/ballast/debugger",
                             request = {
                                 header("x-ballast-connection-id", connectionId)
+                                header("x-ballast-version", BALLAST_VERSION)
                             }
                         ) {
                             println("Connected to Ballast debugger: $connectionId")

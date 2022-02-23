@@ -18,6 +18,7 @@ import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ListItem
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -32,6 +33,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.copperleaf.ballast.debugger.DebuggerContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.minus
+import io.github.copper_leaf.ballast_debugger_ui.BALLAST_VERSION
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
@@ -164,9 +166,14 @@ fun ConnectionSummary(
             },
             overlineText = {
                 Text(
-                    text = connectionState.connectionId,
+                    text = "${connectionState.connectionId} (${connectionState.connectionBallastVersion})",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                    color = if (connectionState.connectionBallastVersion == BALLAST_VERSION) {
+                        LocalContentColor.current
+                    } else {
+                        MaterialTheme.colors.error
+                    }
                 )
             },
         )

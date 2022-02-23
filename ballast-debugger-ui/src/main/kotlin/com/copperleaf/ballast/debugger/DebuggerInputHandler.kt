@@ -34,6 +34,16 @@ class DebuggerInputHandler(
             }
         }
 
+        is DebuggerContract.Inputs.ConnectionEstablished -> {
+            updateState {
+                it.copy(
+                    applicationState = it.applicationState.updateInConnection(input.connectionId) {
+                        copy(connectionBallastVersion = input.connectionBallastVersion)
+                    }
+                )
+            }
+        }
+
         is DebuggerContract.Inputs.FocusConnection -> {
             updateState {
                 it.copy(
@@ -69,7 +79,7 @@ class DebuggerInputHandler(
             updateState {
                 it.copy(
                     applicationState = it.applicationState.updateInConnection(input.connectionId) {
-                        BallastConnectionState(input.connectionId)
+                        BallastConnectionState(input.connectionId, this.connectionBallastVersion)
                     }
                 )
             }

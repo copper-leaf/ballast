@@ -7,6 +7,7 @@ plugins {
     `copper-leaf-version`
     `copper-leaf-lint`
     id("org.jetbrains.compose")
+    id("com.github.gmazzo.buildconfig")
 }
 
 var projectVersion: ProjectVersion by project.extra
@@ -35,28 +36,36 @@ dependencies {
     implementation(project(":ballast-debugger"))
 }
 
+buildConfig {
+    useKotlinOutput {
+        internalVisibility = true
+        topLevelConstants = true
+    }
+
+    buildConfigField("String", "BALLAST_VERSION", "\"${projectVersion}\"")
+}
+
 compose.desktop {
     application {
-        mainClass = "com.copperleaf.ballast.debugger.Mainkt"
+        mainClass = "com.copperleaf.ballast.debugger.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             copyright = "© 2022 Copper Leaf. All rights reserved."
 
-            val packagingInfoRoot = project.projectDir.resolve("src/jvmMain/packaging")
-
             macOS {
-//                iconFile.set(packagingInfoRoot.resolve("app-icon-mac.icns"))
                 bundleID = "${project.group}.app"
+                packageName = "Ballast Debugger"
+            }
+            windows {
+                packageName = "Ballast Debugger"
             }
 
             modules(
-                "java.base",
-                "java.desktop",
                 "java.instrument",
                 "java.management",
                 "java.naming",
                 "java.sql",
-                "jdk.unsupported"
+                "jdk.unsupported",
             )
         }
     }

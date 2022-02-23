@@ -34,6 +34,8 @@ object DebuggerContract {
     sealed class Inputs {
         data class StartServer(val port: Int = 8080) : Inputs()
 
+        class ConnectionEstablished(val connectionId: String, val connectionBallastVersion: String) : Inputs()
+
         data class FocusConnection(val connectionId: String) : Inputs()
         data class FocusViewModel(val connectionId: String, val viewModelName: String) : Inputs()
         data class FocusEvent(val connectionId: String, val viewModelName: String, val eventUuid: String) : Inputs()

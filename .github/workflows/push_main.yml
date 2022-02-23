@@ -46,12 +46,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 11
-      - name: 'Cache Gradle packages'
-        uses: 'actions/cache@v1'
-        with:
-          path: '~/.gradle/caches'
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
-          restore-keys: '${{ runner.os }}-gradle'
       - name: 'Assemble Artifacts'
         run: './gradlew assemble --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Open Sonatype Staging Repository'

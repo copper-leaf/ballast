@@ -56,6 +56,13 @@ public final class com/copperleaf/ballast/debugger/DebuggerContract$Inputs$Clear
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/copperleaf/ballast/debugger/DebuggerContract$Inputs$ConnectionEstablished : com/copperleaf/ballast/debugger/DebuggerContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun getConnectionBallastVersion ()Ljava/lang/String;
+	public final fun getConnectionId ()Ljava/lang/String;
+}
+
 public final class com/copperleaf/ballast/debugger/DebuggerContract$Inputs$DebuggerEventReceived : com/copperleaf/ballast/debugger/DebuggerContract$Inputs {
 	public static final field $stable I
 	public fun <init> (Lcom/copperleaf/ballast/debugger/models/BallastDebuggerEvent;)V

@@ -1,3 +1,7 @@
+## 0.8.1 - 2022-02-23
+
+- Fix issue with creating desktop packages.
+
 ## 0.8.0 - 2022-02-22
 
 This is a major release, with lots of new features, greatly improved safety, but with several significant breaking 

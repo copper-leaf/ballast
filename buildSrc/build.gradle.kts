@@ -16,4 +16,5 @@ dependencies {
     implementation("org.jetbrains.compose:compose-gradle-plugin:1.0.0")
     implementation("org.jetbrains.kotlin:kotlin-serialization:1.5.31")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.github.gmazzo:gradle-buildconfig-plugin:3.0.3")
 }

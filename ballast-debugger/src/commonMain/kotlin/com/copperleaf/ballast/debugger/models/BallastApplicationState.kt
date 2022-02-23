@@ -23,6 +23,7 @@ public data class BallastApplicationState(
 
 public data class BallastConnectionState(
     public val connectionId: String,
+    public val connectionBallastVersion: String = "",
     public val viewModels: List<BallastViewModelState> = emptyList(),
     public val firstSeen: LocalDateTime = LocalDateTime.now(),
     public val lastSeen: LocalDateTime = LocalDateTime.now(),
@@ -64,7 +65,7 @@ public fun BallastApplicationState.updateInConnection(
                     this[indexOfConnection] = this[indexOfConnection].block().copy(lastSeen = LocalDateTime.now())
                 } else {
                     // this is the first time we're seeing this connection, create a new entry for it
-                    this.add(0, BallastConnectionState(connectionId, emptyList()).block())
+                    this.add(0, BallastConnectionState(connectionId).block())
                 }
             }
             .toList(),

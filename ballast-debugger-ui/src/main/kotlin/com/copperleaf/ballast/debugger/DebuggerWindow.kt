@@ -12,6 +12,7 @@ import androidx.compose.ui.window.ApplicationScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.rememberWindowState
 import com.copperleaf.ballast.debugger.ui.ConnectionsList
+import io.github.copper_leaf.ballast_debugger_ui.BALLAST_VERSION
 import org.slf4j.LoggerFactory
 
 class DebuggerWindow {
@@ -20,7 +21,7 @@ class DebuggerWindow {
     fun run(applicationScope: ApplicationScope) = with(applicationScope) {
         Window(
             onCloseRequest = ::exitApplication,
-            title = "Ballast Debugger",
+            title = "Ballast Debugger ($BALLAST_VERSION)",
             state = rememberWindowState(width = 1200.dp, height = 800.dp)
         ) {
             val coroutineScope = rememberCoroutineScope()

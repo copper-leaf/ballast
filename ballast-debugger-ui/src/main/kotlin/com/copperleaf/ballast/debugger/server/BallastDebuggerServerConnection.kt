@@ -4,6 +4,7 @@ import com.copperleaf.ballast.debugger.DebuggerContract
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.debuggerEventJson
+import io.github.copper_leaf.ballast_debugger_ui.BALLAST_VERSION
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.features.CallLogging
@@ -46,11 +47,26 @@ public class BallastDebuggerServerConnection(
                     }
 
                     webSocket("/ballast/debugger") {
-                        val ballastConnectionId = call.request.headers["x-ballast-connection-id"] ?: ""
-                        joinAll(
-                            processOutgoing(ballastConnectionId),
-                            processIncoming(),
+                        val connectionId = call.request.headers["x-ballast-connection-id"] ?: ""
+                        val connectionBallastVersion = call.request.headers["x-ballast-version"] ?: ""
+
+                        // notify that a connection was started
+                        postInput(
+                            DebuggerContract.Inputs.ConnectionEstablished(
+                                connectionId = connectionId,
+                                connectionBallastVersion = connectionBallastVersion,
+                            )
                         )
+
+                        if (connectionBallastVersion == BALLAST_VERSION) {
+                            // for now, require clients and server to be on same version
+                            joinAll(
+                                processOutgoing(connectionId),
+                                processIncoming(),
+                            )
+                        } else {
+                            // otherwise, drop the connection immediately
+                        }
                     }
                 }
             }.start(wait = true)

@@ -6,9 +6,19 @@ plugins {
     `copper-leaf-lint`
     `copper-leaf-publish`
     kotlin("plugin.serialization")
+    id("com.github.gmazzo.buildconfig")
 }
 
 description = "Opinionated Kotlin multiplatform Repository Caching library based on Ballast MVI"
+
+buildConfig {
+    useKotlinOutput {
+        internalVisibility = true
+        topLevelConstants = true
+    }
+
+    buildConfigField("String", "BALLAST_VERSION", "\"${project.version}\"")
+}
 
 android {
     compileSdk = 31
