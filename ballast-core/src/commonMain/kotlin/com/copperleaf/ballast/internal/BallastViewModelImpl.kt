@@ -79,6 +79,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     override suspend fun send(element: Inputs) {
         check(started) { "VM is not started!" }
         _inputs.send(element)
+        _notifications.emit(BallastNotification.InputQueued(this@BallastViewModelImpl, element))
     }
 
     override fun trySend(element: Inputs): ChannelResult<Unit> {
@@ -87,6 +88,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         if (result.isFailure) {
             _notifications.tryEmit(BallastNotification.InputDropped(this@BallastViewModelImpl, element))
             result.exceptionOrNull()?.printStackTrace()
+        } else {
+            _notifications.tryEmit(BallastNotification.InputQueued(this@BallastViewModelImpl, element))
         }
         return result
     }
@@ -160,7 +163,6 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     private fun startInternal() {
         started = true
-        _notifications.tryEmit(BallastNotification.ViewModelStarted(this@BallastViewModelImpl))
 
         // updates to current state post a new event with the new state
         viewModelScope.launch {
@@ -214,6 +216,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         .collect(interceptor::onNotify)
                 }
             }
+
+        _notifications.tryEmit(BallastNotification.ViewModelStarted(this@BallastViewModelImpl))
     }
 
     private suspend fun safelyHandleInput(
@@ -228,8 +232,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 // Create a handler scope to handle the input normally
                 val handlerScope = InputHandlerScopeImpl<Inputs, Events, State>(
                     _state = _state,
-                    _events = _events,
                     guardian = guardian,
+                    sendEventToQueue = {
+                        _notifications.emit(BallastNotification.EventQueued(this@BallastViewModelImpl, it))
+                        _events.send(it)
+                    }
                 )
                 with(inputHandler) {
                     handlerScope.handleInput(input)
@@ -288,59 +295,65 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         key: String,
         block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit,
     ) {
-        try {
-            coroutineScope {
-                var restartState = SideEffectScope.RestartState.Initial
+        val restartState = if (currentSideEffects.containsKey(key)) {
+            SideEffectScope.RestartState.Restarted
+        } else {
+            SideEffectScope.RestartState.Initial
+        }
 
-                // if we have a side-effect already running, cancel its coroutine scope
-                currentSideEffects[key]?.let {
-                    it.job?.cancel()
-                    it.job = null
-                    restartState = SideEffectScope.RestartState.Restarted
+        // if we have a side-effect already running, cancel its coroutine scope
+        currentSideEffects[key]?.let {
+            it.job?.cancel()
+            it.job = null
+        }
+
+        // go through and remove any side-effects that have completed (either by
+        // cancellation or because they finished on their own)
+        currentSideEffects.entries
+            .filterNot { it.value.job?.isActive == true }
+            .map { it.key }
+            .forEach { currentSideEffects.remove(it) }
+
+        // launch a new side effect in its own isolated coroutine scope where:
+        //   1) it is cancelled when the viewModelScope is cancelled
+        //   2) errors are caught by the uncaughtExceptionHandler for crash reporting
+        //   3) has a supervisor job, so we can cancel the side-effect without cancelling the whole viewModelScope
+        //
+        // Consumers of this side-effect can launch many jobs, and all will be cancelled together when the
+        // side-effect is restarted or the viewModelScope is cancelled.
+        val sideEffectContainer = RunningSideEffect(
+            key = key,
+            block = block,
+            scope = SideEffectScopeImpl(
+                _inputs = this@BallastViewModelImpl,
+                _events = _events,
+                currentStateWhenStarted = _state.value,
+                restartState = restartState
+            ),
+        )
+        currentSideEffects[key] = sideEffectContainer
+
+        val sideEffectCoroutineScope = viewModelScope +
+            SupervisorJob(parent = viewModelScope.coroutineContext[Job])
+
+        sideEffectContainer.job = sideEffectCoroutineScope.launch {
+            _notifications
+                .emit(BallastNotification.SideEffectStarted(this@BallastViewModelImpl, key, restartState))
+
+            try {
+                coroutineScope {
+                    sideEffectContainer.run()
+                    _notifications
+                        .emit(BallastNotification.SideEffectCompleted(this@BallastViewModelImpl, key, restartState))
                 }
-
-                // go through and remove any side-effects that have completed (either by
-                // cancellation or because they finished on their own)
-                currentSideEffects.entries
-                    .filterNot { it.value.job?.isActive == true }
-                    .map { it.key }
-                    .forEach { currentSideEffects.remove(it) }
-
-                // launch a new side effect in its own isolated coroutine scope where:
-                //   1) it is cancelled when the viewModelScope is cancelled
-                //   2) errors are caught by the uncaughtExceptionHandler for crash reporting
-                //   3) has a supervisor job, so we can cancel the side-effect without cancelling the whole viewModelScope
-                //
-                // Consumers of this side-effect can launch many jobs, and all will be cancelled together when the
-                // side-effect is restarted or the viewModelScope is cancelled.
-                RunningSideEffect(
-                    key = key,
-                    block = block,
-                    scope = SideEffectScopeImpl(
-                        _inputs = this@BallastViewModelImpl,
-                        _events = _events,
-                        currentStateWhenStarted = _state.value,
-                        restartState = restartState
-                    ),
-                ).also {
-                    val sideEffectCoroutineScope = viewModelScope +
-                        SupervisorJob(parent = viewModelScope.coroutineContext[Job])
-
-                    it.job = sideEffectCoroutineScope.launch {
-                        _notifications.emit(
-                            BallastNotification.SideEffectStarted(this@BallastViewModelImpl, key, restartState)
-                        )
-                        it.run()
-                        _notifications.emit(
-                            BallastNotification.SideEffectCompleted(this@BallastViewModelImpl, key)
-                        )
-                    }
-                }.also { currentSideEffects[key] = it }
+            } catch (e: CancellationException) {
+                // ignore
+                _notifications
+                    .emit(BallastNotification.SideEffectCancelled(this@BallastViewModelImpl, key, restartState))
+            } catch (e: Throwable) {
+                _notifications
+                    .emit(BallastNotification.SideEffectError(this@BallastViewModelImpl, key, restartState, e))
             }
-        } catch (e: CancellationException) {
-            // ignore
-        } catch (e: Throwable) {
-            _notifications.emit(BallastNotification.SideEffectError(this@BallastViewModelImpl, key, e))
         }
     }
 }

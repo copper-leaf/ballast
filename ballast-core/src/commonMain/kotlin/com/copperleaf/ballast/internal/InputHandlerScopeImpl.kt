@@ -3,7 +3,6 @@ package com.copperleaf.ballast.internal
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.SideEffectScope
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.updateAndGet
 internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val guardian: InputStrategy.Guardian,
     private val _state: MutableStateFlow<State>,
-    private val _events: SendChannel<Events>,
+    private val sendEventToQueue: suspend (Events) -> Unit,
 ) : InputHandlerScope<Inputs, Events, State> {
     private var closed = false
     private var usedProperly = false
@@ -50,7 +49,7 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override suspend fun postEvent(event: Events) {
         checkNotClosed()
         checkNoSideEffects()
-        _events.send(event).also { usedProperly = true }
+        sendEventToQueue(event).also { usedProperly = true }
     }
 
     override fun sideEffect(

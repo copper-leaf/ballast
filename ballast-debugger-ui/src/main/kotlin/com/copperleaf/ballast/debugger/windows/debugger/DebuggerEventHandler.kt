@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger
+package com.copperleaf.ballast.debugger.windows.debugger
 
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope

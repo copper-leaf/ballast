@@ -7,8 +7,8 @@ import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.debuggerEventJson
 import com.copperleaf.ballast.debugger.models.serialize
-import com.copperleaf.ballast.debugger.models.updateInConnection
-import com.copperleaf.ballast.debugger.models.updateInViewModel
+import com.copperleaf.ballast.debugger.models.updateConnection
+import com.copperleaf.ballast.debugger.models.updateViewModel
 import com.copperleaf.ballast.debugger.models.updateWithDebuggerEvent
 import io.github.copper_leaf.ballast_debugger.BALLAST_VERSION
 import io.ktor.client.HttpClient
@@ -42,14 +42,22 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.ExperimentalTime
 
+@ExperimentalTime
 public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     engineFactory: HttpClientEngineFactory<T>,
     private val host: String = "127.0.0.1", // 10.1.1.20 on Android
     private val port: Int = 8080,
-    private val connectionId: String = uuid4().toString(),
+    private val connectionId: String = generateUuid(),
     block: HttpClientConfig<T>.() -> Unit = {}
 ) {
+    public companion object {
+        private fun generateUuid(): String {
+            return uuid4().toString()
+        }
+    }
+
     private val client: HttpClient = HttpClient(engineFactory) {
         install(WebSockets)
         install(JsonFeature) {
@@ -59,7 +67,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     }
 
     private class BallastDebuggerEventWrapper(
-        val event: BallastDebuggerEvent,
+        val notification: BallastNotification<*, *, *>?,
+        val debuggerEvent: BallastDebuggerEvent?,
         val updateConnectionState: Boolean,
     )
 
@@ -67,6 +76,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     private var waitForEvent = CompletableDeferred<Unit>()
 
     private var applicationState: BallastApplicationState = BallastApplicationState()
+    private val uuids: MutableMap<Any, String> = mutableMapOf()
 
     public fun CoroutineScope.connect(): Job {
         var failedAttempts = 0
@@ -133,8 +143,9 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     internal suspend fun acceptNotification(notification: BallastNotification<*, *, *>) {
         outgoingMessages.send(
             BallastDebuggerEventWrapper(
-                notification.serialize(connectionId),
-                true
+                notification = notification,
+                debuggerEvent = null,
+                updateConnectionState = true,
             )
         )
         waitForEvent.complete(Unit)
@@ -142,6 +153,60 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
 // Impl
 // ---------------------------------------------------------------------------------------------------------------------
+
+    private fun getUuid(notification: BallastNotification<*, *, *>): String {
+        return when (notification) {
+            is BallastNotification.InputQueued -> {
+                uuids.getOrPut(notification.input) { generateUuid() }
+            }
+            is BallastNotification.InputAccepted -> {
+                uuids.getOrPut(notification.input) { generateUuid() }
+            }
+            is BallastNotification.InputRejected -> {
+                uuids.getOrPut(notification.input) { generateUuid() }
+            }
+            is BallastNotification.InputDropped -> {
+                uuids.getOrPut(notification.input) { generateUuid() }
+            }
+            is BallastNotification.InputHandledSuccessfully -> {
+                uuids.remove(notification.input) ?: generateUuid()
+            }
+            is BallastNotification.InputCancelled -> {
+                uuids.remove(notification.input) ?: generateUuid()
+            }
+            is BallastNotification.InputHandlerError -> {
+                uuids.remove(notification.input) ?: generateUuid()
+            }
+
+            is BallastNotification.EventQueued -> {
+                uuids.getOrPut(notification.event) { generateUuid() }
+            }
+            is BallastNotification.EventEmitted -> {
+                uuids.getOrPut(notification.event) { generateUuid() }
+            }
+            is BallastNotification.EventHandledSuccessfully -> {
+                uuids.remove(notification.event) ?: generateUuid()
+            }
+            is BallastNotification.EventHandlerError -> {
+                uuids.remove(notification.event) ?: generateUuid()
+            }
+
+            is BallastNotification.SideEffectStarted -> {
+                uuids.getOrPut(notification.key) { generateUuid() }
+            }
+            is BallastNotification.SideEffectCompleted -> {
+                uuids.remove(notification.key) ?: generateUuid()
+            }
+            is BallastNotification.SideEffectCancelled -> {
+                uuids.remove(notification.key) ?: generateUuid()
+            }
+            is BallastNotification.SideEffectError -> {
+                uuids.remove(notification.key) ?: generateUuid()
+            }
+
+            else -> generateUuid()
+        }
+    }
 
     /**
      * send a heartbeat from this connection every 5 seconds, so the UI can show when each connection is still alive
@@ -177,12 +242,23 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
             .receiveAsFlow()
             .onEach { message ->
 
+                val event = if (message.notification != null) {
+                    check(message.debuggerEvent == null) { "Must provide a notification or a debugger event, not both" }
+
+                    val uuid = getUuid(message.notification)
+                    message.notification.serialize(connectionId, uuid)
+                } else if (message.debuggerEvent != null) {
+                    message.debuggerEvent
+                } else {
+                    error("Must provide a notification or a debugger event, not both")
+                }
+
                 if (message.updateConnectionState) {
                     // update the local cache with the same event the client UI has, so we can request refreshed data if
                     // something has been dropped
-                    applicationState = applicationState.updateInConnection(connectionId) {
-                        updateInViewModel(message.event.viewModelName) {
-                            updateWithDebuggerEvent(message.event)
+                    applicationState = applicationState.updateConnection(connectionId) {
+                        updateViewModel(event.viewModelName) {
+                            updateWithDebuggerEvent(event)
                         }
                     }
                 }
@@ -190,7 +266,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 // send the message through the websocket to the client UI, where it will be processed in the same way
                 session.send(
                     debuggerEventJson
-                        .encodeToString(BallastDebuggerEvent.serializer(), message.event)
+                        .encodeToString(BallastDebuggerEvent.serializer(), event)
                         .let { Frame.Text(it) }
                 )
             }
@@ -227,20 +303,33 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 if (currentViewModelHistory != null) {
                     outgoingMessages.send(
                         BallastDebuggerEventWrapper(
-                            BallastDebuggerEvent.RefreshViewModelStart(connectionId, action.viewModelName),
-                            false
+                            notification = null,
+                            debuggerEvent = BallastDebuggerEvent.RefreshViewModelStart(
+                                connectionId,
+                                action.viewModelName,
+                            ),
+                            updateConnectionState = false,
                         )
                     )
 
                     currentViewModelHistory.forEach {
-                        outgoingMessages.send(BallastDebuggerEventWrapper(it, false))
-                        delay(5)
+                        outgoingMessages.send(
+                            BallastDebuggerEventWrapper(
+                                notification = null,
+                                debuggerEvent = it,
+                                updateConnectionState = false,
+                            )
+                        )
                     }
 
                     outgoingMessages.send(
                         BallastDebuggerEventWrapper(
-                            BallastDebuggerEvent.RefreshViewModelComplete(connectionId, action.viewModelName),
-                            false
+                            notification = null,
+                            debuggerEvent = BallastDebuggerEvent.RefreshViewModelComplete(
+                                connectionId,
+                                action.viewModelName
+                            ),
+                            updateConnectionState = false,
                         )
                     )
 

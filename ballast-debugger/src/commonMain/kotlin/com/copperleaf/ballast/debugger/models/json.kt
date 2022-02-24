@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.debugger.models
 
-import com.benasher44.uuid.uuid4
 import com.copperleaf.ballast.BallastNotification
 import kotlinx.serialization.json.Json
 
@@ -10,7 +9,7 @@ public val debuggerEventJson: Json = Json {
 
 public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs, Events, State>.serialize(
     connectionId: String,
-    uuid: String = uuid4().toString(),
+    uuid: String,
 ): BallastDebuggerEvent {
     return when (this) {
         is BallastNotification.ViewModelStarted -> {
@@ -18,6 +17,9 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
         }
         is BallastNotification.ViewModelCleared -> {
             BallastDebuggerEvent.ViewModelCleared(connectionId, vm.name, uuid)
+        }
+        is BallastNotification.InputQueued -> {
+            BallastDebuggerEvent.InputQueued(connectionId, vm.name, uuid, input.type, input.toString())
         }
         is BallastNotification.InputAccepted -> {
             BallastDebuggerEvent.InputAccepted(connectionId, vm.name, uuid, input.type, input.toString())
@@ -35,7 +37,13 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
             BallastDebuggerEvent.InputCancelled(connectionId, vm.name, uuid, input.type, input.toString())
         }
         is BallastNotification.InputHandlerError -> {
-            BallastDebuggerEvent.InputHandlerError(connectionId, vm.name, uuid, input.type, input.toString())
+            BallastDebuggerEvent.InputHandlerError(
+                connectionId, vm.name, uuid, input.type, input.toString(),
+                throwable.stackTraceToString()
+            )
+        }
+        is BallastNotification.EventQueued -> {
+            BallastDebuggerEvent.EventQueued(connectionId, vm.name, uuid, event.type, event.toString())
         }
         is BallastNotification.EventEmitted -> {
             BallastDebuggerEvent.EventEmitted(connectionId, vm.name, uuid, event.type, event.toString())
@@ -44,7 +52,10 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
             BallastDebuggerEvent.EventHandledSuccessfully(connectionId, vm.name, uuid, event.type, event.toString())
         }
         is BallastNotification.EventHandlerError -> {
-            BallastDebuggerEvent.EventHandlerError(connectionId, vm.name, uuid, event.type, event.toString())
+            BallastDebuggerEvent.EventHandlerError(
+                connectionId, vm.name, uuid, event.type, event.toString(),
+                throwable.stackTraceToString()
+            )
         }
         is BallastNotification.EventProcessingStarted -> {
             BallastDebuggerEvent.EventProcessingStarted(connectionId, vm.name, uuid)
@@ -53,19 +64,28 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
             BallastDebuggerEvent.EventProcessingStopped(connectionId, vm.name, uuid)
         }
         is BallastNotification.StateChanged -> {
-            BallastDebuggerEvent.StateChanged(connectionId, vm.name, uuid, state.toString())
+            BallastDebuggerEvent.StateChanged(connectionId, vm.name, uuid, state.type, state.toString())
         }
         is BallastNotification.SideEffectStarted -> {
             BallastDebuggerEvent.SideEffectStarted(connectionId, vm.name, uuid, key, restartState)
         }
         is BallastNotification.SideEffectCompleted -> {
-            BallastDebuggerEvent.SideEffectCompleted(connectionId, vm.name, uuid, key)
+            BallastDebuggerEvent.SideEffectCompleted(connectionId, vm.name, uuid, key, restartState)
+        }
+        is BallastNotification.SideEffectCancelled -> {
+            BallastDebuggerEvent.SideEffectCancelled(connectionId, vm.name, uuid, key, restartState)
         }
         is BallastNotification.SideEffectError -> {
-            BallastDebuggerEvent.SideEffectError(connectionId, vm.name, uuid, key)
+            BallastDebuggerEvent.SideEffectError(
+                connectionId, vm.name, uuid, key, restartState,
+                throwable.stackTraceToString()
+            )
         }
         is BallastNotification.UnhandledError -> {
-            BallastDebuggerEvent.UnhandledError(connectionId, vm.name, uuid)
+            BallastDebuggerEvent.UnhandledError(
+                connectionId, vm.name, uuid,
+                throwable.stackTraceToString()
+            )
         }
     }
 }

@@ -11,4 +11,4 @@ include(":ballast-debugger-ui")
 
 include(":ballast-test")
 
-include(":docs")
+//include(":docs")

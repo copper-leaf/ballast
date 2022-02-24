@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.server
 
-import com.copperleaf.ballast.debugger.DebuggerContract
+import com.copperleaf.ballast.debugger.windows.debugger.DebuggerContract
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.debuggerEventJson

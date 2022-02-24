@@ -36,6 +36,19 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
 // ---------------------------------------------------------------------------------------------------------------------
 
     /**
+     * An Input was successfully send into the input channel, but has not been filtered checked through the filter yet.
+     * If the Input was queued, the input channel was not full.
+     */
+    public class InputQueued<Inputs : Any, Events : Any, State : Any>(
+        vm: BallastViewModel<Inputs, Events, State>,
+        public val input: Inputs,
+    ) : BallastNotification<Inputs, Events, State>(vm) {
+        override fun toString(): String {
+            return "Input Queued: $input"
+        }
+    }
+
+    /**
      * An Input was successfully queued in the ViewModel's Inputs channel and passed its Filter, so will be accepted
      * and passed to the Handler for processing.
      */
@@ -116,6 +129,18 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
 
 // Events
 // ---------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * An Event was posted to the queue to eventually be delivered to the EventHandler.
+     */
+    public class EventQueued<Inputs : Any, Events : Any, State : Any>(
+        vm: BallastViewModel<Inputs, Events, State>,
+        public val event: Events,
+    ) : BallastNotification<Inputs, Events, State>(vm) {
+        override fun toString(): String {
+            return "Event Queued: $event"
+        }
+    }
 
     /**
      * An Event was posted to the EventHandler.
@@ -218,6 +243,7 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
     public class SideEffectCompleted<Inputs : Any, Events : Any, State : Any>(
         vm: BallastViewModel<Inputs, Events, State>,
         public val key: String,
+        public val restartState: SideEffectScope.RestartState,
     ) : BallastNotification<Inputs, Events, State>(vm) {
         override fun toString(): String {
             return "sideEffect finished: $key"
@@ -227,9 +253,23 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
     /**
      * A sideEffect was started or restarted
      */
+    public class SideEffectCancelled<Inputs : Any, Events : Any, State : Any>(
+        vm: BallastViewModel<Inputs, Events, State>,
+        public val key: String,
+        public val restartState: SideEffectScope.RestartState,
+    ) : BallastNotification<Inputs, Events, State>(vm) {
+        override fun toString(): String {
+            return "sideEffect cancelled: $key"
+        }
+    }
+
+    /**
+     * A sideEffect was started or restarted
+     */
     public class SideEffectError<Inputs : Any, Events : Any, State : Any>(
         vm: BallastViewModel<Inputs, Events, State>,
         public val key: String,
+        public val restartState: SideEffectScope.RestartState,
         public val throwable: Throwable,
     ) : BallastNotification<Inputs, Events, State>(vm) {
         override fun toString(): String {

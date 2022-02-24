@@ -1,56 +1,40 @@
 package com.copperleaf.ballast.debugger.models
 
-import kotlinx.datetime.Clock
+import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.debugger.utils.minus
+import com.copperleaf.ballast.debugger.utils.now
+import com.copperleaf.ballast.debugger.utils.removeFraction
 import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration
+import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 
-public fun LocalDateTime.Companion.now(): LocalDateTime {
-    return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-}
+// Application
+// ---------------------------------------------------------------------------------------------------------------------
 
 @ExperimentalTime
-public operator fun LocalDateTime.minus(other: LocalDateTime): Duration {
-    return this.toInstant(TimeZone.currentSystemDefault()) - other.toInstant(TimeZone.currentSystemDefault())
-}
-
 public data class BallastApplicationState(
     public val connections: List<BallastConnectionState> = emptyList(),
 )
 
+// Connection
+// ---------------------------------------------------------------------------------------------------------------------
+
+@ExperimentalTime
 public data class BallastConnectionState(
     public val connectionId: String,
     public val connectionBallastVersion: String = "",
     public val viewModels: List<BallastViewModelState> = emptyList(),
     public val firstSeen: LocalDateTime = LocalDateTime.now(),
     public val lastSeen: LocalDateTime = LocalDateTime.now(),
-)
+) {
+    public fun isActive(currentTime: LocalDateTime): Boolean {
+        return (currentTime - lastSeen) <= Duration.Companion.seconds(5)
+    }
+}
 
-public data class BallastViewModelState(
-    public val connectionId: String,
-    public val viewModelName: String,
-
-    public val inputs: List<String> = emptyList(),
-    public val events: List<String> = emptyList(),
-    public val sideEffects: List<String> = emptyList(),
-    public val states: List<String> = emptyList(),
-    public val latestState: String = "",
-
-    public val viewModelActive: Boolean = false,
-    public val eventProcessingActive: Boolean = false,
-    public val inputInProgress: Boolean = false,
-    public val sideEffectsInProgress: Boolean = false,
-
-    public val firstSeen: LocalDateTime = LocalDateTime.now(),
-    public val lastSeen: LocalDateTime = LocalDateTime.now(),
-    public val fullHistory: List<BallastDebuggerEvent> = emptyList(),
-    public val refreshing: Boolean = false,
-)
-
-public fun BallastApplicationState.updateInConnection(
+@ExperimentalTime
+public fun BallastApplicationState.updateConnection(
     connectionId: String,
     block: BallastConnectionState.() -> BallastConnectionState,
 ): BallastApplicationState {
@@ -72,7 +56,38 @@ public fun BallastApplicationState.updateInConnection(
     )
 }
 
-public fun BallastConnectionState.updateInViewModel(
+// ViewModel
+// ---------------------------------------------------------------------------------------------------------------------
+
+@ExperimentalTime
+public data class BallastViewModelState(
+    public val connectionId: String,
+    public val viewModelName: String,
+
+    public val inputs: List<BallastInputState> = emptyList(),
+    public val events: List<BallastEventState> = emptyList(),
+    public val sideEffects: List<BallastSideEffectState> = emptyList(),
+    public val states: List<BallastStateSnapshot> = emptyList(),
+
+    public val viewModelActive: Boolean = false,
+    public val eventProcessingActive: Boolean = false,
+
+    public val firstSeen: LocalDateTime = LocalDateTime.now(),
+    public val lastSeen: LocalDateTime = LocalDateTime.now(),
+    public val fullHistory: List<BallastDebuggerEvent> = emptyList(),
+    public val refreshing: Boolean = false,
+) {
+    public val runningInputCount: Int = inputs.count { it.status == BallastInputState.Status.Running }
+    public val runningEventCount: Int = events.count { it.status == BallastEventState.Status.Running }
+    public val runningSideEffectCount: Int = sideEffects.count { it.status == BallastSideEffectState.Status.Running }
+
+    public val inputInProgress: Boolean = runningInputCount > 0
+    public val eventInProgress: Boolean = runningEventCount > 0
+    public val sideEffectsInProgress: Boolean = runningSideEffectCount > 0
+}
+
+@ExperimentalTime
+public fun BallastConnectionState.updateViewModel(
     viewModelName: String?,
     block: BallastViewModelState.() -> BallastViewModelState,
 ): BallastConnectionState {
@@ -96,6 +111,222 @@ public fun BallastConnectionState.updateInViewModel(
     )
 }
 
+// Inputs
+// ---------------------------------------------------------------------------------------------------------------------
+
+@ExperimentalTime
+public data class BallastInputState(
+    public val connectionId: String,
+    public val viewModelName: String,
+    public val uuid: String,
+
+    public val type: String = "",
+    public val toStringValue: String = "",
+
+    public val status: Status = Status.Queued,
+
+    public val firstSeen: LocalDateTime = LocalDateTime.now(),
+    public val lastSeen: LocalDateTime = LocalDateTime.now(),
+) {
+    public sealed class Status {
+        public object Queued : Status() {
+            override fun toString(): String = "Queued"
+        }
+        public object Dropped : Status() {
+            override fun toString(): String = "Dropped"
+        }
+
+        public object Running : Status() {
+            override fun toString(): String = "Running"
+        }
+        public object Rejected : Status() {
+            override fun toString(): String = "Rejected"
+        }
+
+        public data class Cancelled(val duration: Duration) : Status() {
+            override fun toString(): String = "Cancelled after $duration"
+        }
+        public data class Error(val duration: Duration, val stacktrace: String) : Status() {
+            override fun toString(): String = "Failed after $duration"
+        }
+        public data class Completed(val duration: Duration) : Status() {
+            override fun toString(): String = "Completed after $duration"
+        }
+    }
+}
+
+@ExperimentalTime
+public fun BallastViewModelState.updateInput(
+    uuid: String,
+    block: BallastInputState.() -> BallastInputState,
+): BallastViewModelState {
+    val indexOfInput = inputs.indexOfFirst { it.uuid == uuid }
+
+    return this.copy(
+        inputs = inputs
+            .toMutableList()
+            .apply {
+                if (indexOfInput != -1) {
+                    // we're updating a value in an existing connection
+                    this[indexOfInput] = this[indexOfInput].block().copy(lastSeen = LocalDateTime.now())
+                } else {
+                    // this is the first time we're seeing this connection, create a new entry for it
+                    this.add(0, BallastInputState(connectionId, viewModelName, uuid).block())
+                }
+            }
+            .toList()
+    )
+}
+
+// Events
+// ---------------------------------------------------------------------------------------------------------------------
+
+@ExperimentalTime
+public data class BallastEventState(
+    public val connectionId: String,
+    public val viewModelName: String,
+    public val uuid: String,
+
+    public val type: String = "",
+    public val toStringValue: String = "",
+
+    public val status: Status = Status.Queued,
+
+    public val firstSeen: LocalDateTime = LocalDateTime.now(),
+    public val lastSeen: LocalDateTime = LocalDateTime.now(),
+) {
+    public sealed class Status {
+        public object Queued : Status() {
+            override fun toString(): String = "Queued"
+        }
+
+        public object Running : Status() {
+            override fun toString(): String = "Running"
+        }
+
+        public data class Error(val duration: Duration, val stacktrace: String) : Status() {
+            override fun toString(): String = "Failed after $duration"
+        }
+        public data class Completed(val duration: Duration) : Status() {
+            override fun toString(): String = "Completed after $duration"
+        }
+    }
+}
+
+@ExperimentalTime
+public fun BallastViewModelState.updateEvent(
+    uuid: String,
+    block: BallastEventState.() -> BallastEventState,
+): BallastViewModelState {
+    val indexOfEvents = events.indexOfFirst { it.uuid == uuid }
+
+    return this.copy(
+        events = events
+            .toMutableList()
+            .apply {
+                if (indexOfEvents != -1) {
+                    // we're updating a value in an existing connection
+                    this[indexOfEvents] = this[indexOfEvents].block().copy(lastSeen = LocalDateTime.now())
+                } else {
+                    // this is the first time we're seeing this connection, create a new entry for it
+                    this.add(0, BallastEventState(connectionId, viewModelName, uuid).block())
+                }
+            }
+            .toList()
+    )
+}
+
+// States
+// ---------------------------------------------------------------------------------------------------------------------
+
+@ExperimentalTime
+public data class BallastStateSnapshot(
+    public val connectionId: String,
+    public val viewModelName: String,
+    public val uuid: String,
+
+    public val type: String = "",
+    public val toStringValue: String = "",
+
+    public val emittedAt: LocalDateTime = LocalDateTime.now(),
+)
+
+@ExperimentalTime
+public fun BallastViewModelState.appendStateSnapshot(
+    uuid: String,
+    block: BallastStateSnapshot.() -> BallastStateSnapshot,
+): BallastViewModelState {
+    val state = BallastStateSnapshot(connectionId, viewModelName, uuid).block()
+
+    return this.copy(
+        states = listOf(state) + states
+    )
+}
+
+// SideEffects
+// ---------------------------------------------------------------------------------------------------------------------
+
+@ExperimentalTime
+public data class BallastSideEffectState(
+    public val connectionId: String,
+    public val viewModelName: String,
+    public val uuid: String,
+
+    public val key: String = "",
+    public val restartState: SideEffectScope.RestartState = SideEffectScope.RestartState.Initial,
+    public val status: Status = Status.Running,
+
+    public val firstSeen: LocalDateTime = LocalDateTime.now(),
+    public val lastSeen: LocalDateTime = LocalDateTime.now(),
+) {
+    public sealed class Status {
+        public object Queued : Status() {
+            override fun toString(): String = "Queued"
+        }
+
+        public object Running : Status() {
+            override fun toString(): String = "Running"
+        }
+
+        public data class Cancelled(val duration: Duration) : Status() {
+            override fun toString(): String = "Cancelled after $duration"
+        }
+        public data class Error(val duration: Duration, val stacktrace: String) : Status() {
+            override fun toString(): String = "Failed after $duration"
+        }
+        public data class Completed(val duration: Duration) : Status() {
+            override fun toString(): String = "Completed after $duration"
+        }
+    }
+}
+
+@ExperimentalTime
+public fun BallastViewModelState.updateSideEffect(
+    uuid: String,
+    block: BallastSideEffectState.() -> BallastSideEffectState,
+): BallastViewModelState {
+    val indexOfSideEffect = sideEffects.indexOfFirst { it.uuid == uuid }
+
+    return this.copy(
+        sideEffects = sideEffects
+            .toMutableList()
+            .apply {
+                if (indexOfSideEffect != -1) {
+                    // we're updating a value in an existing connection
+                    this[indexOfSideEffect] = this[indexOfSideEffect].block().copy(lastSeen = LocalDateTime.now())
+                } else {
+                    // this is the first time we're seeing this connection, create a new entry for it
+                    this.add(0, BallastSideEffectState(connectionId, viewModelName, uuid).block())
+                }
+            }
+            .toList()
+    )
+}
+
+// Process Debugger Event
+// ---------------------------------------------------------------------------------------------------------------------
+
+@ExperimentalTime
 public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerEvent): BallastViewModelState {
     val updatedState = when (event) {
         is BallastDebuggerEvent.RefreshViewModelStart -> {
@@ -112,73 +343,181 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
             copy(viewModelActive = false)
         }
 
+        is BallastDebuggerEvent.InputQueued -> {
+            updateInput(event.uuid) {
+                copy(
+                    type = event.inputType,
+                    toStringValue = event.inputToStringValue,
+                    status = BallastInputState.Status.Queued,
+                )
+            }
+        }
         is BallastDebuggerEvent.InputAccepted -> {
-            copy(
-                inputs = listOf(event.inputType) + inputs,
-                viewModelActive = true,
-                inputInProgress = true
-            )
+            updateInput(event.uuid) {
+                copy(
+                    type = event.inputType,
+                    toStringValue = event.inputToStringValue,
+                    status = BallastInputState.Status.Running,
+                )
+            }
         }
         is BallastDebuggerEvent.InputHandledSuccessfully -> {
-            copy(
-                inputInProgress = false,
-            )
+            updateInput(event.uuid) {
+                copy(
+                    type = event.inputType,
+                    toStringValue = event.inputToStringValue,
+                    status = BallastInputState.Status.Completed(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                    ),
+                )
+            }
         }
         is BallastDebuggerEvent.InputCancelled -> {
-            copy(
-                inputInProgress = false,
-            )
+            updateInput(event.uuid) {
+                copy(
+                    type = event.inputType,
+                    toStringValue = event.inputToStringValue,
+                    status = BallastInputState.Status.Cancelled(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                    ),
+                )
+            }
         }
         is BallastDebuggerEvent.InputHandlerError -> {
-            copy(
-                inputInProgress = false,
-            )
+            updateInput(event.uuid) {
+                copy(
+                    type = event.inputType,
+                    toStringValue = event.inputToStringValue,
+                    status = BallastInputState.Status.Error(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        stacktrace = event.stacktrace,
+                    ),
+                )
+            }
+        }
+        is BallastDebuggerEvent.InputDropped -> {
+            updateInput(event.uuid) {
+                copy(
+                    type = event.inputType,
+                    toStringValue = event.inputToStringValue,
+                    status = BallastInputState.Status.Dropped,
+                )
+            }
+        }
+        is BallastDebuggerEvent.InputRejected -> {
+            updateInput(event.uuid) {
+                copy(
+                    type = event.inputType,
+                    toStringValue = event.inputToStringValue,
+                    status = BallastInputState.Status.Rejected,
+                )
+            }
         }
 
+        is BallastDebuggerEvent.EventQueued -> {
+            updateEvent(event.uuid) {
+                copy(
+                    type = event.eventType,
+                    toStringValue = event.eventToStringValue,
+                    status = BallastEventState.Status.Queued,
+                )
+            }
+        }
         is BallastDebuggerEvent.EventEmitted -> {
-            copy(
-                events = listOf(event.eventType) + events,
-                viewModelActive = true,
-            )
+            updateEvent(event.uuid) {
+                copy(
+                    type = event.eventType,
+                    toStringValue = event.eventToStringValue,
+                    status = BallastEventState.Status.Running,
+                )
+            }
         }
-
+        is BallastDebuggerEvent.EventHandledSuccessfully -> {
+            updateEvent(event.uuid) {
+                copy(
+                    type = event.eventType,
+                    toStringValue = event.eventToStringValue,
+                    status = BallastEventState.Status.Completed(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                    ),
+                )
+            }
+        }
+        is BallastDebuggerEvent.EventHandlerError -> {
+            updateEvent(event.uuid) {
+                copy(
+                    type = event.eventType,
+                    toStringValue = event.eventToStringValue,
+                    status = BallastEventState.Status.Error(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        stacktrace = event.stacktrace,
+                    ),
+                )
+            }
+        }
         is BallastDebuggerEvent.EventProcessingStarted -> {
-            copy(
-                eventProcessingActive = true,
-            )
+            copy(eventProcessingActive = true)
         }
         is BallastDebuggerEvent.EventProcessingStopped -> {
-            copy(
-                eventProcessingActive = false,
-            )
+            copy(eventProcessingActive = false)
         }
 
         is BallastDebuggerEvent.StateChanged -> {
-            copy(
-                states = listOf(event.state) + states,
-                latestState = event.state,
-                viewModelActive = true,
-            )
+            appendStateSnapshot(event.uuid) {
+                copy(
+                    type = event.stateType,
+                    toStringValue = event.stateToStringValue,
+                )
+            }
         }
 
         is BallastDebuggerEvent.SideEffectStarted -> {
-            copy(
-                sideEffects = listOf(event.key) + sideEffects,
-                viewModelActive = true,
-                sideEffectsInProgress = true,
-            )
+            updateSideEffect(event.uuid) {
+                copy(
+                    key = event.key,
+                    restartState = event.restartState,
+                    status = BallastSideEffectState.Status.Running,
+                )
+            }
         }
         is BallastDebuggerEvent.SideEffectCompleted -> {
-            copy(
-                sideEffectsInProgress = false,
-            )
+            updateSideEffect(event.uuid) {
+                copy(
+                    key = event.key,
+                    restartState = event.restartState,
+                    status = BallastSideEffectState.Status.Completed(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                    ),
+                )
+            }
+        }
+        is BallastDebuggerEvent.SideEffectCancelled -> {
+            updateSideEffect(event.uuid) {
+                copy(
+                    key = event.key,
+                    restartState = event.restartState,
+                    status = BallastSideEffectState.Status.Cancelled(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                    ),
+                )
+            }
         }
         is BallastDebuggerEvent.SideEffectError -> {
-            copy(
-                sideEffectsInProgress = false,
-            )
+            updateSideEffect(event.uuid) {
+                copy(
+                    key = event.key,
+                    restartState = event.restartState,
+                    status = BallastSideEffectState.Status.Error(
+                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        stacktrace = event.stacktrace
+                    ),
+                )
+            }
         }
-        else -> this
+
+        else -> {
+            this
+        }
     }
 
     val newHistory = when (event) {

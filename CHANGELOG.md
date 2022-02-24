@@ -1,3 +1,9 @@
+## 0.9.0 - 2022-02-25
+
+- Finishes Debugger UI, fully exposing all states of Inputs, Events, and SideEffects
+- Adds a few new `BallastNotification`s, to notify of Inputs and Events being queued, but not yet processed
+- Fixed bug where SideEffect errors and cancellation was not being notified properly
+
 ## 0.8.2 - 2022-02-23
 
 - Fix issue with creating desktop packages.

@@ -39,6 +39,12 @@ public final class com/copperleaf/ballast/BallastNotification$EventProcessingSto
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/copperleaf/ballast/BallastNotification$EventQueued : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/Object;)V
+	public final fun getEvent ()Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/copperleaf/ballast/BallastNotification$InputAccepted : com/copperleaf/ballast/BallastNotification {
 	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/Object;)V
 	public final fun getInput ()Ljava/lang/Object;
@@ -70,6 +76,12 @@ public final class com/copperleaf/ballast/BallastNotification$InputHandlerError 
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/copperleaf/ballast/BallastNotification$InputQueued : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/Object;)V
+	public final fun getInput ()Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/copperleaf/ballast/BallastNotification$InputRejected : com/copperleaf/ballast/BallastNotification {
 	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/Object;Ljava/lang/Object;)V
 	public final fun getInput ()Ljava/lang/Object;
@@ -77,15 +89,24 @@ public final class com/copperleaf/ballast/BallastNotification$InputRejected : co
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/BallastNotification$SideEffectCompleted : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;)V
+public final class com/copperleaf/ballast/BallastNotification$SideEffectCancelled : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideEffectScope$RestartState;)V
 	public final fun getKey ()Ljava/lang/String;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/BallastNotification$SideEffectCompleted : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideEffectScope$RestartState;)V
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/BallastNotification$SideEffectError : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideEffectScope$RestartState;Ljava/lang/Throwable;)V
 	public final fun getKey ()Ljava/lang/String;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
 	public final fun getThrowable ()Ljava/lang/Throwable;
 	public fun toString ()Ljava/lang/String;
 }

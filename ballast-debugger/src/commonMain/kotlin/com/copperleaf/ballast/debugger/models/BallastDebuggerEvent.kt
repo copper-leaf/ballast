@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.models
 
 import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.debugger.utils.now
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
@@ -70,12 +71,23 @@ public sealed class BallastDebuggerEvent {
 // ---------------------------------------------------------------------------------------------------------------------
 
     @Serializable
+    public class InputQueued(
+        override val connectionId: String,
+        override val viewModelName: String,
+        override val uuid: String,
+
+        public val inputType: String,
+        public val inputToStringValue: String,
+    ) : BallastDebuggerEvent()
+
+    @Serializable
     public class InputAccepted(
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val inputType: String,
-        public val input: String,
+        public val inputToStringValue: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -83,8 +95,9 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val inputType: String,
-        public val input: String,
+        public val inputToStringValue: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -92,8 +105,9 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val inputType: String,
-        public val input: String,
+        public val inputToStringValue: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -101,8 +115,9 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val inputType: String,
-        public val input: String,
+        public val inputToStringValue: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -110,8 +125,9 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val inputType: String,
-        public val input: String,
+        public val inputToStringValue: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -119,20 +135,33 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val inputType: String,
-        public val input: String,
+        public val inputToStringValue: String,
+        public val stacktrace: String,
     ) : BallastDebuggerEvent()
 
 // Events
 // ---------------------------------------------------------------------------------------------------------------------
 
     @Serializable
+    public class EventQueued(
+        override val connectionId: String,
+        override val viewModelName: String,
+        override val uuid: String,
+
+        public val eventType: String,
+        public val eventToStringValue: String,
+    ) : BallastDebuggerEvent()
+
+    @Serializable
     public class EventEmitted(
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val eventType: String,
-        public val event: String,
+        public val eventToStringValue: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -140,8 +169,9 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val eventType: String,
-        public val event: String,
+        public val eventToStringValue: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -149,8 +179,10 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val eventType: String,
-        public val event: String,
+        public val eventToStringValue: String,
+        public val stacktrace: String,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -175,7 +207,9 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
-        public val state: String,
+
+        public val stateType: String,
+        public val stateToStringValue: String,
     ) : BallastDebuggerEvent()
 
 // Side Effects
@@ -186,6 +220,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val key: String,
         public val restartState: SideEffectScope.RestartState,
     ) : BallastDebuggerEvent()
@@ -195,7 +230,19 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val key: String,
+        public val restartState: SideEffectScope.RestartState,
+    ) : BallastDebuggerEvent()
+
+    @Serializable
+    public class SideEffectCancelled(
+        override val connectionId: String,
+        override val viewModelName: String,
+        override val uuid: String,
+
+        public val key: String,
+        public val restartState: SideEffectScope.RestartState,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -203,7 +250,10 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
         public val key: String,
+        public val restartState: SideEffectScope.RestartState,
+        public val stacktrace: String,
     ) : BallastDebuggerEvent()
 
 // Other
@@ -214,5 +264,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+
+        public val stacktrace: String,
     ) : BallastDebuggerEvent()
 }

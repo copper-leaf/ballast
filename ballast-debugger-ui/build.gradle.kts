@@ -30,6 +30,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.5")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
+    implementation("io.ktor:ktor-client-cio:1.6.5")
 
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     implementation(project(":ballast-core"))
