@@ -31,6 +31,11 @@ object Config {
             signingPassword = project.loadProperty("signing_password"),
             ossrhUsername = project.loadProperty("ossrh_username"),
             ossrhPassword = project.loadProperty("ossrh_password"),
+
+            jetbrainsMarketplacePassphrase = project.loadProperty("jb_passphrase") ,
+            jetbrainsMarketplacePrivateKey = project.loadFileContents("jb_signing_key"),
+            jetbrainsMarketplaceCertificateChain = project.loadFileContents("jb_chain"),
+            jetbrainsMarketplaceToken = project.loadProperty("jb_marketplace_token"),
         )
     }
 }

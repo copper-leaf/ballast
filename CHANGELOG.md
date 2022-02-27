@@ -1,8 +1,11 @@
-## 0.9.0 - 2022-02-25
+## 0.9.0 - 2022-02-28
 
 - Finishes Debugger UI, fully exposing all states of Inputs, Events, and SideEffects
+- Converts Debugger UI to an IntelliJ Plugin, instead of a standalone desktop application
 - Adds a few new `BallastNotification`s, to notify of Inputs and Events being queued, but not yet processed
 - Fixed bug where SideEffect errors and cancellation was not being notified properly
+- `SideEffectcope` is now also a `CoroutineScope`, so you can `launch` other coroutines directly within the 
+  `sideEffect(key) { }` block without having to manually wrap it in `coroutineScope { }`
 
 ## 0.8.2 - 2022-02-23
 

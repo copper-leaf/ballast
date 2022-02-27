@@ -48,7 +48,7 @@ import kotlin.time.ExperimentalTime
 public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     engineFactory: HttpClientEngineFactory<T>,
     private val host: String = "127.0.0.1", // 10.1.1.20 on Android
-    private val port: Int = 8080,
+    private val port: Int = 9684,
     private val connectionId: String = generateUuid(),
     block: HttpClientConfig<T>.() -> Unit = {}
 ) {

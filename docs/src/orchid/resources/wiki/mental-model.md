@@ -528,13 +528,11 @@ suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) 
     is Inputs.GpsCoordinatesUpdated -> { updateState { it.copy(coordinates = input.coordinates) } }
     is Inputs.ObserveGpsSignal -> { 
         sideEffect("ObserveGpsSignal") {
-            coroutineScope {
-                gpsRepository
-                    .observeLocation() // returns a Flow
-                    .map { Inputs.GpsCoordinatesUpdated(it) }
-                    .onEach { postInput(it) }
-                    .launchIn(this)
-            }
+            gpsRepository
+                .observeLocation() // returns a Flow
+                .map { Inputs.GpsCoordinatesUpdated(it) }
+                .onEach { postInput(it) }
+                .launchIn(this)
         }
     }
 }

@@ -92,10 +92,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
                 unhandledErrors += notification.throwable
             }
 
-            is BallastNotification.ViewModelStarted -> {}
-            is BallastNotification.ViewModelCleared -> {}
-            is BallastNotification.EventProcessingStarted -> {}
-            is BallastNotification.EventProcessingStopped -> {}
+            else -> {}
         }
     }
 

@@ -360,6 +360,11 @@ data class PublishConfiguration(
     val signingPassword: String,
     val ossrhUsername: String,
     val ossrhPassword: String,
+
+    val jetbrainsMarketplacePassphrase: String,
+    val jetbrainsMarketplacePrivateKey: String,
+    val jetbrainsMarketplaceCertificateChain: String,
+    val jetbrainsMarketplaceToken: String,
 ) {
 
     var stagingRepositoryId: String
@@ -381,6 +386,10 @@ data class PublishConfiguration(
             stagingRepositoryIdFile.writeText(value)
         }
 
+    override fun toString(): String {
+        return debug()
+    }
+
     fun debug(): String {
         return """
             |PublishConfiguration(
@@ -390,10 +399,15 @@ data class PublishConfiguration(
             |    stagingProfileId=$stagingProfileId
             |
             |    signingKeyId=${if (signingKeyId.isNotBlank()) "[REDACTED]" else ""}
-            |    signingKey=${if (signingKey.isNotBlank()) signingKey.lineSequence().first() else ""}
+            |    signingKey=${if (signingKey.isNotBlank()) "[REDACTED]" else ""}
             |    signingPassword=${if (signingPassword.isNotBlank()) "[REDACTED]" else ""}
             |    ossrhUsername=${if (ossrhUsername.isNotBlank()) "[REDACTED]" else ""}
             |    ossrhPassword=${if (ossrhPassword.isNotBlank()) "[REDACTED]" else ""}
+            |    
+            |    jetbrainsMarketplacePassphrase=${if (jetbrainsMarketplacePassphrase.isNotBlank()) "[REDACTED]" else ""}
+            |    jetbrainsMarketplacePrivateKey=${if (jetbrainsMarketplacePrivateKey.isNotBlank()) "[REDACTED]" else ""}
+            |    jetbrainsMarketplaceCertificateChain=${if (jetbrainsMarketplaceCertificateChain.isNotBlank()) "[REDACTED]" else ""}
+            |    jetbrainsMarketplaceToken=${if (jetbrainsMarketplaceToken.isNotBlank()) "[REDACTED]" else ""}
             |)
         """.trimMargin()
     }

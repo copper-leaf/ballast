@@ -1,0 +1,76 @@
+<idea-plugin>
+    <id>com.copperleaf.ballast.Ballast</id>
+    <name>Ballast</name>
+    <vendor email="cjbrooks12@gmail.com" url="https://github.com/copper-leaf/ballast">Casey Brooks</vendor>
+
+    <description><![CDATA[
+Debugger UI and related tooling for <a href="https://github.com/copper-leaf/ballast">Ballast Multiplatform MVI Library</a>.
+<br><br>
+
+<h2>About Ballast:</h2>
+Ballast is an opinionated MVI framework for Kotlin Multiplatform. Its DSL and processing rules are more strict,
+encouraging developers to create components that all work and look similar, while providing a way to handle both UI
+and API-related data safely without multithreading issues.
+<br>
+Ballast's pluggable architecture can be adapted to support a variety of UI targets, while sharing the same core business
+logic. Additionally, Ballast is also suitable for use in non-UI applications, such as for managing the
+caching/repository layer of your application.
+
+<h2>Plugin Features:</h2>
+<ul>
+  <li>Debugger UI for inspecting all ViewModel features in real-time</i>
+  <li>Sample panel for getting a feel for the features of Ballast, which connects itself to the Debugger</i>
+  <li>[Coming soon] Templates for creating Ballast components</i>
+  <li>[Coming soon] Time-travel debugging</i>
+</ul>
+<br><br>
+
+This IDEA plugin is built upon the best features of Kotlin:
+<ul>
+  <li>Compose for Desktop</i>
+  <li>Ktor</i>
+  <li>Kotlinx Serialization</i>
+  <li>Kotlin Coroutines</i>
+  <li>Ballast, itself!</i>
+</ul>
+    ]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Settings UI -->
+        <!--        <projectConfigurable-->
+        <!--            parentId="tools"-->
+        <!--            id="com.copperleaf.ballast.debugger.idea.settings.BallastPluginSettings"-->
+        <!--            instance="com.copperleaf.ballast.debugger.idea.settings.BallastPluginSettings"-->
+        <!--            displayName="Ballast Debugger Settings"-->
+        <!--            nonDefaultProject="true"/>-->
+
+        <!-- Tool Windows -->
+        <toolWindow
+            id="Ballast Debugger"
+            secondary="true"
+            icon="AllIcons.Actions.Preview"
+            anchor="bottom"
+            factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastDebuggerToolWindow"/>
+        <toolWindow
+            id="Ballast Sample"
+            secondary="true"
+            icon="AllIcons.Actions.SyncPanels"
+            anchor="right"
+            factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastSampleToolWindow"/>
+
+<!--        <fileTemplateGroup-->
+<!--            implementation="com.copperleaf.ballast.debugger.idea.templates.ExposeOtherTemplates"/>-->
+    </extensions>
+
+    <actions>
+<!--        <action-->
+<!--            id="com.copperleaf.ballast.debugger.idea.templates.NewBallastComponent"-->
+<!--            class="com.copperleaf.ballast.debugger.idea.templates.NewBallastComponent">-->
+<!--            <add-to-group group-id="NewGroup"/>-->
+<!--        </action>-->
+    </actions>
+</idea-plugin>

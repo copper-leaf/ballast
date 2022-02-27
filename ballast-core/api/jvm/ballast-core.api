@@ -211,7 +211,7 @@ public final class com/copperleaf/ballast/InputStrategy$Guardian$DefaultImpls {
 	public static fun checkStateUpdate (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 }
 
-public abstract interface class com/copperleaf/ballast/SideEffectScope {
+public abstract interface class com/copperleaf/ballast/SideEffectScope : kotlinx/coroutines/CoroutineScope {
 	public abstract fun getCurrentStateWhenStarted ()Ljava/lang/Object;
 	public abstract fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
 	public abstract fun postEvent (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

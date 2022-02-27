@@ -324,12 +324,6 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         val sideEffectContainer = RunningSideEffect(
             key = key,
             block = block,
-            scope = SideEffectScopeImpl(
-                _inputs = this@BallastViewModelImpl,
-                _events = _events,
-                currentStateWhenStarted = _state.value,
-                restartState = restartState
-            ),
         )
         currentSideEffects[key] = sideEffectContainer
 
@@ -342,10 +336,17 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
             try {
                 coroutineScope {
-                    sideEffectContainer.run()
-                    _notifications
-                        .emit(BallastNotification.SideEffectCompleted(this@BallastViewModelImpl, key, restartState))
+                    val sideEffectScope = SideEffectScopeImpl(
+                        _inputs = this@BallastViewModelImpl,
+                        _events = _events,
+                        currentStateWhenStarted = _state.value,
+                        restartState = restartState,
+                        coroutineScope = this,
+                    )
+                    sideEffectContainer.block.invoke(sideEffectScope)
                 }
+                _notifications
+                    .emit(BallastNotification.SideEffectCompleted(this@BallastViewModelImpl, key, restartState))
             } catch (e: CancellationException) {
                 // ignore
                 _notifications

@@ -1,7 +1,6 @@
 package com.copperleaf.ballast
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
@@ -30,11 +29,9 @@ public inline fun <
     sideEffect(
         key = key,
     ) {
-        coroutineScope {
-            merge(*inputs)
-                .onEach { postInput(it) }
-                .launchIn(this)
-        }
+        merge(*inputs)
+            .onEach { postInput(it) }
+            .launchIn(this)
     }
 }
 
@@ -61,11 +58,9 @@ public inline fun <
     sideEffect(
         key = key,
     ) {
-        coroutineScope {
-            getInputs().merge()
-                .onEach { postInput(it) }
-                .launchIn(this)
-        }
+        getInputs().merge()
+            .onEach { postInput(it) }
+            .launchIn(this)
     }
 }
 
