@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
@@ -30,23 +31,23 @@ import kotlinx.coroutines.launch
  */
 public class ParallelInputStrategy : InputStrategy {
 
-    override fun <T> createChannel(): Channel<T> {
+    override fun <T> createQueue(): Channel<T> {
         return Channel(Channel.BUFFERED, BufferOverflow.SUSPEND)
     }
 
     override val rollbackOnCancellation: Boolean = false
 
-    override suspend fun <Inputs : Any> processInputs(
-        filteredInputs: Flow<Inputs>,
-        acceptInput: suspend (input: Inputs, InputStrategy.Guardian) -> Unit,
+    override suspend fun <Inputs : Any, Events : Any, State : Any> processInputs(
+        filteredQueue: Flow<Queued<Inputs, Events, State>>,
+        acceptQueued: suspend (queued: Queued<Inputs, Events, State>, guardian: InputStrategy.Guardian) -> Unit,
     ) {
         coroutineScope {
             val viewModelScope = this
 
-            filteredInputs
-                .collect { input ->
+            filteredQueue
+                .collect { queued ->
                     viewModelScope.launch {
-                        acceptInput(input, Guardian())
+                        acceptQueued(queued, Guardian())
                     }
                 }
         }

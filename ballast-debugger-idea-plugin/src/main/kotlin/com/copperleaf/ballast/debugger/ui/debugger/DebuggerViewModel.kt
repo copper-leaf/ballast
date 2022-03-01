@@ -3,7 +3,6 @@ package com.copperleaf.ballast.debugger.ui.debugger
 import com.copperleaf.ballast.core.BaseViewModel
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.core.FifoInputStrategy
-import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlinx.coroutines.CoroutineScope
 
 class DebuggerViewModel(

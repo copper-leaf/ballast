@@ -3,6 +3,11 @@ public abstract interface annotation class com/copperleaf/ballast/BallastDsl : j
 
 public abstract interface class com/copperleaf/ballast/BallastInterceptor {
 	public abstract fun onNotify (Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun start (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class com/copperleaf/ballast/BallastInterceptor$DefaultImpls {
+	public static fun start (Lcom/copperleaf/ballast/BallastInterceptor;Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
 }
 
 public abstract class com/copperleaf/ballast/BallastNotification {
@@ -196,7 +201,7 @@ public abstract interface class com/copperleaf/ballast/InputHandlerScope {
 }
 
 public abstract interface class com/copperleaf/ballast/InputStrategy {
-	public abstract fun createChannel ()Lkotlinx/coroutines/channels/Channel;
+	public abstract fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public abstract fun getRollbackOnCancellation ()Z
 	public abstract fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -209,6 +214,19 @@ public abstract interface class com/copperleaf/ballast/InputStrategy$Guardian {
 public final class com/copperleaf/ballast/InputStrategy$Guardian$DefaultImpls {
 	public static fun checkStateAccess (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun checkStateUpdate (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
+}
+
+public abstract class com/copperleaf/ballast/Queued {
+}
+
+public final class com/copperleaf/ballast/Queued$HandleInput : com/copperleaf/ballast/Queued {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun getInput ()Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/Queued$RestoreState : com/copperleaf/ballast/Queued {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun getState ()Ljava/lang/Object;
 }
 
 public abstract interface class com/copperleaf/ballast/SideEffectScope : kotlinx/coroutines/CoroutineScope {
@@ -301,7 +319,7 @@ public final class com/copperleaf/ballast/core/DefaultViewModelConfiguration : c
 
 public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
-	public fun createChannel ()Lkotlinx/coroutines/channels/Channel;
+	public fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -314,7 +332,7 @@ public final class com/copperleaf/ballast/core/FifoInputStrategy$Guardian : com/
 
 public final class com/copperleaf/ballast/core/LifoInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
-	public fun createChannel ()Lkotlinx/coroutines/channels/Channel;
+	public fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -330,11 +348,12 @@ public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperle
 	public fun <init> (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
 	public synthetic fun <init> (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun onNotify (Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
 }
 
 public final class com/copperleaf/ballast/core/ParallelInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
-	public fun createChannel ()Lkotlinx/coroutines/channels/Channel;
+	public fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }

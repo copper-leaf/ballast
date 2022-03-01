@@ -40,6 +40,7 @@ fun EventList(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun EventSummary(
     uiState: DebuggerContract.State,
@@ -72,6 +73,7 @@ fun EventSummary(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun EventDetails(
     uiState: DebuggerContract.State,

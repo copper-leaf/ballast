@@ -40,6 +40,7 @@ fun InputList(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun InputSummary(
     uiState: DebuggerContract.State,
@@ -72,6 +73,7 @@ fun InputSummary(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun InputDetails(
     uiState: DebuggerContract.State,

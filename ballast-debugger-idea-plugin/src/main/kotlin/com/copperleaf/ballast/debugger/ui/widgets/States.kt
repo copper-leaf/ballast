@@ -32,6 +32,7 @@ fun StateSnapshotList(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun StateSnapshotSummary(
     uiState: DebuggerContract.State,
@@ -54,6 +55,7 @@ fun StateSnapshotSummary(
     }
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun StateSnapshotDetails(
     uiState: DebuggerContract.State,

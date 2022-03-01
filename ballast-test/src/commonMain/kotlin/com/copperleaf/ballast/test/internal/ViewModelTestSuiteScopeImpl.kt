@@ -195,8 +195,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
                 .awaitAll()
 
             results.forEach {
-                val scenarioLogger = it.scenario.logger ?: suiteLogger
-                scenarioLogger(it.printResults())
+                println(it.printResults())
             }
 
             results.filterIsInstance<ScenarioResult.Failed<*, *, *>>().firstOrNull()?.let {
@@ -204,6 +203,6 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
             }
         }
 
-        suiteLogger("All scenarios completed in $totalTestTime")
+        println("All scenarios completed in $totalTestTime")
     }
 }

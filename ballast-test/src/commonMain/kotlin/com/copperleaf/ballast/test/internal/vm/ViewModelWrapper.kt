@@ -8,6 +8,7 @@ import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.selects.SelectClause2
 
+@ExperimentalCoroutinesApi
 internal class ViewModelWrapper<Inputs : Any, Events : Any, State : Any>(
     private val delegate: BallastViewModel<TestViewModel.Inputs<Inputs>, Events, State>,
 ) : BallastViewModel<Inputs, Events, State> {
@@ -15,7 +16,6 @@ internal class ViewModelWrapper<Inputs : Any, Events : Any, State : Any>(
     override val name: String
         get() = delegate.name
 
-    @ExperimentalCoroutinesApi
     override val isClosedForSend: Boolean
         get() = delegate.isClosedForSend
 
@@ -26,7 +26,6 @@ internal class ViewModelWrapper<Inputs : Any, Events : Any, State : Any>(
         return delegate.close(cause)
     }
 
-    @ExperimentalCoroutinesApi
     override fun invokeOnClose(handler: (cause: Throwable?) -> Unit) {
         delegate.invokeOnClose(handler)
     }

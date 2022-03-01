@@ -25,7 +25,7 @@ public interface InputStrategy {
      * Create the ViewModel channel most appropriate for accepting Inputs to the ViewModel and passing them to the
      * internal processing pipeline.
      */
-    public fun <T> createChannel(): Channel<T>
+    public fun <T> createQueue(): Channel<T>
 
     /**
      * When an input gets cancelled, should the state be rolled back to where it was before the input was accepted? If
@@ -37,16 +37,16 @@ public interface InputStrategy {
 
     /**
      * Collect the inputs that have been sent to the ViewModel and process each of them, typically using traditional
-     * Flow operators internally. [filteredInputs] is the Flow of inputs that are being received from the ViewModel's
+     * Flow operators internally. [filteredQueue] is the Flow of inputs that are being received from the ViewModel's
      * Channel, and have already been filtered according to the ViewModel's [InputFilter] if a filter was provided.
      *
-     * Once an input has been received, it should be sent back to the ViewModel through [acceptInput] for internal
+     * Once an input has been received, it should be sent back to the ViewModel through [acceptQueued] for internal
      * processing. The Strategy will provide a Guardian to the [InputHandlerScope], to ensure the Input is being handled
      * safely according to its own rules, guarding against potential issues.
      */
-    public suspend fun <Inputs : Any> processInputs(
-        filteredInputs: Flow<Inputs>,
-        acceptInput: suspend (input: Inputs, guardian: Guardian) -> Unit,
+    public suspend fun <Inputs : Any, Events : Any, State : Any> processInputs(
+        filteredQueue: Flow<Queued<Inputs, Events, State>>,
+        acceptQueued: suspend (queued: Queued<Inputs, Events, State>, guardian: Guardian) -> Unit,
     )
 
     /**

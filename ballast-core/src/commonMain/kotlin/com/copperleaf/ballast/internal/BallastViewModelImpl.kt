@@ -6,11 +6,11 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.SideEffectScope
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -23,11 +23,12 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.job
@@ -40,7 +41,7 @@ import kotlin.coroutines.coroutineContext
 
 public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     private val config: BallastViewModelConfiguration<Inputs, Events, State>,
-    private val _inputs: Channel<Inputs> = config.inputStrategy.createChannel(),
+    private val _inputs: Channel<Inputs> = config.inputStrategy.createQueue(),
 ) : BallastViewModel<Inputs, Events, State>,
     BallastViewModelConfiguration<Inputs, Events, State> by config,
     SendChannel<Inputs> by _inputs {
@@ -178,25 +179,19 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         viewModelScope.launch {
             val filteredInputsFlow = _inputs
                 .receiveAsFlow()
-                .filter { input ->
-                    val currentState = _state.value
-                    val shouldAcceptInput = filter?.filterInput(currentState, input) ?: InputFilter.Result.Accept
-                    if (shouldAcceptInput == InputFilter.Result.Reject) {
-                        _notifications.emit(
-                            BallastNotification.InputRejected(
-                                this@BallastViewModelImpl,
-                                currentState,
-                                input
-                            )
-                        )
-                    }
-
-                    return@filter shouldAcceptInput == InputFilter.Result.Accept
-                }
+                .map { input -> Queued.HandleInput<Inputs, Events, State>(input) }
+                .filter { queued -> filterQueued(queued) }
 
             config.inputStrategy.processInputs(
-                filteredInputsFlow,
-                ::safelyHandleInput
+                filteredQueue = filteredInputsFlow,
+                acceptQueued = { queued, guardian ->
+                    when (queued) {
+                        is Queued.HandleInput -> {
+                            safelyHandleInput(queued.input, guardian)
+                        }
+                        is Queued.RestoreState -> TODO("Restoring state from an Interceptor is not yet implemented")
+                    }
+                }
             )
         }
 
@@ -211,13 +206,40 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         // send notifications to Interceptors
         interceptors
             .forEach { interceptor ->
-                viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {
-                    _notifications
-                        .collect(interceptor::onNotify)
-                }
+                interceptor.start(
+                    viewModelScope = viewModelScope,
+                    notifications = _notifications.asSharedFlow(),
+                    sendToQueue = { _inputs.send(it) }
+                )
             }
 
         _notifications.tryEmit(BallastNotification.ViewModelStarted(this@BallastViewModelImpl))
+    }
+
+    private suspend fun filterQueued(queued: Queued<Inputs, Events, State>): Boolean {
+        when (queued) {
+            is Queued.RestoreState -> {
+                // when restoring state, always accept the item
+                return true
+            }
+            is Queued.HandleInput -> {
+                // when handling an Input, check with the InputFilter to see if it should be accepted
+                val currentState = _state.value
+                val shouldAcceptInput = filter?.filterInput(currentState, queued.input) ?: InputFilter.Result.Accept
+
+                if (shouldAcceptInput == InputFilter.Result.Reject) {
+                    _notifications.emit(
+                        BallastNotification.InputRejected(
+                            this@BallastViewModelImpl,
+                            currentState,
+                            queued.input,
+                        )
+                    )
+                }
+
+                return shouldAcceptInput == InputFilter.Result.Accept
+            }
+        }
     }
 
     private suspend fun safelyHandleInput(

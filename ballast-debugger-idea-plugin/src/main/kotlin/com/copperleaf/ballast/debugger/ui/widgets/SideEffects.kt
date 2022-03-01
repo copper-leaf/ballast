@@ -41,6 +41,7 @@ fun SideEffectList(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun SideEffectSummary(
     uiState: DebuggerContract.State,
@@ -74,6 +75,7 @@ fun SideEffectSummary(
     )
 }
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun SideEffectDetails(
     uiState: DebuggerContract.State,

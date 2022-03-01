@@ -7,9 +7,11 @@ import com.copperleaf.ballast.test.ViewModelTestScenarioInputSequenceScope
 import com.copperleaf.ballast.test.ViewModelTestScenarioScope
 import com.copperleaf.ballast.test.internal.vm.TestInterceptorWrapper
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
 
+@ExperimentalCoroutinesApi
 @ExperimentalTime
 internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override val name: String

@@ -2,7 +2,9 @@ package com.copperleaf.ballast.test.internal.vm
 
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.SideEffectScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
     private val inputHandlerScopeDelegate: InputHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>,
 ) : InputHandlerScope<Inputs, Events, State> {

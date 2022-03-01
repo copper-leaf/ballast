@@ -20,6 +20,8 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindowManager
 import io.github.copper_leaf.ballast_debugger_idea_plugin.BALLAST_VERSION
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 val LocalInjector = compositionLocalOf<BallastDebuggerInjector> { error("LocalInjector not provided") }
 
@@ -65,6 +67,8 @@ class BallastDebuggerInjectorImpl(
 
     private val toolWindowManager: ToolWindowManager get() = ToolWindowManager.getInstance(project)
 
+    private val applicationScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
     override fun debuggerViewModel(coroutineScope: CoroutineScope): DebuggerViewModel {
         return DebuggerViewModel(
             coroutineScope = coroutineScope,
@@ -87,7 +91,8 @@ class BallastDebuggerInjectorImpl(
         inputStrategy: InputStrategy,
     ): SampleViewModel {
         return SampleViewModel(
-            coroutineScope = coroutineScope,
+            applicationCoroutineScope = applicationScope,
+            viewModelCoroutineScope = coroutineScope,
             debuggerConnection = debuggerConnection,
             inputStrategy = inputStrategy,
             inputHandler = SampleInputHandler(logger),

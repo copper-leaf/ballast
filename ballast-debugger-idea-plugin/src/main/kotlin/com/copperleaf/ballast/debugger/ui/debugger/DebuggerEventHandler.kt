@@ -15,7 +15,8 @@ class DebuggerEventHandler(
         DebuggerContract.Events,
         DebuggerContract.State>.handleEvent(
         event: DebuggerContract.Events
-    ) = when (event) {
-        else -> { }
-    }
+    ) { }
+//    ) = when (event) {
+//        else -> { }
+//    }
 }

@@ -4,10 +4,12 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.SideEffectScope
 import com.copperleaf.ballast.test.TestResults
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * An internal class used to keep the test framework
  */
+@ExperimentalCoroutinesApi
 internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
     BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State> {
 
