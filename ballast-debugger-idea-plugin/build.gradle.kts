@@ -27,7 +27,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core:1.6.5")
     implementation("io.ktor:ktor-server-cio:1.6.5")
     implementation("io.ktor:ktor-websockets:1.6.5")
-    implementation("ch.qos.logback:logback-classic:1.2.5")
+    implementation("org.slf4j:slf4j-nop:1.7.36")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
     implementation("io.ktor:ktor-client-cio:1.6.5")

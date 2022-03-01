@@ -23,10 +23,6 @@ class SampleViewModel(
         inputHandler = inputHandler,
         inputStrategy = inputStrategy,
         interceptors = listOf(
-            LoggingInterceptor(
-                logError = { println(it.stackTraceToString()) },
-                logMessage = { println(it) },
-            ),
             BallastDebuggerInterceptor(debuggerConnection),
         ),
         name = "Sample",

@@ -18,12 +18,6 @@ class DebuggerViewModel(
         initialState = DebuggerContract.State(),
         inputHandler = inputHandler,
         inputStrategy = FifoInputStrategy(),
-        interceptors = listOf(
-            LoggingInterceptor(
-                logError = { println(it.stackTraceToString()) },
-                logMessage = { println(it) },
-            )
-        ),
         name = "Debugger",
     ),
     eventHandler = eventHandler,
