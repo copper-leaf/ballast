@@ -3,9 +3,7 @@ package com.copperleaf.ballast.test.internal
 import com.copperleaf.ballast.test.ViewModelTestScenarioInputSequenceScope
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 internal class ViewModelTestScenarioInputSequenceScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val logger: (String) -> Unit,
     private val vm: TestViewModel<Inputs, Events, State>

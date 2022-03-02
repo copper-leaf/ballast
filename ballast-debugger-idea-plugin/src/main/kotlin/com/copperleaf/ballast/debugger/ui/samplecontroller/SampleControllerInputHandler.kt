@@ -11,11 +11,8 @@ import com.intellij.openapi.diagnostic.Logger
 import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class SampleControllerInputHandler
-@Inject
-constructor(
+class SampleControllerInputHandler(
     private val injector: BallastDebuggerInjector,
     private val logger: Logger,
     private val prefs: IdeaPluginPrefs,

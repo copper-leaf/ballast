@@ -351,6 +351,9 @@ data class ProjectVersion(
 }
 
 data class PublishConfiguration(
+    val githubUser: String,
+    val githubToken: String,
+
     val mavenRepositoryBaseUrl: String,
     val stagingRepositoryIdFile: File,
     val stagingProfileId: String,
@@ -393,6 +396,8 @@ data class PublishConfiguration(
     fun debug(): String {
         return """
             |PublishConfiguration(
+            |    githubUser=${if (githubUser.isNotBlank()) "[REDACTED]" else ""}
+            |    githubToken=${if (githubToken.isNotBlank()) "[REDACTED]" else ""}
             |    mavenRepositoryBaseUrl=$mavenRepositoryBaseUrl
             |    stagingRepositoryIdFile=$stagingRepositoryIdFile
             |    stagingRepositoryId=$stagingRepositoryId

@@ -1,9 +1,7 @@
 package com.copperleaf.ballast.test.internal.vm
 
 import com.copperleaf.ballast.InputFilter
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 internal class TestInputFilter<Inputs : Any, Events : Any, State : Any>(
     private val filterDelegate: InputFilter<Inputs, Events, State>
 ) : InputFilter<TestViewModel.Inputs<Inputs>, Events, State> {

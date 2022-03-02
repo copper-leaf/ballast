@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.debugger.ui.widgets
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.ListItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -53,6 +55,14 @@ fun SideEffectSummary(
 
     ListItem(
         modifier = Modifier
+            .onHoverState { Modifier.highlight() }
+            .then(
+                if (uiState.focusedDebuggerEventUuid == sideEffectState.uuid) {
+                    Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
+                } else {
+                    Modifier
+                }
+            )
             .clickable {
                 postInput(
                     DebuggerContract.Inputs.FocusEvent(

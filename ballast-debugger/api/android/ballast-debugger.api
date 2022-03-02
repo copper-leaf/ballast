@@ -1073,6 +1073,6 @@ public final class com/copperleaf/ballast/debugger/models/JsonKt {
 public final class com/copperleaf/ballast/debugger/utils/UtilsKt {
 	public static final fun minus (Lkotlinx/datetime/LocalDateTime;Lkotlinx/datetime/LocalDateTime;)J
 	public static final fun now (Lkotlinx/datetime/LocalDateTime$Companion;)Lkotlinx/datetime/LocalDateTime;
-	public static final fun removeFraction-VtjQ1oo (JLjava/util/concurrent/TimeUnit;)J
+	public static final fun removeFraction-VtjQ1oo (JLkotlin/time/DurationUnit;)J
 }
 

@@ -84,8 +84,6 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("io.mockk:mockk:1.11.0")
-                implementation("app.cash.turbine:turbine:0.7.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
             }
         }
@@ -100,7 +98,6 @@ kotlin {
             dependsOn(androidAndroidTestRelease)
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("io.mockk:mockk:1.11.0")
             }
         }
 
@@ -134,7 +131,6 @@ tasks.withType<Test> {
     }
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.useIR = true
     kotlinOptions {
         jvmTarget = Config.javaVersion
     }

@@ -61,6 +61,7 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
                 onError(notification, "Unknown", notification.throwable, false) {
                 }
             }
+            else -> { }
         }
     }
 

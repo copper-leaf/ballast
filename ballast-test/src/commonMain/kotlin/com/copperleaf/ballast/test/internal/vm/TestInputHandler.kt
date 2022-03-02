@@ -2,9 +2,7 @@ package com.copperleaf.ballast.test.internal.vm
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 internal class TestInputHandler<Inputs : Any, Events : Any, State : Any>(
     private val logger: (String) -> Unit,
     private val inputHandlerDelegate: InputHandler<Inputs, Events, State>,

@@ -9,9 +9,7 @@ import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@ExperimentalCoroutinesApi
 internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal constructor(
     internal val logger: (String) -> Unit,
     internal val testInterceptor: TestInterceptor<Inputs, Events, State>,

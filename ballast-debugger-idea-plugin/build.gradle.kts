@@ -18,19 +18,20 @@ description = "Debugger UI application for Ballast MVI"
 
 dependencies {
     // compose Desktop Intellij Plugin
-    implementation(compose.desktop.currentOs)
+    compileOnly(compose.desktop.currentOs)
     implementation(compose.desktop.components.splitPane)
     implementation(compose.desktop.components.splitPane)
     implementation(compose.materialIconsExtended)
 
     // Ktor websocker server
-    implementation("io.ktor:ktor-server-core:1.6.5")
-    implementation("io.ktor:ktor-server-cio:1.6.5")
-    implementation("io.ktor:ktor-websockets:1.6.5")
+    implementation("io.ktor:ktor-server-core:1.6.7")
+    implementation("io.ktor:ktor-server-cio:1.6.7")
+    implementation("io.ktor:ktor-websockets:1.6.7")
     implementation("org.slf4j:slf4j-nop:1.7.36")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
-    implementation("io.ktor:ktor-client-cio:1.6.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
+    implementation("io.ktor:ktor-client-cio:1.6.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     implementation(project(":ballast-core"))
@@ -55,9 +56,7 @@ intellij {
 
     plugins.set(
         listOf(
-            "java",
-            "com.intellij.gradle",
-            "org.jetbrains.kotlin"
+            "org.jetbrains.compose.intellij.platform:0.1.0",
         )
     )
 }

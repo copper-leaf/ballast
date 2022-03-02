@@ -4,9 +4,7 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : Any> {
     public val name: String
 

@@ -1,3 +1,9 @@
+## 0.10.0 - 2022-02-28
+
+- Updates to Kotlin 1.6.10
+- Fixes issue running IntelliJ plugin on Windows
+- Starts improving the Interceptor API to eventually allow Interceptors to inject Inputs and restore States
+
 ## 0.9.0 - 2022-02-28
 
 - Finishes Debugger UI, fully exposing all states of Inputs, Events, and SideEffects

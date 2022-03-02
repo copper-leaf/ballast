@@ -23,10 +23,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
-@ExperimentalCoroutinesApi
 @ExperimentalTime
 internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val inputHandler: InputHandler<Inputs, Events, State>,
@@ -35,7 +35,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
 ) : ViewModelTestSuiteScope<Inputs, Events, State> {
 
     private var suiteLogger: (String) -> Unit = { }
-    private var defaultTimeout: Duration = Duration.seconds(30)
+    private var defaultTimeout: Duration = 30.seconds
     private var inputStrategy: InputStrategy = LifoInputStrategy()
 
     internal val interceptors: MutableList<() -> BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
@@ -68,6 +68,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         scenarioBlocks += ViewModelTestScenarioScopeImpl<Inputs, Events, State>(name).apply(block)
     }
 
+    @ExperimentalCoroutinesApi
     private suspend fun runScenario(
         scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>
     ) = supervisorScope {
@@ -165,6 +166,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         }
     }
 
+    @ExperimentalCoroutinesApi
     internal suspend fun runTest() = supervisorScope {
         val totalTestTime = measureTime {
             val hasSoloScenario = scenarioBlocks.any { it.solo }

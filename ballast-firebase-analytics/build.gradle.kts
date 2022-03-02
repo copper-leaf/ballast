@@ -80,7 +80,6 @@ kotlin {
             dependsOn(androidAndroidTestRelease)
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("io.mockk:mockk:1.11.0")
             }
         }
     }
@@ -96,7 +95,6 @@ tasks.withType<Test> {
     }
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.useIR = true
     kotlinOptions {
         jvmTarget = Config.javaVersion
     }

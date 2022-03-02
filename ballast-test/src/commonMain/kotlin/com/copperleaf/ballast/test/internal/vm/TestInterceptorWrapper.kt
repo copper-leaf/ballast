@@ -3,13 +3,11 @@ package com.copperleaf.ballast.test.internal.vm
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.BallastViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * This class wraps a standard Interceptor to pull Inputs out of the TestViewModel wrapped INput type, and convert it
  * back to the intended Input that the test is running against.
  */
-@ExperimentalCoroutinesApi
 internal class TestInterceptorWrapper<Inputs : Any, Events : Any, State : Any>(
     private val delegate: BallastInterceptor<Inputs, Events, State>,
 ) : BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State> {

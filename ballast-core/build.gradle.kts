@@ -85,8 +85,6 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("io.mockk:mockk:1.11.0")
-                implementation("app.cash.turbine:turbine:0.7.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
             }
         }
@@ -94,9 +92,9 @@ kotlin {
         // Android JVM Sourcesets
         val androidMain by getting {
             dependencies {
-                implementation("androidx.lifecycle:lifecycle-common:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+                implementation("androidx.lifecycle:lifecycle-common:2.4.1")
+                implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
             }
         }
         val androidAndroidTestRelease by getting { }
@@ -104,7 +102,6 @@ kotlin {
             dependsOn(androidAndroidTestRelease)
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("io.mockk:mockk:1.11.0")
             }
         }
 
@@ -138,7 +135,6 @@ tasks.withType<Test> {
     }
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.useIR = true
     kotlinOptions {
         jvmTarget = Config.javaVersion
     }

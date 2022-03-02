@@ -6,6 +6,7 @@ import com.copperleaf.ballast.debugger.utils.now
 import com.copperleaf.ballast.debugger.utils.removeFraction
 import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 import kotlin.time.ExperimentalTime
 
@@ -20,7 +21,6 @@ public data class BallastApplicationState(
 // Connection
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public data class BallastConnectionState(
     public val connectionId: String,
     public val connectionBallastVersion: String = "",
@@ -28,8 +28,9 @@ public data class BallastConnectionState(
     public val firstSeen: LocalDateTime = LocalDateTime.now(),
     public val lastSeen: LocalDateTime = LocalDateTime.now(),
 ) {
+    @ExperimentalTime
     public fun isActive(currentTime: LocalDateTime): Boolean {
-        return (currentTime - lastSeen) <= Duration.Companion.seconds(5)
+        return (currentTime - lastSeen) <= 5.seconds
     }
 }
 
@@ -59,7 +60,6 @@ public fun BallastApplicationState.updateConnection(
 // ViewModel
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public data class BallastViewModelState(
     public val connectionId: String,
     public val viewModelName: String,
@@ -86,7 +86,6 @@ public data class BallastViewModelState(
     public val sideEffectsInProgress: Boolean = runningSideEffectCount > 0
 }
 
-@ExperimentalTime
 public fun BallastConnectionState.updateViewModel(
     viewModelName: String?,
     block: BallastViewModelState.() -> BallastViewModelState,
@@ -114,7 +113,6 @@ public fun BallastConnectionState.updateViewModel(
 // Inputs
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public data class BallastInputState(
     public val connectionId: String,
     public val viewModelName: String,
@@ -155,7 +153,6 @@ public data class BallastInputState(
     }
 }
 
-@ExperimentalTime
 public fun BallastViewModelState.updateInput(
     uuid: String,
     block: BallastInputState.() -> BallastInputState,
@@ -181,7 +178,6 @@ public fun BallastViewModelState.updateInput(
 // Events
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public data class BallastEventState(
     public val connectionId: String,
     public val viewModelName: String,
@@ -213,7 +209,6 @@ public data class BallastEventState(
     }
 }
 
-@ExperimentalTime
 public fun BallastViewModelState.updateEvent(
     uuid: String,
     block: BallastEventState.() -> BallastEventState,
@@ -239,7 +234,6 @@ public fun BallastViewModelState.updateEvent(
 // States
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public data class BallastStateSnapshot(
     public val connectionId: String,
     public val viewModelName: String,
@@ -251,7 +245,6 @@ public data class BallastStateSnapshot(
     public val emittedAt: LocalDateTime = LocalDateTime.now(),
 )
 
-@ExperimentalTime
 public fun BallastViewModelState.appendStateSnapshot(
     uuid: String,
     block: BallastStateSnapshot.() -> BallastStateSnapshot,
@@ -266,7 +259,6 @@ public fun BallastViewModelState.appendStateSnapshot(
 // SideEffects
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public data class BallastSideEffectState(
     public val connectionId: String,
     public val viewModelName: String,
@@ -300,7 +292,6 @@ public data class BallastSideEffectState(
     }
 }
 
-@ExperimentalTime
 public fun BallastViewModelState.updateSideEffect(
     uuid: String,
     block: BallastSideEffectState.() -> BallastSideEffectState,

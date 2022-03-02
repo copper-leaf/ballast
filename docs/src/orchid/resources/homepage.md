@@ -7,7 +7,7 @@ Opinionated MVI framework for Kotlin Multiplatform
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/copper-leaf/ballast)
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.copper-leaf/ballast-core)
-![Kotlin Version](https://img.shields.io/badge/Kotlin-1.5.31-orange)
+![Kotlin Version](https://img.shields.io/badge/Kotlin-1.6.10-orange)
 
 ## Overview
 

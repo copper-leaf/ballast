@@ -22,6 +22,9 @@ object Config {
 
     fun publishConfiguration(project: Project): PublishConfiguration {
         return PublishConfiguration(
+            githubUser = project.loadProperty("github_username", "GITHUB_ACTOR"),
+            githubToken = project.loadProperty("github_token", "GITHUB_TOKEN"),
+
             mavenRepositoryBaseUrl = "https://s01.oss.sonatype.org",
             stagingRepositoryIdFile = project.rootProject.buildDir.resolve("export").resolve("stagingRepositoryId"),
             stagingProfileId = project.loadProperty("staging_profile_id"),
@@ -32,7 +35,7 @@ object Config {
             ossrhUsername = project.loadProperty("ossrh_username"),
             ossrhPassword = project.loadProperty("ossrh_password"),
 
-            jetbrainsMarketplacePassphrase = project.loadProperty("jb_passphrase") ,
+            jetbrainsMarketplacePassphrase = project.loadProperty("jb_passphrase"),
             jetbrainsMarketplacePrivateKey = project.loadFileContents("jb_signing_key"),
             jetbrainsMarketplaceCertificateChain = project.loadFileContents("jb_chain"),
             jetbrainsMarketplaceToken = project.loadProperty("jb_marketplace_token"),
