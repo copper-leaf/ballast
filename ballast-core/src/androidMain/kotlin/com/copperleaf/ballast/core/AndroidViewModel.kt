@@ -23,7 +23,7 @@ private constructor(
     ) : this(BallastViewModelImpl(config))
 
     init {
-        impl.start(viewModelScope)
+        impl.start(viewModelScope) { this@AndroidViewModel }
     }
 
     override fun onCleared() {

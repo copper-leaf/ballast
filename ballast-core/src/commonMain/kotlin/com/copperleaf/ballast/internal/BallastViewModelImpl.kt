@@ -137,7 +137,10 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // ViewModel Lifecycle
 // ---------------------------------------------------------------------------------------------------------------------
 
-    public fun start(coroutineScope: CoroutineScope) {
+    public fun start(
+        coroutineScope: CoroutineScope,
+        getHost: ()->BallastViewModel<Inputs, Events, State>,
+    ) {
         check(!started) { "VM is already started" }
         viewModelScope = coroutineScope + uncaughtExceptionHandler
         startInternal()

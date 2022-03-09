@@ -28,7 +28,7 @@ public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private
     )
 
     init {
-        impl.start(coroutineScope)
+        impl.start(coroutineScope) { this@BaseViewModel }
         impl.viewModelScope.launch {
             impl.attachEventHandler(eventHandler)
         }

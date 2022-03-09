@@ -94,7 +94,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
 
         // start running the VM in the background
         val viewModelJob = launch(start = CoroutineStart.UNDISPATCHED) {
-            testViewModel.impl.start(this)
+            testViewModel.impl.start(this) { testViewModel }
         }
         val eventHandlerJob = launch(start = CoroutineStart.UNDISPATCHED) {
             testViewModel.impl.attachEventHandler(TestEventHandler(eventHandler))

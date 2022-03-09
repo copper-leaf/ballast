@@ -27,7 +27,7 @@ public class IosViewModel<Inputs : Any, Events : Any, State : Any> private const
     )
 
     init {
-        impl.start(coroutineScope)
+        impl.start(coroutineScope) { this@IosViewModel }
     }
 
     /**

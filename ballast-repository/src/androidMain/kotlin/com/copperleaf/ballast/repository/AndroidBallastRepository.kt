@@ -27,14 +27,9 @@ private constructor(
     ) : this(BallastViewModelImpl(config), eventBus)
 
     init {
-        impl.start(viewModelScope)
+        impl.start(viewModelScope) { this@AndroidBallastRepository }
         viewModelScope.launch {
             impl.attachEventHandler(EventBusEventHandler(eventBus))
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        impl.onCleared()
     }
 }
