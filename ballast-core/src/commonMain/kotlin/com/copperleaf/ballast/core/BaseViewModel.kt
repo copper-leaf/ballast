@@ -6,7 +6,6 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -32,10 +31,5 @@ public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private
         impl.viewModelScope.launch {
             impl.attachEventHandler(eventHandler)
         }
-    }
-
-    public override fun onCleared() {
-        impl.viewModelScope.cancel()
-        impl.onCleared()
     }
 }

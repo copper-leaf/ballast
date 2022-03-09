@@ -26,11 +26,6 @@ private constructor(
         impl.start(viewModelScope) { this@AndroidViewModel }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        impl.onCleared()
-    }
-
     fun attachEventHandler(
         lifecycleOwner: LifecycleOwner,
         handler: EventHandler<Inputs, Events, State>

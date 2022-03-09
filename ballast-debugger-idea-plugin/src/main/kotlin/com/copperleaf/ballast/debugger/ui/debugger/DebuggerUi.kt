@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -26,9 +26,8 @@ object DebuggerUi {
             injector.debuggerViewModel(parentCoroutineScope)
         }
 
-        DisposableEffect(viewModel) {
-            viewModel.trySend(DebuggerContract.Inputs.StartServer(9684))
-            onDispose { viewModel.onCleared() }
+        LaunchedEffect(viewModel) {
+            viewModel.send(DebuggerContract.Inputs.StartServer(9684))
         }
 
         val uiState by viewModel.observeStates().collectAsState()

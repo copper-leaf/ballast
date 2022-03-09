@@ -50,12 +50,7 @@ class SampleControllerInputHandler(
             }
         }
         is SampleControllerContract.Inputs.UpdateViewModel -> {
-            val previousState = getAndUpdateState { it.copy(viewModel = input.viewModel) }
-
-            // if we had a VM already, clear it out when setting a new one
-            previousState.viewModel?.onCleared()
-
-            Unit
+            updateState { it.copy(viewModel = input.viewModel) }
         }
         is SampleControllerContract.Inputs.BrowseSampleSources -> {
             postEventWithState {

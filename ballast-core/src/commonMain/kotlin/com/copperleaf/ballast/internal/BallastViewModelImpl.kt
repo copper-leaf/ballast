@@ -142,11 +142,17 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         getHost: ()->BallastViewModel<Inputs, Events, State>,
     ) {
         check(!started) { "VM is already started" }
+        started = true
         viewModelScope = coroutineScope + uncaughtExceptionHandler
+
         startInternal()
+
+        viewModelScope.coroutineContext.job.invokeOnCompletion {
+            onCleared()
+        }
     }
 
-    override fun onCleared() {
+    private fun onCleared() {
         check(started) { "VM is not started!" }
         started = false
 
@@ -166,8 +172,6 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // ---------------------------------------------------------------------------------------------------------------------
 
     private fun startInternal() {
-        started = true
-
         // updates to current state post a new event with the new state
         viewModelScope.launch {
             _state

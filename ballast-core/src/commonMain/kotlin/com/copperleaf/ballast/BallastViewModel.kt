@@ -83,10 +83,4 @@ public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : Sen
      * Observe the flow of states from this ViewModel
      */
     public fun observeStates(): StateFlow<State>
-
-    /**
-     * Clear this viewmodel, releasing all resources and cancelling all running jobs. A ViewModel cannot be reused once
-     * it has been cleared.
-     */
-    public fun onCleared()
 }

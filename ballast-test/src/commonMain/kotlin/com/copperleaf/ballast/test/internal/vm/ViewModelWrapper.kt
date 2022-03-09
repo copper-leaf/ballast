@@ -42,8 +42,4 @@ internal class ViewModelWrapper<Inputs : Any, Events : Any, State : Any>(
     override fun observeStates(): StateFlow<State> {
         return delegate.observeStates()
     }
-
-    override fun onCleared() {
-        delegate.onCleared()
-    }
 }

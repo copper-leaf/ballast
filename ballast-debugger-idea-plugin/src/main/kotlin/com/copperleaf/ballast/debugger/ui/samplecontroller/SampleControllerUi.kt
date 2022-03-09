@@ -28,7 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,9 +53,8 @@ object SampleControllerUi {
             injector.sampleControllerViewModel(parentCoroutineScope)
         }
 
-        DisposableEffect(viewModel) {
-            viewModel.trySend(SampleControllerContract.Inputs.Initialize)
-            onDispose { viewModel.onCleared() }
+        LaunchedEffect(viewModel) {
+            viewModel.send(SampleControllerContract.Inputs.Initialize)
         }
 
         val uiState by viewModel.observeStates().collectAsState()
