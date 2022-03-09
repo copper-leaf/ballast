@@ -156,12 +156,16 @@ public final class com/copperleaf/ballast/BallastViewModel$DefaultImpls {
 }
 
 public abstract interface class com/copperleaf/ballast/BallastViewModelConfiguration {
+	public abstract fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public abstract fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public abstract fun getInitialState ()Ljava/lang/Object;
 	public abstract fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
 	public abstract fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
+	public abstract fun getInputsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getInterceptorDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public abstract fun getInterceptors ()Ljava/util/List;
 	public abstract fun getName ()Ljava/lang/String;
+	public abstract fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 }
 
 public abstract interface class com/copperleaf/ballast/EventHandler {
@@ -283,16 +287,50 @@ public class com/copperleaf/ballast/core/BaseViewModel : com/copperleaf/ballast/
 }
 
 public final class com/copperleaf/ballast/core/DefaultViewModelConfiguration : com/copperleaf/ballast/BallastViewModelConfiguration {
-	public fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/util/List;Lcom/copperleaf/ballast/InputStrategy;Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/util/List;Lcom/copperleaf/ballast/InputStrategy;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/util/List;Lcom/copperleaf/ballast/InputStrategy;Ljava/lang/String;)V
-	public synthetic fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/util/List;Lcom/copperleaf/ballast/InputStrategy;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/util/List;Lcom/copperleaf/ballast/InputStrategy;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Ljava/lang/String;)V
+	public fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public fun getInitialState ()Ljava/lang/Object;
 	public fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
 	public fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
+	public fun getInputsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getInterceptorDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getInterceptors ()Ljava/util/List;
 	public fun getName ()Ljava/lang/String;
+	public fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+}
+
+public final class com/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun build ()Lcom/copperleaf/ballast/BallastViewModelConfiguration;
+	public final fun dispatchers (Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public static synthetic fun dispatchers$default (Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public final fun forViewModel (Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public final fun forViewModel (Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;ILjava/lang/Object;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public final fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
+	public final fun getInitialState ()Ljava/lang/Object;
+	public final fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
+	public final fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
+	public final fun getInputsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getInterceptorDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getInterceptors ()Ljava/util/List;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun plusAssign (Lcom/copperleaf/ballast/BallastInterceptor;)V
+	public final fun plusAssign (Ljava/lang/Iterable;)V
+	public final fun setEventsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public final fun setFilter (Lcom/copperleaf/ballast/InputFilter;)V
+	public final fun setInitialState (Ljava/lang/Object;)V
+	public final fun setInputHandler (Lcom/copperleaf/ballast/InputHandler;)V
+	public final fun setInputStrategy (Lcom/copperleaf/ballast/InputStrategy;)V
+	public final fun setInputsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public final fun setInterceptorDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public final fun setName (Ljava/lang/String;)V
+	public final fun setSideEffectsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
 }
 
 public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperleaf/ballast/InputStrategy {
@@ -348,13 +386,17 @@ public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/co
 	public final fun attachEventHandler (Lcom/copperleaf/ballast/EventHandler;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun awaitSideEffectsCompletion (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun close (Ljava/lang/Throwable;)Z
+	public fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public fun getInitialState ()Ljava/lang/Object;
 	public fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
 	public fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
+	public fun getInputsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getInterceptorDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getInterceptors ()Ljava/util/List;
 	public fun getName ()Ljava/lang/String;
 	public fun getOnSend ()Lkotlinx/coroutines/selects/SelectClause2;
+	public fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun invokeOnClose (Lkotlin/jvm/functions/Function1;)V
 	public fun isClosedForSend ()Z
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;

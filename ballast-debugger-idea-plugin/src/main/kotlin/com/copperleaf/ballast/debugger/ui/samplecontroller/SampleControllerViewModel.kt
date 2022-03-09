@@ -6,17 +6,22 @@ import kotlinx.coroutines.CoroutineScope
 
 class SampleControllerViewModel(
     coroutineScope: CoroutineScope,
+    configurationBuilder: DefaultViewModelConfiguration.Builder,
     inputHandler: SampleControllerInputHandler,
     eventHandler: SampleControllerEventHandler,
 ) : BaseViewModel<
     SampleControllerContract.Inputs,
     SampleControllerContract.Events,
     SampleControllerContract.State>(
-    config = DefaultViewModelConfiguration(
-        initialState = SampleControllerContract.State(),
-        inputHandler = inputHandler,
-        name = "Sample Controller",
-    ),
+    config = configurationBuilder
+        .forViewModel(
+            initialState = SampleControllerContract.State(),
+            inputHandler = inputHandler
+        )
+        .apply {
+            name = "Sample Controller"
+        }
+        .build(),
     eventHandler = eventHandler,
     coroutineScope = coroutineScope
 )

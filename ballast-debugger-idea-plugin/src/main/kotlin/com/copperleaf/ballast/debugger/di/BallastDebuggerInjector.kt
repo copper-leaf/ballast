@@ -2,6 +2,7 @@ package com.copperleaf.ballast.debugger.di
 
 import androidx.compose.runtime.compositionLocalOf
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
@@ -69,9 +70,14 @@ class BallastDebuggerInjectorImpl(
 
     private val applicationScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
+    private fun commonBuilder(): DefaultViewModelConfiguration.Builder {
+        return DefaultViewModelConfiguration.Builder()
+    }
+
     override fun debuggerViewModel(coroutineScope: CoroutineScope): DebuggerViewModel {
         return DebuggerViewModel(
             coroutineScope = coroutineScope,
+            configurationBuilder = commonBuilder(),
             inputHandler = DebuggerInputHandler(logger, prefs),
             eventHandler = DebuggerEventHandler(logger),
         )
@@ -80,6 +86,7 @@ class BallastDebuggerInjectorImpl(
     override fun sampleControllerViewModel(coroutineScope: CoroutineScope): SampleControllerViewModel {
         return SampleControllerViewModel(
             coroutineScope = coroutineScope,
+            configurationBuilder = commonBuilder(),
             inputHandler = SampleControllerInputHandler(this, logger, prefs),
             eventHandler = SampleControllerEventHandler(logger),
         )
@@ -93,6 +100,7 @@ class BallastDebuggerInjectorImpl(
         return SampleViewModel(
             applicationCoroutineScope = applicationScope,
             viewModelCoroutineScope = coroutineScope,
+            configurationBuilder = commonBuilder(),
             debuggerConnection = debuggerConnection,
             inputStrategy = inputStrategy,
             inputHandler = SampleInputHandler(logger),

@@ -326,7 +326,7 @@ public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerUi {
 
 public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel : com/copperleaf/ballast/core/BaseViewModel {
 	public static final field $stable I
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerInputHandler;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerEventHandler;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerInputHandler;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerEventHandler;)V
 }
 
 public final class com/copperleaf/ballast/debugger/ui/sample/ComposableSingletons$SampleUiKt {
@@ -476,7 +476,7 @@ public final class com/copperleaf/ballast/debugger/ui/sample/SampleUi {
 
 public final class com/copperleaf/ballast/debugger/ui/sample/SampleViewModel : com/copperleaf/ballast/core/BaseViewModel {
 	public static final field $stable I
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;Lcom/copperleaf/ballast/debugger/ui/sample/SampleInputHandler;Lcom/copperleaf/ballast/debugger/ui/sample/SampleEventHandler;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;Lcom/copperleaf/ballast/debugger/ui/sample/SampleInputHandler;Lcom/copperleaf/ballast/debugger/ui/sample/SampleEventHandler;)V
 }
 
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/ComposableSingletons$SampleControllerUiKt {
@@ -601,7 +601,7 @@ public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleCon
 
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel : com/copperleaf/ballast/core/BaseViewModel {
 	public static final field $stable I
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerInputHandler;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerEventHandler;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerInputHandler;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerEventHandler;)V
 }
 
 public final class com/copperleaf/ballast/debugger/ui/widgets/ComposableSingletons$ConnectionKt {

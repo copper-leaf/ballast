@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 class SampleViewModel(
     applicationCoroutineScope: CoroutineScope,
     viewModelCoroutineScope: CoroutineScope,
+    configurationBuilder: DefaultViewModelConfiguration.Builder,
     debuggerConnection: BallastDebuggerClientConnection<*>,
     inputStrategy: InputStrategy,
     inputHandler: SampleInputHandler,
@@ -18,15 +19,17 @@ class SampleViewModel(
     SampleContract.Inputs,
     SampleContract.Events,
     SampleContract.State>(
-    config = DefaultViewModelConfiguration(
-        initialState = SampleContract.State(),
-        inputHandler = inputHandler,
-        inputStrategy = inputStrategy,
-        interceptors = listOf(
-            BallastDebuggerInterceptor(applicationCoroutineScope, debuggerConnection),
-        ),
-        name = "Sample",
-    ),
+    config = configurationBuilder
+        .forViewModel(
+            initialState = SampleContract.State(),
+            inputHandler = inputHandler
+        )
+        .apply {
+            name = "Sample"
+            this.inputStrategy = inputStrategy
+            this += BallastDebuggerInterceptor(applicationCoroutineScope, debuggerConnection)
+        }
+        .build(),
     eventHandler = eventHandler,
     coroutineScope = viewModelCoroutineScope
 )

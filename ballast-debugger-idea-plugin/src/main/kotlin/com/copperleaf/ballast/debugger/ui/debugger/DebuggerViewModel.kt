@@ -5,20 +5,25 @@ import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.core.FifoInputStrategy
 import kotlinx.coroutines.CoroutineScope
 
-class DebuggerViewModel(
+class DebuggerViewModel constructor(
     coroutineScope: CoroutineScope,
+    configurationBuilder: DefaultViewModelConfiguration.Builder,
     inputHandler: DebuggerInputHandler,
     eventHandler: DebuggerEventHandler,
 ) : BaseViewModel<
     DebuggerContract.Inputs,
     DebuggerContract.Events,
     DebuggerContract.State>(
-    config = DefaultViewModelConfiguration(
-        initialState = DebuggerContract.State(),
-        inputHandler = inputHandler,
-        inputStrategy = FifoInputStrategy(),
-        name = "Debugger",
-    ),
+    config = configurationBuilder
+        .forViewModel(
+            initialState = DebuggerContract.State(),
+            inputHandler = inputHandler
+        )
+        .apply {
+            name = "Debugger"
+            inputStrategy = FifoInputStrategy()
+        }
+        .build(),
     eventHandler = eventHandler,
     coroutineScope = coroutineScope
 )

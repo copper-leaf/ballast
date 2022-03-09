@@ -20,21 +20,22 @@ internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal c
     internal val inputStrategy: InputStrategy,
     name: String,
     internal val impl: BallastViewModelImpl<TestViewModel.Inputs<Inputs>, Events, State> = BallastViewModelImpl(
-        DefaultViewModelConfiguration(
-            initialState = initialState,
-            inputHandler = TestInputHandler(logger, inputHandler),
-            interceptors = listOf(
-                *otherInterceptors.toTypedArray(),
-                LoggingInterceptor(
+        DefaultViewModelConfiguration.Builder(name)
+            .apply {
+                this.initialState = initialState
+                this.inputHandler = TestInputHandler(logger, inputHandler)
+
+                this += otherInterceptors
+                this += LoggingInterceptor(
                     logMessage = { logger(it) },
                     logError = { logger(it.message ?: "") },
-                ),
-                testInterceptor,
-            ),
-            filter = filter,
-            inputStrategy = inputStrategy,
-            name = name,
-        ),
+                )
+                this += testInterceptor
+
+                this.filter = filter
+                this.inputStrategy = inputStrategy
+            }
+            .build()
     ),
 ) : BallastViewModel<TestViewModel.Inputs<Inputs>, Events, State> by impl {
 

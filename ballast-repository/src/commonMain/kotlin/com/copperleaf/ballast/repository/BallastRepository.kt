@@ -53,12 +53,13 @@ public abstract class BallastRepository<Inputs : Any, State : Any>(
     name: String = "$inputHandler-vm",
 ) : BaseViewModel<Inputs, Any, State>(
     coroutineScope = coroutineScope,
-    config = DefaultViewModelConfiguration(
-        initialState = initialState,
-        inputHandler = inputHandler,
-        inputStrategy = FifoInputStrategy(),
-        interceptors = interceptors,
-        name = name,
-    ),
+    config = DefaultViewModelConfiguration.Builder(name)
+        .apply {
+            this.initialState = initialState
+            this.inputHandler = inputHandler
+            this.inputStrategy = FifoInputStrategy()
+            this += interceptors
+        }
+        .build(),
     eventHandler = EventBusEventHandler(eventBus),
 )
