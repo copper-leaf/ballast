@@ -13,7 +13,7 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
 ): BallastDebuggerEvent {
     return when (this) {
         is BallastNotification.ViewModelStarted -> {
-            BallastDebuggerEvent.ViewModelStarted(connectionId, vm.name, uuid)
+            BallastDebuggerEvent.ViewModelStarted(connectionId, vm.name, vm.type, uuid)
         }
         is BallastNotification.ViewModelCleared -> {
             BallastDebuggerEvent.ViewModelCleared(connectionId, vm.name, uuid)

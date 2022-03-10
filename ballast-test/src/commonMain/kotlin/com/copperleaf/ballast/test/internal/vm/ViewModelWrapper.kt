@@ -14,6 +14,8 @@ internal class ViewModelWrapper<Inputs : Any, Events : Any, State : Any>(
 
     override val name: String
         get() = delegate.name
+    override val type: String
+        get() = delegate.type
 
     @ExperimentalCoroutinesApi
     override val isClosedForSend: Boolean

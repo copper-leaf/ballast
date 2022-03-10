@@ -122,7 +122,6 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         scenarioLogger("    before cleanup")
         viewModelJob.cancelAndJoin()
         eventHandlerJob.cancelAndJoin()
-        testViewModel.onCleared()
         scenarioLogger("    after cleanup")
 
         // make assertions on the VM. Errors should get captured and thrown by this coroutine scope, cancelling

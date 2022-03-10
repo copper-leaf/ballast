@@ -80,6 +80,12 @@ public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : Sen
     public val name: String
 
     /**
+     * The type of the viewmodel, for debugging and interception purposes. Can be set manually through
+     * [BallastViewModelConfiguration], or else a name will be created automatically.
+     */
+    public val type: String
+
+    /**
      * Observe the flow of states from this ViewModel
      */
     public fun observeStates(): StateFlow<State>

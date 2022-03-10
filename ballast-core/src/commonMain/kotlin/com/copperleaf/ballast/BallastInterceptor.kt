@@ -11,7 +11,7 @@ public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
     public fun start(
         viewModelScope: CoroutineScope,
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
-        sendToQueue: suspend (Inputs) -> Unit,
+        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit,
     ) {
         viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {
             notifications.collect(::onNotify)

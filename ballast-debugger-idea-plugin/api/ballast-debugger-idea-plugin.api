@@ -680,6 +680,6 @@ public final class com/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTa
 public final class com/copperleaf/ballast/debugger/ui/widgets/ViewModelKt {
 	public static final fun ViewModelDetails (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 	public static final fun ViewModelList (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
-	public static final fun ViewModelSummary (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun ViewModelSummary (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 }
 

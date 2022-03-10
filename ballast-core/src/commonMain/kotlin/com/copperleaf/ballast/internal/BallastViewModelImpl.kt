@@ -46,11 +46,15 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     BallastViewModelConfiguration<Inputs, Events, State> by config,
     SendChannel<Inputs> by _inputs {
 
+    override val type: String = "BallastViewModelImpl"
+
 // Internal properties
 // ---------------------------------------------------------------------------------------------------------------------
 
     internal lateinit var viewModelScope: CoroutineScope
     private var started = false
+    private var cleared = false
+    private lateinit var host: ()->BallastViewModel<Inputs, Events, State>
 
     private val _state: MutableStateFlow<State> =
         MutableStateFlow(initialState)
@@ -66,31 +70,31 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     private var currentSideEffects = mutableMapOf<String, RunningSideEffect<Inputs, Events, State>>()
 
     private val uncaughtExceptionHandler = CoroutineExceptionHandler { _, e ->
-        _notifications.tryEmit(BallastNotification.UnhandledError(this@BallastViewModelImpl, e))
+        _notifications.tryEmit(BallastNotification.UnhandledError(host(), e))
     }
 
 // Core MVI pattern API
 // ---------------------------------------------------------------------------------------------------------------------
 
     override fun observeStates(): StateFlow<State> {
-        check(started) { "VM is not started!" }
+        checkValidState()
         return outputStates.asStateFlow()
     }
 
     override suspend fun send(element: Inputs) {
-        check(started) { "VM is not started!" }
+        checkValidState()
         _inputs.send(element)
-        _notifications.emit(BallastNotification.InputQueued(this@BallastViewModelImpl, element))
+        _notifications.emit(BallastNotification.InputQueued(host(), element))
     }
 
     override fun trySend(element: Inputs): ChannelResult<Unit> {
-        check(started) { "VM is not started!" }
+        checkValidState()
         val result = _inputs.trySend(element)
         if (result.isFailure) {
-            _notifications.tryEmit(BallastNotification.InputDropped(this@BallastViewModelImpl, element))
+            _notifications.tryEmit(BallastNotification.InputDropped(host(), element))
             result.exceptionOrNull()?.printStackTrace()
         } else {
-            _notifications.tryEmit(BallastNotification.InputQueued(this@BallastViewModelImpl, element))
+            _notifications.tryEmit(BallastNotification.InputQueued(host(), element))
         }
         return result
     }
@@ -98,10 +102,10 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     public suspend fun attachEventHandler(
         handler: EventHandler<Inputs, Events, State>
     ) {
-        _notifications.emit(BallastNotification.EventProcessingStarted(this@BallastViewModelImpl))
+        _notifications.emit(BallastNotification.EventProcessingStarted(host()))
 
         coroutineContext.job.invokeOnCompletion {
-            _notifications.tryEmit(BallastNotification.EventProcessingStopped(this@BallastViewModelImpl))
+            _notifications.tryEmit(BallastNotification.EventProcessingStopped(host()))
         }
 
         withContext(uncaughtExceptionHandler) {
@@ -120,7 +124,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         }
 
         coroutineScope {
-            val dummyNotification = BallastNotification.ViewModelCleared(this@BallastViewModelImpl)
+            val dummyNotification = BallastNotification.ViewModelCleared(host())
             launch {
                 _notifications.emit(dummyNotification)
             }
@@ -142,7 +146,9 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         getHost: ()->BallastViewModel<Inputs, Events, State>,
     ) {
         check(!started) { "VM is already started" }
+        check(!cleared) { "VM is cleared, it cannot be restarted" }
         started = true
+        host = getHost
         viewModelScope = coroutineScope + uncaughtExceptionHandler
 
         startInternal()
@@ -154,7 +160,9 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     private fun onCleared() {
         check(started) { "VM is not started!" }
+        check(!cleared) { "VM is already cleared" }
         started = false
+        cleared = true
 
         for (value in currentSideEffects.values) {
             value.job?.cancel()
@@ -165,18 +173,23 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         // automatically, but we still need to clear the registry
         currentSideEffects.clear()
 
-        _notifications.tryEmit(BallastNotification.ViewModelCleared(this@BallastViewModelImpl))
+        _notifications.tryEmit(BallastNotification.ViewModelCleared(host()))
     }
 
 // Internals
 // ---------------------------------------------------------------------------------------------------------------------
+
+    private fun checkValidState() {
+        check(started) { "VM is not started!" }
+        check(!cleared) { "VM is cleared!" }
+    }
 
     private fun startInternal() {
         // updates to current state post a new event with the new state
         viewModelScope.launch {
             _state
                 .onEach { state ->
-                    _notifications.emit(BallastNotification.StateChanged(this@BallastViewModelImpl, state))
+                    _notifications.emit(BallastNotification.StateChanged(host(), state))
                     outputStates.emit(state)
                 }
                 .launchIn(this)
@@ -196,7 +209,9 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         is Queued.HandleInput -> {
                             safelyHandleInput(queued.input, guardian)
                         }
-                        is Queued.RestoreState -> TODO("Restoring state from an Interceptor is not yet implemented")
+                        is Queued.RestoreState -> {
+                            _state.value = queued.state
+                        }
                     }
                 }
             )
@@ -216,11 +231,20 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 interceptor.start(
                     viewModelScope = viewModelScope,
                     notifications = _notifications.asSharedFlow(),
-                    sendToQueue = { _inputs.send(it) }
+                    sendToQueue = {
+                        when(it) {
+                            is Queued.HandleInput -> {
+                                _inputs.send(it.input)
+                            }
+                            is Queued.RestoreState -> {
+                                TODO("Restoring state from an Interceptor is not yet implemented")
+                            }
+                        }
+                    }
                 )
             }
 
-        _notifications.tryEmit(BallastNotification.ViewModelStarted(this@BallastViewModelImpl))
+        _notifications.tryEmit(BallastNotification.ViewModelStarted(host()))
     }
 
     private suspend fun filterQueued(queued: Queued<Inputs, Events, State>): Boolean {
@@ -237,7 +261,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 if (shouldAcceptInput == InputFilter.Result.Reject) {
                     _notifications.emit(
                         BallastNotification.InputRejected(
-                            this@BallastViewModelImpl,
+                            host(),
                             currentState,
                             queued.input,
                         )
@@ -253,7 +277,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         input: Inputs,
         guardian: InputStrategy.Guardian,
     ) {
-        _notifications.emit(BallastNotification.InputAccepted(this@BallastViewModelImpl, input))
+        _notifications.emit(BallastNotification.InputAccepted(host(), input))
 
         val stateBeforeCancellation = _state.value
         try {
@@ -263,7 +287,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     _state = _state,
                     guardian = guardian,
                     sendEventToQueue = {
-                        _notifications.emit(BallastNotification.EventQueued(this@BallastViewModelImpl, it))
+                        _notifications.emit(BallastNotification.EventQueued(host(), it))
                         _events.send(it)
                     }
                 )
@@ -279,21 +303,21 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 }
 
                 try {
-                    _notifications.emit(BallastNotification.InputHandledSuccessfully(this@BallastViewModelImpl, input))
+                    _notifications.emit(BallastNotification.InputHandledSuccessfully(host(), input))
                 } catch (t: Throwable) {
-                    _notifications.emit(BallastNotification.InputHandlerError(this@BallastViewModelImpl, input, t))
+                    _notifications.emit(BallastNotification.InputHandlerError(host(), input, t))
                 }
             }
         } catch (e: CancellationException) {
             // when the coroutine is cancelled for any reason, we must assume the input did not
             // complete and may have left the State in a bad, erm..., state. We should reset it and
             // try to forget that we ever tried to process it in the first place
-            _notifications.emit(BallastNotification.InputCancelled(this@BallastViewModelImpl, input))
+            _notifications.emit(BallastNotification.InputCancelled(host(), input))
             if (config.inputStrategy.rollbackOnCancellation) {
                 _state.value = stateBeforeCancellation
             }
         } catch (e: Throwable) {
-            _notifications.emit(BallastNotification.InputHandlerError(this@BallastViewModelImpl, input, e))
+            _notifications.emit(BallastNotification.InputHandlerError(host(), input, e))
         }
     }
 
@@ -301,22 +325,22 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         event: Events,
         handler: EventHandler<Inputs, Events, State>
     ) {
-        _notifications.emit(BallastNotification.EventEmitted(this@BallastViewModelImpl, event))
+        _notifications.emit(BallastNotification.EventEmitted(host(), event))
         try {
             coroutineScope {
                 val handlerScope = EventHandlerScopeImpl<Inputs, Events, State>(
-                    _inputs = this@BallastViewModelImpl
+                    _inputs = host()
                 )
                 with(handler) {
                     handlerScope.handleEvent(event)
                 }
                 handlerScope.ensureUsedCorrectly()
-                _notifications.emit(BallastNotification.EventHandledSuccessfully(this@BallastViewModelImpl, event))
+                _notifications.emit(BallastNotification.EventHandledSuccessfully(host(), event))
             }
         } catch (e: CancellationException) {
             // ignore
         } catch (e: Throwable) {
-            _notifications.emit(BallastNotification.EventHandlerError(this@BallastViewModelImpl, event, e))
+            _notifications.emit(BallastNotification.EventHandlerError(host(), event, e))
         }
     }
 
@@ -361,12 +385,12 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
         sideEffectContainer.job = sideEffectCoroutineScope.launch {
             _notifications
-                .emit(BallastNotification.SideEffectStarted(this@BallastViewModelImpl, key, restartState))
+                .emit(BallastNotification.SideEffectStarted(host(), key, restartState))
 
             try {
                 coroutineScope {
                     val sideEffectScope = SideEffectScopeImpl(
-                        _inputs = this@BallastViewModelImpl,
+                        _inputs = host(),
                         _events = _events,
                         currentStateWhenStarted = _state.value,
                         restartState = restartState,
@@ -375,14 +399,14 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     sideEffectContainer.block.invoke(sideEffectScope)
                 }
                 _notifications
-                    .emit(BallastNotification.SideEffectCompleted(this@BallastViewModelImpl, key, restartState))
+                    .emit(BallastNotification.SideEffectCompleted(host(), key, restartState))
             } catch (e: CancellationException) {
                 // ignore
                 _notifications
-                    .emit(BallastNotification.SideEffectCancelled(this@BallastViewModelImpl, key, restartState))
+                    .emit(BallastNotification.SideEffectCancelled(host(), key, restartState))
             } catch (e: Throwable) {
                 _notifications
-                    .emit(BallastNotification.SideEffectError(this@BallastViewModelImpl, key, restartState, e))
+                    .emit(BallastNotification.SideEffectError(host(), key, restartState, e))
             }
         }
     }

@@ -57,6 +57,7 @@ public sealed class BallastDebuggerEvent {
     public class ViewModelStarted(
         override val connectionId: String,
         override val viewModelName: String,
+        public val viewModelType: String,
         override val uuid: String,
     ) : BallastDebuggerEvent()
 

@@ -21,6 +21,8 @@ private constructor(
     private val eventBus: EventBus,
 ) : ViewModel(), BallastViewModel<Inputs, Any, State> by impl {
 
+    final override val type: String = "AndroidBallastRepository"
+
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Any, State>,
         eventBus: EventBus,

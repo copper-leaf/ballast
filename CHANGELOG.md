@@ -1,3 +1,9 @@
+## 0.11.0 - 2022-03-11
+
+- Makes configuration a builder instead of multiple constructors
+- Allow BallastViewModelImpl to access the host VM, so the user-created VM is what's sent to Interceptors
+- ViewModels now clear themselves when their coroutine scope is closed, rather than having to do it manually
+
 ## 0.10.0 - 2022-02-28
 
 - Updates to Kotlin 1.6.10

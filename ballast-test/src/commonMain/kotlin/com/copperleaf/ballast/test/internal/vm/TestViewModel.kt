@@ -39,6 +39,8 @@ internal class TestViewModel<Inputs : Any, Events : Any, State : Any> internal c
     ),
 ) : BallastViewModel<TestViewModel.Inputs<Inputs>, Events, State> by impl {
 
+    override val type: String = "TestViewModel"
+
     sealed class Inputs<BaseInputs : Any> {
         data class ProcessInput<BaseInputs : Any>(
             val normalInput: BaseInputs,

@@ -16,6 +16,8 @@ public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private
     coroutineScope: CoroutineScope
 ) : BallastViewModel<Inputs, Events, State> by impl {
 
+    final override val type: String = "BaseViewModel"
+
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,
         eventHandler: EventHandler<Inputs, Events, State>,

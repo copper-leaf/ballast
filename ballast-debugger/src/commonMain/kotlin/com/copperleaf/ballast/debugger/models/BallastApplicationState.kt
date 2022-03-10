@@ -64,6 +64,8 @@ public data class BallastViewModelState(
     public val connectionId: String,
     public val viewModelName: String,
 
+    public val viewModelType: String = "",
+
     public val inputs: List<BallastInputState> = emptyList(),
     public val events: List<BallastEventState> = emptyList(),
     public val sideEffects: List<BallastSideEffectState> = emptyList(),
@@ -96,7 +98,7 @@ public fun BallastConnectionState.updateViewModel(
         viewModels = viewModels
             .toMutableList()
             .apply {
-                if (viewModelName != null) {
+                if(viewModelName != null) {
                     if (indexOfViewModel != -1) {
                         // we're updating a value in an existing connection
                         this[indexOfViewModel] = this[indexOfViewModel].block().copy(lastSeen = LocalDateTime.now())
@@ -321,14 +323,19 @@ public fun BallastViewModelState.updateSideEffect(
 public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerEvent): BallastViewModelState {
     val updatedState = when (event) {
         is BallastDebuggerEvent.RefreshViewModelStart -> {
-            BallastViewModelState(connectionId, viewModelName, refreshing = true)
+            BallastViewModelState(
+                connectionId = connectionId,
+                viewModelName = viewModelName,
+                viewModelType = viewModelType,
+                refreshing = true,
+            )
         }
         is BallastDebuggerEvent.RefreshViewModelComplete -> {
             copy(refreshing = false)
         }
 
         is BallastDebuggerEvent.ViewModelStarted -> {
-            copy(viewModelActive = true)
+            copy(viewModelActive = true, viewModelType = event.viewModelType)
         }
         is BallastDebuggerEvent.ViewModelCleared -> {
             copy(viewModelActive = false)

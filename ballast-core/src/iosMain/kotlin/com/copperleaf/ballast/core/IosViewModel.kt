@@ -11,11 +11,13 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
 @ExperimentalCoroutinesApi
-public class IosViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
+public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
-    coroutineScope: CoroutineScope,
+    private val coroutineScope: CoroutineScope,
     private val handler: EventHandler<Inputs, Events, State>,
 ) : BallastViewModel<Inputs, Events, State> by impl {
+
+    final override val type: String = "IosViewModel"
 
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,

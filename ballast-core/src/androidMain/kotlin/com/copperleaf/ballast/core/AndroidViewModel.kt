@@ -18,6 +18,8 @@ private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
 ) : ViewModel(), BallastViewModel<Inputs, Events, State> by impl {
 
+    final override val type: String = "AndroidViewModel"
+
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,
     ) : this(BallastViewModelImpl(config))

@@ -2,6 +2,7 @@ package com.copperleaf.ballast.debugger
 
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +19,7 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
     override fun start(
         viewModelScope: CoroutineScope,
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
-        sendToQueue: suspend (Inputs) -> Unit
+        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
     ) {
         applicationCoroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
             notifications

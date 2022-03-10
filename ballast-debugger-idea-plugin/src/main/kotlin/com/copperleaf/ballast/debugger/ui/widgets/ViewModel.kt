@@ -32,8 +32,6 @@ import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -78,7 +76,7 @@ fun ViewModelList(
                 }
             }
             items(connectionState.viewModels) {
-                ViewModelSummary(uiState, connectionState, it, postInput)
+                ViewModelSummary(uiState, it, postInput)
             }
         },
         content = {
@@ -93,7 +91,6 @@ fun ViewModelList(
 @Composable
 fun ViewModelSummary(
     uiState: DebuggerContract.State,
-    connectionState: BallastConnectionState,
     viewModelState: BallastViewModelState,
     postInput: (DebuggerContract.Inputs) -> Unit,
 ) {
@@ -150,8 +147,7 @@ fun ViewModelSummary(
                         Row(Modifier.weight(1f)) {
                             Column(Modifier.weight(1f).padding(1.dp)) {
                                 StatusIcon(
-                                    isActive = viewModelState.viewModelActive &&
-                                        connectionState.isActive(LocalTimer.current),
+                                    isActive = viewModelState.viewModelActive,
                                     activeText = "ViewModel Started",
                                     inactiveText = "ViewModel Cleared",
                                     icon = if (viewModelState.viewModelActive) {
@@ -216,6 +212,13 @@ fun ViewModelSummary(
                         }
                     }
                 }
+            },
+            overlineText = {
+                Text(
+                    text = viewModelState.viewModelType,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             },
             text = {
                 Text(
