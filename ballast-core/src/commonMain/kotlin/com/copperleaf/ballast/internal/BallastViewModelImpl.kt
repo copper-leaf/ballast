@@ -20,17 +20,19 @@ import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.channels.ChannelResult
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.transformWhile
 import kotlinx.coroutines.job
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -56,10 +58,14 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     private var cleared = false
     private lateinit var host: ()->BallastViewModel<Inputs, Events, State>
 
+    private val _restoreState: Channel<Queued.RestoreState<Inputs, Events, State>> =
+        config.inputStrategy.createQueue()
+
     private val _state: MutableStateFlow<State> =
         MutableStateFlow(initialState)
     private val outputStates: MutableStateFlow<State> =
         MutableStateFlow(initialState)
+
     private val _events: Channel<Events> =
         Channel(BUFFERED, BufferOverflow.SUSPEND)
     private val _sideEffects: Channel<SideEffectRequest<Inputs, Events, State>> =
@@ -117,25 +123,23 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     @ExperimentalCoroutinesApi
     public suspend fun awaitSideEffectsCompletion() {
-        // run a bust loop until the sideEffects channel is drained
+        // run a busy loop until all side effects are started
         while (true) {
             if (_sideEffects.isEmpty) break
             yield()
-        }
-
-        coroutineScope {
-            val dummyNotification = BallastNotification.ViewModelCleared(host())
-            launch {
-                _notifications.emit(dummyNotification)
-            }
-
-            _notifications.first { it === dummyNotification }
         }
 
         // wait for all the sideEffect jobs to complete
         currentSideEffects.values
             .mapNotNull { it.job }
             .let { joinAll(*it.toTypedArray()) }
+
+        // run a busy loop until all input channels are drained
+        while (true) {
+            if (_inputs.isEmpty) break
+            if (_restoreState.isEmpty) break
+            yield()
+        }
     }
 
 // ViewModel Lifecycle
@@ -202,8 +206,13 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 .map { input -> Queued.HandleInput<Inputs, Events, State>(input) }
                 .filter { queued -> filterQueued(queued) }
 
+            val combinedInputsAndStates: Flow<Queued<Inputs, Events, State>> = merge(
+                filteredInputsFlow,
+                _restoreState.receiveAsFlow()
+            )
+
             config.inputStrategy.processInputs(
-                filteredQueue = filteredInputsFlow,
+                filteredQueue = combinedInputsAndStates,
                 acceptQueued = { queued, guardian ->
                     when (queued) {
                         is Queued.HandleInput -> {
@@ -228,16 +237,24 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         // send notifications to Interceptors
         interceptors
             .forEach { interceptor ->
+                val notificationFlow: Flow<BallastNotification<Inputs, Events, State>> = _notifications
+                    .asSharedFlow()
+                    .transformWhile {
+                        emit(it)
+
+                        it !is BallastNotification.ViewModelCleared
+                    }
+
                 interceptor.start(
                     viewModelScope = viewModelScope,
-                    notifications = _notifications.asSharedFlow(),
+                    notifications = notificationFlow,
                     sendToQueue = {
                         when(it) {
                             is Queued.HandleInput -> {
                                 _inputs.send(it.input)
                             }
                             is Queued.RestoreState -> {
-                                TODO("Restoring state from an Interceptor is not yet implemented")
+                                _restoreState.send(it)
                             }
                         }
                     }

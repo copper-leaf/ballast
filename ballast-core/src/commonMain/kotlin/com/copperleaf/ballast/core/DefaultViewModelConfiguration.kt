@@ -42,19 +42,23 @@ public class DefaultViewModelConfiguration<Inputs : Any, Events : Any, State : A
             initialState: State,
             inputHandler: InputHandler<Inputs, Events, State>,
             filter: InputFilter<Inputs, Events, State>? = null,
+            name: String? = this.name,
         ): Builder = apply {
             this.initialState = initialState
             this.inputHandler = inputHandler
             this.filter = filter
+            this.name = name
         }
 
         public fun <Inputs : Any, Events : Any, State : Any> forViewModel(
             initialState: State,
             inputHandler: FilteredInputHandler<Inputs, Events, State>,
+            name: String? = this.name,
         ): Builder = apply {
             this.initialState = initialState
             this.inputHandler = inputHandler
             this.filter = inputHandler
+            this.name = name
         }
 
         public fun dispatchers(

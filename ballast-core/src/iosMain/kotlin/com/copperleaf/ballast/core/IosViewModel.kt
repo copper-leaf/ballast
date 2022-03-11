@@ -5,12 +5,10 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
-@ExperimentalCoroutinesApi
 public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val coroutineScope: CoroutineScope,

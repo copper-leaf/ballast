@@ -133,7 +133,9 @@ class DebuggerInputHandler(
                     allMessages = it.allMessages + input.message,
                     applicationState = it.applicationState.updateConnection(input.message.connectionId) {
                         updateViewModel(input.message.viewModelName) {
-                            updateWithDebuggerEvent(input.message)
+                            // on the server, we do not have the actual values, since we do not assume them to be
+                            // serializable and sent to the server. Only the text is actually sent
+                            updateWithDebuggerEvent(input.message, null)
                         }
                     }
                 )

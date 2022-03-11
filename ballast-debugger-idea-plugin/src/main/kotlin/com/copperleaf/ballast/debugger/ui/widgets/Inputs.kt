@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.debugger.ui.widgets
 
+import androidx.compose.foundation.ContextMenuArea
+import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
+import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastInputState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
@@ -50,37 +53,54 @@ fun InputSummary(
     postInput: (DebuggerContract.Inputs) -> Unit,
 ) {
     val timeSinceLastSeen: Duration = (LocalTimer.current - inputState.firstSeen).removeFraction(DurationUnit.SECONDS)
-
-    ListItem(
-        modifier = Modifier
-            .onHoverState { Modifier.highlight() }
-            .then(
-                if (uiState.focusedDebuggerEventUuid == inputState.uuid) {
-                    Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
-                } else {
-                    Modifier
-                }
-            )
-            .clickable {
-                postInput(
-                    DebuggerContract.Inputs.FocusEvent(
-                        connectionId = inputState.connectionId,
-                        viewModelName = inputState.viewModelName,
-                        eventUuid = inputState.uuid,
+    ContextMenuArea(
+        items = {
+            buildList<ContextMenuItem> {
+                this += ContextMenuItem("Resend Input") {
+                    postInput(
+                        DebuggerContract.Inputs.SendDebuggerAction(
+                            BallastDebuggerAction.RequestResendInput(
+                                connectionId = inputState.connectionId,
+                                viewModelName = inputState.viewModelName,
+                                inputUuid = inputState.uuid,
+                            )
+                        )
                     )
-                )
-            },
-        text = { Text(inputState.type) },
-        overlineText = { Text(inputState.status.toString()) },
-        secondaryText = { Text("Sent $timeSinceLastSeen ago") },
-        trailing = {
-            Box {
-                if (inputState.status == BallastInputState.Status.Running) {
-                    CircularProgressIndicator()
                 }
             }
         }
-    )
+    ) {
+        ListItem(
+            modifier = Modifier
+                .onHoverState { Modifier.highlight() }
+                .then(
+                    if (uiState.focusedDebuggerEventUuid == inputState.uuid) {
+                        Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
+                    } else {
+                        Modifier
+                    }
+                )
+                .clickable {
+                    postInput(
+                        DebuggerContract.Inputs.FocusEvent(
+                            connectionId = inputState.connectionId,
+                            viewModelName = inputState.viewModelName,
+                            eventUuid = inputState.uuid,
+                        )
+                    )
+                },
+            text = { Text(inputState.type) },
+            overlineText = { Text(inputState.status.toString()) },
+            secondaryText = { Text("Sent $timeSinceLastSeen ago") },
+            trailing = {
+                Box {
+                    if (inputState.status == BallastInputState.Status.Running) {
+                        CircularProgressIndicator()
+                    }
+                }
+            }
+        )
+    }
 }
 
 @Suppress("UNUSED_PARAMETER")

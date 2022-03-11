@@ -3,6 +3,8 @@
 - Makes configuration a builder instead of multiple constructors
 - Allow BallastViewModelImpl to access the host VM, so the user-created VM is what's sent to Interceptors
 - ViewModels now clear themselves when their coroutine scope is closed, rather than having to do it manually
+- Adds "time-travel debugging" to Debugger IntelliJ plugin! Inputs can now be re-sent, and you can roll back the VM
+  state to any previous point in time
 
 ## 0.10.0 - 2022-02-28
 

@@ -11,7 +11,6 @@ import com.copperleaf.ballast.repository.bus.EventBus
 import com.copperleaf.ballast.repository.bus.EventBusEventHandler
 import com.copperleaf.ballast.repository.cache.Cached
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharedFlow
 
 /**
@@ -43,7 +42,6 @@ import kotlinx.coroutines.flow.SharedFlow
  * "action token" will be processed by all Repositories, but it is your responsibility to ensure that is true of your
  * application's Repository layer.
  */
-@ExperimentalCoroutinesApi
 public abstract class BallastRepository<Inputs : Any, State : Any>(
     coroutineScope: CoroutineScope,
     eventBus: EventBus,

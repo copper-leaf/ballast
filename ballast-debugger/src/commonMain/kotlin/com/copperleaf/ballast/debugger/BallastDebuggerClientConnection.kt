@@ -2,10 +2,13 @@ package com.copperleaf.ballast.debugger
 
 import com.benasher44.uuid.uuid4
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
+import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.models.debuggerEventJson
+import com.copperleaf.ballast.debugger.models.getActualValue
 import com.copperleaf.ballast.debugger.models.serialize
 import com.copperleaf.ballast.debugger.models.updateConnection
 import com.copperleaf.ballast.debugger.models.updateViewModel
@@ -34,9 +37,13 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
@@ -73,6 +80,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     )
 
     private val outgoingMessages = Channel<BallastDebuggerEventWrapper>(Channel.UNLIMITED, BufferOverflow.SUSPEND)
+    private val incomingActions = MutableSharedFlow<BallastDebuggerAction>()
     private var waitForEvent = CompletableDeferred<Unit>()
 
     private var applicationState: BallastApplicationState = BallastApplicationState()
@@ -140,7 +148,37 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         return job
     }
 
-    internal suspend fun acceptNotification(notification: BallastNotification<*, *, *>) {
+    internal fun <Inputs : Any, Events : Any, State : Any> connectViewModel(
+        applicationCoroutineScope: CoroutineScope,
+        notifications: Flow<BallastNotification<Inputs, Events, State>>,
+        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
+    ) {
+        val processIncomingJob = applicationCoroutineScope.launch {
+            incomingActions
+                .mapNotNull { action ->
+                    val isForThisViewModel = applicationState.connections
+                        .firstOrNull { it.connectionId == connectionId }
+                        ?.viewModels
+                        ?.firstOrNull { it.viewModelName == action.viewModelName }
+
+                    if (isForThisViewModel != null) {
+                        action to isForThisViewModel
+                    } else {
+                        null
+                    }
+                }
+                .collect { (action, thisViewModel) -> handleAction(action, thisViewModel, sendToQueue) }
+        }
+        applicationCoroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
+            notifications
+                .collect(::acceptNotification)
+        }.invokeOnCompletion { processIncomingJob.cancel() }
+    }
+
+// Impl
+// ---------------------------------------------------------------------------------------------------------------------
+
+    private suspend fun acceptNotification(notification: BallastNotification<*, *, *>) {
         outgoingMessages.send(
             BallastDebuggerEventWrapper(
                 notification = notification,
@@ -150,9 +188,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         )
         waitForEvent.complete(Unit)
     }
-
-// Impl
-// ---------------------------------------------------------------------------------------------------------------------
 
     private fun getUuid(notification: BallastNotification<*, *, *>): String {
         return when (notification) {
@@ -241,7 +276,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         return outgoingMessages
             .receiveAsFlow()
             .onEach { message ->
-
                 val event = if (message.notification != null) {
                     check(message.debuggerEvent == null) { "Must provide a notification or a debugger event, not both" }
 
@@ -258,7 +292,10 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     // something has been dropped
                     applicationState = applicationState.updateConnection(connectionId) {
                         updateViewModel(event.viewModelName) {
-                            updateWithDebuggerEvent(event)
+                            // on the client, we can get the actual value from the original notification, and cache it
+                            // so that it can be restored later if requested
+                            val actualValue = message.notification?.getActualValue()
+                            updateWithDebuggerEvent(event, actualValue)
                         }
                     }
                 }
@@ -285,58 +322,78 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                 debuggerEventJson
                     .decodeFromString(BallastDebuggerAction.serializer(), text)
-                    .let { handleAction(it) }
+                    .let { incomingActions.emit(it) }
             }
             .launchIn(this)
     }
 
-    private suspend fun DefaultClientWebSocketSession.handleAction(action: BallastDebuggerAction) {
+    @Suppress("UNCHECKED_CAST")
+    private suspend fun <Inputs : Any, Events : Any, State : Any> handleAction(
+        action: BallastDebuggerAction,
+        thisViewModel: BallastViewModelState,
+        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
+    ) {
         return when (action) {
             is BallastDebuggerAction.RequestViewModelRefresh -> {
-                val currentViewModelHistory = applicationState.connections
-                    .firstOrNull { it.connectionId == connectionId }
-                    ?.viewModels
-                    ?.firstOrNull { it.viewModelName == action.viewModelName }
-                    ?.fullHistory
-                    ?.reversed()
+                val currentViewModelHistory = thisViewModel.fullHistory.reversed()
 
-                if (currentViewModelHistory != null) {
+                outgoingMessages.send(
+                    BallastDebuggerEventWrapper(
+                        notification = null,
+                        debuggerEvent = BallastDebuggerEvent.RefreshViewModelStart(
+                            connectionId,
+                            action.viewModelName,
+                        ),
+                        updateConnectionState = false,
+                    )
+                )
+
+                currentViewModelHistory.forEach {
                     outgoingMessages.send(
                         BallastDebuggerEventWrapper(
                             notification = null,
-                            debuggerEvent = BallastDebuggerEvent.RefreshViewModelStart(
-                                connectionId,
-                                action.viewModelName,
-                            ),
+                            debuggerEvent = it,
                             updateConnectionState = false,
                         )
                     )
-
-                    currentViewModelHistory.forEach {
-                        outgoingMessages.send(
-                            BallastDebuggerEventWrapper(
-                                notification = null,
-                                debuggerEvent = it,
-                                updateConnectionState = false,
-                            )
-                        )
-                    }
-
-                    outgoingMessages.send(
-                        BallastDebuggerEventWrapper(
-                            notification = null,
-                            debuggerEvent = BallastDebuggerEvent.RefreshViewModelComplete(
-                                connectionId,
-                                action.viewModelName
-                            ),
-                            updateConnectionState = false,
-                        )
-                    )
-
-                    waitForEvent.complete(Unit)
                 }
 
+                outgoingMessages.send(
+                    BallastDebuggerEventWrapper(
+                        notification = null,
+                        debuggerEvent = BallastDebuggerEvent.RefreshViewModelComplete(
+                            connectionId,
+                            action.viewModelName
+                        ),
+                        updateConnectionState = false,
+                    )
+                )
+
+                waitForEvent.complete(Unit)
+
                 Unit
+            }
+            is BallastDebuggerAction.RequestResendInput -> {
+                val inputToResend = thisViewModel
+                    .inputs
+                    .firstOrNull { it.uuid == action.inputUuid }
+                    ?.actualInput as? Inputs
+
+                if(inputToResend != null) {
+                    sendToQueue(Queued.HandleInput(inputToResend))
+                } else {
+                }
+            }
+            is BallastDebuggerAction.RequestRestoreState -> {
+                val stateToRestore = thisViewModel
+                    .states
+                    .firstOrNull { it.uuid == action.stateUuid }
+                    ?.actualState as? State
+
+                if(stateToRestore != null) {
+                    sendToQueue(Queued.RestoreState(stateToRestore))
+                } else {
+                }
             }
         }
     }

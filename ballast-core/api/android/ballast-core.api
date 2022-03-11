@@ -329,9 +329,10 @@ public final class com/copperleaf/ballast/core/DefaultViewModelConfiguration$Bui
 	public final fun build ()Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	public final fun dispatchers (Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
 	public static synthetic fun dispatchers$default (Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
-	public final fun forViewModel (Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
-	public final fun forViewModel (Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
-	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;ILjava/lang/Object;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public final fun forViewModel (Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public final fun forViewModel (Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
+	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;
 	public final fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public final fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public final fun getInitialState ()Ljava/lang/Object;

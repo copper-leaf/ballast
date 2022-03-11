@@ -90,4 +90,22 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
     }
 }
 
+public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs, Events, State>.getActualValue(): Any? {
+    return when (this) {
+        is BallastNotification.InputQueued -> input
+        is BallastNotification.InputAccepted -> input
+        is BallastNotification.InputRejected -> input
+        is BallastNotification.InputDropped -> input
+        is BallastNotification.InputHandledSuccessfully -> input
+        is BallastNotification.InputCancelled -> input
+        is BallastNotification.InputHandlerError -> input
+        is BallastNotification.EventQueued -> event
+        is BallastNotification.EventEmitted -> event
+        is BallastNotification.EventHandledSuccessfully -> event
+        is BallastNotification.EventHandlerError -> event
+        is BallastNotification.StateChanged -> state
+        else -> null
+    }
+}
+
 private val Any.type: String get() = this::class.simpleName ?: ""

@@ -7,14 +7,12 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.repository.bus.EventBus
 import com.copperleaf.ballast.repository.bus.EventBusEventHandler
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 /**
  * An implementation of [BallastRepository] built on top of the standard Android ViewModel, so that the repository can
  * be tied more properly into the Android Application lifecycle, or be scoped to NavGraphs if needed.
  */
-@ExperimentalCoroutinesApi
 public open class AndroidBallastRepository<Inputs : Any, State : Any>
 private constructor(
     private val impl: BallastViewModelImpl<Inputs, Any, State>,

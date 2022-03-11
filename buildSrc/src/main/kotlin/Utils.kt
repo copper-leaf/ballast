@@ -303,7 +303,7 @@ fun Project.getProjectVersion(
         if (logChanges) {
             println(
                 "$latestTagName ($latestTagSha) -> $it ($currentSha) \n  * " + commitsSinceLastTag.joinToString(
-                    separator = "\n  * "
+                    separator = "\n  - "
                 )
             )
         }

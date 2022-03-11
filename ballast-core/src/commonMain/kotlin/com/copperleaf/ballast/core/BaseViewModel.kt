@@ -5,11 +5,9 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
-@ExperimentalCoroutinesApi
 public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val eventHandler: EventHandler<Inputs, Events, State>,

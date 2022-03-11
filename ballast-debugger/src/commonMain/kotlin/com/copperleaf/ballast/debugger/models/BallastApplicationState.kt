@@ -98,7 +98,7 @@ public fun BallastConnectionState.updateViewModel(
         viewModels = viewModels
             .toMutableList()
             .apply {
-                if(viewModelName != null) {
+                if (viewModelName != null) {
                     if (indexOfViewModel != -1) {
                         // we're updating a value in an existing connection
                         this[indexOfViewModel] = this[indexOfViewModel].block().copy(lastSeen = LocalDateTime.now())
@@ -119,6 +119,7 @@ public data class BallastInputState(
     public val connectionId: String,
     public val viewModelName: String,
     public val uuid: String,
+    public val actualInput: Any?,
 
     public val type: String = "",
     public val toStringValue: String = "",
@@ -132,6 +133,7 @@ public data class BallastInputState(
         public object Queued : Status() {
             override fun toString(): String = "Queued"
         }
+
         public object Dropped : Status() {
             override fun toString(): String = "Dropped"
         }
@@ -139,6 +141,7 @@ public data class BallastInputState(
         public object Running : Status() {
             override fun toString(): String = "Running"
         }
+
         public object Rejected : Status() {
             override fun toString(): String = "Rejected"
         }
@@ -146,9 +149,11 @@ public data class BallastInputState(
         public data class Cancelled(val duration: Duration) : Status() {
             override fun toString(): String = "Cancelled after $duration"
         }
+
         public data class Error(val duration: Duration, val stacktrace: String) : Status() {
             override fun toString(): String = "Failed after $duration"
         }
+
         public data class Completed(val duration: Duration) : Status() {
             override fun toString(): String = "Completed after $duration"
         }
@@ -157,6 +162,7 @@ public data class BallastInputState(
 
 public fun BallastViewModelState.updateInput(
     uuid: String,
+    actualInput: Any?,
     block: BallastInputState.() -> BallastInputState,
 ): BallastViewModelState {
     val indexOfInput = inputs.indexOfFirst { it.uuid == uuid }
@@ -170,7 +176,14 @@ public fun BallastViewModelState.updateInput(
                     this[indexOfInput] = this[indexOfInput].block().copy(lastSeen = LocalDateTime.now())
                 } else {
                     // this is the first time we're seeing this connection, create a new entry for it
-                    this.add(0, BallastInputState(connectionId, viewModelName, uuid).block())
+                    this.add(
+                        0, BallastInputState(
+                            connectionId = connectionId,
+                            viewModelName = viewModelName,
+                            uuid = uuid,
+                            actualInput = actualInput,
+                        ).block()
+                    )
                 }
             }
             .toList()
@@ -205,6 +218,7 @@ public data class BallastEventState(
         public data class Error(val duration: Duration, val stacktrace: String) : Status() {
             override fun toString(): String = "Failed after $duration"
         }
+
         public data class Completed(val duration: Duration) : Status() {
             override fun toString(): String = "Completed after $duration"
         }
@@ -240,6 +254,7 @@ public data class BallastStateSnapshot(
     public val connectionId: String,
     public val viewModelName: String,
     public val uuid: String,
+    public val actualState: Any?,
 
     public val type: String = "",
     public val toStringValue: String = "",
@@ -249,9 +264,15 @@ public data class BallastStateSnapshot(
 
 public fun BallastViewModelState.appendStateSnapshot(
     uuid: String,
+    actualState: Any?,
     block: BallastStateSnapshot.() -> BallastStateSnapshot,
 ): BallastViewModelState {
-    val state = BallastStateSnapshot(connectionId, viewModelName, uuid).block()
+    val state = BallastStateSnapshot(
+        connectionId = connectionId,
+        viewModelName = viewModelName,
+        uuid = uuid,
+        actualState = actualState,
+    ).block()
 
     return this.copy(
         states = listOf(state) + states
@@ -285,9 +306,11 @@ public data class BallastSideEffectState(
         public data class Cancelled(val duration: Duration) : Status() {
             override fun toString(): String = "Cancelled after $duration"
         }
+
         public data class Error(val duration: Duration, val stacktrace: String) : Status() {
             override fun toString(): String = "Failed after $duration"
         }
+
         public data class Completed(val duration: Duration) : Status() {
             override fun toString(): String = "Completed after $duration"
         }
@@ -320,7 +343,10 @@ public fun BallastViewModelState.updateSideEffect(
 // ---------------------------------------------------------------------------------------------------------------------
 
 @ExperimentalTime
-public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerEvent): BallastViewModelState {
+public fun BallastViewModelState.updateWithDebuggerEvent(
+    event: BallastDebuggerEvent,
+    actualValue: Any?
+): BallastViewModelState {
     val updatedState = when (event) {
         is BallastDebuggerEvent.RefreshViewModelStart -> {
             BallastViewModelState(
@@ -342,7 +368,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
         }
 
         is BallastDebuggerEvent.InputQueued -> {
-            updateInput(event.uuid) {
+            updateInput(event.uuid, actualValue) {
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
@@ -351,7 +377,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
             }
         }
         is BallastDebuggerEvent.InputAccepted -> {
-            updateInput(event.uuid) {
+            updateInput(event.uuid, actualValue) {
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
@@ -360,7 +386,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
             }
         }
         is BallastDebuggerEvent.InputHandledSuccessfully -> {
-            updateInput(event.uuid) {
+            updateInput(event.uuid, actualValue) {
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
@@ -371,7 +397,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
             }
         }
         is BallastDebuggerEvent.InputCancelled -> {
-            updateInput(event.uuid) {
+            updateInput(event.uuid, actualValue) {
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
@@ -382,7 +408,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
             }
         }
         is BallastDebuggerEvent.InputHandlerError -> {
-            updateInput(event.uuid) {
+            updateInput(event.uuid, actualValue) {
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
@@ -394,7 +420,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
             }
         }
         is BallastDebuggerEvent.InputDropped -> {
-            updateInput(event.uuid) {
+            updateInput(event.uuid, actualValue) {
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
@@ -403,7 +429,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
             }
         }
         is BallastDebuggerEvent.InputRejected -> {
-            updateInput(event.uuid) {
+            updateInput(event.uuid, actualValue) {
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
@@ -461,7 +487,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(event: BallastDebuggerE
         }
 
         is BallastDebuggerEvent.StateChanged -> {
-            appendStateSnapshot(event.uuid) {
+            appendStateSnapshot(event.uuid, actualValue) {
                 copy(
                     type = event.stateType,
                     toStringValue = event.stateToStringValue,
