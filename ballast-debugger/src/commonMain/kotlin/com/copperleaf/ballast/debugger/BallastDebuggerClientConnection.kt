@@ -54,6 +54,7 @@ import kotlin.time.ExperimentalTime
 @ExperimentalTime
 public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     engineFactory: HttpClientEngineFactory<T>,
+    private val applicationCoroutineScope: CoroutineScope,
     private val host: String = "127.0.0.1", // 10.1.1.20 on Android
     private val port: Int = 9684,
     private val connectionId: String = generateUuid(),
@@ -86,9 +87,9 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     private var applicationState: BallastApplicationState = BallastApplicationState()
     private val uuids: MutableMap<Any, String> = mutableMapOf()
 
-    public fun CoroutineScope.connect(): Job {
+    public fun connect(): Job {
         var failedAttempts = 0
-        val job = launch(
+        val job = applicationCoroutineScope.launch(
             start = CoroutineStart.UNDISPATCHED,
             context = Dispatchers.Default,
         ) {
@@ -111,7 +112,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                 try {
                     coroutineScope {
-
                         // either wait for a given timeout to reconnect, or if a new event comes in connect immediately
                         withTimeoutOrNull(currentTimeoutValue) {
                             waitForEvent.await()
@@ -149,20 +149,24 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     }
 
     internal fun <Inputs : Any, Events : Any, State : Any> connectViewModel(
-        applicationCoroutineScope: CoroutineScope,
+        hostViewModelName: String,
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
         sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
     ) {
         val processIncomingJob = applicationCoroutineScope.launch {
             incomingActions
                 .mapNotNull { action ->
-                    val isForThisViewModel = applicationState.connections
-                        .firstOrNull { it.connectionId == connectionId }
-                        ?.viewModels
-                        ?.firstOrNull { it.viewModelName == action.viewModelName }
+                    if (action.viewModelName == hostViewModelName) {
+                        val isForThisViewModel = applicationState.connections
+                            .firstOrNull { it.connectionId == this@BallastDebuggerClientConnection.connectionId }
+                            ?.viewModels
+                            ?.firstOrNull { it.viewModelName == hostViewModelName }
 
-                    if (isForThisViewModel != null) {
-                        action to isForThisViewModel
+                        if (isForThisViewModel != null) {
+                            action to isForThisViewModel
+                        } else {
+                            null
+                        }
                     } else {
                         null
                     }
@@ -379,7 +383,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     .firstOrNull { it.uuid == action.inputUuid }
                     ?.actualInput as? Inputs
 
-                if(inputToResend != null) {
+                if (inputToResend != null) {
                     sendToQueue(Queued.HandleInput(inputToResend))
                 } else {
                 }
@@ -390,7 +394,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     .firstOrNull { it.uuid == action.stateUuid }
                     ?.actualState as? State
 
-                if(stateToRestore != null) {
+                if (stateToRestore != null) {
                     sendToQueue(Queued.RestoreState(stateToRestore))
                 } else {
                 }

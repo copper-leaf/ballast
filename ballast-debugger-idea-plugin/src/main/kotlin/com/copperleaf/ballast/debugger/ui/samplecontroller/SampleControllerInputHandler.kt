@@ -2,15 +2,11 @@ package com.copperleaf.ballast.debugger.ui.samplecontroller
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.di.BallastDebuggerInjector
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
 import com.copperleaf.ballast.postEventWithState
 import com.copperleaf.ballast.postInput
 import com.intellij.openapi.diagnostic.Logger
-import io.ktor.client.engine.cio.CIO
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SampleControllerInputHandler(
     private val injector: BallastDebuggerInjector,
@@ -39,12 +35,8 @@ class SampleControllerInputHandler(
 
             sideEffect("UpdateInputStrategy") {
                 prefs.sampleInputStrategy = input.inputStrategy
-                val connection = BallastDebuggerClientConnection(CIO)
-                launch(Dispatchers.IO) {
-                    with(connection) { connect() }
-                }
 
-                val vm = injector.sampleViewModel(this, connection, currentStateWhenStarted.inputStrategy.get())
+                val vm = injector.sampleViewModel(this, currentStateWhenStarted.inputStrategy.get())
 
                 postInput(SampleControllerContract.Inputs.UpdateViewModel(vm))
             }

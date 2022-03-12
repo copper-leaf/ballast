@@ -1,7 +1,7 @@
 public final class com/copperleaf/ballast/firebase/FirebaseAnalyticsInterceptor : com/copperleaf/ballast/BallastInterceptor {
 	public fun <init> (Lcom/google/firebase/analytics/FirebaseAnalytics;)V
 	public fun onNotify (Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun start (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
+	public fun start (Ljava/lang/String;Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
 }
 
 public abstract interface annotation class com/copperleaf/ballast/firebase/FirebaseAnalyticsInterceptor$TrackInput : java/lang/annotation/Annotation {

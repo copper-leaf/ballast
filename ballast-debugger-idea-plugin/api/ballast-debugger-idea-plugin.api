@@ -6,11 +6,11 @@ public abstract interface class com/copperleaf/ballast/debugger/di/BallastDebugg
 	public abstract fun getRepoBaseUrl ()Ljava/lang/String;
 	public abstract fun getSampleSourcesPathInRepo ()Ljava/lang/String;
 	public abstract fun sampleControllerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel;
-	public abstract fun sampleViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
+	public abstract fun sampleViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
 }
 
 public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjector$Companion {
-	public final fun get (Lcom/intellij/openapi/project/Project;)Lcom/copperleaf/ballast/debugger/di/BallastDebuggerInjector;
+	public final fun getInstance (Lcom/intellij/openapi/project/Project;)Lcom/copperleaf/ballast/debugger/di/BallastDebuggerInjector;
 }
 
 public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjectorImpl : com/copperleaf/ballast/debugger/di/BallastDebuggerInjector {
@@ -22,7 +22,7 @@ public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjectorImp
 	public fun getRepoBaseUrl ()Ljava/lang/String;
 	public fun getSampleSourcesPathInRepo ()Ljava/lang/String;
 	public fun sampleControllerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel;
-	public fun sampleViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
+	public fun sampleViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
 }
 
 public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjectorKt {
@@ -476,7 +476,7 @@ public final class com/copperleaf/ballast/debugger/ui/sample/SampleUi {
 
 public final class com/copperleaf/ballast/debugger/ui/sample/SampleViewModel : com/copperleaf/ballast/core/BaseViewModel {
 	public static final field $stable I
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;Lcom/copperleaf/ballast/debugger/ui/sample/SampleInputHandler;Lcom/copperleaf/ballast/debugger/ui/sample/SampleEventHandler;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;Lcom/copperleaf/ballast/debugger/ui/sample/SampleInputHandler;Lcom/copperleaf/ballast/debugger/ui/sample/SampleEventHandler;)V
 }
 
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/ComposableSingletons$SampleControllerUiKt {

@@ -56,7 +56,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     internal lateinit var viewModelScope: CoroutineScope
     private var started = false
     private var cleared = false
-    private lateinit var host: ()->BallastViewModel<Inputs, Events, State>
+    private lateinit var host: () -> BallastViewModel<Inputs, Events, State>
 
     private val _restoreState: Channel<Queued.RestoreState<Inputs, Events, State>> =
         config.inputStrategy.createQueue()
@@ -89,18 +89,17 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     override suspend fun send(element: Inputs) {
         checkValidState()
-        _inputs.send(element)
         _notifications.emit(BallastNotification.InputQueued(host(), element))
+        _inputs.send(element)
     }
 
     override fun trySend(element: Inputs): ChannelResult<Unit> {
         checkValidState()
+        _notifications.tryEmit(BallastNotification.InputQueued(host(), element))
         val result = _inputs.trySend(element)
         if (result.isFailure) {
             _notifications.tryEmit(BallastNotification.InputDropped(host(), element))
             result.exceptionOrNull()?.printStackTrace()
-        } else {
-            _notifications.tryEmit(BallastNotification.InputQueued(host(), element))
         }
         return result
     }
@@ -147,7 +146,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     public fun start(
         coroutineScope: CoroutineScope,
-        getHost: ()->BallastViewModel<Inputs, Events, State>,
+        getHost: () -> BallastViewModel<Inputs, Events, State>,
     ) {
         check(!started) { "VM is already started" }
         check(!cleared) { "VM is cleared, it cannot be restarted" }
@@ -246,10 +245,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     }
 
                 interceptor.start(
+                    hostViewModelName = host().name,
                     viewModelScope = viewModelScope,
                     notifications = notificationFlow,
                     sendToQueue = {
-                        when(it) {
+                        when (it) {
                             is Queued.HandleInput -> {
                                 _inputs.send(it.input)
                             }

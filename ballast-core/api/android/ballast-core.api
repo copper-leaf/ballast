@@ -3,11 +3,11 @@ public abstract interface annotation class com/copperleaf/ballast/BallastDsl : j
 
 public abstract interface class com/copperleaf/ballast/BallastInterceptor {
 	public abstract fun onNotify (Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun start (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
+	public abstract fun start (Ljava/lang/String;Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
 }
 
 public final class com/copperleaf/ballast/BallastInterceptor$DefaultImpls {
-	public static fun start (Lcom/copperleaf/ballast/BallastInterceptor;Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
+	public static fun start (Lcom/copperleaf/ballast/BallastInterceptor;Ljava/lang/String;Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
 }
 
 public abstract class com/copperleaf/ballast/BallastNotification {
@@ -387,7 +387,7 @@ public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperle
 	public fun <init> (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
 	public synthetic fun <init> (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun onNotify (Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun start (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
+	public fun start (Ljava/lang/String;Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
 }
 
 public final class com/copperleaf/ballast/core/ParallelInputStrategy : com/copperleaf/ballast/InputStrategy {

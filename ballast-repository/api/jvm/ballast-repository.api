@@ -1,6 +1,5 @@
 public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BaseViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Ljava/util/List;Ljava/lang/Object;Ljava/lang/String;)V
-	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Ljava/util/List;Ljava/lang/Object;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;)V
 }
 
 public abstract interface class com/copperleaf/ballast/repository/bus/EventBus {

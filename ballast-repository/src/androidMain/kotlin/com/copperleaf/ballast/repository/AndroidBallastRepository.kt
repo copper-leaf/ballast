@@ -3,7 +3,8 @@ package com.copperleaf.ballast.repository
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.copperleaf.ballast.BallastViewModel
-import com.copperleaf.ballast.BallastViewModelConfiguration
+import com.copperleaf.ballast.core.DefaultViewModelConfiguration
+import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.repository.bus.EventBus
 import com.copperleaf.ballast.repository.bus.EventBusEventHandler
@@ -22,9 +23,16 @@ private constructor(
     final override val type: String = "AndroidBallastRepository"
 
     public constructor(
-        config: BallastViewModelConfiguration<Inputs, Any, State>,
         eventBus: EventBus,
-    ) : this(BallastViewModelImpl(config), eventBus)
+        configBuilder: DefaultViewModelConfiguration.Builder,
+    ) : this(
+        impl = BallastViewModelImpl(
+            config = configBuilder
+                .apply { inputStrategy = FifoInputStrategy() }
+                .build<Inputs, Any, State>()
+        ),
+        eventBus = eventBus,
+    )
 
     init {
         impl.start(viewModelScope) { this@AndroidBallastRepository }

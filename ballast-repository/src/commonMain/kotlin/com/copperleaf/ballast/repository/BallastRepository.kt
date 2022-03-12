@@ -1,8 +1,6 @@
 package com.copperleaf.ballast.repository
 
-import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.EventHandler
-import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.core.BaseViewModel
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
@@ -45,19 +43,11 @@ import kotlinx.coroutines.flow.SharedFlow
 public abstract class BallastRepository<Inputs : Any, State : Any>(
     coroutineScope: CoroutineScope,
     eventBus: EventBus,
-    inputHandler: InputHandler<Inputs, Any, State>,
-    interceptors: List<BallastInterceptor<Inputs, Any, State>> = emptyList(),
-    initialState: State,
-    name: String = "$inputHandler-vm",
+    configBuilder: DefaultViewModelConfiguration.Builder,
 ) : BaseViewModel<Inputs, Any, State>(
     coroutineScope = coroutineScope,
-    config = DefaultViewModelConfiguration.Builder(name)
-        .apply {
-            this.initialState = initialState
-            this.inputHandler = inputHandler
-            this.inputStrategy = FifoInputStrategy()
-            this += interceptors
-        }
+    config = configBuilder
+        .apply { inputStrategy = FifoInputStrategy() }
         .build(),
     eventHandler = EventBusEventHandler(eventBus),
 )

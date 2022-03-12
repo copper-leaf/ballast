@@ -20,6 +20,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindowManager
 import io.github.copper_leaf.ballast_debugger_idea_plugin.BALLAST_VERSION
+import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -43,13 +44,14 @@ interface BallastDebuggerInjector {
 
     fun sampleViewModel(
         coroutineScope: CoroutineScope,
-        debuggerConnection: BallastDebuggerClientConnection<*>,
         inputStrategy: InputStrategy,
     ): SampleViewModel
 
     companion object {
-        fun get(project: Project): BallastDebuggerInjector {
-            return BallastDebuggerInjectorImpl(project)
+        private val injectors = mutableMapOf<Project, BallastDebuggerInjector>()
+
+        fun getInstance(project: Project): BallastDebuggerInjector {
+            return injectors.getOrPut(project) { BallastDebuggerInjectorImpl(project) }
         }
     }
 }
@@ -69,6 +71,10 @@ class BallastDebuggerInjectorImpl(
     private val toolWindowManager: ToolWindowManager get() = ToolWindowManager.getInstance(project)
 
     private val applicationScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+
+    private val debuggerConnection by lazy {
+        BallastDebuggerClientConnection(CIO, applicationScope).also { it.connect() }
+    }
 
     private fun commonBuilder(): DefaultViewModelConfiguration.Builder {
         return DefaultViewModelConfiguration.Builder()
@@ -94,11 +100,9 @@ class BallastDebuggerInjectorImpl(
 
     override fun sampleViewModel(
         coroutineScope: CoroutineScope,
-        debuggerConnection: BallastDebuggerClientConnection<*>,
         inputStrategy: InputStrategy,
     ): SampleViewModel {
         return SampleViewModel(
-            applicationCoroutineScope = applicationScope,
             viewModelCoroutineScope = coroutineScope,
             configurationBuilder = commonBuilder(),
             debuggerConnection = debuggerConnection,
@@ -110,3 +114,4 @@ class BallastDebuggerInjectorImpl(
         )
     }
 }
+

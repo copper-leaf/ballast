@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
 
     public fun start(
+        hostViewModelName: String,
         viewModelScope: CoroutineScope,
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
         sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit,

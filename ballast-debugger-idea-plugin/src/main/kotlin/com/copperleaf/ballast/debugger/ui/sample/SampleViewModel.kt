@@ -8,7 +8,6 @@ import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import kotlinx.coroutines.CoroutineScope
 
 class SampleViewModel(
-    applicationCoroutineScope: CoroutineScope,
     viewModelCoroutineScope: CoroutineScope,
     configurationBuilder: DefaultViewModelConfiguration.Builder,
     debuggerConnection: BallastDebuggerClientConnection<*>,
@@ -27,7 +26,7 @@ class SampleViewModel(
         .apply {
             name = "Sample"
             this.inputStrategy = inputStrategy
-            this += BallastDebuggerInterceptor(applicationCoroutineScope, debuggerConnection)
+            this += BallastDebuggerInterceptor(debuggerConnection)
         }
         .build(),
     eventHandler = eventHandler,

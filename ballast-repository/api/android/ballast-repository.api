@@ -1,5 +1,5 @@
 public class com/copperleaf/ballast/repository/AndroidBallastRepository : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/repository/bus/EventBus;)V
+	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;)V
 	public fun close (Ljava/lang/Throwable;)Z
 	public fun getName ()Ljava/lang/String;
 	public fun getOnSend ()Lkotlinx/coroutines/selects/SelectClause2;
@@ -13,8 +13,7 @@ public class com/copperleaf/ballast/repository/AndroidBallastRepository : androi
 }
 
 public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BaseViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Ljava/util/List;Ljava/lang/Object;Ljava/lang/String;)V
-	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/InputHandler;Ljava/util/List;Ljava/lang/Object;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;)V
 }
 
 public final class com/copperleaf/ballast/repository/BuildConfig {

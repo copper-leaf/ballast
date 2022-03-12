@@ -9,19 +9,19 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>(
-    private val applicationCoroutineScope: CoroutineScope,
     private val connection: BallastDebuggerClientConnection<*>,
 ) : BallastInterceptor<Inputs, Events, State> {
 
     override fun start(
+        hostViewModelName: String,
         viewModelScope: CoroutineScope,
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
         sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
     ) {
         connection.connectViewModel(
-            applicationCoroutineScope,
-            notifications,
-            sendToQueue
+            hostViewModelName = hostViewModelName,
+            notifications = notifications,
+            sendToQueue = sendToQueue,
         )
     }
 
