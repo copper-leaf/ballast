@@ -249,15 +249,13 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         it !is BallastNotification.ViewModelCleared
                     }
 
-                val interceptorStartScope = viewModelScope +
-                    uncaughtExceptionHandler +
-                    interceptorDispatcher
-
-                interceptor.start(
+                val interceptorScope = BallastInterceptorScopeImpl<Inputs, Events, State>(
+                    logger = logger,
                     hostViewModelName = host().name,
-                    viewModelScope = interceptorStartScope,
-                    notifications = notificationFlow,
-                    sendToQueue = {
+                    viewModelScope = viewModelScope +
+                        uncaughtExceptionHandler +
+                        interceptorDispatcher,
+                    sendQueuedToViewModel = {
                         when (it) {
                             is Queued.HandleInput -> {
                                 _inputs.send(it.input)
@@ -268,6 +266,10 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         }
                     }
                 )
+
+                with(interceptor) {
+                    interceptorScope.start(notificationFlow)
+                }
             }
 
         _notifications.tryEmit(BallastNotification.ViewModelStarted(host()))
@@ -310,6 +312,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             coroutineScope {
                 // Create a handler scope to handle the input normally
                 val handlerScope = InputHandlerScopeImpl<Inputs, Events, State>(
+                    logger = logger,
                     _state = _state,
                     guardian = guardian,
                     sendEventToQueue = {
@@ -355,6 +358,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         try {
             coroutineScope {
                 val handlerScope = EventHandlerScopeImpl<Inputs, Events, State>(
+                    logger = logger,
                     _inputs = host()
                 )
                 with(handler) {
@@ -417,6 +421,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             try {
                 coroutineScope {
                     val sideEffectScope = SideEffectScopeImpl(
+                        logger = logger,
                         _inputs = host(),
                         _events = _events,
                         currentStateWhenStarted = _state.value,

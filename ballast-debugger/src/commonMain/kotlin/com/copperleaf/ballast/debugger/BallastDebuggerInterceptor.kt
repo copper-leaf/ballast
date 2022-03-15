@@ -1,9 +1,9 @@
 package com.copperleaf.ballast.debugger
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastInterceptorScope
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.Queued
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.ExperimentalTime
 
@@ -12,18 +12,13 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
     private val connection: BallastDebuggerClientConnection<*>,
 ) : BallastInterceptor<Inputs, Events, State> {
 
-    override fun start(
-        hostViewModelName: String,
-        viewModelScope: CoroutineScope,
-        notifications: Flow<BallastNotification<Inputs, Events, State>>,
-        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
-    ) {
-        connection.connectViewModel(
-            hostViewModelName = hostViewModelName,
-            notifications = notifications,
-            sendToQueue = sendToQueue,
-        )
+    override fun BallastInterceptorScope<Inputs, Events, State>.start(notifications: Flow<BallastNotification<Inputs, Events, State>>) {
+        with(connection) {
+            connectViewModel(
+                notifications = notifications,
+            )
+        }
     }
 
-    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {}
+    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {}
 }

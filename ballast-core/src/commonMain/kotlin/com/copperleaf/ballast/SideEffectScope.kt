@@ -18,6 +18,7 @@ public interface SideEffectScope<Inputs : Any, Events : Any, State : Any> : Coro
         Initial, Restarted
     }
 
+    public val logger: BallastLogger
     public val currentStateWhenStarted: State
     public val restartState: RestartState
 

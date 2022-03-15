@@ -1,11 +1,16 @@
 package com.copperleaf.ballast.test.internal.vm
 
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.SideEffectScope
 
 internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
     private val inputHandlerScopeDelegate: InputHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>,
 ) : InputHandlerScope<Inputs, Events, State> {
+
+    override val logger: BallastLogger
+        get() = inputHandlerScopeDelegate.logger
+
     override suspend fun getCurrentState(): State {
         return inputHandlerScopeDelegate.getCurrentState()
     }

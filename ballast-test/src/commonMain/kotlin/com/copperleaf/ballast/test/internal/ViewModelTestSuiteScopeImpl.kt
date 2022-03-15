@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.test.internal
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputHandler
@@ -34,7 +35,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
     private val filter: InputFilter<Inputs, Events, State>?,
 ) : ViewModelTestSuiteScope<Inputs, Events, State> {
 
-    private var suiteLogger: (String) -> Unit = { }
+    private var suiteLogger: BallastLogger = SimpleTestLogger()
     private var defaultTimeout: Duration = 30.seconds
     private var inputStrategy: InputStrategy = LifoInputStrategy()
 
@@ -44,8 +45,8 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
     private var defaultInitialStateBlock: (() -> State)? = null
     private val scenarioBlocks = mutableListOf<ViewModelTestScenarioScopeImpl<Inputs, Events, State>>()
 
-    override fun logger(block: (String) -> Unit) {
-        this.suiteLogger = block
+    override fun logger(logger: BallastLogger) {
+        this.suiteLogger = logger
     }
 
     override fun defaultTimeout(timeout: () -> Duration) {
@@ -77,8 +78,8 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         val scenarioInputStrategy = scenario.inputStrategy ?: inputStrategy
         val otherInterceptors = scenario.interceptors + interceptors
 
-        scenarioLogger("Scenario '${scenario.name}'")
-        scenarioLogger("before runScenario")
+        scenarioLogger.debug("Scenario '${scenario.name}'")
+        scenarioLogger.debug("before runScenario")
         val testViewModel = TestViewModel(
             logger = scenarioLogger,
             testInterceptor = TestInterceptor(),
@@ -103,34 +104,34 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         val inputSequenceScope = ViewModelTestScenarioInputSequenceScopeImpl(scenarioLogger, testViewModel)
 
         // run the scenario input sequence
-        scenarioLogger("    before onInputSequenceBlock")
+        scenarioLogger.debug("    before onInputSequenceBlock")
         scenario.onInputSequenceBlock(inputSequenceScope)
-        scenarioLogger("    after onInputSequenceBlock")
+        scenarioLogger.debug("    after onInputSequenceBlock")
 
-        scenarioLogger("    before awaitSideEffectsCompletion")
+        scenarioLogger.debug("    before awaitSideEffectsCompletion")
         withTimeoutOrNull(scenarioTimeout) {
             testViewModel.impl.awaitSideEffectsCompletion()
         }
-        scenarioLogger("    after awaitSideEffectsCompletion")
+        scenarioLogger.debug("    after awaitSideEffectsCompletion")
 
         // await test completion
-        scenarioLogger("    before completing whole test")
+        scenarioLogger.debug("    before completing whole test")
         inputSequenceScope.finish()
-        scenarioLogger("    after completing whole test")
+        scenarioLogger.debug("    after completing whole test")
 
         // if the test passed, manually clear everything
-        scenarioLogger("    before cleanup")
+        scenarioLogger.debug("    before cleanup")
         viewModelJob.cancelAndJoin()
         eventHandlerJob.cancelAndJoin()
-        scenarioLogger("    after cleanup")
+        scenarioLogger.debug("    after cleanup")
 
         // make assertions on the VM. Errors should get captured and thrown by this coroutine scope, cancelling
         // everything if there are failures
-        scenarioLogger("    before verification")
+        scenarioLogger.debug("    before verification")
         scenario.verifyBlock(testViewModel.testInterceptor.getResults())
-        scenarioLogger("    after verification")
+        scenarioLogger.debug("    after verification")
 
-        scenarioLogger("after runScenario")
+        scenarioLogger.debug("after runScenario")
     }
 
     private sealed class ScenarioResult<Inputs : Any, Events : Any, State : Any> {
@@ -196,7 +197,7 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
                 .awaitAll()
 
             results.forEach {
-                println(it.printResults())
+                suiteLogger.info(it.printResults())
             }
 
             results.filterIsInstance<ScenarioResult.Failed<*, *, *>>().firstOrNull()?.let {
@@ -204,6 +205,6 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
             }
         }
 
-        println("All scenarios completed in $totalTestTime")
+        suiteLogger.info("All scenarios completed in $totalTestTime")
     }
 }

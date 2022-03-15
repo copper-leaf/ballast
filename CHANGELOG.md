@@ -5,6 +5,7 @@
 - ViewModels now clear themselves when their coroutine scope is closed, rather than having to do it manually
 - Adds "time-travel debugging" to Debugger IntelliJ plugin! Inputs can now be re-sent, and you can roll back the VM
   state to any previous point in time
+- Adds a basic Logging facade, so all Ballast components have easy access to a common logger
 - Tighten up the API a bit, to be more streamlined
 
 ## 0.10.0 - 2022-02-28

@@ -1,15 +1,17 @@
 package com.copperleaf.ballast.debugger.ui.sample
 
+import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.BasicViewModel
-import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
+import com.copperleaf.ballast.forViewModel
+import com.copperleaf.ballast.plusAssign
 import kotlinx.coroutines.CoroutineScope
 
 class SampleViewModel(
     viewModelCoroutineScope: CoroutineScope,
-    configurationBuilder: DefaultViewModelConfiguration.Builder,
+    configurationBuilder: BallastViewModelConfiguration.Builder,
     debuggerConnection: BallastDebuggerClientConnection<*>,
     inputStrategy: InputStrategy,
     inputHandler: SampleInputHandler,
@@ -19,16 +21,15 @@ class SampleViewModel(
     SampleContract.Events,
     SampleContract.State>(
     config = configurationBuilder
-        .forViewModel(
-            initialState = SampleContract.State(),
-            inputHandler = inputHandler
-        )
         .apply {
-            name = "Sample"
             this.inputStrategy = inputStrategy
             this += BallastDebuggerInterceptor(debuggerConnection)
         }
-        .build(),
+        .forViewModel(
+            initialState = SampleContract.State(),
+            inputHandler = inputHandler,
+            name = "Sample",
+        ),
     eventHandler = eventHandler,
     coroutineScope = viewModelCoroutineScope
 )

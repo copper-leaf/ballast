@@ -135,17 +135,8 @@ class LoginScreenInputHandler : InputHandler<Inputs, Events, State> {
 }
 ```
 
-The `InputHandlerScope` is a DSL which provides structured and limited access to viewing or changing the ViewModel 
-state:
-
-- View and update State: `getCurrentState()`, `updateState { it.copy() }`
-  - All state updates are atomic, guaranteed by Kotlin's `StateFlow`, and delivered to the UI immediately
-- Post Events to the EventHandler queue: `postEvent()`
-  - Events are guaranteed to be handled only once, even if multiple EventHandlers have been attached to the ViewModel
-- Launch tasks to run asynchronously in the background of the ViewModel: `sideEffect(key) { }`
-  - Side Effects are not started until after the Input has finished processing
-  - Side Effects are bound by the same CoroutineScope as the ViewModel itself, and will be cancelled if the ViewModel is cleared
-  - Side Effects may be restarted, only 1 instance of a Side Effect will be active at a time. Previous Side Effects at the same `key` will be cancelled
+The `InputHandlerScope` DSL is able to update the ViewModel State, post Events, start sideEffects, and call any other 
+suspending functions within the Input queue.
 
 ### Event Handler
 
@@ -171,9 +162,7 @@ class LoginScreenEventHandler : EventHandler<Inputs, Events, State> {
 }
 ```
 
-The `EventHandlerScope` is a DSL which provides structured and limited access to changing the ViewModel. In particular, 
-it is intended to primarily run code that lives outside of the MVI loop, but it may post Inputs back to the ViewModel 
-with `postInput()`.
+The `EventHandlerScope` DSL is able to post Inputs back into the queue.
 
 ### Side Effects
 
@@ -200,16 +189,9 @@ override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(
 }
 ```
 
-The `sideEffect()` lambda's receiver is a DSL which provides structured and limited access to viewing or changing the 
-ViewModel state:
-
-- `currentStateWhenStarted`: Since SideEffects are started at some point after the Input has finished, it's not 
-  guaranteed that the last state emitted when handling the Input hasn't changed by the time the SideEffect is actually
-  started. This property gives the VM State at the exact moment the block started running.
-- `restartState`: An enum of either `Initial` or `Restarted`, to easily perform additional actions when restarting the 
-  side effect, such as force-clearing a cached value
-- `postInput()`: Send an Input back to the ViewModel to be processed later
-- `postEvent()`: Send an Event back to the ViewModel to be delivered to the EventHandler
+The `sideEffect()` lambda's receiver DSL is able to post both Inputs and Events back to the ViewModel. It also includes
+a snapshot of the State taken when the SideEffect is started, and a flag to let you know if the sideEffect is started 
+for the first time or restarted.
 
 ## Configuration
 
@@ -218,13 +200,13 @@ functionality of Ballast with its configuration.
 
 All ViewModels will require a `BallastViewModelConfiguration` provided when they're created where most of the 
 configuration takes place, but some platform-specific ViewModel classes may need some additional configuration, too. A
-BasicViewModel configuration looks like this, using the helpful `DefaultViewModelConfiguration.Builder`:
+BasicViewModel configuration looks like this, using the helpful `BallastViewModelConfiguration.Builder`:
 
 ```kotlin
 public class ExampleViewModel(
     viewModelScope: CoroutineScope
 ) : BasicViewModel<Inputs, Events, State>(
-    config = DefaultViewModelConfiguration.Builder()
+    config = BallastViewModelConfiguration.Builder()
         .apply {
             // set configuration common to all ViewModels, if needed
         }
@@ -232,9 +214,8 @@ public class ExampleViewModel(
             initialState = State(),
             inputHandler = ExampleInputHandler(),
             name = "Example"
-        )
-        .build(),
-    eventHandler = ExampleInputHandler(),
+        ),
+    eventHandler = ExampleEventHandler(),
     coroutineScope = viewModelScope,
 )
 ```
@@ -254,7 +235,7 @@ mechanism, and are not able to make any changes to the ViewModel.
 public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 ) : BallastInterceptor<Inputs, Events, State> {
 
-    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {
+    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {
         // do something
     }
 }
@@ -262,21 +243,20 @@ public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 
 More advanced Interceptors are capable of "stepping into" the internals of the ViewModel and make updates. Rather than
 being notified when something interesting happens, they are notified when the ViewModel starts up, and are given direct
-access to the Notifications flow. They are also given a callback, with which they can send data directly back into the 
-ViewModel's processing queue, for doing unique and privileged things like time-travel debugging.  
+access to the Notifications flow, as well as a way to send data directly back into the ViewModel's processing queue, 
+for doing unique and privileged things like time-travel debugging.  
 
 ```kotlin
 public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 ) : BallastInterceptor<Inputs, Events, State> {
 
-    public fun start(
-        hostViewModelName: String,
-        viewModelScope: CoroutineScope,
+    public fun BallastInterceptorScope<Inputs, Events, State>.start(
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
-        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit,
     ) {
-        viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {
-            notifications.collect(::onNotify)
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            notifications.collect {
+                onNotify(logger, it)
+            }
         }
     }
 }

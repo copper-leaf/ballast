@@ -10,8 +10,8 @@ public final class com/copperleaf/ballast/debugger/BallastDebuggerClientConnecti
 
 public final class com/copperleaf/ballast/debugger/BallastDebuggerInterceptor : com/copperleaf/ballast/BallastInterceptor {
 	public fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;)V
-	public fun onNotify (Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun start (Ljava/lang/String;Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;)V
+	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
 public final class com/copperleaf/ballast/debugger/BuildConfig {

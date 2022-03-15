@@ -1,10 +1,12 @@
 package com.copperleaf.ballast.internal
 
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.SideEffectScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.SendChannel
 
 internal class SideEffectScopeImpl<Inputs : Any, Events : Any, State : Any>(
+    override val logger: BallastLogger,
     private val _inputs: SendChannel<Inputs>,
     private val _events: SendChannel<Events>,
     override val currentStateWhenStarted: State,

@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.firebase
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.core.BallastException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -30,7 +31,7 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
     @Target(AnnotationTarget.CLASS)
     annotation class Ignore
 
-    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {
+    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {
         when (notification) {
             is BallastNotification.InputAccepted -> {
                 if (!notification.input.isAnnotatedWith(Ignore::class)) {

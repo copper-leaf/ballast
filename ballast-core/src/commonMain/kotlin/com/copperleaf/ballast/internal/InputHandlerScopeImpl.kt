@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.internal
 
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.SideEffectScope
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 
 internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
+    override val logger: BallastLogger,
     private val guardian: InputStrategy.Guardian,
     private val _state: MutableStateFlow<State>,
     private val sendEventToQueue: suspend (Events) -> Unit,

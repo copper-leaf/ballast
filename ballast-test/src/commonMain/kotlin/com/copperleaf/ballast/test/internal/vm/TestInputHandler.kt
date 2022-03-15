@@ -4,7 +4,6 @@ import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 
 internal class TestInputHandler<Inputs : Any, Events : Any, State : Any>(
-    private val logger: (String) -> Unit,
     private val inputHandlerDelegate: InputHandler<Inputs, Events, State>,
 ) : InputHandler<TestViewModel.Inputs<Inputs>, Events, State> {
 
@@ -24,30 +23,30 @@ internal class TestInputHandler<Inputs : Any, Events : Any, State : Any>(
     ) {
         when (input) {
             is TestViewModel.Inputs.ProcessInput<Inputs> -> {
-                logger("            before handling normal input")
+                logger.debug("            before handling normal input")
                 input.processingStarted.complete(Unit)
 
                 val scopeDelegate = TestInputHandlerScope(this)
                 with(inputHandlerDelegate) {
                     scopeDelegate.handleInput(input.normalInput)
                 }
-                logger("            after handling normal input")
+                logger.debug("            after handling normal input")
                 Unit
             }
             is TestViewModel.Inputs.AwaitInput<Inputs> -> {
-                logger("            before handling normal input")
+                logger.debug("            before handling normal input")
                 val scopeDelegate = TestInputHandlerScope(this)
                 with(inputHandlerDelegate) {
                     scopeDelegate.handleInput(input.normalInput)
                 }
                 input.processingFinished.complete(Unit)
-                logger("            after handling normal input")
+                logger.debug("            after handling normal input")
                 Unit
             }
             is TestViewModel.Inputs.TestCompleted<Inputs> -> {
-                logger("            before completing test")
+                logger.debug("            before completing test")
                 input.processingFinished.complete(Unit)
-                logger("            after completing test")
+                logger.debug("            after completing test")
                 noOp()
                 Unit
             }

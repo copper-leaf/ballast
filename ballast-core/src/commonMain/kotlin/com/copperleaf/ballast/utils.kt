@@ -1,5 +1,7 @@
 package com.copperleaf.ballast
 
+import com.copperleaf.ballast.core.DefaultViewModelConfiguration
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
@@ -97,6 +99,9 @@ public suspend inline fun <
     postEvent(event)
 }
 
+// Configuration DSL
+// ---------------------------------------------------------------------------------------------------------------------
+
 /**
  * Due to bug in the Kotlin language, `fun interfaces` cannot have their SAM be marked with `suspend`. This DSL method
  * is a workaround to allow that same behavior of an anonymous function as the input handler.
@@ -124,3 +129,91 @@ public inline fun <Inputs : Any, Events : Any, State : Any> eventHandler(
         }
     }
 }
+
+@Suppress("UNCHECKED_CAST")
+private fun <T : Any> Any?.requireTyped(name: String): T {
+    if (this == null) error("$name required")
+    return this as T
+}
+
+@Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
+private fun <T : Any> Any?.requireTypedIfPresent(name: String): T? {
+    if (this == null) return null
+    return this as T
+}
+
+@Suppress("UNCHECKED_CAST")
+private fun <Inputs : Any, Events : Any, State : Any> List<BallastInterceptor<*, *, *>>.mapAsTyped(
+): List<BallastInterceptor<Inputs, Events, State>> {
+    return this.map { it as BallastInterceptor<Inputs, Events, State> }
+}
+
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.build(
+): BallastViewModelConfiguration<Inputs, Events, State> {
+    return DefaultViewModelConfiguration<Inputs, Events, State>(
+        initialState = initialState.requireTyped("initialState"),
+        inputHandler = inputHandler.requireTyped("inputHandler"),
+        filter = filter.requireTypedIfPresent("filter"),
+        interceptors = interceptors.mapAsTyped(),
+        inputStrategy = inputStrategy,
+        inputsDispatcher = inputsDispatcher,
+        eventsDispatcher = eventsDispatcher,
+        sideEffectsDispatcher = sideEffectsDispatcher,
+        interceptorDispatcher = interceptorDispatcher,
+        name = name ?: "$inputHandler-vm",
+        logger = logger,
+    )
+}
+
+public fun BallastViewModelConfiguration.Builder.dispatchers(
+    inputsDispatcher: CoroutineDispatcher,
+    eventsDispatcher: CoroutineDispatcher = inputsDispatcher,
+    sideEffectsDispatcher: CoroutineDispatcher = inputsDispatcher,
+    interceptorDispatcher: CoroutineDispatcher = inputsDispatcher,
+): BallastViewModelConfiguration.Builder = apply {
+    this.inputsDispatcher = inputsDispatcher
+    this.eventsDispatcher = eventsDispatcher
+    this.sideEffectsDispatcher = sideEffectsDispatcher
+    this.interceptorDispatcher = interceptorDispatcher
+}
+
+public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.plusAssign(
+    interceptor: BallastInterceptor<Inputs, Events, State>
+) {
+    this.interceptors += interceptor
+}
+
+public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.plusAssign(
+    interceptors: Iterable<BallastInterceptor<Inputs, Events, State>>
+) {
+    this.interceptors += interceptors
+}
+
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
+    initialState: State,
+    inputHandler: InputHandler<Inputs, Events, State>,
+    filter: InputFilter<Inputs, Events, State>? = null,
+    name: String? = this.name,
+): BallastViewModelConfiguration<Inputs, Events, State> =
+    this
+        .apply {
+            this.initialState = initialState
+            this.inputHandler = inputHandler
+            this.filter = filter
+            this.name = name
+        }
+        .build()
+
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
+    initialState: State,
+    inputHandler: FilteredInputHandler<Inputs, Events, State>,
+    name: String? = this.name,
+): BallastViewModelConfiguration<Inputs, Events, State> =
+    this
+        .apply {
+            this.initialState = initialState
+            this.inputHandler = inputHandler
+            this.filter = inputHandler
+            this.name = name
+        }
+        .build()

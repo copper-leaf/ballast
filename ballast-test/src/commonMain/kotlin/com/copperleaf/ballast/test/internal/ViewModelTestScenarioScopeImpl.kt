@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.test.internal
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.test.TestResults
 import com.copperleaf.ballast.test.ViewModelTestScenarioInputSequenceScope
@@ -20,7 +21,7 @@ internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State 
     internal var solo: Boolean = false
     internal var skip: Boolean = false
 
-    internal var logger: ((String) -> Unit)? = null
+    internal var logger: BallastLogger? = null
     internal var timeout: Duration? = null
     internal var inputStrategy: InputStrategy? = null
 
@@ -35,8 +36,8 @@ internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State 
         this.skip = true
     }
 
-    override fun logger(block: (String) -> Unit) {
-        this.logger = block
+    override fun logger(logger: BallastLogger) {
+        this.logger = logger
     }
 
     override fun timeout(timeout: () -> Duration) {

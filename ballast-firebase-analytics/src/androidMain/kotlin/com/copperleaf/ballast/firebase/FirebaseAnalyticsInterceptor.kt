@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.firebase
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -24,7 +25,7 @@ class FirebaseAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
     @Target(AnnotationTarget.CLASS)
     annotation class TrackInput
 
-    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {
+    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {
         if (notification is BallastNotification.InputAccepted) {
             if (notification.input.isAnnotatedWith(TrackInput::class)) {
                 analytics.logEvent("action") {

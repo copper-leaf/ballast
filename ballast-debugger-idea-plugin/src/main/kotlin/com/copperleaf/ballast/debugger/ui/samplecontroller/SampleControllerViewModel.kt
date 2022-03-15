@@ -1,12 +1,13 @@
 package com.copperleaf.ballast.debugger.ui.samplecontroller
 
+import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.core.BasicViewModel
-import com.copperleaf.ballast.core.DefaultViewModelConfiguration
+import com.copperleaf.ballast.forViewModel
 import kotlinx.coroutines.CoroutineScope
 
 class SampleControllerViewModel(
     coroutineScope: CoroutineScope,
-    configurationBuilder: DefaultViewModelConfiguration.Builder,
+    configurationBuilder: BallastViewModelConfiguration.Builder,
     inputHandler: SampleControllerInputHandler,
     eventHandler: SampleControllerEventHandler,
 ) : BasicViewModel<
@@ -16,12 +17,9 @@ class SampleControllerViewModel(
     config = configurationBuilder
         .forViewModel(
             initialState = SampleControllerContract.State(),
-            inputHandler = inputHandler
-        )
-        .apply {
-            name = "Sample Controller"
-        }
-        .build(),
+            inputHandler = inputHandler,
+            name = "Sample Controller",
+        ),
     eventHandler = eventHandler,
     coroutineScope = coroutineScope
 )

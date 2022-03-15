@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger
 
 import com.benasher44.uuid.uuid4
+import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
@@ -148,10 +149,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         return job
     }
 
-    internal fun <Inputs : Any, Events : Any, State : Any> connectViewModel(
-        hostViewModelName: String,
+    internal fun <Inputs : Any, Events : Any, State : Any> BallastInterceptorScope<Inputs, Events, State>.connectViewModel(
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
-        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
     ) {
         val processIncomingJob = applicationCoroutineScope.launch {
             incomingActions
@@ -171,7 +170,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                         null
                     }
                 }
-                .collect { (action, thisViewModel) -> handleAction(action, thisViewModel, sendToQueue) }
+                .collect { (action, thisViewModel) -> handleAction(action, thisViewModel) }
         }
         applicationCoroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
             notifications
@@ -332,10 +331,9 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun <Inputs : Any, Events : Any, State : Any> handleAction(
+    private suspend fun <Inputs : Any, Events : Any, State : Any> BallastInterceptorScope<Inputs, Events, State>.handleAction(
         action: BallastDebuggerAction,
         thisViewModel: BallastViewModelState,
-        sendToQueue: suspend (Queued<Inputs, Events, State>) -> Unit
     ) {
         return when (action) {
             is BallastDebuggerAction.RequestViewModelRefresh -> {

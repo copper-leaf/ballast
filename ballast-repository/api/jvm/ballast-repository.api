@@ -1,5 +1,5 @@
 public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BasicViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)V
 }
 
 public abstract interface class com/copperleaf/ballast/repository/bus/EventBus {

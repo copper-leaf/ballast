@@ -1,13 +1,10 @@
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.BallastViewModel
 
-public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
-    private val logError: BallastViewModel<Inputs, Events, State>.(BallastException) -> Unit = { },
-    private val logMessage: BallastViewModel<Inputs, Events, State>.(String) -> Unit = { },
-) : BallastInterceptor<Inputs, Events, State> {
+public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any> : BallastInterceptor<Inputs, Events, State> {
 
     /**
      * A trivial implementation of an error log, which is attached to errors reported to crash reporters. A more robust
@@ -21,7 +18,7 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
      */
     private var latestState: State? = null
 
-    override suspend fun onNotify(notification: BallastNotification<Inputs, Events, State>) {
+    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {
         val error: BallastException? = when (notification) {
             is BallastNotification.StateChanged -> {
                 latestState = notification.state
@@ -50,9 +47,9 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
             }
         }
 
-        logMessage(notification.vm, notification.toString())
+        logger.debug(notification.toString())
         if (error != null) {
-            logError(notification.vm, error)
+            logger.error(error)
         }
     }
 }

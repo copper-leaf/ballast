@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.test
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlin.time.Duration
@@ -23,7 +24,7 @@ public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : 
      * A callback function for viewing logs emitted during this test scenario. This includes logs from a
      * [LoggingInterceptor], and additional logs from this test runner.
      */
-    public fun logger(block: (String) -> Unit)
+    public fun logger(logger: BallastLogger)
 
     /**
      * Set the timeout for waiting for test side-effects to complete for this test scenario.

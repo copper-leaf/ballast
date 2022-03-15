@@ -21,6 +21,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 @BallastDsl
 public interface InputHandlerScope<Inputs : Any, Events : Any, State : Any> {
 
+    public val logger: BallastLogger
+
     public suspend fun getCurrentState(): State
 
     /**

@@ -214,14 +214,15 @@ class LoginViewModel(
         LoginContract.Inputs,
         LoginContract.Events,
         LoginContract.State>(
-  config = DefaultViewModelConfiguration(
-    initialState = LoginContract.State(),
-    inputHandler = inputHandler,
-    interceptor = LoggingInterceptor(
-      logMessage = { Log.d("Login", it) },
-      logError = { Log.e("Login", null, it) },
+  config = BallastViewModelConfiguration.Builder()
+    .apply {
+      this += LoggingInterceptor()
+    }
+    .forViewModel(
+      initialState = LoginContract.State(),
+      inputHandler = inputHandler,
+      name = "Login",
     )
-  )
 )
 ```
 

@@ -1,8 +1,8 @@
 package com.copperleaf.ballast.debugger.di
 
 import androidx.compose.runtime.compositionLocalOf
+import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
-import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
@@ -76,8 +76,8 @@ class BallastDebuggerInjectorImpl(
         BallastDebuggerClientConnection(CIO, applicationScope).also { it.connect() }
     }
 
-    private fun commonBuilder(): DefaultViewModelConfiguration.Builder {
-        return DefaultViewModelConfiguration.Builder()
+    private fun commonBuilder(): BallastViewModelConfiguration.Builder {
+        return BallastViewModelConfiguration.Builder()
     }
 
     override fun debuggerViewModel(coroutineScope: CoroutineScope): DebuggerViewModel {

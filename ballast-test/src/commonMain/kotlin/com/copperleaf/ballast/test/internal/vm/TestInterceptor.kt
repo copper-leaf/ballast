@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.test.internal.vm
 
 import com.copperleaf.ballast.BallastInterceptor
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.SideEffectScope
 import com.copperleaf.ballast.test.TestResults
@@ -43,7 +44,10 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
         }
     }
 
-    override suspend fun onNotify(notification: BallastNotification<TestViewModel.Inputs<Inputs>, Events, State>) {
+    override suspend fun onNotify(
+        logger: BallastLogger,
+        notification: BallastNotification<TestViewModel.Inputs<Inputs>, Events, State>
+    ) {
         when (notification) {
             is BallastNotification.InputAccepted -> {
                 notification.input.unwrap { acceptedInputs += it }
