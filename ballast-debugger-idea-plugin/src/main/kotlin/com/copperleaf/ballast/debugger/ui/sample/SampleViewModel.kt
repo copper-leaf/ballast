@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.debugger.ui.sample
 
 import com.copperleaf.ballast.InputStrategy
-import com.copperleaf.ballast.core.BaseViewModel
+import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
@@ -14,7 +14,7 @@ class SampleViewModel(
     inputStrategy: InputStrategy,
     inputHandler: SampleInputHandler,
     eventHandler: SampleEventHandler,
-) : BaseViewModel<
+) : BasicViewModel<
     SampleContract.Inputs,
     SampleContract.Events,
     SampleContract.State>(

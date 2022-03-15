@@ -2,7 +2,7 @@ package com.copperleaf.ballast.repository
 
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.core.BaseViewModel
+import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.repository.bus.EventBus
@@ -44,7 +44,7 @@ public abstract class BallastRepository<Inputs : Any, State : Any>(
     coroutineScope: CoroutineScope,
     eventBus: EventBus,
     configBuilder: DefaultViewModelConfiguration.Builder,
-) : BaseViewModel<Inputs, Any, State>(
+) : BasicViewModel<Inputs, Any, State>(
     coroutineScope = coroutineScope,
     config = configBuilder
         .apply { inputStrategy = FifoInputStrategy() }

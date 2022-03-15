@@ -8,13 +8,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
-public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
+public open class BasicViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val eventHandler: EventHandler<Inputs, Events, State>,
     coroutineScope: CoroutineScope
 ) : BallastViewModel<Inputs, Events, State> by impl {
 
-    final override val type: String = "BaseViewModel"
+    final override val type: String = "BasicViewModel"
 
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,
@@ -27,7 +27,7 @@ public open class BaseViewModel<Inputs : Any, Events : Any, State : Any> private
     )
 
     init {
-        impl.start(coroutineScope) { this@BaseViewModel }
+        impl.start(coroutineScope) { this@BasicViewModel }
         impl.viewModelScope.launch {
             impl.attachEventHandler(eventHandler)
         }

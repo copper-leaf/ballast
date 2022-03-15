@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.ui.samplecontroller
 
-import com.copperleaf.ballast.core.BaseViewModel
+import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import kotlinx.coroutines.CoroutineScope
 
@@ -9,7 +9,7 @@ class SampleControllerViewModel(
     configurationBuilder: DefaultViewModelConfiguration.Builder,
     inputHandler: SampleControllerInputHandler,
     eventHandler: SampleControllerEventHandler,
-) : BaseViewModel<
+) : BasicViewModel<
     SampleControllerContract.Inputs,
     SampleControllerContract.Events,
     SampleControllerContract.State>(

@@ -324,7 +324,7 @@ public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerUi {
 	public final fun ui (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 }
 
-public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel : com/copperleaf/ballast/core/BaseViewModel {
+public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel : com/copperleaf/ballast/core/BasicViewModel {
 	public static final field $stable I
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerInputHandler;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerEventHandler;)V
 }
@@ -474,7 +474,7 @@ public final class com/copperleaf/ballast/debugger/ui/sample/SampleUi {
 	public final fun ui (Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 }
 
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleViewModel : com/copperleaf/ballast/core/BaseViewModel {
+public final class com/copperleaf/ballast/debugger/ui/sample/SampleViewModel : com/copperleaf/ballast/core/BasicViewModel {
 	public static final field $stable I
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;Lcom/copperleaf/ballast/debugger/ui/sample/SampleInputHandler;Lcom/copperleaf/ballast/debugger/ui/sample/SampleEventHandler;)V
 }
@@ -599,7 +599,7 @@ public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleCon
 	public final fun ui (Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 }
 
-public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel : com/copperleaf/ballast/core/BaseViewModel {
+public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel : com/copperleaf/ballast/core/BasicViewModel {
 	public static final field $stable I
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerInputHandler;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerEventHandler;)V
 }

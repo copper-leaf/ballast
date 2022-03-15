@@ -12,7 +12,7 @@ public class com/copperleaf/ballast/repository/AndroidBallastRepository : androi
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
-public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BaseViewModel {
+public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BasicViewModel {
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/core/DefaultViewModelConfiguration$Builder;)V
 }
 

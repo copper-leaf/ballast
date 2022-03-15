@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
-import com.copperleaf.ballast.core.BaseViewModel
+import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.core.FifoInputStrategy
 import kotlinx.coroutines.CoroutineScope
@@ -10,7 +10,7 @@ class DebuggerViewModel constructor(
     configurationBuilder: DefaultViewModelConfiguration.Builder,
     inputHandler: DebuggerInputHandler,
     eventHandler: DebuggerEventHandler,
-) : BaseViewModel<
+) : BasicViewModel<
     DebuggerContract.Inputs,
     DebuggerContract.Events,
     DebuggerContract.State>(
