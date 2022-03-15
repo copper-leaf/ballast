@@ -5,7 +5,7 @@ package com.copperleaf.ballast
  */
 public interface BallastLogger {
 
-    public fun debug(message: String) { }
-    public fun info(message: String) { }
-    public fun error(throwable: Throwable) { }
+    public fun debug(message: String) {}
+    public fun info(message: String) {}
+    public fun error(throwable: Throwable) {}
 }

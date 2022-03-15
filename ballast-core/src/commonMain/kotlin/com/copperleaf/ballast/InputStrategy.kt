@@ -58,12 +58,12 @@ public interface InputStrategy {
         /**
          * Checked on every call to [InputHandlerScope.getCurrentState].
          */
-        public fun checkStateAccess() { }
+        public fun checkStateAccess() {}
 
         /**
          * Checked on every call to [InputHandlerScope.updateState], [InputHandlerScope.getAndUpdateState], or
          * [InputHandlerScope.updateStateAndGet].
          */
-        public fun checkStateUpdate() { }
+        public fun checkStateUpdate() {}
     }
 }

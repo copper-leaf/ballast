@@ -25,7 +25,7 @@ internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State 
     internal var timeout: Duration? = null
     internal var inputStrategy: InputStrategy? = null
 
-    internal val interceptors: MutableList<()->BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
+    internal val interceptors: MutableList<() -> BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
         mutableListOf()
 
     override fun solo() {

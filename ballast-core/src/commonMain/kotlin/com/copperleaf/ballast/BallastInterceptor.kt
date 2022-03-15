@@ -17,5 +17,5 @@ public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
         }
     }
 
-    public suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) { }
+    public suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {}
 }

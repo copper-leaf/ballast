@@ -1,12 +1,16 @@
 package com.copperleaf.ballast.debugger.idea.theme
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import com.intellij.ide.ui.LafManager
 import com.intellij.ide.ui.LafManagerListener
 import com.intellij.openapi.application.ApplicationManager
 import javax.swing.UIManager
 import java.awt.Color as AWTColor
-import com.intellij.ide.ui.LafManager
 
 internal class ThemeChangeListener(
     val updateColors: () -> Unit

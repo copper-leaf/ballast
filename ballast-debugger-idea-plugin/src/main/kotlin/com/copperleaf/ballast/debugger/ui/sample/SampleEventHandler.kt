@@ -3,15 +3,13 @@ package com.copperleaf.ballast.debugger.ui.sample
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
 import kotlinx.coroutines.delay
-import com.intellij.openapi.diagnostic.Logger
 
 class SampleEventHandler(
-    private val logger: Logger,
     val onWindowClosed: () -> Unit,
 ) : EventHandler<
-        SampleContract.Inputs,
-        SampleContract.Events,
-        SampleContract.State> {
+    SampleContract.Inputs,
+    SampleContract.Events,
+    SampleContract.State> {
     override suspend fun EventHandlerScope<
         SampleContract.Inputs,
         SampleContract.Events,

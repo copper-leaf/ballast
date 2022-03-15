@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.di
 
 import androidx.compose.runtime.compositionLocalOf
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
@@ -30,9 +31,6 @@ val LocalInjector = compositionLocalOf<BallastDebuggerInjector> { error("LocalIn
 interface BallastDebuggerInjector {
     val repoBaseUrl: String
     val sampleSourcesPathInRepo: String
-
-    val prefs: IdeaPluginPrefs
-    val logger: Logger
 
     fun debuggerViewModel(
         coroutineScope: CoroutineScope,
@@ -64,28 +62,39 @@ class BallastDebuggerInjectorImpl(
     override val sampleSourcesPathInRepo: String =
         "ballast-debugger-idea-plugin/src/main/kotlin/com/copperleaf/ballast/debugger/ui/sample"
 
-    override val logger: Logger = Logger.getInstance(BallastIdeaPlugin::class.java)
-
-    override val prefs: IdeaPluginPrefs = IdeaPluginPrefsImpl(project)
-
+    private val ideaPluginLogger: Logger = Logger.getInstance(BallastIdeaPlugin::class.java)
+    private val prefs: IdeaPluginPrefs = IdeaPluginPrefsImpl(project)
     private val toolWindowManager: ToolWindowManager get() = ToolWindowManager.getInstance(project)
-
     private val applicationScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-
     private val debuggerConnection by lazy {
         BallastDebuggerClientConnection(CIO, applicationScope).also { it.connect() }
     }
 
     private fun commonBuilder(): BallastViewModelConfiguration.Builder {
         return BallastViewModelConfiguration.Builder()
+            .apply {
+                logger = object : BallastLogger {
+                    override fun debug(message: String) {
+                        ideaPluginLogger.debug(message)
+                    }
+
+                    override fun info(message: String) {
+                        ideaPluginLogger.info(message)
+                    }
+
+                    override fun error(throwable: Throwable) {
+                        ideaPluginLogger.error(throwable)
+                    }
+                }
+            }
     }
 
     override fun debuggerViewModel(coroutineScope: CoroutineScope): DebuggerViewModel {
         return DebuggerViewModel(
             coroutineScope = coroutineScope,
             configurationBuilder = commonBuilder(),
-            inputHandler = DebuggerInputHandler(logger, prefs),
-            eventHandler = DebuggerEventHandler(logger),
+            inputHandler = DebuggerInputHandler(prefs),
+            eventHandler = DebuggerEventHandler(),
         )
     }
 
@@ -93,8 +102,8 @@ class BallastDebuggerInjectorImpl(
         return SampleControllerViewModel(
             coroutineScope = coroutineScope,
             configurationBuilder = commonBuilder(),
-            inputHandler = SampleControllerInputHandler(this, logger, prefs),
-            eventHandler = SampleControllerEventHandler(logger),
+            inputHandler = SampleControllerInputHandler(this, prefs),
+            eventHandler = SampleControllerEventHandler(),
         )
     }
 
@@ -107,8 +116,8 @@ class BallastDebuggerInjectorImpl(
             configurationBuilder = commonBuilder(),
             debuggerConnection = debuggerConnection,
             inputStrategy = inputStrategy,
-            inputHandler = SampleInputHandler(logger),
-            eventHandler = SampleEventHandler(logger, onWindowClosed = {
+            inputHandler = SampleInputHandler(),
+            eventHandler = SampleEventHandler(onWindowClosed = {
                 toolWindowManager.getToolWindow("Ballast Sample")?.hide()
             }),
         )

@@ -3,16 +3,13 @@ package com.copperleaf.ballast.debugger.ui.sample
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.observeFlows
-import com.intellij.openapi.diagnostic.Logger
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
-class SampleInputHandler(
-    private val logger: Logger,
-) : InputHandler<
-        SampleContract.Inputs,
-        SampleContract.Events,
-        SampleContract.State> {
+class SampleInputHandler : InputHandler<
+    SampleContract.Inputs,
+    SampleContract.Events,
+    SampleContract.State> {
     override suspend fun InputHandlerScope<
         SampleContract.Inputs,
         SampleContract.Events,

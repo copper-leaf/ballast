@@ -6,16 +6,14 @@ import com.copperleaf.ballast.debugger.di.BallastDebuggerInjector
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
 import com.copperleaf.ballast.postEventWithState
 import com.copperleaf.ballast.postInput
-import com.intellij.openapi.diagnostic.Logger
 
 class SampleControllerInputHandler(
     private val injector: BallastDebuggerInjector,
-    private val logger: Logger,
     private val prefs: IdeaPluginPrefs,
 ) : InputHandler<
-        SampleControllerContract.Inputs,
-        SampleControllerContract.Events,
-        SampleControllerContract.State> {
+    SampleControllerContract.Inputs,
+    SampleControllerContract.Events,
+    SampleControllerContract.State> {
     override suspend fun InputHandlerScope<
         SampleControllerContract.Inputs,
         SampleControllerContract.Events,

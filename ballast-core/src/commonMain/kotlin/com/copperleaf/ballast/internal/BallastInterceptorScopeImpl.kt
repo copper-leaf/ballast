@@ -9,7 +9,7 @@ public class BallastInterceptorScopeImpl<Inputs : Any, Events : Any, State : Any
     override val logger: BallastLogger,
     override val hostViewModelName: String,
     private val viewModelScope: CoroutineScope,
-    private val sendQueuedToViewModel: suspend (Queued<Inputs, Events, State>)->Unit
+    private val sendQueuedToViewModel: suspend (Queued<Inputs, Events, State>) -> Unit
 ) : BallastInterceptorScope<Inputs, Events, State>,
     CoroutineScope by viewModelScope {
 

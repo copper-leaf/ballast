@@ -182,6 +182,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         currentSideEffects.clear()
 
         _notifications.tryEmit(BallastNotification.ViewModelCleared(host()))
+
+        _inputs.close()
+        _restoreState.close()
+        _events.close()
+        _sideEffects.close()
     }
 
 // Internals

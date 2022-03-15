@@ -6,7 +6,7 @@ import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.forViewModel
 import kotlinx.coroutines.CoroutineScope
 
-class DebuggerViewModel constructor(
+class DebuggerViewModel(
     coroutineScope: CoroutineScope,
     configurationBuilder: BallastViewModelConfiguration.Builder,
     inputHandler: DebuggerInputHandler,

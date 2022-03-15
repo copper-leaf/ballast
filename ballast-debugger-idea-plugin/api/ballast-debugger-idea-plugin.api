@@ -1,8 +1,6 @@
 public abstract interface class com/copperleaf/ballast/debugger/di/BallastDebuggerInjector {
 	public static final field Companion Lcom/copperleaf/ballast/debugger/di/BallastDebuggerInjector$Companion;
 	public abstract fun debuggerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel;
-	public abstract fun getLogger ()Lcom/intellij/openapi/diagnostic/Logger;
-	public abstract fun getPrefs ()Lcom/copperleaf/ballast/debugger/idea/settings/IdeaPluginPrefs;
 	public abstract fun getRepoBaseUrl ()Ljava/lang/String;
 	public abstract fun getSampleSourcesPathInRepo ()Ljava/lang/String;
 	public abstract fun sampleControllerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel;
@@ -17,8 +15,6 @@ public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjectorImp
 	public static final field $stable I
 	public fun <init> (Lcom/intellij/openapi/project/Project;)V
 	public fun debuggerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel;
-	public fun getLogger ()Lcom/intellij/openapi/diagnostic/Logger;
-	public fun getPrefs ()Lcom/copperleaf/ballast/debugger/idea/settings/IdeaPluginPrefs;
 	public fun getRepoBaseUrl ()Ljava/lang/String;
 	public fun getSampleSourcesPathInRepo ()Ljava/lang/String;
 	public fun sampleControllerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel;
@@ -305,14 +301,14 @@ public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$
 
 public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerEventHandler : com/copperleaf/ballast/EventHandler {
 	public static final field $stable I
-	public fun <init> (Lcom/intellij/openapi/diagnostic/Logger;)V
+	public fun <init> ()V
 	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerInputHandler : com/copperleaf/ballast/InputHandler {
 	public static final field $stable I
-	public fun <init> (Lcom/intellij/openapi/diagnostic/Logger;Lcom/copperleaf/ballast/debugger/idea/settings/IdeaPluginPrefs;)V
+	public fun <init> (Lcom/copperleaf/ballast/debugger/idea/settings/IdeaPluginPrefs;)V
 	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -455,7 +451,7 @@ public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Stat
 
 public final class com/copperleaf/ballast/debugger/ui/sample/SampleEventHandler : com/copperleaf/ballast/EventHandler {
 	public static final field $stable I
-	public fun <init> (Lcom/intellij/openapi/diagnostic/Logger;Lkotlin/jvm/functions/Function0;)V
+	public fun <init> (Lkotlin/jvm/functions/Function0;)V
 	public final fun getOnWindowClosed ()Lkotlin/jvm/functions/Function0;
 	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -463,7 +459,7 @@ public final class com/copperleaf/ballast/debugger/ui/sample/SampleEventHandler 
 
 public final class com/copperleaf/ballast/debugger/ui/sample/SampleInputHandler : com/copperleaf/ballast/InputHandler {
 	public static final field $stable I
-	public fun <init> (Lcom/intellij/openapi/diagnostic/Logger;)V
+	public fun <init> ()V
 	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -580,14 +576,14 @@ public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleCon
 
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerEventHandler : com/copperleaf/ballast/EventHandler {
 	public static final field $stable I
-	public fun <init> (Lcom/intellij/openapi/diagnostic/Logger;)V
+	public fun <init> ()V
 	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerInputHandler : com/copperleaf/ballast/InputHandler {
 	public static final field $stable I
-	public fun <init> (Lcom/copperleaf/ballast/debugger/di/BallastDebuggerInjector;Lcom/intellij/openapi/diagnostic/Logger;Lcom/copperleaf/ballast/debugger/idea/settings/IdeaPluginPrefs;)V
+	public fun <init> (Lcom/copperleaf/ballast/debugger/di/BallastDebuggerInjector;Lcom/copperleaf/ballast/debugger/idea/settings/IdeaPluginPrefs;)V
 	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }

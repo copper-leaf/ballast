@@ -10,19 +10,17 @@ import com.copperleaf.ballast.debugger.models.updateConnection
 import com.copperleaf.ballast.debugger.models.updateViewModel
 import com.copperleaf.ballast.debugger.models.updateWithDebuggerEvent
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerConnection
-import com.intellij.openapi.diagnostic.Logger
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.jetbrains.compose.splitpane.SplitPaneState
 
 class DebuggerInputHandler(
-    private val logger: Logger,
     private val prefs: IdeaPluginPrefs,
 ) : InputHandler<
-        DebuggerContract.Inputs,
-        DebuggerContract.Events,
-        DebuggerContract.State> {
+    DebuggerContract.Inputs,
+    DebuggerContract.Events,
+    DebuggerContract.State> {
     override suspend fun InputHandlerScope<
         DebuggerContract.Inputs,
         DebuggerContract.Events,
