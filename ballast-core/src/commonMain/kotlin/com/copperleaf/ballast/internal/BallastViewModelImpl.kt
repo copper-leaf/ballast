@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -114,12 +115,16 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         }
 
         withContext(uncaughtExceptionHandler) {
-            for (event in _events) {
-                safelyHandleEvent(event, handler)
-            }
+            _events
+                .receiveAsFlow()
+                .onEach { safelyHandleEvent(it, handler) }
+                .flowOn(eventsDispatcher)
+                .launchIn(this)
         }
     }
 
+    // TODO: rather than watching Jobs or anything else directly, re-implement the Test module to be an Interceptor and
+    //   track all its state by watching Notifications
     @ExperimentalCoroutinesApi
     public suspend fun awaitSideEffectsCompletion() {
         // run a busy loop until all side effects are started
@@ -208,7 +213,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             val combinedInputsAndStates: Flow<Queued<Inputs, Events, State>> = merge(
                 filteredInputsFlow,
                 _restoreState.receiveAsFlow()
-            )
+            ).flowOn(inputsDispatcher)
 
             config.inputStrategy.processInputs(
                 filteredQueue = combinedInputsAndStates,
@@ -244,9 +249,13 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         it !is BallastNotification.ViewModelCleared
                     }
 
+                val interceptorStartScope = viewModelScope +
+                    uncaughtExceptionHandler +
+                    interceptorDispatcher
+
                 interceptor.start(
                     hostViewModelName = host().name,
-                    viewModelScope = viewModelScope,
+                    viewModelScope = interceptorStartScope,
                     notifications = notificationFlow,
                     sendToQueue = {
                         when (it) {
@@ -398,7 +407,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         currentSideEffects[key] = sideEffectContainer
 
         val sideEffectCoroutineScope = viewModelScope +
-            SupervisorJob(parent = viewModelScope.coroutineContext[Job])
+            SupervisorJob(parent = viewModelScope.coroutineContext[Job]) +
+            sideEffectsDispatcher
 
         sideEffectContainer.job = sideEffectCoroutineScope.launch {
             _notifications
