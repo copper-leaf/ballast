@@ -107,11 +107,11 @@ public suspend inline fun <
  * is a workaround to allow that same behavior of an anonymous function as the input handler.
  */
 public inline fun <Inputs : Any, Events : Any, State : Any> inputHandler(
-    crossinline block: suspend InputHandlerScope<Inputs, Events, State>.() -> Unit
+    crossinline block: suspend InputHandlerScope<Inputs, Events, State>.(Inputs) -> Unit
 ): InputHandler<Inputs, Events, State> {
     return object : InputHandler<Inputs, Events, State> {
         override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) {
-            block()
+            block(input)
         }
     }
 }
@@ -121,11 +121,11 @@ public inline fun <Inputs : Any, Events : Any, State : Any> inputHandler(
  * is a workaround to allow that same behavior of an anonymous function as the event handler.
  */
 public inline fun <Inputs : Any, Events : Any, State : Any> eventHandler(
-    crossinline block: suspend EventHandlerScope<Inputs, Events, State>.() -> Unit
+    crossinline block: suspend EventHandlerScope<Inputs, Events, State>.(Events) -> Unit
 ): EventHandler<Inputs, Events, State> {
     return object : EventHandler<Inputs, Events, State> {
         override suspend fun EventHandlerScope<Inputs, Events, State>.handleEvent(event: Events) {
-            block()
+            block(event)
         }
     }
 }

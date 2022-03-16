@@ -301,12 +301,12 @@ public final class com/copperleaf/ballast/UtilsKt {
 	public static final fun build (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	public static final fun dispatchers (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
 	public static synthetic fun dispatchers$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
-	public static final fun eventHandler (Lkotlin/jvm/functions/Function2;)Lcom/copperleaf/ballast/EventHandler;
+	public static final fun eventHandler (Lkotlin/jvm/functions/Function3;)Lcom/copperleaf/ballast/EventHandler;
 	public static final fun forViewModel (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	public static final fun forViewModel (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
-	public static final fun inputHandler (Lkotlin/jvm/functions/Function2;)Lcom/copperleaf/ballast/InputHandler;
+	public static final fun inputHandler (Lkotlin/jvm/functions/Function3;)Lcom/copperleaf/ballast/InputHandler;
 	public static final fun plusAssign (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/BallastInterceptor;)V
 	public static final fun plusAssign (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Iterable;)V
 	public static final fun postEventWithState (Lcom/copperleaf/ballast/InputHandlerScope;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

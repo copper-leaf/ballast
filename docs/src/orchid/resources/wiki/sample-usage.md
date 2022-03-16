@@ -124,32 +124,38 @@ Ballast pattern, but there are a few things we'll need to tie it all together in
 the actual screen, such as a Fragment or Activity in Android.
 
 The Fragment is the main entry-point to the Ballast library, and there are many ways to set it up and use it, depending 
-on your project setup. The snippet below shows the most "vanilla" setup to demonstrate how all the pieces are ultimately
-assembled and used, but a real application would probably do things like:
+on your project setup. The snippet below shows the most common way to set it up in Android, which is with Dagger and 
+Hilt, and I've included examples using both Compose and traditional XML Views.
 
-- use Dagger and Hilt for injecting all the components, rather than creating them manually
-- use Compose for displaying the State in the UI or be more intelligent about applying the State to the normal XML views
+First, we need a ViewModel class to assemble all our components and configurations.
+```kotlin
+@HiltViewModel
+class AutoPayViewModel
+@Inject
+constructor() : AndroidViewModel<
+        AutoPayContract.Inputs,
+        AutoPayContract.Events,
+        AutoPayContract.State>(
+  config = BallastViewModelConfiguration.Builder()
+    .forViewModel(
+      initialState = LoginContract.State(),
+      inputHandler = LoginInputHandler(),
+      name = "Login",
+    )
+)
+```
 
 ```kotlin
+```
+
+```kotlin
+
+
 class LoginFragment : Fragment() {
 
   var binding: LoginBinding? = null
 
-  private val viewModel: LoginViewModel by viewModels {
-    object : ViewModelProvider.Factory {
-      override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return if(modelClass == LoginViewModel::class.java) {
-          LoginViewModel(
-            LoginInputHandler(
-              LoginRepository()
-            )
-          ) as T
-        } else {
-          error("unknown ViewModel class: $modelClass")
-        }
-      }
-    }
-  }
+  private val viewModel: LoginViewModel by viewModels()
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
