@@ -220,9 +220,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 _restoreState.receiveAsFlow()
             ).flowOn(inputsDispatcher)
 
-            config.inputStrategy.processInputs(
-                filteredQueue = combinedInputsAndStates,
-                acceptQueued = { queued, guardian ->
+            val inputStrategyScope = InputStrategyScopeImpl<Inputs, Events, State>(
+                acceptQueuedInViewModel = { queued, guardian ->
                     when (queued) {
                         is Queued.HandleInput -> {
                             safelyHandleInput(queued.input, guardian)
@@ -233,6 +232,12 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     }
                 }
             )
+
+            with(config.inputStrategy) {
+                inputStrategyScope.processInputs(
+                    filteredQueue = combinedInputsAndStates,
+                )
+            }
         }
 
         // start sideEffects posted by Inputs

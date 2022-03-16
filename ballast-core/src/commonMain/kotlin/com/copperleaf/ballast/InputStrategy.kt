@@ -44,9 +44,8 @@ public interface InputStrategy {
      * processing. The Strategy will provide a Guardian to the [InputHandlerScope], to ensure the Input is being handled
      * safely according to its own rules, guarding against potential issues.
      */
-    public suspend fun <Inputs : Any, Events : Any, State : Any> processInputs(
+    public suspend fun <Inputs : Any, Events : Any, State : Any> InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
-        acceptQueued: suspend (queued: Queued<Inputs, Events, State>, guardian: Guardian) -> Unit,
     )
 
     /**

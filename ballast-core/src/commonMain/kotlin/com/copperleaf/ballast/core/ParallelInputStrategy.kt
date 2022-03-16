@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.InputStrategyScope
 import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
@@ -37,9 +38,8 @@ public class ParallelInputStrategy : InputStrategy {
 
     override val rollbackOnCancellation: Boolean = false
 
-    override suspend fun <Inputs : Any, Events : Any, State : Any> processInputs(
+    override suspend fun <Inputs : Any, Events : Any, State : Any> InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
-        acceptQueued: suspend (queued: Queued<Inputs, Events, State>, guardian: InputStrategy.Guardian) -> Unit,
     ) {
         coroutineScope {
             val viewModelScope = this
@@ -53,7 +53,7 @@ public class ParallelInputStrategy : InputStrategy {
         }
     }
 
-    public class Guardian : DefaultGuardian()  {
+    public class Guardian : DefaultGuardian() {
         private fun performStateAccessCheck() {
             check(!stateAccessed) {
                 "ParallelInputStrategy requires that inputs only access or update the state at most once as a " +

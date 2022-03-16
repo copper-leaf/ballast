@@ -5,7 +5,7 @@ import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.CoroutineScope
 
-public class BallastInterceptorScopeImpl<Inputs : Any, Events : Any, State : Any>(
+internal class BallastInterceptorScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override val logger: BallastLogger,
     override val hostViewModelName: String,
     private val viewModelScope: CoroutineScope,

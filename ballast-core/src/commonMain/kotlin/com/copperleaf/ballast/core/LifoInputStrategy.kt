@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.InputStrategyScope
 import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
@@ -33,9 +34,8 @@ public class LifoInputStrategy : InputStrategy {
 
     override val rollbackOnCancellation: Boolean = true
 
-    override suspend fun <Inputs : Any, Events : Any, State : Any> processInputs(
+    override suspend fun <Inputs : Any, Events : Any, State : Any> InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
-        acceptQueued: suspend (queued: Queued<Inputs, Events, State>, guardian: InputStrategy.Guardian) -> Unit,
     ) {
         filteredQueue
             .collectLatest { queued ->
