@@ -39,9 +39,7 @@ public class LifoInputStrategy : InputStrategy {
     ) {
         filteredQueue
             .collectLatest { queued ->
-                acceptQueued(queued, Guardian())
+                acceptQueued(queued, DefaultGuardian())
             }
     }
-
-    public class Guardian : InputStrategy.Guardian
 }

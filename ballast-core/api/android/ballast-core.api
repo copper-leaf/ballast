@@ -260,13 +260,21 @@ public abstract interface class com/copperleaf/ballast/InputStrategy {
 }
 
 public abstract interface class com/copperleaf/ballast/InputStrategy$Guardian {
+	public abstract fun checkNoOp ()V
+	public abstract fun checkPostEvent ()V
+	public abstract fun checkSideEffect ()V
 	public abstract fun checkStateAccess ()V
 	public abstract fun checkStateUpdate ()V
+	public abstract fun close ()V
 }
 
 public final class com/copperleaf/ballast/InputStrategy$Guardian$DefaultImpls {
+	public static fun checkNoOp (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
+	public static fun checkPostEvent (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
+	public static fun checkSideEffect (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun checkStateAccess (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun checkStateUpdate (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
+	public static fun close (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 }
 
 public abstract class com/copperleaf/ballast/Queued {
@@ -367,6 +375,24 @@ public final class com/copperleaf/ballast/core/BuildConfig {
 	public fun <init> ()V
 }
 
+public class com/copperleaf/ballast/core/DefaultGuardian : com/copperleaf/ballast/InputStrategy$Guardian {
+	public fun <init> ()V
+	public fun checkNoOp ()V
+	public fun checkPostEvent ()V
+	public fun checkSideEffect ()V
+	public fun checkStateAccess ()V
+	public fun checkStateUpdate ()V
+	public fun close ()V
+	protected final fun getClosed ()Z
+	protected final fun getSideEffectsPosted ()Z
+	protected final fun getStateAccessed ()Z
+	protected final fun getUsedProperly ()Z
+	protected final fun setClosed (Z)V
+	protected final fun setSideEffectsPosted (Z)V
+	protected final fun setStateAccessed (Z)V
+	protected final fun setUsedProperly (Z)V
+}
+
 public final class com/copperleaf/ballast/core/DefaultViewModelConfiguration : com/copperleaf/ballast/BallastViewModelConfiguration {
 	public fun <init> (Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/util/List;Lcom/copperleaf/ballast/InputStrategy;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Ljava/lang/String;Lcom/copperleaf/ballast/BallastLogger;)V
 	public fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
@@ -389,23 +415,11 @@ public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperlea
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/core/FifoInputStrategy$Guardian : com/copperleaf/ballast/InputStrategy$Guardian {
-	public fun <init> ()V
-	public fun checkStateAccess ()V
-	public fun checkStateUpdate ()V
-}
-
 public final class com/copperleaf/ballast/core/LifoInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
 	public fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/copperleaf/ballast/core/LifoInputStrategy$Guardian : com/copperleaf/ballast/InputStrategy$Guardian {
-	public fun <init> ()V
-	public fun checkStateAccess ()V
-	public fun checkStateUpdate ()V
 }
 
 public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperleaf/ballast/BallastInterceptor {
@@ -428,7 +442,7 @@ public final class com/copperleaf/ballast/core/ParallelInputStrategy : com/coppe
 	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/core/ParallelInputStrategy$Guardian : com/copperleaf/ballast/InputStrategy$Guardian {
+public final class com/copperleaf/ballast/core/ParallelInputStrategy$Guardian : com/copperleaf/ballast/core/DefaultGuardian {
 	public fun <init> ()V
 	public fun checkStateAccess ()V
 	public fun checkStateUpdate ()V

@@ -35,9 +35,7 @@ public class FifoInputStrategy : InputStrategy {
     ) {
         filteredQueue
             .collect { queued ->
-                acceptQueued(queued, Guardian())
+                acceptQueued(queued, DefaultGuardian())
             }
     }
-
-    public class Guardian : InputStrategy.Guardian
 }

@@ -1,3 +1,9 @@
+## 0.12.0 - 2022-03-16
+
+- Fixes issue with `inputHandler { }` and `eventHandler { }` functions, which previously didn't actually send the input 
+  or event to the lambda
+- Move all InputHandler checks into the Guardian, so any/all of them could be thrown away by the end-user if needed
+
 ## 0.11.0 - 2022-03-15
 
 - Adds "time-travel debugging" to Debugger IntelliJ plugin! Inputs can now be re-sent, and you can roll back the VM

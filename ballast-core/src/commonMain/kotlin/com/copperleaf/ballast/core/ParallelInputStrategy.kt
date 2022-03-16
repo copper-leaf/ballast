@@ -53,23 +53,22 @@ public class ParallelInputStrategy : InputStrategy {
         }
     }
 
-    public class Guardian : InputStrategy.Guardian {
-        private var stateAccesses = 0
-
+    public class Guardian : DefaultGuardian()  {
         private fun performStateAccessCheck() {
-            check(stateAccesses == 0) {
+            check(!stateAccessed) {
                 "ParallelInputStrategy requires that inputs only access or update the state at most once as a " +
                     "safeguard against race conditions."
             }
-            stateAccesses++
         }
 
         override fun checkStateAccess() {
             performStateAccessCheck()
+            super.checkStateAccess()
         }
 
         override fun checkStateUpdate() {
             performStateAccessCheck()
+            super.checkStateUpdate()
         }
     }
 }

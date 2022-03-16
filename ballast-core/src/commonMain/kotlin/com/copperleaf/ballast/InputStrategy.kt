@@ -65,5 +65,22 @@ public interface InputStrategy {
          * [InputHandlerScope.updateStateAndGet].
          */
         public fun checkStateUpdate() {}
+
+        /**
+         *
+         */
+        public fun checkSideEffect() {}
+
+        /**
+         *
+         */
+        public fun checkPostEvent() {}
+
+        /**
+         *
+         */
+        public fun checkNoOp() {}
+
+        public fun close() {}
     }
 }
