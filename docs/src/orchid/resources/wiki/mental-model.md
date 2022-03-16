@@ -433,8 +433,8 @@ where we do not need those resources.
 But real-world applications aren't always that simple. One use-case is observing a stream of events (a Kotlin `Flow`) of
 some data source, rather than a discrete suspending value. For example, rather than the respository directly delivering
 the results of an API call, it may cache it, and send multiple emissions to notify of the cache status (see 
-{{ 'Repository' | anchor }} module). Or you connect to the phone's GPS and receive an endless stream of GPS coordinates
-you need to display on a map. We need a new strategy to handle this kind of use-case: a "side effect".
+{{ 'Ballast Repository' | anchor }} module). Or you connect to the phone's GPS and receive an endless stream of GPS
+coordinates you need to display on a map. We need a new strategy to handle this kind of use-case: a "side effect".
 
 Until this point, we've been working with the notion that the InputHandler will suspend until the async work completes, 
 and we considered what would happen if a new Input arrived while one was already suspended. But if we have a 

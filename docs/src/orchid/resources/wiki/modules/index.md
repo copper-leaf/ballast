@@ -3,8 +3,8 @@
 
 # Ballast Modules
 
-- {{ 'Core' | anchor }}
-- {{ 'Repository' | anchor }}
-- {{ 'Firebase' | anchor }}
-- {{ 'Debugger' | anchor }} 
-- {{ 'Testing Utils' | anchor }}
+- {{ 'Ballast Core' | anchor }}
+- {{ 'Ballast Repository' | anchor }}
+- {{ 'Ballast Firebase' | anchor }}
+- {{ 'Ballast Debugger' | anchor }} 
+- {{ 'Ballast Testing Utils' | anchor }}

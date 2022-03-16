@@ -32,9 +32,9 @@ See table below for a comparison of features or names in Ballast vs other popula
 ✅: Fully Officially supported
 ☑️: Fully supported by 3rd-party 
 
-[11]: {{ 'Debugger' | link }}
-[12]: {{ 'Testing Utils' | link }}
-[13]: {{ 'Repository' | link }}
+[11]: {{ 'Ballast Debugger' | link }}
+[12]: {{ 'Ballast Testing Utils' | link }}
+[13]: {{ 'Ballast Repository' | link }}
 
 [20]: https://github.com/reduxjs/redux
 [21]: https://github.com/reduxjs/redux-devtools

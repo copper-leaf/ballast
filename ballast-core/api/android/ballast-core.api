@@ -256,7 +256,7 @@ public abstract interface class com/copperleaf/ballast/InputHandlerScope {
 public abstract interface class com/copperleaf/ballast/InputStrategy {
 	public abstract fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public abstract fun getRollbackOnCancellation ()Z
-	public abstract fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun processInputs (Lcom/copperleaf/ballast/InputStrategyScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/copperleaf/ballast/InputStrategy$Guardian {
@@ -275,6 +275,10 @@ public final class com/copperleaf/ballast/InputStrategy$Guardian$DefaultImpls {
 	public static fun checkStateAccess (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun checkStateUpdate (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun close (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
+}
+
+public abstract interface class com/copperleaf/ballast/InputStrategyScope {
+	public abstract fun acceptQueued (Lcom/copperleaf/ballast/Queued;Lcom/copperleaf/ballast/InputStrategy$Guardian;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract class com/copperleaf/ballast/Queued {
@@ -412,14 +416,14 @@ public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperlea
 	public fun <init> ()V
 	public fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
-	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun processInputs (Lcom/copperleaf/ballast/InputStrategyScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/core/LifoInputStrategy : com/copperleaf/ballast/InputStrategy {
 	public fun <init> ()V
 	public fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
-	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun processInputs (Lcom/copperleaf/ballast/InputStrategyScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperleaf/ballast/BallastInterceptor {
@@ -439,7 +443,7 @@ public final class com/copperleaf/ballast/core/ParallelInputStrategy : com/coppe
 	public fun <init> ()V
 	public fun createQueue ()Lkotlinx/coroutines/channels/Channel;
 	public fun getRollbackOnCancellation ()Z
-	public fun processInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun processInputs (Lcom/copperleaf/ballast/InputStrategyScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/core/ParallelInputStrategy$Guardian : com/copperleaf/ballast/core/DefaultGuardian {
@@ -453,14 +457,6 @@ public final class com/copperleaf/ballast/core/PrintlnLogger : com/copperleaf/ba
 	public fun debug (Ljava/lang/String;)V
 	public fun error (Ljava/lang/Throwable;)V
 	public fun info (Ljava/lang/String;)V
-}
-
-public final class com/copperleaf/ballast/internal/BallastInterceptorScopeImpl : com/copperleaf/ballast/BallastInterceptorScope, kotlinx/coroutines/CoroutineScope {
-	public fun <init> (Lcom/copperleaf/ballast/BallastLogger;Ljava/lang/String;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function2;)V
-	public fun getCoroutineContext ()Lkotlin/coroutines/CoroutineContext;
-	public fun getHostViewModelName ()Ljava/lang/String;
-	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
-	public fun sendToQueue (Lcom/copperleaf/ballast/Queued;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/copperleaf/ballast/BallastViewModel, com/copperleaf/ballast/BallastViewModelConfiguration, kotlinx/coroutines/channels/SendChannel {
