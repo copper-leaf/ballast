@@ -25,7 +25,7 @@ The Contract is a declarative model what is happening in a screen. The Contract 
 APIs, so while this shows the opinionated structure of a ViewModel's Contract, you are free to swap it out for any other
 classes you may already have defined. There is no requirement for any of these components to serializable in any way.
 
-The contract is canonically a single top-level with a name like `*Contract`, and it has 3 nested class named `State`,
+The contract is canonically a single top-level with a name like `*Contract`, and it has 3 nested classes named `State`,
 `Inputs`, and `Events`.
 
 ```kotlin
@@ -198,6 +198,8 @@ for the first time or restarted.
 The above sections outline the overall _usage_ of Ballast, but there are a few more useful features that can expand the
 functionality of Ballast with its configuration. 
 
+### Config Builder 
+
 All ViewModels will require a `BallastViewModelConfiguration` provided when they're created where most of the 
 configuration takes place, but some platform-specific ViewModel classes may need some additional configuration, too. A
 BasicViewModel configuration looks like this, using the helpful `BallastViewModelConfiguration.Builder`:
@@ -227,9 +229,10 @@ ability to decouple the _intent_ to do work from the actual processing of that w
 makes it possible to intercept all the objects moving throughout the ViewModel and add a bunch of other really useful
 functionality, without requiring any changes to the Contract or Processor code.
 
-A basic Interceptor receives `BallastNotification` from the ViewModel to notify the status of every feature as it goes
-through the steps of processing, such as being queued, completed, or failed. Basic Interceptors are purely a read-only
-mechanism, and are not able to make any changes to the ViewModel.
+A basic Interceptor works like a [Decorator][1], being attached to the ViewModel without affecting any of the normal
+processing behavior of the ViewModel. It receives `BallastNotification` from the ViewModel to notify the status of every 
+feature as it goes through the steps of processing, such as being queued, completed, or failed. Basic Interceptors are 
+purely a read-only mechanism, and are not able to make any changes to the ViewModel.
 
 ```kotlin
 public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
@@ -241,10 +244,12 @@ public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 }
 ```
 
-More advanced Interceptors are capable of "stepping into" the internals of the ViewModel and make updates. Rather than
-being notified when something interesting happens, they are notified when the ViewModel starts up, and are given direct
-access to the Notifications flow, as well as a way to send data directly back into the ViewModel's processing queue, 
-for doing unique and privileged things like time-travel debugging.  
+More advanced Interceptors are given additional privileges and are able to push changes back to the ViewModel. Rather 
+than being notified when something interesting happens, they are notified when the ViewModel starts up and are given 
+direct access to the Notifications flow, as well as a way to send data directly back into the ViewModel's processing 
+queue, for doing unique and privileged things like time-travel debugging. Advanced Interceptors are able to restore the
+ViewModel state arbitrarily, and send Inputs back to the ViewModel for processing, both of which will be handled 
+processed in the normal queue by the InputStrategy.
 
 ```kotlin
 public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
@@ -265,7 +270,7 @@ public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 Ballast offers a number of useful Interceptors and modules to aid in debugging and monitoring your application, see
 {{ 'Modules' | anchor }}.
 
-### Input Strategies
+### Input Strategy
 
 Until now in this page, I've described the Ballast ViewModel's internals as a "queue" and they're processed 
 "one-at-a-time", but that's not entirely accurate. More specifically, Inputs are buffered into a Kotlin Coroutine 
@@ -284,4 +289,5 @@ applications:
   concurrently so you don't have to worry about blocking the queue or having Inputs cancelled. However, it places 
   additional restrictions on State reads/changes to prevent usage that might lead to race conditions.
 
-## Complete Example
+
+[1]: https://en.wikipedia.org/wiki/Decorator_pattern

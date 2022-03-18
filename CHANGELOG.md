@@ -1,3 +1,7 @@
+## 0.13.0
+
+- Renames `ballast-crashlytics` module to `ballast-firebase-crashlytics`
+
 ## 0.12.0 - 2022-03-17
 
 - Fixes issue with `inputHandler { }` and `eventHandler { }` functions, which previously didn't actually send the input 

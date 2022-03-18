@@ -7,4 +7,4 @@
 - {{ 'Ballast Repository' | anchor }}
 - {{ 'Ballast Firebase' | anchor }}
 - {{ 'Ballast Debugger' | anchor }} 
-- {{ 'Ballast Testing Utils' | anchor }}
+- {{ 'Ballast Test' | anchor }}

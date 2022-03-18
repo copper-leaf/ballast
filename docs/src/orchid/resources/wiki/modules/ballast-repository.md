@@ -218,6 +218,13 @@ which can be used to show a progress indicator in the UI with the old values, ra
 while loading. The `Cached<T>` value has a number of extension functions to help in displaying the right things in the
 UI according to the status of that cached value.
 
+When a UI ViewModel is observing a `Cached<T>` property from a Repository, you should think of it as if the UI ViewModel 
+simply observes a "view" of the repository. Technically, the cached values will be copied into the UI ViewModel, but 
+there shouldn't be any reason to change the value directly in the UI ViewModel. Instead, send those changes back to the
+Repository and wait for it to get changed there, at which point the updated value will flow back into the UI ViewModel. 
+Also, do not unwrap the Cached value in the UI ViewModel, continue to hold onto it as the wrapped `Cached<T>` value so 
+that the UI can use the Cached DSL to optimize its display of the inner value.
+
 ## Installation
 
 ```kotlin

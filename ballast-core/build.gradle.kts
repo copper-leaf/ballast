@@ -7,7 +7,7 @@ plugins {
     `copper-leaf-publish`
 }
 
-description = "Opinionated Kotlin multiplatform MVI library"
+description = "Opinionated Application State Management framework for Kotlin Multiplatform"
 
 android {
     compileSdk = 31

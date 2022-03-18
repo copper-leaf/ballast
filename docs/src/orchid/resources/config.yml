@@ -3,7 +3,7 @@ site:
   baseUrl: 'https://copper-leaf.github.io/ballast/'
   about:
     siteName: Ballat
-    siteDescription: Opinionated Kotlin multiplatform MVI library
+    siteDescription: Opinionated Application State Management framework for Kotlin Multiplatform
 
 theme:
   social:
@@ -39,9 +39,9 @@ allPages:
     # Menu in left sidebar
     - type: 'page'
       itemId: 'Home'
+    - type: 'wiki'
     - type: 'page'
       itemId: 'Changelog'
-    - type: 'wiki'
   layoutConfig:
     wrapPageInBox: true
     wrapTitleInBox: false
