@@ -44,7 +44,7 @@ class TodosInputHandler : InputHandler<Inputs, Events, State> {
 @Composable
 fun App() { 
     val coroutineScope = rememberCoroutineScope()
-    val vm by remember(coroutineScope) { TodosViewModel(coroutineScope) }
+    val vm = remember(coroutineScope) { TodosViewModel(coroutineScope) }
     val vmState by vm.observeStates().collectAsState()
     
     LaunchedEffect(vm) { 

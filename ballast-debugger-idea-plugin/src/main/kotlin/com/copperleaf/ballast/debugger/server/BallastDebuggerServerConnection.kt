@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.debugger.server
 
+import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.BALLAST_VERSION_HEADER
+import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.CONNECTION_ID_HEADER
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.debuggerEventJson
@@ -7,7 +9,6 @@ import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
 import io.github.copper_leaf.ballast_debugger_idea_plugin.BALLAST_VERSION
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.features.CallLogging
 import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.readText
 import io.ktor.response.respondText
@@ -39,7 +40,7 @@ public class BallastDebuggerServerConnection(
         withContext(Dispatchers.IO) {
             embeddedServer(CIO, port = port) {
                 install(WebSockets)
-                install(CallLogging)
+//                install(CallLogging)
 
                 routing {
                     get("/") {
@@ -47,8 +48,12 @@ public class BallastDebuggerServerConnection(
                     }
 
                     webSocket("/ballast/debugger") {
-                        val connectionId = call.request.headers["x-ballast-connection-id"] ?: ""
-                        val connectionBallastVersion = call.request.headers["x-ballast-version"] ?: ""
+                        val connectionId = call.request.headers[CONNECTION_ID_HEADER]
+                            ?: call.parameters[CONNECTION_ID_HEADER]
+                            ?: ""
+                        val connectionBallastVersion = call.request.headers[BALLAST_VERSION_HEADER]
+                            ?: call.parameters[BALLAST_VERSION_HEADER]
+                            ?: ""
 
                         // notify that a connection was started
                         postInput(

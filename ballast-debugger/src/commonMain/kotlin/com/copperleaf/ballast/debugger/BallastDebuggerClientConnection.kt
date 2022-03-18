@@ -25,6 +25,7 @@ import io.ktor.client.features.websocket.DefaultClientWebSocketSession
 import io.ktor.client.features.websocket.WebSockets
 import io.ktor.client.features.websocket.webSocket
 import io.ktor.client.request.header
+import io.ktor.client.request.url
 import io.ktor.http.HttpMethod
 import io.ktor.http.cio.websocket.Frame
 import io.ktor.http.cio.websocket.readText
@@ -58,10 +59,13 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     private val applicationCoroutineScope: CoroutineScope,
     private val host: String = "127.0.0.1", // 10.1.1.20 on Android
     private val port: Int = 9684,
+    private val ballastVersion: String = BALLAST_VERSION,
     private val connectionId: String = generateUuid(),
     block: HttpClientConfig<T>.() -> Unit = {}
 ) {
     public companion object {
+        public const val CONNECTION_ID_HEADER: String = "x-ballast-connection-id"
+        public const val BALLAST_VERSION_HEADER: String = "x-ballast-version"
         private fun generateUuid(): String {
             return uuid4().toString()
         }
@@ -120,12 +124,13 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                         client.webSocket(
                             method = HttpMethod.Get,
-                            host = host,
-                            port = port,
-                            path = "/ballast/debugger",
                             request = {
-                                header("x-ballast-connection-id", connectionId)
-                                header("x-ballast-version", BALLAST_VERSION)
+                                url("ws", host, port, "/ballast/debugger") {
+                                    parameters[CONNECTION_ID_HEADER] = connectionId
+                                    parameters[BALLAST_VERSION_HEADER] = ballastVersion
+                                }
+                                header(CONNECTION_ID_HEADER, connectionId)
+                                header(BALLAST_VERSION_HEADER, ballastVersion)
                             }
                         ) {
                             println("Connected to Ballast debugger: $connectionId")

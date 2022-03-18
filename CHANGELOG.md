@@ -1,6 +1,7 @@
 ## 0.13.0
 
 - Renames `ballast-crashlytics` module to `ballast-firebase-crashlytics`
+- Fixes issue where JS Debugger cannot connect because browser websocket clients can't send headers
 
 ## 0.12.0 - 2022-03-17
 
