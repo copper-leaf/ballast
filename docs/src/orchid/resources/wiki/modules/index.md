@@ -1,7 +1,7 @@
 ---
 ---
 
-# Ballast Modules
+# {{ page.title }}
 
 - {{ 'Ballast Core' | anchor }}
 - {{ 'Ballast Repository' | anchor }}

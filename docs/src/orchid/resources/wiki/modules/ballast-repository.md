@@ -1,7 +1,7 @@
 ---
 ---
 
-# Repository
+# {{ page.title }}
 
 MVI has been known for a while as a great option for managing UI state, but most applications will also need to manage
 some state that lives longer than a single screen. This would be things like account management, or caching of expensive

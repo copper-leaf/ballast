@@ -41,7 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.copperleaf.ballast.debugger.di.LocalInjector
-import com.copperleaf.ballast.debugger.ui.sample.SampleUi
+import com.copperleaf.ballast.debugger.ui.kitchensink.KitchenSinkUi
 
 object SampleControllerUi {
 
@@ -134,7 +134,7 @@ object SampleControllerUi {
 
                 val sampleUiState by updatedViewModel.observeStates().collectAsState()
 
-                SampleUi.ui(
+                KitchenSinkUi.ui(
                     uiState = sampleUiState,
                     postInput = { updatedViewModel.trySend(it) },
                 )
@@ -148,7 +148,7 @@ object SampleControllerUi {
                 }
             )
 
-            SelectionContainer() {
+            SelectionContainer {
                 Text(uiState.sampleSourcesUrl, style = MaterialTheme.typography.overline)
             }
         }

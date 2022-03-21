@@ -1,0 +1,70 @@
+package com.copperleaf.ballast.examples.kitchensink
+
+import com.copperleaf.ballast.InputHandler
+import com.copperleaf.ballast.InputHandlerScope
+import com.copperleaf.ballast.observeFlows
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
+
+class KitchenSinkInputHandler : InputHandler<
+    KitchenSinkContract.Inputs,
+    KitchenSinkContract.Events,
+    KitchenSinkContract.State> {
+    override suspend fun InputHandlerScope<
+        KitchenSinkContract.Inputs,
+        KitchenSinkContract.Events,
+        KitchenSinkContract.State>.handleInput(
+        input: KitchenSinkContract.Inputs
+    ) = when (input) {
+        is KitchenSinkContract.Inputs.CloseKitchenSinkWindow -> {
+            postEvent(KitchenSinkContract.Events.CloseWindow)
+        }
+
+        is KitchenSinkContract.Inputs.LongRunningInput -> {
+            updateState { it.copy(loading = true) }
+            delay(5000)
+            updateState { it.copy(loading = false) }
+        }
+
+        is KitchenSinkContract.Inputs.LongRunningEvent -> {
+            postEvent(KitchenSinkContract.Events.LongRunningEvent())
+        }
+        is KitchenSinkContract.Inputs.LongRunningSideEffect -> {
+            sideEffect("LongRunningSideEffect") {
+                delay(5000)
+            }
+        }
+        is KitchenSinkContract.Inputs.InfiniteSideEffect -> {
+            observeFlows(
+                "InfiniteSideEffect",
+                flow {
+                    while (true) {
+                        delay(1_000)
+                        emit(KitchenSinkContract.Inputs.IncrementInfiniteCounter(1))
+                    }
+                }
+            )
+        }
+        is KitchenSinkContract.Inputs.CancelInfiniteSideEffect -> {
+            sideEffect("InfiniteSideEffect") {
+                // run a side-effect with the same key, so the infinite flow one gets cancelled, while this one runs
+                // to completion
+            }
+        }
+        is KitchenSinkContract.Inputs.IncrementInfiniteCounter -> {
+            updateState { it.copy(infiniteCounter = it.infiniteCounter + input.delta) }
+        }
+
+        is KitchenSinkContract.Inputs.ErrorRunningInput -> {
+            error("error running input")
+        }
+        is KitchenSinkContract.Inputs.ErrorRunningEvent -> {
+            postEvent(KitchenSinkContract.Events.ErrorRunningEvent())
+        }
+        is KitchenSinkContract.Inputs.ErrorRunningSideEffect -> {
+            sideEffect("ErrorRunningSideEffect") {
+                error("error running sideEffect")
+            }
+        }
+    }
+}

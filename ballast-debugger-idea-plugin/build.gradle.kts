@@ -36,6 +36,7 @@ dependencies {
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     implementation(project(":ballast-core"))
     implementation(project(":ballast-debugger"))
+    implementation(project(":examples:common"))
 }
 
 buildConfig {

@@ -5,22 +5,21 @@ import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
+import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerEventHandler
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerInputHandler
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerViewModel
-import com.copperleaf.ballast.debugger.ui.sample.SampleEventHandler
-import com.copperleaf.ballast.debugger.ui.sample.SampleInputHandler
-import com.copperleaf.ballast.debugger.ui.sample.SampleViewModel
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerEventHandler
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerInputHandler
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerViewModel
+import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
+import com.copperleaf.ballast.plusAssign
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindowManager
-import io.github.copper_leaf.ballast_debugger_idea_plugin.BALLAST_VERSION
 import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,9 +28,6 @@ import kotlinx.coroutines.SupervisorJob
 val LocalInjector = compositionLocalOf<BallastDebuggerInjector> { error("LocalInjector not provided") }
 
 interface BallastDebuggerInjector {
-    val repoBaseUrl: String
-    val sampleSourcesPathInRepo: String
-
     fun debuggerViewModel(
         coroutineScope: CoroutineScope,
     ): DebuggerViewModel
@@ -40,10 +36,10 @@ interface BallastDebuggerInjector {
         coroutineScope: CoroutineScope,
     ): SampleControllerViewModel
 
-    fun sampleViewModel(
+    fun kitchenSinkViewModel(
         coroutineScope: CoroutineScope,
         inputStrategy: InputStrategy,
-    ): SampleViewModel
+    ): KitchenSinkViewModel
 
     companion object {
         private val injectors = mutableMapOf<Project, BallastDebuggerInjector>()
@@ -57,11 +53,6 @@ interface BallastDebuggerInjector {
 class BallastDebuggerInjectorImpl(
     private val project: Project,
 ) : BallastDebuggerInjector {
-    override val repoBaseUrl: String =
-        "https://github.com/copper-leaf/ballast/tree/$BALLAST_VERSION"
-    override val sampleSourcesPathInRepo: String =
-        "ballast-debugger-idea-plugin/src/main/kotlin/com/copperleaf/ballast/debugger/ui/sample"
-
     private val ideaPluginLogger: Logger = Logger.getInstance(BallastIdeaPlugin::class.java)
     private val prefs: IdeaPluginPrefs = IdeaPluginPrefsImpl(project)
     private val toolWindowManager: ToolWindowManager get() = ToolWindowManager.getInstance(project)
@@ -107,19 +98,20 @@ class BallastDebuggerInjectorImpl(
         )
     }
 
-    override fun sampleViewModel(
+    override fun kitchenSinkViewModel(
         coroutineScope: CoroutineScope,
         inputStrategy: InputStrategy,
-    ): SampleViewModel {
-        return SampleViewModel(
+    ): KitchenSinkViewModel {
+        return KitchenSinkViewModel(
             viewModelCoroutineScope = coroutineScope,
-            configurationBuilder = commonBuilder(),
-            debuggerConnection = debuggerConnection,
-            inputStrategy = inputStrategy,
-            inputHandler = SampleInputHandler(),
-            eventHandler = SampleEventHandler(onWindowClosed = {
+            configurationBuilder = commonBuilder()
+                .apply {
+                    this.inputStrategy = inputStrategy
+                    this += BallastDebuggerInterceptor(debuggerConnection)
+                },
+            onWindowClosed = {
                 toolWindowManager.getToolWindow("Ballast Sample")?.hide()
-            }),
+            }
         )
     }
 }

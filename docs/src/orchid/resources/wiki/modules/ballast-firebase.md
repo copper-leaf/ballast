@@ -1,7 +1,7 @@
 ---
 ---
 
-# Firebase
+# {{ page.title }}
 
 Ballast's Firebase modules offer an easy, declarative way to send data automatically to Firebase on Android. Analytics 
 and Crashlytics are both supported, each with different modules, so you can pick and choose the features you need.

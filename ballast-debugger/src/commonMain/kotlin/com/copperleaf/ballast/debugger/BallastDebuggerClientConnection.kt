@@ -51,6 +51,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.Duration.Companion.ZERO
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -100,20 +102,14 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         ) {
             while (true) {
                 val currentTimeoutValue = when (failedAttempts) {
-                    0 -> {
-                        0L
-                    }
-                    in 1..10 -> {
-                        1_000L
-                    }
-                    in 11..20 -> {
-                        5_000L
-                    }
-                    in 21..30 -> {
-                        30_000L
-                    }
-                    else -> Long.MAX_VALUE
+                    0 -> ZERO
+                    in 0..10 -> 1.seconds
+                    in 11..20 -> 5.seconds
+                    in 21..30 -> 30.seconds
+                    else -> Int.MAX_VALUE.seconds
                 }
+                failedAttempts++
+                waitForEvent = CompletableDeferred()
 
                 try {
                     coroutineScope {
@@ -135,7 +131,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                         ) {
                             println("Connected to Ballast debugger: $connectionId")
                             failedAttempts = 0
-                            waitForEvent = CompletableDeferred()
                             joinAll(
                                 heartbeat(),
                                 processOutgoing(),
@@ -143,11 +138,9 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                             )
                         }
                     }
-                    failedAttempts++
                 } catch (e: CancellationException) {
                     throw e
                 } catch (t: Throwable) {
-                    failedAttempts++
                 }
             }
         }

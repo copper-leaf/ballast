@@ -4,6 +4,7 @@ import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.debugger.di.BallastDebuggerInjector
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
+import com.copperleaf.ballast.examples.util.ExamplesContext
 import com.copperleaf.ballast.postEventWithState
 import com.copperleaf.ballast.postInput
 
@@ -21,7 +22,7 @@ class SampleControllerInputHandler(
         input: SampleControllerContract.Inputs
     ) = when (input) {
         is SampleControllerContract.Inputs.Initialize -> {
-            updateState { it.copy(sampleSourcesUrl = "${injector.repoBaseUrl}/${injector.sampleSourcesPathInRepo}") }
+            updateState { it.copy(sampleSourcesUrl = "${ExamplesContext.repoBaseUrlWithVersion}/${ExamplesContext.sampleSourcesPathInRepo}") }
             postInput(
                 SampleControllerContract.Inputs.UpdateInputStrategy(
                     prefs.sampleInputStrategy
@@ -34,7 +35,7 @@ class SampleControllerInputHandler(
             sideEffect("UpdateInputStrategy") {
                 prefs.sampleInputStrategy = input.inputStrategy
 
-                val vm = injector.sampleViewModel(this, currentStateWhenStarted.inputStrategy.get())
+                val vm = injector.kitchenSinkViewModel(this, currentStateWhenStarted.inputStrategy.get())
 
                 postInput(SampleControllerContract.Inputs.UpdateViewModel(vm))
             }

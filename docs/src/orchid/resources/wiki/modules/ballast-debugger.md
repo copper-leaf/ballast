@@ -1,7 +1,7 @@
 ---
 ---
 
-# Ballast Debugger
+# {{ page.title }}
 
 Ballast Debugger is a tool for inspecting the status of all components in your Ballast ViewModels in a IntelliJ plugin.
 It supports features one would expect from an MVI graphical debugger:
@@ -27,7 +27,16 @@ plugin's UI.
 
 The same connection should be shared among all ViewModels. Also, you definitely do not want to start the connection or
 include this interceptor in production builds, so make sure you configure your app to only use it in debug builds (or 
-better yet, only include the debugger dependency in debug builds).
+better yet, only include the debugger dependency in debug builds). 
+
+Since Ballast is still an early project, the Debugger currently requires that the client connection library be the same
+version as your IntelliJ plugin to avoid issues with differences in serialization between the two. If your IntelliJ
+plugin version gets updated ahead of you project's library version, you can download the specific version you need from
+the [marketplace page][2] and install it [from disk][3]. Alternatively, you may try hard-coding the IntelliJ plugin's
+version to the `BallastDebuggerClientConnection` when created as a workaround, though I make no guarantees of 
+compatibility and will not be making any fixes for backward compatibility. I expect this restriction to remain during
+all 1.X.X versions to make sure the public API and serialization state is stable, but in 2.X.X and beyond will make sure
+to maintain compatability between versions.
 
 ```kotlin
 val debuggerConnection by lazy {
@@ -94,3 +103,5 @@ kotlin {
 </script>
 
 [1]: https://ktor.io/docs/http-client-engines.html
+[2]: https://plugins.jetbrains.com/plugin/18702-ballast/versions
+[3]: https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk

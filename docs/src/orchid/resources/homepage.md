@@ -77,8 +77,8 @@ that they have been tested and are known to work there, or have specific feature
 
 - {{ 'Android' | anchor }}
 - {{ 'iOS' | anchor }} (requires new Kotlin Native Memory Model)
-- {{ 'Compose Desktop' | anchor }}
-- {{ 'Compose Web' | anchor }}
+- {{ 'Compose Desktop (JVM)' | anchor }}
+- {{ 'Compose Web (JS)' | anchor }}
 
 # Installation
 

@@ -11,6 +11,7 @@ include(":ballast-debugger-idea-plugin")
 
 include(":ballast-test")
 
+include(":examples:common")
 include(":examples:compose-web")
 
 include(":docs")

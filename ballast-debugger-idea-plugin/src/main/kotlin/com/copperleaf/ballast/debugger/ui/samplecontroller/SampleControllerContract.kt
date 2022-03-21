@@ -1,18 +1,19 @@
 package com.copperleaf.ballast.debugger.ui.samplecontroller
 
-import com.copperleaf.ballast.debugger.ui.sample.SampleViewModel
+import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
+
 
 object SampleControllerContract {
     data class State(
         val sampleSourcesUrl: String = "",
         val inputStrategy: InputStrategySelection = InputStrategySelection.Lifo,
-        val viewModel: SampleViewModel? = null,
+        val viewModel: KitchenSinkViewModel? = null,
     )
 
     sealed class Inputs {
         object Initialize : Inputs()
         data class UpdateInputStrategy(val inputStrategy: InputStrategySelection) : Inputs()
-        data class UpdateViewModel(val viewModel: SampleViewModel) : Inputs()
+        data class UpdateViewModel(val viewModel: KitchenSinkViewModel) : Inputs()
         object BrowseSampleSources : Inputs()
     }
 

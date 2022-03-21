@@ -18,7 +18,7 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
     public val name: String
     public val logger: BallastLogger
 
-    public class Builder(
+    public data class Builder(
         public var name: String? = null,
         public var initialState: Any? = null,
         public var inputHandler: InputHandler<*, *, *>? = null,

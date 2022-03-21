@@ -80,3 +80,6 @@ local.properties
 build/
 *.iml
 .DS_Store
+
+examples/compose-web/src/jsMain/resources/bgg/hot/*
+docs/src/orchid/resources/assets/example/distributions/**/*
