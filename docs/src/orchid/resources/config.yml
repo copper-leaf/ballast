@@ -84,20 +84,18 @@ snippets:
 
 assets:
   sourceDirs:
-#    - 'assets/example/distributions'
     - 'assets/example/distributions/bgg/hot'
 
 services:
   publications:
     stages:
-#      - type: githubReleases
-#        repo: 'copper-leaf/ballast'
-#        username: 'cjbrooks12'
-#        commitish: 'main'
+      - type: githubReleases
+        repo: 'copper-leaf/ballast'
+        username: 'cjbrooks12'
+        commitish: 'main'
       - type: githubPages
         repo: 'copper-leaf/ballast'
         username: 'cjbrooks12'
   generators:
     disabled:
       - 'kotlindoc'
-#      - 'assets'

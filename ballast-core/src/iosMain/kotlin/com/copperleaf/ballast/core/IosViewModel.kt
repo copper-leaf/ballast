@@ -11,19 +11,20 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
-    private val coroutineScope: CoroutineScope,
-    private val handler: EventHandler<Inputs, Events, State>,
+    private val eventHandler: EventHandler<Inputs, Events, State>,
+    coroutineScope: CoroutineScope,
 ) : BallastViewModel<Inputs, Events, State> by impl {
 
     final override val type: String = "IosViewModel"
 
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,
-        handler: EventHandler<Inputs, Events, State>,
+        eventHandler: EventHandler<Inputs, Events, State>,
+        coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext),
     ) : this(
         BallastViewModelImpl(config),
-        CoroutineScope(EmptyCoroutineContext),
-        handler,
+        eventHandler,
+        coroutineScope
     )
 
     init {
@@ -38,7 +39,7 @@ public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private 
             impl.observeStates().collect { onStateChanged(it) }
         }
         impl.viewModelScope.launch {
-            impl.attachEventHandler(handler)
+            impl.attachEventHandler(eventHandler)
         }
     }
 }

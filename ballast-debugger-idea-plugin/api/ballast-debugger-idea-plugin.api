@@ -1,10 +1,8 @@
 public abstract interface class com/copperleaf/ballast/debugger/di/BallastDebuggerInjector {
 	public static final field Companion Lcom/copperleaf/ballast/debugger/di/BallastDebuggerInjector$Companion;
 	public abstract fun debuggerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel;
-	public abstract fun getRepoBaseUrl ()Ljava/lang/String;
-	public abstract fun getSampleSourcesPathInRepo ()Ljava/lang/String;
+	public abstract fun kitchenSinkViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;
 	public abstract fun sampleControllerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel;
-	public abstract fun sampleViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
 }
 
 public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjector$Companion {
@@ -15,10 +13,8 @@ public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjectorImp
 	public static final field $stable I
 	public fun <init> (Lcom/intellij/openapi/project/Project;)V
 	public fun debuggerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel;
-	public fun getRepoBaseUrl ()Ljava/lang/String;
-	public fun getSampleSourcesPathInRepo ()Ljava/lang/String;
+	public fun kitchenSinkViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;
 	public fun sampleControllerViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerViewModel;
-	public fun sampleViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
 }
 
 public final class com/copperleaf/ballast/debugger/di/BallastDebuggerInjectorKt {
@@ -325,8 +321,8 @@ public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerViewModel
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerInputHandler;Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerEventHandler;)V
 }
 
-public final class com/copperleaf/ballast/debugger/ui/sample/ComposableSingletons$SampleUiKt {
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/ComposableSingletons$SampleUiKt;
+public final class com/copperleaf/ballast/debugger/ui/kitchensink/ComposableSingletons$KitchenSinkUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/kitchensink/ComposableSingletons$KitchenSinkUiKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
 	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public static field lambda-3 Lkotlin/jvm/functions/Function3;
@@ -348,131 +344,10 @@ public final class com/copperleaf/ballast/debugger/ui/sample/ComposableSingleton
 	public final fun getLambda-9$ballast_debugger_idea_plugin ()Lkotlin/jvm/functions/Function3;
 }
 
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract {
+public final class com/copperleaf/ballast/debugger/ui/kitchensink/KitchenSinkUi {
 	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract;
-}
-
-public abstract class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Events {
-	public static final field $stable I
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Events$CloseWindow : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Events {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Events$CloseWindow;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Events$ErrorRunningEvent : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Events {
-	public static final field $stable I
-	public fun <init> ()V
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Events$LongRunningEvent : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Events {
-	public static final field $stable I
-	public fun <init> ()V
-}
-
-public abstract class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$CancelInfiniteSideEffect : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$CancelInfiniteSideEffect;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$CloseSampleWindow : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$CloseSampleWindow;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$ErrorRunningEvent : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$ErrorRunningEvent;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$ErrorRunningInput : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$ErrorRunningInput;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$ErrorRunningSideEffect : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$ErrorRunningSideEffect;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$IncrementInfiniteCounter : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public fun <init> (I)V
-	public final fun component1 ()I
-	public final fun copy (I)Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$IncrementInfiniteCounter;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$IncrementInfiniteCounter;IILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$IncrementInfiniteCounter;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDelta ()I
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$InfiniteSideEffect : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$InfiniteSideEffect;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$LongRunningEvent : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$LongRunningEvent;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$LongRunningInput : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public fun <init> ()V
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$LongRunningSideEffect : com/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs$LongRunningSideEffect;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleContract$State {
-	public static final field $stable I
-	public fun <init> ()V
-	public fun <init> (ZI)V
-	public synthetic fun <init> (ZIILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Z
-	public final fun component2 ()I
-	public final fun copy (ZI)Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$State;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$State;ZIILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$State;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getInfiniteCounter ()I
-	public final fun getLoading ()Z
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleEventHandler : com/copperleaf/ballast/EventHandler {
-	public static final field $stable I
-	public fun <init> (Lkotlin/jvm/functions/Function0;)V
-	public final fun getOnWindowClosed ()Lkotlin/jvm/functions/Function0;
-	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleInputHandler : com/copperleaf/ballast/InputHandler {
-	public static final field $stable I
-	public fun <init> ()V
-	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleUi {
-	public static final field $stable I
-	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/sample/SampleUi;
-	public final fun ui (Lcom/copperleaf/ballast/debugger/ui/sample/SampleContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
-}
-
-public final class com/copperleaf/ballast/debugger/ui/sample/SampleViewModel : com/copperleaf/ballast/core/BasicViewModel {
-	public static final field $stable I
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/InputStrategy;Lcom/copperleaf/ballast/debugger/ui/sample/SampleInputHandler;Lcom/copperleaf/ballast/debugger/ui/sample/SampleEventHandler;)V
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/ui/kitchensink/KitchenSinkUi;
+	public final fun ui (Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/ComposableSingletons$SampleControllerUiKt {
@@ -546,12 +421,12 @@ public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleCon
 
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs$UpdateViewModel : com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs {
 	public static final field $stable I
-	public fun <init> (Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;)V
-	public final fun component1 ()Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
-	public final fun copy (Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs$UpdateViewModel;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs$UpdateViewModel;Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs$UpdateViewModel;
+	public fun <init> (Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;
+	public final fun copy (Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs$UpdateViewModel;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs$UpdateViewModel;Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$Inputs$UpdateViewModel;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getViewModel ()Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
+	public final fun getViewModel ()Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -559,17 +434,17 @@ public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleCon
 public final class com/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State {
 	public static final field $stable I
 	public fun <init> ()V
-	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;)V
-	public synthetic fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;
-	public final fun component3 ()Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
-	public final fun copy (Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State;Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State;
+	public final fun component3 ()Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;
+	public final fun copy (Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State;Ljava/lang/String;Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/ui/samplecontroller/SampleControllerContract$State;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getInputStrategy ()Lcom/copperleaf/ballast/debugger/ui/samplecontroller/InputStrategySelection;
 	public final fun getSampleSourcesUrl ()Ljava/lang/String;
-	public final fun getViewModel ()Lcom/copperleaf/ballast/debugger/ui/sample/SampleViewModel;
+	public final fun getViewModel ()Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

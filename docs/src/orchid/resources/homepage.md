@@ -63,7 +63,7 @@ fun TodosList(
 }
 ```
 
-* _This snippet omits many details for brevity, to demonstrate the general idea_
+* _This snippet omits some details for brevity, to demonstrate the general idea_
 
 # Supported Platforms/Features
 
