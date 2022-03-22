@@ -14,5 +14,5 @@ enum class ViewModelContentTab(
     States(Icons.Default.List, "States"),
     Inputs(Icons.Default.Refresh, "Inputs"),
     Events(Icons.Default.NotificationsActive, "Events"),
-    SideEffects(Icons.Default.CloudUpload, "SideEffects"),
+    SideJobs(Icons.Default.CloudUpload, "SideJobs"),
 }

@@ -68,7 +68,7 @@ public interface InputStrategy {
         /**
          *
          */
-        public fun checkSideEffect() {}
+        public fun checkSideJob() {}
 
         /**
          *

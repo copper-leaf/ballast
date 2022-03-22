@@ -28,11 +28,11 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
     if (!matchesPrerequisites(currentState)) return
 
     // VM is already fetching when another request came in. If the second request is a forced refresh, cancel the first
-    // by restarting the side-effect. If the second reqeust is not a forced refresh, return and allow the original to
+    // by restarting the side-job. If the second reqeust is not a forced refresh, return and allow the original to
     // continue executing.
     if (getValue(currentState) is Cached.Fetching && !forceRefresh) return
 
-    sideEffect(input::class.simpleName!!) {
+    sideJob(input::class.simpleName!!) {
         val initialValue = getValue(currentStateWhenStarted)
         val currentValueUnboxed = initialValue.getCachedOrNull()
         val currentValue = if (forceRefresh) {

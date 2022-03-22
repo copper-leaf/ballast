@@ -6,7 +6,7 @@ import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.BallastEventState
 import com.copperleaf.ballast.debugger.models.BallastInputState
-import com.copperleaf.ballast.debugger.models.BallastSideEffectState
+import com.copperleaf.ballast.debugger.models.BallastSideJobState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.ui.widgets.ViewModelContentTab
@@ -44,8 +44,8 @@ object DebuggerContract {
         val focusedViewModelStateSnapshot: BallastStateSnapshot? = focusedViewModel
             ?.states
             ?.firstOrNull { it.uuid == focusedDebuggerEventUuid }
-        val focusedViewModelSideEffect: BallastSideEffectState? = focusedViewModel
-            ?.sideEffects
+        val focusedViewModelSideJob: BallastSideJobState? = focusedViewModel
+            ?.sideJobs
             ?.firstOrNull { it.uuid == focusedDebuggerEventUuid }
 
         override fun toString(): String {

@@ -27,7 +27,7 @@ public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : 
     public fun logger(logger: BallastLogger)
 
     /**
-     * Set the timeout for waiting for test side-effects to complete for this test scenario.
+     * Set the timeout for waiting for test side-jobs to complete for this test scenario.
      */
     public fun timeout(timeout: () -> Duration)
 

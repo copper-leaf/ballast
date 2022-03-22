@@ -113,32 +113,32 @@ public final class com/copperleaf/ballast/BallastNotification$InputRejected : co
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/BallastNotification$SideEffectCancelled : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideEffectScope$RestartState;)V
+public final class com/copperleaf/ballast/BallastNotification$SideJobCancelled : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)V
 	public final fun getKey ()Ljava/lang/String;
-	public final fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/BallastNotification$SideEffectCompleted : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideEffectScope$RestartState;)V
+public final class com/copperleaf/ballast/BallastNotification$SideJobCompleted : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)V
 	public final fun getKey ()Ljava/lang/String;
-	public final fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/BallastNotification$SideEffectError : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideEffectScope$RestartState;Ljava/lang/Throwable;)V
+public final class com/copperleaf/ballast/BallastNotification$SideJobError : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;Ljava/lang/Throwable;)V
 	public final fun getKey ()Ljava/lang/String;
-	public final fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
 	public final fun getThrowable ()Ljava/lang/Throwable;
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/BallastNotification$SideEffectStarted : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideEffectScope$RestartState;)V
+public final class com/copperleaf/ballast/BallastNotification$SideJobStarted : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)V
 	public final fun getKey ()Ljava/lang/String;
-	public final fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -185,7 +185,7 @@ public abstract interface class com/copperleaf/ballast/BallastViewModelConfigura
 	public abstract fun getInterceptors ()Ljava/util/List;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public abstract fun getName ()Ljava/lang/String;
-	public abstract fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getSideJobsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 }
 
 public final class com/copperleaf/ballast/BallastViewModelConfiguration$Builder {
@@ -216,7 +216,7 @@ public final class com/copperleaf/ballast/BallastViewModelConfiguration$Builder 
 	public final fun getInterceptors ()Ljava/util/List;
 	public final fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public final fun getName ()Ljava/lang/String;
-	public final fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getSideJobsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun hashCode ()I
 	public final fun setEventsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
 	public final fun setFilter (Lcom/copperleaf/ballast/InputFilter;)V
@@ -227,7 +227,7 @@ public final class com/copperleaf/ballast/BallastViewModelConfiguration$Builder 
 	public final fun setInterceptorDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
 	public final fun setLogger (Lcom/copperleaf/ballast/BallastLogger;)V
 	public final fun setName (Ljava/lang/String;)V
-	public final fun setSideEffectsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public final fun setSideJobsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -264,7 +264,7 @@ public abstract interface class com/copperleaf/ballast/InputHandlerScope {
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public abstract fun noOp ()V
 	public abstract fun postEvent (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun sideEffect (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)V
+	public abstract fun sideJob (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)V
 	public abstract fun updateState (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun updateStateAndGet (Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -278,7 +278,7 @@ public abstract interface class com/copperleaf/ballast/InputStrategy {
 public abstract interface class com/copperleaf/ballast/InputStrategy$Guardian {
 	public abstract fun checkNoOp ()V
 	public abstract fun checkPostEvent ()V
-	public abstract fun checkSideEffect ()V
+	public abstract fun checkSideJob ()V
 	public abstract fun checkStateAccess ()V
 	public abstract fun checkStateUpdate ()V
 	public abstract fun close ()V
@@ -287,7 +287,7 @@ public abstract interface class com/copperleaf/ballast/InputStrategy$Guardian {
 public final class com/copperleaf/ballast/InputStrategy$Guardian$DefaultImpls {
 	public static fun checkNoOp (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun checkPostEvent (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
-	public static fun checkSideEffect (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
+	public static fun checkSideJob (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun checkStateAccess (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun checkStateUpdate (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
 	public static fun close (Lcom/copperleaf/ballast/InputStrategy$Guardian;)V
@@ -310,19 +310,19 @@ public final class com/copperleaf/ballast/Queued$RestoreState : com/copperleaf/b
 	public final fun getState ()Ljava/lang/Object;
 }
 
-public abstract interface class com/copperleaf/ballast/SideEffectScope : kotlinx/coroutines/CoroutineScope {
+public abstract interface class com/copperleaf/ballast/SideJobScope : kotlinx/coroutines/CoroutineScope {
 	public abstract fun getCurrentStateWhenStarted ()Ljava/lang/Object;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
-	public abstract fun getRestartState ()Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+	public abstract fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
 	public abstract fun postEvent (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun postInput (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/SideEffectScope$RestartState : java/lang/Enum {
-	public static final field Initial Lcom/copperleaf/ballast/SideEffectScope$RestartState;
-	public static final field Restarted Lcom/copperleaf/ballast/SideEffectScope$RestartState;
-	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/SideEffectScope$RestartState;
-	public static fun values ()[Lcom/copperleaf/ballast/SideEffectScope$RestartState;
+public final class com/copperleaf/ballast/SideJobScope$RestartState : java/lang/Enum {
+	public static final field Initial Lcom/copperleaf/ballast/SideJobScope$RestartState;
+	public static final field Restarted Lcom/copperleaf/ballast/SideJobScope$RestartState;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/SideJobScope$RestartState;
+	public static fun values ()[Lcom/copperleaf/ballast/SideJobScope$RestartState;
 }
 
 public final class com/copperleaf/ballast/UtilsKt {
@@ -377,16 +377,16 @@ public class com/copperleaf/ballast/core/DefaultGuardian : com/copperleaf/ballas
 	public fun <init> ()V
 	public fun checkNoOp ()V
 	public fun checkPostEvent ()V
-	public fun checkSideEffect ()V
+	public fun checkSideJob ()V
 	public fun checkStateAccess ()V
 	public fun checkStateUpdate ()V
 	public fun close ()V
 	protected final fun getClosed ()Z
-	protected final fun getSideEffectsPosted ()Z
+	protected final fun getSideJobsPosted ()Z
 	protected final fun getStateAccessed ()Z
 	protected final fun getUsedProperly ()Z
 	protected final fun setClosed (Z)V
-	protected final fun setSideEffectsPosted (Z)V
+	protected final fun setSideJobsPosted (Z)V
 	protected final fun setStateAccessed (Z)V
 	protected final fun setUsedProperly (Z)V
 }
@@ -403,7 +403,7 @@ public final class com/copperleaf/ballast/core/DefaultViewModelConfiguration : c
 	public fun getInterceptors ()Ljava/util/List;
 	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public fun getName ()Ljava/lang/String;
-	public fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getSideJobsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 }
 
 public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperleaf/ballast/InputStrategy {
@@ -457,7 +457,7 @@ public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/co
 	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/channels/Channel;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/channels/Channel;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun attachEventHandler (Lcom/copperleaf/ballast/EventHandler;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun awaitSideEffectsCompletion (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun awaitSideJobsCompletion (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun close (Ljava/lang/Throwable;)Z
 	public fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
@@ -470,7 +470,7 @@ public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/co
 	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public fun getName ()Ljava/lang/String;
 	public fun getOnSend ()Lkotlinx/coroutines/selects/SelectClause2;
-	public fun getSideEffectsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getSideJobsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getType ()Ljava/lang/String;
 	public fun invokeOnClose (Lkotlin/jvm/functions/Function1;)V
 	public fun isClosedForSend ()Z

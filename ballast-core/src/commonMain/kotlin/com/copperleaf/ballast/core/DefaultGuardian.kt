@@ -5,39 +5,39 @@ import com.copperleaf.ballast.InputStrategy
 public open class DefaultGuardian : InputStrategy.Guardian {
 
     protected var stateAccessed: Boolean = false
-    protected var sideEffectsPosted: Boolean = false
+    protected var sideJobsPosted: Boolean = false
     protected var usedProperly: Boolean = false
     protected var closed: Boolean = false
 
     override fun checkStateAccess() {
         checkNotClosed()
-        checkNoSideEffects()
+        checkNoSideJobs()
         stateAccessed = true
         usedProperly = true
     }
 
     override fun checkStateUpdate() {
         checkNotClosed()
-        checkNoSideEffects()
+        checkNoSideJobs()
         stateAccessed = true
         usedProperly = true
     }
 
     override fun checkPostEvent() {
         checkNotClosed()
-        checkNoSideEffects()
+        checkNoSideJobs()
         usedProperly = true
     }
 
     override fun checkNoOp() {
         checkNotClosed()
-        checkNoSideEffects()
+        checkNoSideJobs()
         usedProperly = true
     }
 
-    override fun checkSideEffect() {
+    override fun checkSideJob() {
         checkNotClosed()
-        sideEffectsPosted = true
+        sideJobsPosted = true
         usedProperly = true
     }
 
@@ -54,16 +54,16 @@ public open class DefaultGuardian : InputStrategy.Guardian {
         check(!closed) { "This InputHandlerScope has already been closed" }
     }
 
-    private fun checkNoSideEffects() {
-        check(!sideEffectsPosted) {
-            "Side-Effects must be the last statements of the InputHandler"
+    private fun checkNoSideJobs() {
+        check(!sideJobsPosted) {
+            "Side-Jobs must be the last statements of the InputHandler"
         }
     }
 
     private fun checkUsedProperly() {
         check(usedProperly) {
             "Input was not handled properly. To ensure you're following the MVI model properly, make sure any " +
-                "side-effects are executed in a `sideEffect { }` block."
+                "side-jobs are executed in a `sideJob { }` block."
         }
     }
 }

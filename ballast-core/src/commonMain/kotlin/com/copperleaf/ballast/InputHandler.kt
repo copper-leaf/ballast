@@ -14,12 +14,12 @@ package com.copperleaf.ballast
  * - Post Event: Dispatch an Event to the ViewModel's [EventHandler], which may optionally be packed with values from
  *   the current State. Note that by the time the Event is actually handled, it may not be the same State that is
  *   currently in the ViewModel.
- * - Side Effect: While most side-effects should be dispatched as Events, there may be some side-effect code that
+ * - Side-job: While most side-jobs should be dispatched as Events, there may be some side-job code that
  *   doesn't (or can't) be run as an Event (such as updating the DB). This code typically is not reflected in the State,
  *   but handling it as an Event would just be redundant, so it can neither be handled by updating the state or
  *   dispatching an event. To ensure that the rest of the Inputs are handled correctly, such code should be wrapped in
- *   a Side Effect so it is not marked as a handler error. Side effect handlers may dispatch both new Events (for a
- *   proper side effect) and new Inputs (for subsequent processing) but they cannot be posted with the current state
+ *   a side-job so it is not marked as a handler error. Side-job handlers may dispatch both new Events (for a
+ *   proper side-job) and new Inputs (for subsequent processing) but they cannot be posted with the current state
  *   like a normal handler, as that would break the guarantee of ordering that the ViewModel handlers normally provide.
  */
 public interface InputHandler<Inputs : Any, Events : Any, State : Any> {

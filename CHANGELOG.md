@@ -2,6 +2,12 @@
 
 - Renames `ballast-crashlytics` module to `ballast-firebase-crashlytics`
 - Fixes issue where JS Debugger cannot connect because browser websocket clients can't send headers
+- **BREAKING CHANGE:** Renames `sideEffect()` to `sideJob()` to be more accurate and less confusing in comparison to 
+  other Kotlin MVI libraries
+- SideJobs are now posted to the VM immediately, rather than collected and dispatched explicitly after handling.
+  - By writing a custom `InputStrategy.Guardian`, you could remove the restriction that sideJobs must be started at the
+    end of the Input, and potentially actually call `sideJob()` and wait for the sideJob to start before continuing. 
+    This is dangerous and should not be taken lightly, but it is now possible, whereas it was not before.
 
 ## 0.12.0 - 2022-03-17
 
@@ -33,7 +39,7 @@
 - Adds a few new `BallastNotification`s, to notify of Inputs and Events being queued, but not yet processed
 - Fixed bug where SideEffect errors and cancellation was not being notified properly
 - `SideEffectcope` is now also a `CoroutineScope`, so you can `launch` other coroutines directly within the 
-  `sideEffect(key) { }` block without having to manually wrap it in `coroutineScope { }`
+  `sideJob(key) { }` block without having to manually wrap it in `coroutineScope { }`
 
 ## 0.8.2 - 2022-02-23
 
@@ -50,7 +56,7 @@ changes, as descibed below:
 
 - Improves side-effects
   - They are now started through a Channel, instead of relying on a Mutex for safety
-  - New `BallastInterceptor` methods added to track sideEffect starts/errors
+  - New `BallastInterceptor` methods added to track sideJob starts/errors
   - SideEffects (and related APIs) now _require_ a `key` to be provided, to avoid accidental restarting cause by 
     disparate Inputs forgetting to provide a key
 - Improves safety of `ParallelInputStrategy` to prevent multiple updates, rather than just throwing an error at the end

@@ -1,18 +1,18 @@
 package com.copperleaf.ballast.internal
 
 import com.copperleaf.ballast.BallastLogger
-import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.SideJobScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.SendChannel
 
-internal class SideEffectScopeImpl<Inputs : Any, Events : Any, State : Any>(
+internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override val logger: BallastLogger,
     private val _inputs: SendChannel<Inputs>,
     private val _events: SendChannel<Events>,
     override val currentStateWhenStarted: State,
-    override val restartState: SideEffectScope.RestartState,
+    override val restartState: SideJobScope.RestartState,
     private val coroutineScope: CoroutineScope,
-) : SideEffectScope<Inputs, Events, State>, CoroutineScope by coroutineScope {
+) : SideJobScope<Inputs, Events, State>, CoroutineScope by coroutineScope {
     override suspend fun postInput(input: Inputs) {
         _inputs.send(input)
     }

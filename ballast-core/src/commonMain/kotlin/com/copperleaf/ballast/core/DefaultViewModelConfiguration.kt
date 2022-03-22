@@ -16,7 +16,7 @@ public class DefaultViewModelConfiguration<Inputs : Any, Events : Any, State : A
     override val inputStrategy: InputStrategy,
     override val inputsDispatcher: CoroutineDispatcher,
     override val eventsDispatcher: CoroutineDispatcher,
-    override val sideEffectsDispatcher: CoroutineDispatcher,
+    override val sideJobsDispatcher: CoroutineDispatcher,
     override val interceptorDispatcher: CoroutineDispatcher,
     override val name: String,
     override val logger: BallastLogger,

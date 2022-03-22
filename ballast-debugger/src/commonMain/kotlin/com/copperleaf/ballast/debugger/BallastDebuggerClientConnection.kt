@@ -227,16 +227,16 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 uuids.remove(notification.event) ?: generateUuid()
             }
 
-            is BallastNotification.SideEffectStarted -> {
+            is BallastNotification.SideJobStarted -> {
                 uuids.getOrPut(notification.key) { generateUuid() }
             }
-            is BallastNotification.SideEffectCompleted -> {
+            is BallastNotification.SideJobCompleted -> {
                 uuids.remove(notification.key) ?: generateUuid()
             }
-            is BallastNotification.SideEffectCancelled -> {
+            is BallastNotification.SideJobCancelled -> {
                 uuids.remove(notification.key) ?: generateUuid()
             }
-            is BallastNotification.SideEffectError -> {
+            is BallastNotification.SideJobError -> {
                 uuids.remove(notification.key) ?: generateUuid()
             }
 

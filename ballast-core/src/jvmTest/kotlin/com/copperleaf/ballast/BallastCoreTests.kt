@@ -34,10 +34,10 @@ class BallastCoreTests {
         object IncrementWithRollback : Inputs()
         object MultipleStateUpdates : Inputs()
         object EventEmitted : Inputs()
-        object SideEffectStartedNoInputOverride : Inputs()
-        object SideEffectStartedWithInputOverride : Inputs()
-        object MultipleSideEffects : Inputs()
-        object SideEffectsNotAtEnd : Inputs()
+        object SideJobStartedNoInputOverride : Inputs()
+        object SideJobStartedWithInputOverride : Inputs()
+        object MultipleSideJobs : Inputs()
+        object SideJobsNotAtEnd : Inputs()
     }
 
     sealed class Events {
@@ -80,8 +80,8 @@ class BallastCoreTests {
             is Inputs.EventEmitted -> {
                 postEvent(Events.Notification)
             }
-            is Inputs.SideEffectStartedNoInputOverride -> {
-                sideEffect("SideEffectStartedNoInputOverride") {
+            is Inputs.SideJobStartedNoInputOverride -> {
+                sideJob("SideJobStartedNoInputOverride") {
                     delay(1500)
 
                     flowOf("one", "two", "three")
@@ -92,8 +92,8 @@ class BallastCoreTests {
                     delay(1500)
                 }
             }
-            is Inputs.SideEffectStartedWithInputOverride -> {
-                sideEffect("SideEffectStartedWithInputOverride") {
+            is Inputs.SideJobStartedWithInputOverride -> {
+                sideJob("SideJobStartedWithInputOverride") {
                     delay(1500)
 
                     flowOf("one", "two", "three")
@@ -103,15 +103,15 @@ class BallastCoreTests {
                     delay(1500)
                 }
             }
-            is Inputs.MultipleSideEffects -> {
-                sideEffect("one") {
+            is Inputs.MultipleSideJobs -> {
+                sideJob("one") {
                     delay(1500)
                     postInput(Inputs.Increment)
                     delay(1500)
                     postInput(Inputs.Increment)
                     delay(1500)
                 }
-                sideEffect("two") {
+                sideJob("two") {
                     delay(1500)
                     postInput(Inputs.Increment)
                     delay(1500)
@@ -119,8 +119,8 @@ class BallastCoreTests {
                     delay(1500)
                 }
             }
-            is Inputs.SideEffectsNotAtEnd -> {
-                sideEffect("SideEffectsNotAtEnd") {
+            is Inputs.SideJobsNotAtEnd -> {
+                sideJob("SideJobsNotAtEnd") {
                     delay(1500)
                     postInput(Inputs.Increment)
                     delay(1500)
@@ -334,15 +334,15 @@ class BallastCoreTests {
             }
         }
 
-        scenario("sideEffectStarted with inputs that run slowly and do not override each other") {
+        scenario("sideJobStarted with inputs that run slowly and do not override each other") {
             running {
-                +Inputs.SideEffectStartedNoInputOverride
+                +Inputs.SideJobStartedNoInputOverride
                 +Inputs.Increment
             }
             resultsIn {
                 assertEquals(
                     listOf(
-                        Inputs.SideEffectStartedNoInputOverride,
+                        Inputs.SideJobStartedNoInputOverride,
                         Inputs.Increment,
                         Inputs.UpdateStringValue("one"),
                         Inputs.UpdateStringValue("two"),
@@ -355,15 +355,15 @@ class BallastCoreTests {
             }
         }
 
-        scenario("sideEffectStarted with inputs that run quickly and override each other") {
+        scenario("sideJobStarted with inputs that run quickly and override each other") {
             running {
-                +Inputs.SideEffectStartedWithInputOverride
+                +Inputs.SideJobStartedWithInputOverride
                 +Inputs.Increment
             }
             resultsIn {
                 assertEquals(
                     listOf(
-                        Inputs.SideEffectStartedWithInputOverride,
+                        Inputs.SideJobStartedWithInputOverride,
                         Inputs.Increment,
                         Inputs.UpdateStringValue("three"),
                     ),
@@ -442,23 +442,23 @@ class BallastCoreTests {
             }
         }
 
-        scenario("Multiple side effects can be started by 1 input") {
+        scenario("Multiple side-jobs can be started by 1 input") {
             inputStrategy { ParallelInputStrategy() }
             running {
-                +Inputs.MultipleSideEffects
+                +Inputs.MultipleSideJobs
             }
             resultsIn {
                 assertEquals(
                     listOf(
-                        "one" to SideEffectScope.RestartState.Initial,
-                        "two" to SideEffectScope.RestartState.Initial,
+                        "one" to SideJobScope.RestartState.Initial,
+                        "two" to SideJobScope.RestartState.Initial,
                     ),
-                    sideEffects,
+                    sideJobs,
                 )
 
                 assertEquals(
                     listOf(
-                        Inputs.MultipleSideEffects,
+                        Inputs.MultipleSideJobs,
                         Inputs.Increment,
                         Inputs.Increment,
                         Inputs.Increment,
@@ -471,27 +471,27 @@ class BallastCoreTests {
             }
         }
 
-        scenario("Side effects can be restarted, with previous ones cancelled") {
+        scenario("Side-jobs can be restarted, with previous ones cancelled") {
             inputStrategy { ParallelInputStrategy() }
             running {
-                +Inputs.MultipleSideEffects
-                +Inputs.MultipleSideEffects
+                +Inputs.MultipleSideJobs
+                +Inputs.MultipleSideJobs
             }
             resultsIn {
                 assertEquals(
                     listOf(
-                        "one" to SideEffectScope.RestartState.Initial,
-                        "two" to SideEffectScope.RestartState.Initial,
-                        "one" to SideEffectScope.RestartState.Restarted,
-                        "two" to SideEffectScope.RestartState.Restarted,
+                        "one" to SideJobScope.RestartState.Initial,
+                        "two" to SideJobScope.RestartState.Initial,
+                        "one" to SideJobScope.RestartState.Restarted,
+                        "two" to SideJobScope.RestartState.Restarted,
                     ),
-                    sideEffects,
+                    sideJobs,
                 )
 
                 assertEquals(
                     listOf(
-                        Inputs.MultipleSideEffects,
-                        Inputs.MultipleSideEffects,
+                        Inputs.MultipleSideJobs,
+                        Inputs.MultipleSideJobs,
                         Inputs.Increment,
                         Inputs.Increment,
                         Inputs.Increment,
@@ -504,20 +504,18 @@ class BallastCoreTests {
             }
         }
 
-        scenario("Side effects called before other inputHandler methods throws an error") {
+        scenario("Side-jobs called before other inputHandler methods throws an error") {
             inputStrategy { ParallelInputStrategy() }
             running {
-                +Inputs.SideEffectsNotAtEnd
+                +Inputs.SideJobsNotAtEnd
             }
             resultsIn {
                 assertEquals(
                     listOf(
-                        Inputs.SideEffectsNotAtEnd,
+                        Inputs.SideJobsNotAtEnd,
                     ),
                     inputHandlerErrors.map { it.first }
                 )
-
-                assertEquals(State(intValue = 0), latestState)
             }
         }
 

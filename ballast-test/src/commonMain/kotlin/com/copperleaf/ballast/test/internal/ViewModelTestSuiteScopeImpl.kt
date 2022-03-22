@@ -108,11 +108,11 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         scenario.onInputSequenceBlock(inputSequenceScope)
         scenarioLogger.debug("    after onInputSequenceBlock")
 
-        scenarioLogger.debug("    before awaitSideEffectsCompletion")
+        scenarioLogger.debug("    before awaitSideJobsCompletion")
         withTimeoutOrNull(scenarioTimeout) {
-            testViewModel.impl.awaitSideEffectsCompletion()
+            testViewModel.impl.awaitSideJobsCompletion()
         }
-        scenarioLogger.debug("    after awaitSideEffectsCompletion")
+        scenarioLogger.debug("    after awaitSideJobsCompletion")
 
         // await test completion
         scenarioLogger.debug("    before completing whole test")

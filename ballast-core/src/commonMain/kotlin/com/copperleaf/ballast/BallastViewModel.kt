@@ -65,10 +65,10 @@ import kotlinx.coroutines.flow.StateFlow
  * and you can trace the exact flow of data through the VM without necessarily needing to actually execute it and attach
  * a debugger to figure out what's happening, when. However, the very nature of everything in the pattern until this
  * point is still serial, but there may be cases where you need something to run in parallel to the VM. To accomodate
- * this, [InputHandlerScope.sideEffect] may be used to launch coroutines that run parallel to the normal MVI
- * flow, but with restrictions on what they are capable of doing in in parallel; namely side-effects cannot update the
- * State, which is key in preventing race-conditions. Instead, SideEffects should post Inputs back to the VM, carrying
- * new data and applying it to the State when it is their turn for processing. Side-effects are commonly used for
+ * this, [InputHandlerScope.sideJob] may be used to launch coroutines that run parallel to the normal MVI
+ * flow, but with restrictions on what they are capable of doing in in parallel; namely side-jobs cannot update the
+ * State, which is key in preventing race-conditions. Instead, SideJobs should post Inputs back to the VM, carrying
+ * new data and applying it to the State when it is their turn for processing. Side-jobs are commonly used for
  * observing Flows.
  */
 public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : SendChannel<Inputs> {

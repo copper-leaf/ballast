@@ -69,30 +69,30 @@ object KitchenSinkUi {
                 Text("CloseKitchenSinkWindow")
             }
 
-            Text("SideEffects", style = MaterialTheme.typography.h6)
+            Text("SideJobs", style = MaterialTheme.typography.h6)
             Button(
-                onClick = { postInput(KitchenSinkContract.Inputs.LongRunningSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.LongRunningSideJob) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("LongRunningSideEffect")
+                Text("LongRunningSideJob")
             }
             Button(
-                onClick = { postInput(KitchenSinkContract.Inputs.ErrorRunningSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.ErrorRunningSideJob) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("ErrorRunningSideEffect")
+                Text("ErrorRunningSideJob")
             }
             Button(
-                onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideJob) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("InfiniteSideEffect")
+                Text("InfiniteSideJob")
             }
             Button(
-                onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) },
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("CancelInfiniteSideEffect")
+                Text("CancelInfiniteSideJob")
             }
         }
     }

@@ -14,7 +14,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
-import com.copperleaf.ballast.debugger.models.BallastSideEffectState
+import com.copperleaf.ballast.debugger.models.BallastSideJobState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
 import com.copperleaf.ballast.debugger.utils.minus
@@ -23,7 +23,7 @@ import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
 @Composable
-fun SideEffectList(
+fun SideJobList(
     uiState: DebuggerContract.State,
     viewModelState: BallastViewModelState,
     postInput: (DebuggerContract.Inputs) -> Unit,
@@ -31,13 +31,13 @@ fun SideEffectList(
     SplitPane(
         splitPaneState = uiState.eventsPanePercentage,
         navigation = {
-            items(viewModelState.sideEffects) {
-                SideEffectSummary(uiState, it, postInput)
+            items(viewModelState.sideJobs) {
+                SideJobSummary(uiState, it, postInput)
             }
         },
         content = {
-            if (uiState.focusedViewModelSideEffect != null) {
-                SideEffectDetails(uiState, uiState.focusedViewModelSideEffect, postInput)
+            if (uiState.focusedViewModelSideJob != null) {
+                SideJobDetails(uiState, uiState.focusedViewModelSideJob, postInput)
             }
         }
     )
@@ -45,19 +45,19 @@ fun SideEffectList(
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
-fun SideEffectSummary(
+fun SideJobSummary(
     uiState: DebuggerContract.State,
-    sideEffectState: BallastSideEffectState,
+    sideJobState: BallastSideJobState,
     postInput: (DebuggerContract.Inputs) -> Unit,
 ) {
-    val timeSinceLastSeen: Duration = (LocalTimer.current - sideEffectState.firstSeen)
+    val timeSinceLastSeen: Duration = (LocalTimer.current - sideJobState.firstSeen)
         .removeFraction(DurationUnit.SECONDS)
 
     ListItem(
         modifier = Modifier
             .onHoverState { Modifier.highlight() }
             .then(
-                if (uiState.focusedDebuggerEventUuid == sideEffectState.uuid) {
+                if (uiState.focusedDebuggerEventUuid == sideJobState.uuid) {
                     Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
                 } else {
                     Modifier
@@ -66,18 +66,18 @@ fun SideEffectSummary(
             .clickable {
                 postInput(
                     DebuggerContract.Inputs.FocusEvent(
-                        connectionId = sideEffectState.connectionId,
-                        viewModelName = sideEffectState.viewModelName,
-                        eventUuid = sideEffectState.uuid,
+                        connectionId = sideJobState.connectionId,
+                        viewModelName = sideJobState.viewModelName,
+                        eventUuid = sideJobState.uuid,
                     )
                 )
             },
-        text = { Text(sideEffectState.key) },
-        overlineText = { Text(sideEffectState.status.toString()) },
-        secondaryText = { Text("${sideEffectState.restartState} - Sent $timeSinceLastSeen ago") },
+        text = { Text(sideJobState.key) },
+        overlineText = { Text(sideJobState.status.toString()) },
+        secondaryText = { Text("${sideJobState.restartState} - Sent $timeSinceLastSeen ago") },
         trailing = {
             Box {
-                if (sideEffectState.status == BallastSideEffectState.Status.Running) {
+                if (sideJobState.status == BallastSideJobState.Status.Running) {
                     CircularProgressIndicator()
                 }
             }
@@ -87,16 +87,16 @@ fun SideEffectSummary(
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
-fun SideEffectDetails(
+fun SideJobDetails(
     uiState: DebuggerContract.State,
-    sideEffectState: BallastSideEffectState,
+    sideJobState: BallastSideJobState,
     postInput: (DebuggerContract.Inputs) -> Unit,
 ) {
     SelectionContainer {
         Column {
-            Text(sideEffectState.key)
+            Text(sideJobState.key)
 
-            (sideEffectState.status as? BallastSideEffectState.Status.Error)?.let {
+            (sideJobState.status as? BallastSideJobState.Status.Error)?.let {
                 Divider()
                 Text(it.stacktrace, fontFamily = FontFamily.Monospace)
             }

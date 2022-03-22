@@ -15,7 +15,7 @@ public interface ViewModelTestSuiteScope<Inputs : Any, Events : Any, State : Any
     public fun logger(logger: BallastLogger)
 
     /**
-     * Set the default timeout for waiting for test side-effects to complete.
+     * Set the default timeout for waiting for test side-jobs to complete.
      */
     public fun defaultTimeout(timeout: () -> Duration)
 

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  * immediately without getting blocked, while also guaranteeing that long-running inputs will not get cancelled.
  * Parallel is suitable for processing complex UIs that have many Input sources and many long-running tasks, but should
  * not be the first choice to UI ViewModels. Prefer a LIFO strategy with an input filter for UIs, and only use this in
- * specific scenarios where that becomes difficult to manage. Also consider moving long-running work to a Side Effect
+ * specific scenarios where that becomes difficult to manage. Also consider moving long-running work to a side-job
  * instead of dropping the entire ViewModel into parallel-processing mode, if that work doesn't need to perform state
  * updates.
  *

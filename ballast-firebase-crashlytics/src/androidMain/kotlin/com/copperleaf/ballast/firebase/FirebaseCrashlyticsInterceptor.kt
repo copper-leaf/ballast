@@ -17,7 +17,7 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         const val ViewModelName = "ViewModelName"
         const val InputType = "InputType"
         const val EventType = "EventType"
-        const val SideEffectKey = "SideEffectKey"
+        const val SideJobKey = "SideJobKey"
         const val ExceptionType = "ExceptionType"
     }
 
@@ -53,9 +53,9 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
                     key(Keys.EventType, "${notification.vm.name}.${notification.event::class.java.simpleName}")
                 }
             }
-            is BallastNotification.SideEffectError -> {
-                onError(notification, "SideEffect", notification.throwable, true) {
-                    key(Keys.SideEffectKey, "${notification.vm.name}.${notification.key}")
+            is BallastNotification.SideJobError -> {
+                onError(notification, "SideJob", notification.throwable, true) {
+                    key(Keys.SideJobKey, "${notification.vm.name}.${notification.key}")
                 }
             }
             is BallastNotification.UnhandledError -> {

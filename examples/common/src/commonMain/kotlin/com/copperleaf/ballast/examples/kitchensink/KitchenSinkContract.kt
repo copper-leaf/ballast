@@ -11,15 +11,15 @@ object KitchenSinkContract {
 
         class LongRunningInput : Inputs()
         object LongRunningEvent : Inputs()
-        object LongRunningSideEffect : Inputs()
+        object LongRunningSideJob : Inputs()
 
-        object InfiniteSideEffect : Inputs()
-        object CancelInfiniteSideEffect : Inputs()
+        object InfiniteSideJob : Inputs()
+        object CancelInfiniteSideJob : Inputs()
         data class IncrementInfiniteCounter(val delta: Int) : Inputs()
 
         object ErrorRunningInput : Inputs()
         object ErrorRunningEvent : Inputs()
-        object ErrorRunningSideEffect : Inputs()
+        object ErrorRunningSideJob : Inputs()
     }
 
     sealed class Events {

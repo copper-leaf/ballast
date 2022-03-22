@@ -281,8 +281,8 @@ public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContra
 public abstract class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
 }
 
-public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$CancelInfiniteSideEffect : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
-	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$CancelInfiniteSideEffect;
+public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$CancelInfiniteSideJob : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$CancelInfiniteSideJob;
 }
 
 public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$CloseKitchenSinkWindow : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
@@ -297,8 +297,8 @@ public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContra
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$ErrorRunningInput;
 }
 
-public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$ErrorRunningSideEffect : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
-	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$ErrorRunningSideEffect;
+public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$ErrorRunningSideJob : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$ErrorRunningSideJob;
 }
 
 public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$IncrementInfiniteCounter : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
@@ -312,8 +312,8 @@ public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContra
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$InfiniteSideEffect : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
-	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$InfiniteSideEffect;
+public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$InfiniteSideJob : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$InfiniteSideJob;
 }
 
 public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$LongRunningEvent : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
@@ -324,8 +324,8 @@ public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContra
 	public fun <init> ()V
 }
 
-public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$LongRunningSideEffect : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
-	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$LongRunningSideEffect;
+public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$LongRunningSideJob : com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$Inputs$LongRunningSideJob;
 }
 
 public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract$State {

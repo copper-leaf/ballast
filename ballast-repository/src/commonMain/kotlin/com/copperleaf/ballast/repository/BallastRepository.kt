@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.SharedFlow
  * Unlike a typical UI Ballast ViewModel, a Ballast Repository uses a [FifoInputStrategy] by default, so that many
  * Inputs can be dispatched to the Repository, and none of them will be dropped, but they will all be processed
  * eventually. One should take care to not block the Repository queue, however, but instead move long-running work into
- * a "side effect" and posting inputs back to the Repository to update the state as it changes from the application
+ * a "side-job" and posting inputs back to the Repository to update the state as it changes from the application
  * background.
  *
  * Also unlike a Ballast ViewModel, a Ballast Repository doesn't have it's own [EventHandler], but rather uses its

@@ -3,7 +3,7 @@ package com.copperleaf.ballast.internal
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.InputStrategy
-import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.SideJobScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
@@ -14,8 +14,8 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val guardian: InputStrategy.Guardian,
     private val _state: MutableStateFlow<State>,
     private val sendEventToQueue: suspend (Events) -> Unit,
+    private val sendSideJobToQueue: (SideJobRequest<Inputs, Events, State>) -> Unit,
 ) : InputHandlerScope<Inputs, Events, State> {
-    private val sideEffects = mutableListOf<SideEffectRequest<Inputs, Events, State>>()
 
     override suspend fun getCurrentState(): State {
         guardian.checkStateAccess()
@@ -42,20 +42,19 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         sendEventToQueue(event)
     }
 
-    override fun sideEffect(
+    override fun sideJob(
         key: String,
-        block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
+        block: suspend SideJobScope<Inputs, Events, State>.() -> Unit
     ) {
-        guardian.checkSideEffect()
-        sideEffects += SideEffectRequest(key, block)
+        guardian.checkSideJob()
+        sendSideJobToQueue(SideJobRequest(key, block))
     }
 
     override fun noOp() {
         guardian.checkNoOp()
     }
 
-    internal fun close(): List<SideEffectRequest<Inputs, Events, State>> {
+    internal fun close() {
         guardian.close()
-        return sideEffects.toList()
     }
 }

@@ -201,12 +201,12 @@ fun ViewModelSummary(
                             }
                             Column(Modifier.weight(1f).padding(1.dp)) {
                                 StatusIcon(
-                                    isActive = viewModelState.sideEffectsInProgress,
-                                    activeText = "SideEffects active",
-                                    inactiveText = "No sideEffects active",
+                                    isActive = viewModelState.sideJobsInProgress,
+                                    activeText = "Side Jobs active",
+                                    inactiveText = "No Side Jobs active",
                                     icon = Icons.Default.CloudUpload,
                                     modifier = Modifier.fillMaxSize(),
-                                    count = viewModelState.runningSideEffectCount,
+                                    count = viewModelState.runningSideJobCount,
                                 )
                             }
                         }
@@ -268,7 +268,7 @@ fun ViewModelDetails(
                                 } else {
                                     LocalContentColor.current
                                 }
-                                ViewModelContentTab.SideEffects -> if (viewModelState.sideEffectsInProgress) {
+                                ViewModelContentTab.SideJobs -> if (viewModelState.sideJobsInProgress) {
                                     MaterialTheme.colors.secondary
                                 } else {
                                     LocalContentColor.current
@@ -299,8 +299,8 @@ fun ViewModelDetails(
                 ViewModelContentTab.States -> {
                     StateSnapshotList(uiState, viewModelState, postInput)
                 }
-                ViewModelContentTab.SideEffects -> {
-                    SideEffectList(uiState, viewModelState, postInput)
+                ViewModelContentTab.SideJobs -> {
+                    SideJobList(uiState, viewModelState, postInput)
                 }
             }
         }

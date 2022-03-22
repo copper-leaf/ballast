@@ -51,7 +51,7 @@ flowchart TD
         InputChannel
         InputFilter
         InputHandler
-        SideEffect
+        SideJob
 
         ViewModel--Inputs-->InputChannel
 
@@ -61,13 +61,13 @@ flowchart TD
 
         InputHandler--postEvent-->EventHandler
         InputHandler--updateState-->ViewModel
-        InputHandler--sideEffect-->SideEffect
+        InputHandler--sideJob-->SideJob
 
         subgraph VM
-            SideEffect
+            SideJob
 
-            SideEffect--postInput-->ViewModel
-            SideEffect--postEvent-->EventHandler
+            SideJob--postInput-->ViewModel
+            SideJob--postEvent-->EventHandler
         end
     end
 
@@ -586,7 +586,7 @@ away these API calls will be cancelled and the navigation performed immediately.
 This is the preferred pattern for loading data asynchronously in Ballast. But there are a few other use-cases that we'll
 consider in a later section.
 
-## Side Effects
+## Side-jobs
 
 The above section on Async Logic works when you have individual "resources" you are loading, and are reasonably sure the
 only way it could get cancelled is if the user intends for it to be cancelled, such as by navigating to another screen
@@ -596,37 +596,37 @@ But real-world applications aren't always that simple. One use-case is observing
 some data source, rather than a discrete suspending value. For example, rather than the respository directly delivering
 the results of an API call, it may cache it, and send multiple emissions to notify of the cache status (see
 {{ 'Ballast Repository' | anchor }} module). Or you connect to the phone's GPS and receive an endless stream of GPS
-coordinates you need to display on a map. We need a new strategy to handle this kind of use-case: a "side effect".
+coordinates you need to display on a map. We need a new strategy to handle this kind of use-case: a "side-job".
 
 Until this point, we've been working with the notion that the InputHandler will suspend until the async work completes,
 and we considered what would happen if a new Input arrived while one was already suspended. But if we have a
 potentially-infinite data source, we obviously cannot connect to that directly within the InputHandler. Similarly, maybe
 we have a situation where it's not feasible to move all initialization logic into a single Input, but we still want to
-load from multiple APIs in parallel. Both these can be accomplished by moving that work into a `sideEffect { }` block.
+load from multiple APIs in parallel. Both these can be accomplished by moving that work into a `sideJob { }` block.
 
-Side effects work kind-of like a "thunk" in Redux; they move async logic outside of the normal data flow of the
+Side-jobs work kind-of like a "thunk" in Redux; they move async logic outside of the normal data flow of the
 ViewModel, running fully parallel to it, but provide a handle back to the ViewModel where it can post one or more
 additional Inputs with the results of its data. Since they're running parallel to the ViewModel, we cannot allow a
-sideEffect to modify the `State`, otherwise we'd run into the same problem we had initially, so instead it needs to just
+sideJob to modify the `State`, otherwise we'd run into the same problem we had initially, so instead it needs to just
 send requests back into the proper Input stream to be processed as any other Input, applying the results to the state
 when they are processed themselves.
 
-### Basic Side Effect Usage
+### Basic Side-job Usage
 
-Rewriting the original snippet to load both posts in a sideEffect would look like this:
+Rewriting the original snippet to load both posts in a sideJob would look like this:
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
     is Inputs.PostsLoaded -> { updateState { it.copy(posts = input.posts) } }
     is Inputs.LatestPostContentLoaded -> { updateState { it.copy(latestPost = input.latestPost) } }
     is Inputs.LoadPosts -> {
-        sideEffect {
+        sideJob {
             val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
             postInput(Inputs.PostsLoaded(posts))
         }
     }
     is Inputs.LoadLatestPostContent -> {
-        sideEffect {
+        sideJob {
             val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
             postInput(Inputs.LatestPostContentLoaded(latestPost))
         }
@@ -640,29 +640,29 @@ viewModel.trySend(Inputs.LoadLatestPostContent)
 (I've gone ahead and removed the `loading` flag from these examples, as they will just get in the way of the intent of
 these snippets from here on out.)
 
-This snippet _almost_ works, but it's ignoring a small, but very important detail of sideEffects: they are restartable.
-The lifecycle of each `sideEffect { }` block still needs to be managed by Ballast, cancelled when the ViewModel is
+This snippet _almost_ works, but it's ignoring a small, but very important detail of sideJobs: they are restartable.
+The lifecycle of each `sideJob { }` block still needs to be managed by Ballast, cancelled when the ViewModel is
 cancelled. However, since MVI is a declarative design pattern, it's reasonable to assume that one could "force a
 refresh" simply by sending the same Input back to Ballast. With normal Input processing rules, that would cancel the
-current Input and run the new one. But sideEffects break out of that cycle, and so Ballast requires each sideEffect to
-have a different "key". If any Input tries to launch a sideEffect with the same key, the old sideEffect will be
+current Input and run the new one. But sideJobs break out of that cycle, and so Ballast requires each sideJob to
+have a different "key". If any Input tries to launch a sideJob with the same key, the old sideJob will be
 cancelled to accept the new one. This prevents multiple instances of the same block of code being run all in parallel if
 the same Input is sent multiple times.
 
-So the fix is to just provide a key to the `sideEffect` function:
+So the fix is to just provide a key to the `sideJob` function:
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
     is Inputs.PostsLoaded -> { updateState { it.copy(posts = input.posts) } }
     is Inputs.LatestPostContentLoaded -> { updateState { it.copy(latestPost = input.latestPost) } }
     is Inputs.LoadPosts -> {
-        sideEffect("LoadPosts") {
+        sideJob("LoadPosts") {
             val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
             postInput(Inputs.PostsLoaded(posts))
         }
     }
     is Inputs.LoadLatestPostContent -> {
-        sideEffect("LoadPosts") {
+        sideJob("LoadPosts") {
             val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
             postInput(Inputs.LatestPostContentLoaded(latestPost))
         }
@@ -680,8 +680,8 @@ refreshButton.setOnClickListener {
 
 ### Observing Flows
 
-Now that we have a basic idea of sideEffects, let's apply it to the use-case of observing GPS coordinates from your
-phone's sensor. Since sideEffects do not block the normal Input stream, there's nothing wrong with observing an infinite
+Now that we have a basic idea of sideJobs, let's apply it to the use-case of observing GPS coordinates from your
+phone's sensor. Since sideJobs do not block the normal Input stream, there's nothing wrong with observing an infinite
 stream of events in it, so it becomes a simple matter of collecting from the `Flow` and posting all those changes back
 to the ViewModel.
 
@@ -689,7 +689,7 @@ to the ViewModel.
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
     is Inputs.GpsCoordinatesUpdated -> { updateState { it.copy(coordinates = input.coordinates) } }
     is Inputs.ObserveGpsSignal -> {
-        sideEffect("ObserveGpsSignal") {
+        sideJob("ObserveGpsSignal") {
             gpsRepository
                 .observeLocation() // returns a Flow
                 .map { Inputs.GpsCoordinatesUpdated(it) }
@@ -702,7 +702,7 @@ suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) 
 viewModel.trySend(Inputs.ObserveGpsSignal)
 ```
 
-As this is one of the main use-cases for sideEffects, and Ballast offers a convenient shorthand for you:
+As this is one of the main use-cases for sideJobs, and Ballast offers a convenient shorthand for you:
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
@@ -722,7 +722,7 @@ viewModel.trySend(Inputs.ObserveGpsSignal)
 
 ### Sending Follow-up Inputs
 
-One final use-case for sideEffects that I haven't yet touched on is sending Inputs, without any further logic.
+One final use-case for sideJobs that I haven't yet touched on is sending Inputs, without any further logic.
 
 Consider a pub-sub type architecture, where one Input needs to do some processing, and then dispatch another Input after
 it has finished. Attempting to send a new Input directly from another Input is bad for 2 potential reasons: immediate
@@ -734,13 +734,13 @@ was configured to be `RENDEZVOUS` and running in a single-threaded coroutineCont
 that Input is read from the channel, but the ViewModel will not able to receive the Input from that channel until the
 sender has finished, which is a deadlock. These are both hypothetical scenarios, but the danger is certainly there,
 which is why Ballast simply forbids sending an Input directly from another Input. Instead, Inputs can only be sent back
-to the ViewModel from a sideEffect or an Event.
+to the ViewModel from a sideJob or an Event.
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
     is Inputs.RequestLogout -> {
         loginRepository.logOut()
-        sideEffect("RequestLogOut") {
+        sideJob("RequestLogOut") {
             postInput(Inputs.ClearCache)
         }
     }
@@ -753,9 +753,9 @@ viewModel.trySend(Inputs.RequestLogout)
 ```
 
 Like `observeFlows`, this too, has a convenient helper method which makes it look like you are sending an Input directly
-from another Input, but is in fact sending it from a sideEffect block. Since it's a simple sideEffect, it will also
+from another Input, but is in fact sending it from a sideJob block. Since it's a simple sideJob, it will also
 derive a key for you based on the Input (it's `.toString()`), so that calling `postInput()` does not accidentally cancel
-any other sideEffects.
+any other sideJobs.
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {

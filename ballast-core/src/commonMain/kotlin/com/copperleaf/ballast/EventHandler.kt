@@ -1,7 +1,7 @@
 package com.copperleaf.ballast
 
 /**
- * An interface for handling Events emitted by the ViewModel. Events are typically used to initiate side-effects, but
+ * An interface for handling Events emitted by the ViewModel. Events are typically used to initiate side-jobs, but
  * they may also need to post additional inputs back to the ViewModel.
  *
  * For example, an Event may dispatch a request to display a notification bubble. The notification UI is agnostic to
@@ -12,7 +12,7 @@ package com.copperleaf.ballast
  * simplifying the management and helpding prevent leaky or unnecessary abstractions around such code. This will post an
  * Input back to the ViewModel, and ultimately back to the [InputHandler] that dispatched this Event.
  *
- * The handling of an Event is typically considered a "side-effect", running in parallel to the ViewModel. It cannot
+ * The handling of an Event is typically considered a "side-job", running in parallel to the ViewModel. It cannot
  * reference the ViewModel State itself, and so any State in the Event is the State that was current at the time the
  * Event was dispatched, but may not necessarily be the exact same State by the time the Event is actually handled.
  */

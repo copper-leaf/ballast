@@ -13,7 +13,7 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
     public val inputStrategy: InputStrategy
     public val inputsDispatcher: CoroutineDispatcher
     public val eventsDispatcher: CoroutineDispatcher
-    public val sideEffectsDispatcher: CoroutineDispatcher
+    public val sideJobsDispatcher: CoroutineDispatcher
     public val interceptorDispatcher: CoroutineDispatcher
     public val name: String
     public val logger: BallastLogger
@@ -27,7 +27,7 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
         public var inputStrategy: InputStrategy = LifoInputStrategy(),
         public var inputsDispatcher: CoroutineDispatcher = Dispatchers.Default,
         public var eventsDispatcher: CoroutineDispatcher = Dispatchers.Default,
-        public var sideEffectsDispatcher: CoroutineDispatcher = Dispatchers.Default,
+        public var sideJobsDispatcher: CoroutineDispatcher = Dispatchers.Default,
         public var interceptorDispatcher: CoroutineDispatcher = Dispatchers.Default,
         public var logger: BallastLogger = NoOpLogger(),
     )

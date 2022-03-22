@@ -97,26 +97,26 @@ class KitchenSinkComponent(
                 Text("CloseKitchenSinkWindow")
             }
 
-            Text("SideEffects")
+            Text("SideJobs")
             BulmaButton(
-                onClick = { postInput(KitchenSinkContract.Inputs.LongRunningSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.LongRunningSideJob) },
             ) {
-                Text("LongRunningSideEffect")
+                Text("LongRunningSideJob")
             }
             BulmaButton(
-                onClick = { postInput(KitchenSinkContract.Inputs.ErrorRunningSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.ErrorRunningSideJob) },
             ) {
-                Text("ErrorRunningSideEffect")
+                Text("ErrorRunningSideJob")
             }
             BulmaButton(
-                onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideJob) },
             ) {
-                Text("InfiniteSideEffect")
+                Text("InfiniteSideJob")
             }
             BulmaButton(
-                onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideEffect) },
+                onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) },
             ) {
-                Text("CancelInfiniteSideEffect")
+                Text("CancelInfiniteSideJob")
             }
         }
     }

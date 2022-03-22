@@ -135,7 +135,7 @@ class LoginScreenInputHandler : InputHandler<Inputs, Events, State> {
 }
 ```
 
-The `InputHandlerScope` DSL is able to update the ViewModel State, post Events, start sideEffects, and call any other 
+The `InputHandlerScope` DSL is able to update the ViewModel State, post Events, start sideJobs, and call any other 
 suspending functions within the Input queue.
 
 ### Event Handler
@@ -164,22 +164,22 @@ class LoginScreenEventHandler : EventHandler<Inputs, Events, State> {
 
 The `EventHandlerScope` DSL is able to post Inputs back into the queue.
 
-### Side Effects
+### Side-jobs
 
 Inputs are normally processed in a queue, one-at-a-time, but there are lots of great use-cases for concurrent work in
-the MVI model. Side effects allow you to start coroutines that run in the "background" of your ViewModel, on the side of
-the normal Input queue. These Side Effects are bound by the same lifecycle as the ViewModel, and can even collect from
+the MVI model. Side-jobs allow you to start coroutines that run in the "background" of your ViewModel, on the side of
+the normal Input queue. These side-jobs are bound by the same lifecycle as the ViewModel, and can even collect from
 an infinite flows.
 
-Unlike all other components in Ballast, Side Effects are just part of the `InputHandlerScope` DSL. You call 
-`sideEffect()`, provide it with a `key` that is used to determine when to restart it, and run your code in the lambda.
+Unlike all other components in Ballast, Side-jobs are just part of the `InputHandlerScope` DSL. You call 
+`sideJob()`, provide it with a `key` that is used to determine when to restart it, and run your code in the lambda.
 
 ```kotlin
 override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(
     input: Inputs
 ) = when (input) {
-    is InfiniteSideEffect -> {
-        sideEffect("ShortSideEffect") {
+    is InfiniteSideJob -> {
+        sideJob("ShortSideJob") {
             infiniteFlow()
                 .map { Inputs.SomeInputType() }
                 .onEach { postInput(it) }
@@ -189,8 +189,8 @@ override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(
 }
 ```
 
-The `sideEffect()` lambda's receiver DSL is able to post both Inputs and Events back to the ViewModel. It also includes
-a snapshot of the State taken when the SideEffect is started, and a flag to let you know if the sideEffect is started 
+The `sideJob()` lambda's receiver DSL is able to post both Inputs and Events back to the ViewModel. It also includes
+a snapshot of the State taken when the SideJob is started, and a flag to let you know if the sideJob is started 
 for the first time or restarted.
 
 ## Configuration

@@ -32,7 +32,7 @@ class SampleControllerInputHandler(
         is SampleControllerContract.Inputs.UpdateInputStrategy -> {
             updateState { it.copy(inputStrategy = input.inputStrategy) }
 
-            sideEffect("UpdateInputStrategy") {
+            sideJob("UpdateInputStrategy") {
                 prefs.sampleInputStrategy = input.inputStrategy
 
                 val vm = injector.kitchenSinkViewModel(this, currentStateWhenStarted.inputStrategy.get())

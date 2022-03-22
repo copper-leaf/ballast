@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.models
 
-import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.debugger.utils.now
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
@@ -213,47 +213,47 @@ public sealed class BallastDebuggerEvent {
         public val stateToStringValue: String,
     ) : BallastDebuggerEvent()
 
-// Side Effects
+// Side-jobs
 // ---------------------------------------------------------------------------------------------------------------------
 
     @Serializable
-    public class SideEffectStarted(
+    public class SideJobStarted(
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
 
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
     ) : BallastDebuggerEvent()
 
     @Serializable
-    public class SideEffectCompleted(
+    public class SideJobCompleted(
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
 
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
     ) : BallastDebuggerEvent()
 
     @Serializable
-    public class SideEffectCancelled(
+    public class SideJobCancelled(
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
 
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
     ) : BallastDebuggerEvent()
 
     @Serializable
-    public class SideEffectError(
+    public class SideJobError(
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
 
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
         public val stacktrace: String,
     ) : BallastDebuggerEvent()
 

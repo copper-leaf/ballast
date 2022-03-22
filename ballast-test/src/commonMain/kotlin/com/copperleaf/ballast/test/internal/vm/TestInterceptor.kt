@@ -3,7 +3,7 @@ package com.copperleaf.ballast.test.internal.vm
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.test.TestResults
 
 /**
@@ -25,9 +25,9 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
 
     private val states = mutableListOf<State>()
 
-    private val sideEffects = mutableListOf<Pair<String, SideEffectScope.RestartState>>()
-    private val completedSideEffects = mutableListOf<String>()
-    private val sideEffectErrors = mutableListOf<Pair<String, Throwable>>()
+    private val sideJobs = mutableListOf<Pair<String, SideJobScope.RestartState>>()
+    private val completedSideJobs = mutableListOf<String>()
+    private val sideJobErrors = mutableListOf<Pair<String, Throwable>>()
 
     private val unhandledErrors = mutableListOf<Throwable>()
 
@@ -82,14 +82,14 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
                 states += notification.state
             }
 
-            is BallastNotification.SideEffectStarted -> {
-                sideEffects += notification.key to notification.restartState
+            is BallastNotification.SideJobStarted -> {
+                sideJobs += notification.key to notification.restartState
             }
-            is BallastNotification.SideEffectCompleted -> {
-                completedSideEffects += notification.key
+            is BallastNotification.SideJobCompleted -> {
+                completedSideJobs += notification.key
             }
-            is BallastNotification.SideEffectError -> {
-                sideEffectErrors += notification.key to notification.throwable
+            is BallastNotification.SideJobError -> {
+                sideJobErrors += notification.key to notification.throwable
             }
 
             is BallastNotification.UnhandledError -> {
@@ -115,8 +115,8 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any> :
 
             states = states.toList(),
 
-            sideEffects = sideEffects.toList(),
-            sideEffectErrors = sideEffectErrors.toList(),
+            sideJobs = sideJobs.toList(),
+            sideJobErrors = sideJobErrors.toList(),
 
             unhandledErrors = unhandledErrors.toList(),
         )

@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.test
 
 import com.copperleaf.ballast.BallastInterceptor
-import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.SideJobScope
 
 public data class TestResults<Inputs : Any, Events : Any, State : Any>(
 
@@ -51,14 +51,14 @@ public data class TestResults<Inputs : Any, Events : Any, State : Any>(
     public val states: List<State>,
 
     /**
-     * All values intercepted by [BallastInterceptor.onSideEffectStarted] during the test.
+     * All values intercepted by [BallastInterceptor.onSideJobStarted] during the test.
      */
-    public val sideEffects: List<Pair<String, SideEffectScope.RestartState>>,
+    public val sideJobs: List<Pair<String, SideJobScope.RestartState>>,
 
     /**
-     * All values intercepted by [BallastInterceptor.onSideEffectError] during the test.
+     * All values intercepted by [BallastInterceptor.onSideJobError] during the test.
      */
-    public val sideEffectErrors: List<Pair<String, Throwable>>,
+    public val sideJobErrors: List<Pair<String, Throwable>>,
 
     /**
      * All values intercepted by [BallastInterceptor.onUnhandledError] during the test.

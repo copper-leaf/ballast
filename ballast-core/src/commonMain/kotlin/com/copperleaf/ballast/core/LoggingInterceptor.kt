@@ -35,7 +35,7 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any> : Balla
             is BallastNotification.EventHandlerError -> {
                 BallastException(notification.throwable, true, latestState, inputSequence)
             }
-            is BallastNotification.SideEffectError -> {
+            is BallastNotification.SideJobError -> {
                 BallastException(notification.throwable, true, latestState, inputSequence)
             }
             is BallastNotification.UnhandledError -> {

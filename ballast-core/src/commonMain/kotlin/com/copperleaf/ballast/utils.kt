@@ -9,14 +9,14 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
 /**
- * Observe a Flow of Inputs that will run asynchronously in its own [SideEffectScope]. This will
+ * Observe a Flow of Inputs that will run asynchronously in its own [SideJobScope]. This will
  * allow other Inputs to be processed and not be blocked by this Flow's subscription.
  *
  * The Flow subscription will remain active during the whole life of the associated ViewModel
- * and will be cancelled when the ViewModel is destroyed, when the side-effect is restarted, or
+ * and will be cancelled when the ViewModel is destroyed, when the side-job is restarted, or
  * it may terminate itself before then when the Flow completes.
  *
- * The side-effect started from the Flow uses the resulting Input's simple class name as
+ * The side-job started from the Flow uses the resulting Input's simple class name as
  * its key.
  */
 @ExperimentalCoroutinesApi
@@ -28,7 +28,7 @@ public inline fun <
     key: String,
     vararg inputs: Flow<Inputs>,
 ) {
-    sideEffect(
+    sideJob(
         key = key,
     ) {
         merge(*inputs)
@@ -38,14 +38,14 @@ public inline fun <
 }
 
 /**
- * Observe a Flow of Inputs that will run asynchronously in its own [SideEffectScope]. This will
+ * Observe a Flow of Inputs that will run asynchronously in its own [SideJobScope]. This will
  * allow other Inputs to be processed and not be blocked by this Flow's subscription.
  *
  * The Flow subscription will remain active during the whole life of the associated ViewModel
- * and will be cancelled when the ViewModel is destroyed, when the side-effect is restarted, or
+ * and will be cancelled when the ViewModel is destroyed, when the side-job is restarted, or
  * it may terminate itself before then when the Flow completes.
  *
- * The side-effect started from the Flow uses the resulting Input's simple class name as
+ * The side-job started from the Flow uses the resulting Input's simple class name as
  * its key.
  */
 @ExperimentalCoroutinesApi
@@ -55,9 +55,9 @@ public inline fun <
     Events : Any,
     State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
     key: String,
-    crossinline getInputs: SideEffectScope<Inputs, Events, State>.() -> List<Flow<Inputs>>,
+    crossinline getInputs: SideJobScope<Inputs, Events, State>.() -> List<Flow<Inputs>>,
 ) {
-    sideEffect(
+    sideJob(
         key = key,
     ) {
         getInputs().merge()
@@ -67,19 +67,19 @@ public inline fun <
 }
 
 /**
- * Posts an Input back to the VM to be processed later. The Input is posted from within a Side-Effect
+ * Posts an Input back to the VM to be processed later. The Input is posted from within a side-job
  * to avoid unwanted cancellation or potential deadlocks. The current InputHandler will be completed
  * before this Input is actually dispatched to the ViewModel Input queue.
  *
- * The Side-Effect launched here uses the `.toString()` value of [input] as the key, to avoid accidentally cancelling
- * any already-running Side-Effects.
+ * The side-job launched here uses the `.toString()` value of [input] as the key, to avoid accidentally cancelling
+ * any already-running side-jobs.
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <Inputs : Any, Events : Any, State : Any> InputHandlerScope<Inputs, Events, State>.postInput(
     input: Inputs
 ) {
-    sideEffect(key = input.toString()) {
-        this@sideEffect.postInput(input)
+    sideJob(key = input.toString()) {
+        this@sideJob.postInput(input)
     }
 }
 
@@ -158,7 +158,7 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         inputStrategy = inputStrategy,
         inputsDispatcher = inputsDispatcher,
         eventsDispatcher = eventsDispatcher,
-        sideEffectsDispatcher = sideEffectsDispatcher,
+        sideJobsDispatcher = sideJobsDispatcher,
         interceptorDispatcher = interceptorDispatcher,
         name = name ?: "$inputHandler-vm",
         logger = logger,
@@ -168,12 +168,12 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
 public fun BallastViewModelConfiguration.Builder.dispatchers(
     inputsDispatcher: CoroutineDispatcher,
     eventsDispatcher: CoroutineDispatcher = inputsDispatcher,
-    sideEffectsDispatcher: CoroutineDispatcher = inputsDispatcher,
+    sideJobsDispatcher: CoroutineDispatcher = inputsDispatcher,
     interceptorDispatcher: CoroutineDispatcher = inputsDispatcher,
 ): BallastViewModelConfiguration.Builder = apply {
     this.inputsDispatcher = inputsDispatcher
     this.eventsDispatcher = eventsDispatcher
-    this.sideEffectsDispatcher = sideEffectsDispatcher
+    this.sideJobsDispatcher = sideJobsDispatcher
     this.interceptorDispatcher = interceptorDispatcher
 }
 

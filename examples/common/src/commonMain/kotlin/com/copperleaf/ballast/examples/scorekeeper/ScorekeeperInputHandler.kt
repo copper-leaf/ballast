@@ -76,7 +76,7 @@ class ScorekeeperInputHandler(
                 )
             }
 
-            sideEffect("ChangeScore") {
+            sideJob("ChangeScore") {
                 delay(5000)
                 postInput(ScorekeeperContract.Inputs.CommitAllTempScores)
             }

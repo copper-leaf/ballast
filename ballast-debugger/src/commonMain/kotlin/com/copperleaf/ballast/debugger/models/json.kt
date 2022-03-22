@@ -66,17 +66,17 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
         is BallastNotification.StateChanged -> {
             BallastDebuggerEvent.StateChanged(connectionId, vm.name, uuid, state.type, state.toString())
         }
-        is BallastNotification.SideEffectStarted -> {
-            BallastDebuggerEvent.SideEffectStarted(connectionId, vm.name, uuid, key, restartState)
+        is BallastNotification.SideJobStarted -> {
+            BallastDebuggerEvent.SideJobStarted(connectionId, vm.name, uuid, key, restartState)
         }
-        is BallastNotification.SideEffectCompleted -> {
-            BallastDebuggerEvent.SideEffectCompleted(connectionId, vm.name, uuid, key, restartState)
+        is BallastNotification.SideJobCompleted -> {
+            BallastDebuggerEvent.SideJobCompleted(connectionId, vm.name, uuid, key, restartState)
         }
-        is BallastNotification.SideEffectCancelled -> {
-            BallastDebuggerEvent.SideEffectCancelled(connectionId, vm.name, uuid, key, restartState)
+        is BallastNotification.SideJobCancelled -> {
+            BallastDebuggerEvent.SideJobCancelled(connectionId, vm.name, uuid, key, restartState)
         }
-        is BallastNotification.SideEffectError -> {
-            BallastDebuggerEvent.SideEffectError(
+        is BallastNotification.SideJobError -> {
+            BallastDebuggerEvent.SideJobError(
                 connectionId, vm.name, uuid, key, restartState,
                 throwable.stackTraceToString()
             )

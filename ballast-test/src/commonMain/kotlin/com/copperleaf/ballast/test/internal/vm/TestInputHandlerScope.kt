@@ -2,7 +2,7 @@ package com.copperleaf.ballast.test.internal.vm
 
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.SideJobScope
 
 internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
     private val inputHandlerScopeDelegate: InputHandlerScope<TestViewModel.Inputs<Inputs>, Events, State>,
@@ -31,13 +31,13 @@ internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
         inputHandlerScopeDelegate.postEvent(event)
     }
 
-    override fun sideEffect(
+    override fun sideJob(
         key: String,
-        block: suspend SideEffectScope<Inputs, Events, State>.() -> Unit
+        block: suspend SideJobScope<Inputs, Events, State>.() -> Unit
     ) {
-        inputHandlerScopeDelegate.sideEffect(
+        inputHandlerScopeDelegate.sideJob(
             key = key,
-            block = { TestSideEffectScope(this).block() }
+            block = { TestSideJobScope(this).block() }
         )
     }
 

@@ -37,7 +37,7 @@ class DebuggerInputHandler(
                 )
             }
 
-            sideEffect("Websocket Server") {
+            sideJob("Websocket Server") {
                 val server = BallastDebuggerServerConnection(
                     port = input.port,
                     outgoingActions = currentStateWhenStarted.actions,
@@ -47,7 +47,7 @@ class DebuggerInputHandler(
                 server.runServer()
             }
 
-            sideEffect("SplitPane State Observer") {
+            sideJob("SplitPane State Observer") {
                 snapshotFlow { currentStateWhenStarted.connectionsPanePercentage.positionPercentage }
                     .distinctUntilChanged()
                     .onEach { prefs.connectionsPanePercentage = it }

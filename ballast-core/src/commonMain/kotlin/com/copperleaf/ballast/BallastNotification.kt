@@ -218,62 +218,62 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
         }
     }
 
-// Side Effects
+// Side Jobs
 // ---------------------------------------------------------------------------------------------------------------------
 
     /**
-     * A sideEffect was started or restarted
+     * A sideJob was started or restarted
      */
-    public class SideEffectStarted<Inputs : Any, Events : Any, State : Any>(
+    public class SideJobStarted<Inputs : Any, Events : Any, State : Any>(
         vm: BallastViewModel<Inputs, Events, State>,
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
     ) : BallastNotification<Inputs, Events, State>(vm) {
         override fun toString(): String {
             return when (restartState) {
-                SideEffectScope.RestartState.Initial -> "SideEffect started: $key"
-                SideEffectScope.RestartState.Restarted -> "SideEffect restarted: $key"
+                SideJobScope.RestartState.Initial -> "sideJob started: $key"
+                SideJobScope.RestartState.Restarted -> "sideJob restarted: $key"
             }
         }
     }
 
     /**
-     * A sideEffect was started or restarted
+     * A sideJob ran to completion
      */
-    public class SideEffectCompleted<Inputs : Any, Events : Any, State : Any>(
+    public class SideJobCompleted<Inputs : Any, Events : Any, State : Any>(
         vm: BallastViewModel<Inputs, Events, State>,
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
     ) : BallastNotification<Inputs, Events, State>(vm) {
         override fun toString(): String {
-            return "sideEffect finished: $key"
+            return "sideJob finished: $key"
         }
     }
 
     /**
-     * A sideEffect was started or restarted
+     * A sideJob was cancelled
      */
-    public class SideEffectCancelled<Inputs : Any, Events : Any, State : Any>(
+    public class SideJobCancelled<Inputs : Any, Events : Any, State : Any>(
         vm: BallastViewModel<Inputs, Events, State>,
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
     ) : BallastNotification<Inputs, Events, State>(vm) {
         override fun toString(): String {
-            return "sideEffect cancelled: $key"
+            return "sideJob cancelled: $key"
         }
     }
 
     /**
-     * A sideEffect was started or restarted
+     * A exception was thrown inside a sideJob
      */
-    public class SideEffectError<Inputs : Any, Events : Any, State : Any>(
+    public class SideJobError<Inputs : Any, Events : Any, State : Any>(
         vm: BallastViewModel<Inputs, Events, State>,
         public val key: String,
-        public val restartState: SideEffectScope.RestartState,
+        public val restartState: SideJobScope.RestartState,
         public val throwable: Throwable,
     ) : BallastNotification<Inputs, Events, State>(vm) {
         override fun toString(): String {
-            return "Error in sideEffect: $key (${throwable.message})"
+            return "Error in sideJob: $key (${throwable.message})"
         }
     }
 

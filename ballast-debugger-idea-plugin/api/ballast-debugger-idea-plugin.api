@@ -287,7 +287,7 @@ public final class com/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$
 	public final fun getFocusedViewModelEvent ()Lcom/copperleaf/ballast/debugger/models/BallastEventState;
 	public final fun getFocusedViewModelInput ()Lcom/copperleaf/ballast/debugger/models/BallastInputState;
 	public final fun getFocusedViewModelName ()Ljava/lang/String;
-	public final fun getFocusedViewModelSideEffect ()Lcom/copperleaf/ballast/debugger/models/BallastSideEffectState;
+	public final fun getFocusedViewModelSideJob ()Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;
 	public final fun getFocusedViewModelStateSnapshot ()Lcom/copperleaf/ballast/debugger/models/BallastStateSnapshot;
 	public final fun getSelectedViewModelContentTab ()Lcom/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTab;
 	public final fun getViewModelsPanePercentage ()Lorg/jetbrains/compose/splitpane/SplitPaneState;
@@ -510,10 +510,10 @@ public final class com/copperleaf/ballast/debugger/ui/widgets/InputsKt {
 	public static final fun InputSummary (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastInputState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 }
 
-public final class com/copperleaf/ballast/debugger/ui/widgets/SideEffectsKt {
-	public static final fun SideEffectDetails (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastSideEffectState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
-	public static final fun SideEffectList (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
-	public static final fun SideEffectSummary (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastSideEffectState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+public final class com/copperleaf/ballast/debugger/ui/widgets/SideJobsKt {
+	public static final fun SideJobDetails (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun SideJobList (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun SideJobSummary (Lcom/copperleaf/ballast/debugger/ui/debugger/DebuggerContract$State;Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 }
 
 public final class com/copperleaf/ballast/debugger/ui/widgets/StatesKt {
@@ -540,7 +540,7 @@ public final class com/copperleaf/ballast/debugger/ui/widgets/UtilsKt {
 public final class com/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTab : java/lang/Enum {
 	public static final field Events Lcom/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTab;
 	public static final field Inputs Lcom/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTab;
-	public static final field SideEffects Lcom/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTab;
+	public static final field SideJobs Lcom/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTab;
 	public static final field States Lcom/copperleaf/ballast/debugger/ui/widgets/ViewModelContentTab;
 	public final fun getIcon ()Landroidx/compose/ui/graphics/vector/ImageVector;
 	public final fun getText ()Ljava/lang/String;

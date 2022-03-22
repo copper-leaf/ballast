@@ -29,14 +29,14 @@ class KitchenSinkInputHandler : InputHandler<
         is KitchenSinkContract.Inputs.LongRunningEvent -> {
             postEvent(KitchenSinkContract.Events.LongRunningEvent())
         }
-        is KitchenSinkContract.Inputs.LongRunningSideEffect -> {
-            sideEffect("LongRunningSideEffect") {
+        is KitchenSinkContract.Inputs.LongRunningSideJob -> {
+            sideJob("LongRunningSideJob") {
                 delay(5000)
             }
         }
-        is KitchenSinkContract.Inputs.InfiniteSideEffect -> {
+        is KitchenSinkContract.Inputs.InfiniteSideJob -> {
             observeFlows(
-                "InfiniteSideEffect",
+                "InfiniteSideJob",
                 flow {
                     while (true) {
                         delay(1_000)
@@ -45,9 +45,9 @@ class KitchenSinkInputHandler : InputHandler<
                 }
             )
         }
-        is KitchenSinkContract.Inputs.CancelInfiniteSideEffect -> {
-            sideEffect("InfiniteSideEffect") {
-                // run a side-effect with the same key, so the infinite flow one gets cancelled, while this one runs
+        is KitchenSinkContract.Inputs.CancelInfiniteSideJob -> {
+            sideJob("InfiniteSideJob") {
+                // run a side-job with the same key, so the infinite flow one gets cancelled, while this one runs
                 // to completion
             }
         }
@@ -61,9 +61,9 @@ class KitchenSinkInputHandler : InputHandler<
         is KitchenSinkContract.Inputs.ErrorRunningEvent -> {
             postEvent(KitchenSinkContract.Events.ErrorRunningEvent())
         }
-        is KitchenSinkContract.Inputs.ErrorRunningSideEffect -> {
-            sideEffect("ErrorRunningSideEffect") {
-                error("error running sideEffect")
+        is KitchenSinkContract.Inputs.ErrorRunningSideJob -> {
+            sideJob("ErrorRunningSideJob") {
+                error("error running sideJob")
             }
         }
     }

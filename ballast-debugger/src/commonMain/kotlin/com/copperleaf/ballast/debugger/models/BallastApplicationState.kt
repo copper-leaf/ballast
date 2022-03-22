@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.models
 
-import com.copperleaf.ballast.SideEffectScope
+import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.now
 import com.copperleaf.ballast.debugger.utils.removeFraction
@@ -68,7 +68,7 @@ public data class BallastViewModelState(
 
     public val inputs: List<BallastInputState> = emptyList(),
     public val events: List<BallastEventState> = emptyList(),
-    public val sideEffects: List<BallastSideEffectState> = emptyList(),
+    public val sideJobs: List<BallastSideJobState> = emptyList(),
     public val states: List<BallastStateSnapshot> = emptyList(),
 
     public val viewModelActive: Boolean = false,
@@ -81,11 +81,11 @@ public data class BallastViewModelState(
 ) {
     public val runningInputCount: Int = inputs.count { it.status == BallastInputState.Status.Running }
     public val runningEventCount: Int = events.count { it.status == BallastEventState.Status.Running }
-    public val runningSideEffectCount: Int = sideEffects.count { it.status == BallastSideEffectState.Status.Running }
+    public val runningSideJobCount: Int = sideJobs.count { it.status == BallastSideJobState.Status.Running }
 
     public val inputInProgress: Boolean = runningInputCount > 0
     public val eventInProgress: Boolean = runningEventCount > 0
-    public val sideEffectsInProgress: Boolean = runningSideEffectCount > 0
+    public val sideJobsInProgress: Boolean = runningSideJobCount > 0
 }
 
 public fun BallastConnectionState.updateViewModel(
@@ -279,16 +279,16 @@ public fun BallastViewModelState.appendStateSnapshot(
     )
 }
 
-// SideEffects
+// SideJobs
 // ---------------------------------------------------------------------------------------------------------------------
 
-public data class BallastSideEffectState(
+public data class BallastSideJobState(
     public val connectionId: String,
     public val viewModelName: String,
     public val uuid: String,
 
     public val key: String = "",
-    public val restartState: SideEffectScope.RestartState = SideEffectScope.RestartState.Initial,
+    public val restartState: SideJobScope.RestartState = SideJobScope.RestartState.Initial,
     public val status: Status = Status.Running,
 
     public val firstSeen: LocalDateTime = LocalDateTime.now(),
@@ -317,22 +317,22 @@ public data class BallastSideEffectState(
     }
 }
 
-public fun BallastViewModelState.updateSideEffect(
+public fun BallastViewModelState.updateSideJob(
     uuid: String,
-    block: BallastSideEffectState.() -> BallastSideEffectState,
+    block: BallastSideJobState.() -> BallastSideJobState,
 ): BallastViewModelState {
-    val indexOfSideEffect = sideEffects.indexOfFirst { it.uuid == uuid }
+    val indexOfSideJob = sideJobs.indexOfFirst { it.uuid == uuid }
 
     return this.copy(
-        sideEffects = sideEffects
+        sideJobs = sideJobs
             .toMutableList()
             .apply {
-                if (indexOfSideEffect != -1) {
+                if (indexOfSideJob != -1) {
                     // we're updating a value in an existing connection
-                    this[indexOfSideEffect] = this[indexOfSideEffect].block().copy(lastSeen = LocalDateTime.now())
+                    this[indexOfSideJob] = this[indexOfSideJob].block().copy(lastSeen = LocalDateTime.now())
                 } else {
                     // this is the first time we're seeing this connection, create a new entry for it
-                    this.add(0, BallastSideEffectState(connectionId, viewModelName, uuid).block())
+                    this.add(0, BallastSideJobState(connectionId, viewModelName, uuid).block())
                 }
             }
             .toList()
@@ -495,43 +495,43 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
             }
         }
 
-        is BallastDebuggerEvent.SideEffectStarted -> {
-            updateSideEffect(event.uuid) {
+        is BallastDebuggerEvent.SideJobStarted -> {
+            updateSideJob(event.uuid) {
                 copy(
                     key = event.key,
                     restartState = event.restartState,
-                    status = BallastSideEffectState.Status.Running,
+                    status = BallastSideJobState.Status.Running,
                 )
             }
         }
-        is BallastDebuggerEvent.SideEffectCompleted -> {
-            updateSideEffect(event.uuid) {
+        is BallastDebuggerEvent.SideJobCompleted -> {
+            updateSideJob(event.uuid) {
                 copy(
                     key = event.key,
                     restartState = event.restartState,
-                    status = BallastSideEffectState.Status.Completed(
+                    status = BallastSideJobState.Status.Completed(
                         duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                     ),
                 )
             }
         }
-        is BallastDebuggerEvent.SideEffectCancelled -> {
-            updateSideEffect(event.uuid) {
+        is BallastDebuggerEvent.SideJobCancelled -> {
+            updateSideJob(event.uuid) {
                 copy(
                     key = event.key,
                     restartState = event.restartState,
-                    status = BallastSideEffectState.Status.Cancelled(
+                    status = BallastSideJobState.Status.Cancelled(
                         duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                     ),
                 )
             }
         }
-        is BallastDebuggerEvent.SideEffectError -> {
-            updateSideEffect(event.uuid) {
+        is BallastDebuggerEvent.SideJobError -> {
+            updateSideJob(event.uuid) {
                 copy(
                     key = event.key,
                     restartState = event.restartState,
-                    status = BallastSideEffectState.Status.Error(
+                    status = BallastSideJobState.Status.Error(
                         duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                         stacktrace = event.stacktrace
                     ),
