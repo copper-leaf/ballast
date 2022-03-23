@@ -711,6 +711,33 @@ public final class com/copperleaf/ballast/debugger/models/BallastDebuggerEvent$S
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
+public final class com/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued : com/copperleaf/ballast/debugger/models/BallastDebuggerEvent {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued$Companion;
+	public synthetic fun <init> (ILkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/String;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued$$serializer;
+	public static final synthetic field descriptor Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobQueued$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
 public final class com/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobStarted : com/copperleaf/ballast/debugger/models/BallastDebuggerEvent {
 	public static final field Companion Lcom/copperleaf/ballast/debugger/models/BallastDebuggerEvent$SideJobStarted$Companion;
 	public synthetic fun <init> (ILkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V

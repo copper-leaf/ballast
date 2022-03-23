@@ -66,6 +66,10 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
         is BallastNotification.StateChanged -> {
             BallastDebuggerEvent.StateChanged(connectionId, vm.name, uuid, state.type, state.toString())
         }
+
+        is BallastNotification.SideJobQueued -> {
+            BallastDebuggerEvent.SideJobQueued(connectionId, vm.name, uuid, key)
+        }
         is BallastNotification.SideJobStarted -> {
             BallastDebuggerEvent.SideJobStarted(connectionId, vm.name, uuid, key, restartState)
         }

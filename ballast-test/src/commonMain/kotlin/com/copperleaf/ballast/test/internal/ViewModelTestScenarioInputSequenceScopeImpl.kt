@@ -42,9 +42,6 @@ internal class ViewModelTestScenarioInputSequenceScopeImpl<Inputs : Any, Events 
         )
         logger.debug("        after send TestCompleted")
 
-        // close the channel to prevent new items from coming in and cancelling the TestCompleted event
-        vm.close()
-
         deferred.await()
         logger.debug("        after await TestCompleted")
     }

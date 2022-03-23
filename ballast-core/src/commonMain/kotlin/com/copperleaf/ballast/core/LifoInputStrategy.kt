@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 public class LifoInputStrategy : InputStrategy {
 
     override fun <T> createQueue(): Channel<T> {
-        return Channel(Channel.BUFFERED, BufferOverflow.DROP_LATEST)
+        return Channel(64, BufferOverflow.DROP_LATEST)
     }
 
     override val rollbackOnCancellation: Boolean = true

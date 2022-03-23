@@ -13,8 +13,8 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override val logger: BallastLogger,
     private val guardian: InputStrategy.Guardian,
     private val _state: MutableStateFlow<State>,
-    private val sendEventToQueue: suspend (Events) -> Unit,
-    private val sendSideJobToQueue: (SideJobRequest<Inputs, Events, State>) -> Unit,
+    private val sendEventToViewModel: suspend (Events) -> Unit,
+    private val sendSideJobToViewModel: (SideJobRequest<Inputs, Events, State>) -> Unit,
 ) : InputHandlerScope<Inputs, Events, State> {
 
     override suspend fun getCurrentState(): State {
@@ -39,7 +39,7 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override suspend fun postEvent(event: Events) {
         guardian.checkPostEvent()
-        sendEventToQueue(event)
+        sendEventToViewModel(event)
     }
 
     override fun sideJob(
@@ -47,7 +47,7 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         block: suspend SideJobScope<Inputs, Events, State>.() -> Unit
     ) {
         guardian.checkSideJob()
-        sendSideJobToQueue(SideJobRequest(key, block))
+        sendSideJobToViewModel(SideJobRequest(key, block))
     }
 
     override fun noOp() {

@@ -217,6 +217,15 @@ public sealed class BallastDebuggerEvent {
 // ---------------------------------------------------------------------------------------------------------------------
 
     @Serializable
+    public class SideJobQueued(
+        override val connectionId: String,
+        override val viewModelName: String,
+        override val uuid: String,
+
+        public val key: String,
+    ) : BallastDebuggerEvent()
+
+    @Serializable
     public class SideJobStarted(
         override val connectionId: String,
         override val viewModelName: String,

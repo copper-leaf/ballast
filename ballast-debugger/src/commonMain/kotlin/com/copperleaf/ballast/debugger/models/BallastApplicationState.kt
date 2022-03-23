@@ -495,6 +495,14 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
             }
         }
 
+        is BallastDebuggerEvent.SideJobQueued -> {
+            updateSideJob(event.uuid) {
+                copy(
+                    key = event.key,
+                    status = BallastSideJobState.Status.Queued,
+                )
+            }
+        }
         is BallastDebuggerEvent.SideJobStarted -> {
             updateSideJob(event.uuid) {
                 copy(

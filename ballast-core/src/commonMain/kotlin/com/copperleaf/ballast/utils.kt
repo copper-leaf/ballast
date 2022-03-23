@@ -1,5 +1,8 @@
 package com.copperleaf.ballast
 
+import com.copperleaf.ballast.BallastNotification.InputAccepted
+import com.copperleaf.ballast.BallastNotification.InputHandledSuccessfully
+import com.copperleaf.ballast.BallastNotification.InputQueued
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -217,3 +220,113 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
             this.name = name
         }
         .build()
+
+
+/**
+ * Used for keeping track of the state of discrete "subjects" within an Interceptor. For example, a single Input will
+ * send Notifications for [InputQueued], [InputAccepted], and [InputHandledSuccessfully] during it's full processing
+ * journey, but the `input` property of all 3 events will be the same instance, and should be associated to the same
+ * value.
+ *
+ * This method will associate values for each Notification's subject (the Input, Event, or SideJob key) and store them
+ * in the corresponding [cache] map. When [removeValue], values will be removed from the cache when they are completed.
+ * Otherwise, you can add a default value to remain in the cache so that it can be read later to give a discrete signal
+ * that it has finished processing.
+ */
+public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotification<Inputs, Events, State>.associate(
+    cache: MutableMap<Any, T>,
+    computeValueForSubject: (Any) -> T,
+    onValueRemoved: (Any, T) -> Unit = { _, _ -> },
+
+    removeValue: Boolean = true,
+): T {
+    val addValueToCache: (Any) -> T = {
+        cache.getOrPut(it) { computeValueForSubject(it) }
+    }
+    val removeValueFromCache: (Any) -> T = { subject ->
+        if (removeValue) {
+            cache.remove(subject)
+                ?.also { deferred -> onValueRemoved(subject, deferred) }
+                ?: computeValueForSubject(subject).also { deferred -> onValueRemoved(subject, deferred) }
+        } else {
+            cache.getOrPut(subject) {
+                computeValueForSubject(subject)
+                    .also { deferred -> onValueRemoved(subject, deferred) }
+            }
+        }
+    }
+
+    return when (this) {
+        is InputQueued -> {
+            addValueToCache(this.input)
+        }
+        is InputAccepted -> {
+            addValueToCache(this.input)
+        }
+        is BallastNotification.InputRejected -> {
+            removeValueFromCache(this.input)
+        }
+        is BallastNotification.InputDropped -> {
+            removeValueFromCache(this.input)
+        }
+        is InputHandledSuccessfully -> {
+            removeValueFromCache(this.input)
+        }
+        is BallastNotification.InputCancelled -> {
+            removeValueFromCache(this.input)
+        }
+        is BallastNotification.InputHandlerError -> {
+            removeValueFromCache(this.input)
+        }
+
+        is BallastNotification.EventQueued -> {
+            addValueToCache(this.event)
+        }
+        is BallastNotification.EventEmitted -> {
+            addValueToCache(this.event)
+        }
+        is BallastNotification.EventHandledSuccessfully -> {
+            removeValueFromCache(this.event)
+        }
+        is BallastNotification.EventHandlerError -> {
+            removeValueFromCache(this.event)
+        }
+
+        is BallastNotification.SideJobQueued -> {
+            addValueToCache(this.key)
+        }
+        is BallastNotification.SideJobStarted -> {
+            addValueToCache(this.key)
+        }
+        is BallastNotification.SideJobCompleted -> {
+            removeValueFromCache(this.key)
+        }
+        is BallastNotification.SideJobCancelled -> {
+            removeValueFromCache(this.key)
+        }
+        is BallastNotification.SideJobError -> {
+            removeValueFromCache(this.key)
+        }
+
+        is BallastNotification.StateChanged -> {
+            addValueToCache("State")
+        }
+
+        is BallastNotification.EventProcessingStarted -> {
+            addValueToCache(this.vm)
+        }
+        is BallastNotification.EventProcessingStopped -> {
+            addValueToCache(this.vm)
+        }
+        is BallastNotification.UnhandledError -> {
+            addValueToCache(this.vm)
+        }
+
+        is BallastNotification.ViewModelStarted -> {
+            addValueToCache(this.vm)
+        }
+        is BallastNotification.ViewModelCleared -> {
+            removeValueFromCache(this.vm)
+        }
+    }
+}

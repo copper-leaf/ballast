@@ -222,6 +222,18 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
 // ---------------------------------------------------------------------------------------------------------------------
 
     /**
+     * A sideJob was queued, but has not started yet
+     */
+    public class SideJobQueued<Inputs : Any, Events : Any, State : Any>(
+        vm: BallastViewModel<Inputs, Events, State>,
+        public val key: String,
+    ) : BallastNotification<Inputs, Events, State>(vm) {
+        override fun toString(): String {
+            return "sideJob queued: $key"
+        }
+    }
+
+    /**
      * A sideJob was started or restarted
      */
     public class SideJobStarted<Inputs : Any, Events : Any, State : Any>(

@@ -4,6 +4,7 @@ import com.benasher44.uuid.uuid4
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
+import com.copperleaf.ballast.associate
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
@@ -191,57 +192,10 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     }
 
     private fun getUuid(notification: BallastNotification<*, *, *>): String {
-        return when (notification) {
-            is BallastNotification.InputQueued -> {
-                uuids.getOrPut(notification.input) { generateUuid() }
-            }
-            is BallastNotification.InputAccepted -> {
-                uuids.getOrPut(notification.input) { generateUuid() }
-            }
-            is BallastNotification.InputRejected -> {
-                uuids.getOrPut(notification.input) { generateUuid() }
-            }
-            is BallastNotification.InputDropped -> {
-                uuids.getOrPut(notification.input) { generateUuid() }
-            }
-            is BallastNotification.InputHandledSuccessfully -> {
-                uuids.remove(notification.input) ?: generateUuid()
-            }
-            is BallastNotification.InputCancelled -> {
-                uuids.remove(notification.input) ?: generateUuid()
-            }
-            is BallastNotification.InputHandlerError -> {
-                uuids.remove(notification.input) ?: generateUuid()
-            }
-
-            is BallastNotification.EventQueued -> {
-                uuids.getOrPut(notification.event) { generateUuid() }
-            }
-            is BallastNotification.EventEmitted -> {
-                uuids.getOrPut(notification.event) { generateUuid() }
-            }
-            is BallastNotification.EventHandledSuccessfully -> {
-                uuids.remove(notification.event) ?: generateUuid()
-            }
-            is BallastNotification.EventHandlerError -> {
-                uuids.remove(notification.event) ?: generateUuid()
-            }
-
-            is BallastNotification.SideJobStarted -> {
-                uuids.getOrPut(notification.key) { generateUuid() }
-            }
-            is BallastNotification.SideJobCompleted -> {
-                uuids.remove(notification.key) ?: generateUuid()
-            }
-            is BallastNotification.SideJobCancelled -> {
-                uuids.remove(notification.key) ?: generateUuid()
-            }
-            is BallastNotification.SideJobError -> {
-                uuids.remove(notification.key) ?: generateUuid()
-            }
-
-            else -> generateUuid()
-        }
+        return notification.associate(
+            cache = uuids,
+            computeValueForSubject = { generateUuid() },
+        )
     }
 
     /**
@@ -380,7 +334,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     ?.actualInput as? Inputs
 
                 if (inputToResend != null) {
-                    sendToQueue(Queued.HandleInput(inputToResend))
+                    sendToQueue(Queued.HandleInput(null, inputToResend))
                 } else {
                 }
             }

@@ -4,6 +4,7 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.test.internal.ViewModelTestSuiteScopeImpl
+import com.copperleaf.ballast.test.internal.runTestSuite
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.time.ExperimentalTime
 
@@ -15,9 +16,11 @@ public suspend fun <Inputs : Any, Events : Any, State : Any> viewModelTest(
     filter: InputFilter<Inputs, Events, State>? = null,
     block: ViewModelTestSuiteScope<Inputs, Events, State>.() -> Unit
 ) {
-    ViewModelTestSuiteScopeImpl(
+    val testSuite = ViewModelTestSuiteScopeImpl(
         inputHandler = inputHandler,
         eventHandler = eventHandler,
         filter = filter,
-    ).apply(block).runTest()
+    ).apply(block)
+
+    runTestSuite(testSuite)
 }

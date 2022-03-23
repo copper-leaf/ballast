@@ -1,5 +1,6 @@
 package com.copperleaf.ballast
 
+import kotlinx.coroutines.channels.ChannelResult
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.flow.StateFlow
 
@@ -71,7 +72,7 @@ import kotlinx.coroutines.flow.StateFlow
  * new data and applying it to the State when it is their turn for processing. Side-jobs are commonly used for
  * observing Flows.
  */
-public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : SendChannel<Inputs> {
+public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> {
 
     /**
      * The name of the viewmodel, for debugging and interception purposes. Can be set manually through
@@ -89,4 +90,22 @@ public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : Sen
      * Observe the flow of states from this ViewModel
      */
     public fun observeStates(): StateFlow<State>
+
+    /**
+     * Posts an Input to this ViewModel's Input Queue immediately without suspending using [SendChannel.trySend]. If
+     * the input channel's buffer is full, the input will be dropped, as reported by the returned [ChannelResult].
+     */
+    public fun trySend(element: Inputs): ChannelResult<Unit>
+
+    /**
+     * Posts an Input to this ViewModel's Input Queue using [SendChannel.send], suspending the caller while the buffer
+     * of this channel is full.
+     */
+    public suspend fun send(element: Inputs)
+
+    /**
+     * Posts an Input to this ViewModel's Input Queue using [SendChannel.send]. This method will suspend until the Input
+     * has finished processing completely.
+     */
+    public suspend fun sendAndAwaitCompletion(element: Inputs)
 }

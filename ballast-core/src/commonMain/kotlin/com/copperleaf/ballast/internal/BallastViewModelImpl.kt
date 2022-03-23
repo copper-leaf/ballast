@@ -9,6 +9,7 @@ import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.SideJobScope
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,7 +19,6 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
 import kotlinx.coroutines.channels.ChannelResult
-import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,8 +29,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.transformWhile
@@ -44,10 +42,8 @@ import kotlin.coroutines.coroutineContext
 
 public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     private val config: BallastViewModelConfiguration<Inputs, Events, State>,
-    private val _inputs: Channel<Inputs> = config.inputStrategy.createQueue(),
 ) : BallastViewModel<Inputs, Events, State>,
-    BallastViewModelConfiguration<Inputs, Events, State> by config,
-    SendChannel<Inputs> by _inputs {
+    BallastViewModelConfiguration<Inputs, Events, State> by config {
 
     override val type: String = "BallastViewModelImpl"
 
@@ -59,7 +55,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     private var cleared = false
     private lateinit var host: () -> BallastViewModel<Inputs, Events, State>
 
-    private val _restoreState: Channel<Queued.RestoreState<Inputs, Events, State>> =
+    private val _inputQueue: Channel<Queued<Inputs, Events, State>> =
         config.inputStrategy.createQueue()
 
     private val _state: MutableStateFlow<State> =
@@ -91,13 +87,21 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     override suspend fun send(element: Inputs) {
         checkValidState()
         _notifications.emit(BallastNotification.InputQueued(host(), element))
-        _inputs.send(element)
+        _inputQueue.send(Queued.HandleInput(null, element))
+    }
+
+    override suspend fun sendAndAwaitCompletion(element: Inputs) {
+        checkValidState()
+        val completionDeferred = CompletableDeferred<Unit>()
+        _notifications.emit(BallastNotification.InputQueued(host(), element))
+        _inputQueue.send(Queued.HandleInput(completionDeferred, element))
+        completionDeferred.await()
     }
 
     override fun trySend(element: Inputs): ChannelResult<Unit> {
         checkValidState()
         _notifications.tryEmit(BallastNotification.InputQueued(host(), element))
-        val result = _inputs.trySend(element)
+        val result = _inputQueue.trySend(Queued.HandleInput(null, element))
         if (result.isFailure) {
             _notifications.tryEmit(BallastNotification.InputDropped(host(), element))
             result.exceptionOrNull()?.printStackTrace()
@@ -140,8 +144,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
         // run a busy loop until all input channels are drained
         while (true) {
-            if (_inputs.isEmpty) break
-            if (_restoreState.isEmpty) break
+            if (_inputQueue.isEmpty) break
             yield()
         }
     }
@@ -183,8 +186,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
         _notifications.tryEmit(BallastNotification.ViewModelCleared(host()))
 
-        _inputs.close()
-        _restoreState.close()
+        _inputQueue.close()
         _events.close()
         _sideJobs.close()
     }
@@ -210,21 +212,16 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
         // observe and process Inputs
         viewModelScope.launch {
-            val filteredInputsFlow = _inputs
+            val filteredInputsFlow = _inputQueue
                 .receiveAsFlow()
-                .map { input -> Queued.HandleInput<Inputs, Events, State>(input) }
                 .filter { queued -> filterQueued(queued) }
-
-            val combinedInputsAndStates: Flow<Queued<Inputs, Events, State>> = merge(
-                filteredInputsFlow,
-                _restoreState.receiveAsFlow()
-            ).flowOn(inputsDispatcher)
+                .flowOn(inputsDispatcher)
 
             val inputStrategyScope = InputStrategyScopeImpl<Inputs, Events, State>(
-                acceptQueuedInViewModel = { queued, guardian ->
+                sendQueuedToViewModel = { queued, guardian ->
                     when (queued) {
                         is Queued.HandleInput -> {
-                            safelyHandleInput(queued.input, guardian)
+                            safelyHandleInput(queued.input, queued.deferred, guardian)
                         }
                         is Queued.RestoreState -> {
                             _state.value = queued.state
@@ -235,7 +232,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
             with(config.inputStrategy) {
                 inputStrategyScope.processInputs(
-                    filteredQueue = combinedInputsAndStates,
+                    filteredQueue = filteredInputsFlow,
                 )
             }
         }
@@ -266,14 +263,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         uncaughtExceptionHandler +
                         interceptorDispatcher,
                     sendQueuedToViewModel = {
-                        when (it) {
-                            is Queued.HandleInput -> {
-                                _inputs.send(it.input)
-                            }
-                            is Queued.RestoreState -> {
-                                _restoreState.send(it)
-                            }
-                        }
+                        _inputQueue.send(it)
                     }
                 )
 
@@ -297,13 +287,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 val shouldAcceptInput = filter?.filterInput(currentState, queued.input) ?: InputFilter.Result.Accept
 
                 if (shouldAcceptInput == InputFilter.Result.Reject) {
-                    _notifications.emit(
-                        BallastNotification.InputRejected(
-                            host(),
-                            currentState,
-                            queued.input,
-                        )
-                    )
+                    _notifications.emit(BallastNotification.InputRejected(host(), currentState, queued.input))
+                    queued.deferred?.complete(Unit)
                 }
 
                 return shouldAcceptInput == InputFilter.Result.Accept
@@ -313,6 +298,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     private suspend fun safelyHandleInput(
         input: Inputs,
+        deferred: CompletableDeferred<Unit>?,
         guardian: InputStrategy.Guardian,
     ) {
         _notifications.emit(BallastNotification.InputAccepted(host(), input))
@@ -325,11 +311,12 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     logger = logger,
                     _state = _state,
                     guardian = guardian,
-                    sendEventToQueue = {
+                    sendEventToViewModel = {
                         _notifications.emit(BallastNotification.EventQueued(host(), it))
                         _events.send(it)
                     },
-                    sendSideJobToQueue = {
+                    sendSideJobToViewModel = {
+                        _notifications.tryEmit(BallastNotification.SideJobQueued(host(), it.key))
                         _sideJobs.trySend(it)
                     },
                 )
@@ -343,6 +330,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 } catch (t: Throwable) {
                     _notifications.emit(BallastNotification.InputHandlerError(host(), input, t))
                 }
+                deferred?.complete(Unit)
             }
         } catch (e: CancellationException) {
             // when the coroutine is cancelled for any reason, we must assume the input did not
@@ -352,8 +340,10 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             if (config.inputStrategy.rollbackOnCancellation) {
                 _state.value = stateBeforeCancellation
             }
+            deferred?.complete(Unit)
         } catch (e: Throwable) {
             _notifications.emit(BallastNotification.InputHandlerError(host(), input, e))
+            deferred?.complete(Unit)
         }
     }
 
@@ -366,7 +356,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             coroutineScope {
                 val handlerScope = EventHandlerScopeImpl<Inputs, Events, State>(
                     logger = logger,
-                    _inputs = host()
+                    sendInputToViewModel = { _inputQueue.send(Queued.HandleInput(null, it)) }
                 )
                 with(handler) {
                     handlerScope.handleEvent(event)
@@ -422,30 +412,26 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             sideJobsDispatcher
 
         sideJobContainer.job = sideJobCoroutineScope.launch {
-            _notifications
-                .emit(BallastNotification.SideJobStarted(host(), key, restartState))
+            _notifications.emit(BallastNotification.SideJobStarted(host(), key, restartState))
 
             try {
                 coroutineScope {
-                    val sideJobScope = SideJobScopeImpl(
+                    val sideJobScope = SideJobScopeImpl<Inputs, Events, State>(
                         logger = logger,
-                        _inputs = host(),
-                        _events = _events,
+                        sendInputToViewModel = { _inputQueue.send(Queued.HandleInput(null, it)) },
+                        sendEventToViewModel = { _events.send(it) },
                         currentStateWhenStarted = _state.value,
                         restartState = restartState,
                         coroutineScope = this,
                     )
                     sideJobContainer.block.invoke(sideJobScope)
                 }
-                _notifications
-                    .emit(BallastNotification.SideJobCompleted(host(), key, restartState))
+                _notifications.emit(BallastNotification.SideJobCompleted(host(), key, restartState))
             } catch (e: CancellationException) {
                 // ignore
-                _notifications
-                    .emit(BallastNotification.SideJobCancelled(host(), key, restartState))
+                _notifications.emit(BallastNotification.SideJobCancelled(host(), key, restartState))
             } catch (e: Throwable) {
-                _notifications
-                    .emit(BallastNotification.SideJobError(host(), key, restartState, e))
+                _notifications.emit(BallastNotification.SideJobError(host(), key, restartState, e))
             }
         }
     }

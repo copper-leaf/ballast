@@ -1,14 +1,10 @@
 public class com/copperleaf/ballast/repository/AndroidBallastRepository : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
 	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)V
-	public fun close (Ljava/lang/Throwable;)Z
 	public fun getName ()Ljava/lang/String;
-	public fun getOnSend ()Lkotlinx/coroutines/selects/SelectClause2;
 	public final fun getType ()Ljava/lang/String;
-	public fun invokeOnClose (Lkotlin/jvm/functions/Function1;)V
-	public fun isClosedForSend ()Z
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
-	public fun offer (Ljava/lang/Object;)Z
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
