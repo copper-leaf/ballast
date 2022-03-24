@@ -154,9 +154,11 @@ class BallastCoreTests {
         eventHandler = TestEventHandler(),
         filter = TestInputFilter(),
     ) {
+        skip()
         defaultInitialState { State() }
 
         scenario("update string value only") {
+
             running {
                 +Inputs.UpdateStringValue("one")
             }

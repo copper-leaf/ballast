@@ -1,8 +1,8 @@
-package com.copperleaf.ballast.examples.web.internal
+package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.BallastLogger
 
-class JsConsoleLogger : BallastLogger {
+public class JsConsoleBallastLogger : BallastLogger {
     override fun debug(message: String) {
         console.log(message)
     }

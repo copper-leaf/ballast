@@ -9,10 +9,15 @@ import kotlin.time.Duration
 public interface ViewModelTestSuiteScope<Inputs : Any, Events : Any, State : Any> {
 
     /**
+     * Do not run this test suite.
+     */
+    public fun skip()
+
+    /**
      * A callback function for viewing logs emitted during this test suite. This includes logs from a
      * [LoggingInterceptor], and additional logs from this test runner.
      */
-    public fun logger(logger: BallastLogger)
+    public fun logger(logger: (String)->BallastLogger)
 
     /**
      * Set the default timeout for waiting for test side-jobs to complete.

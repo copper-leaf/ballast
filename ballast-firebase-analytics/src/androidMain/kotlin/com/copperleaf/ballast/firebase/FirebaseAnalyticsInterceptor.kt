@@ -17,17 +17,9 @@ class FirebaseAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         const val InputValue = "InputValue"
     }
 
-    /**
-     * Mark an Input as one that should be tracked automatically in Firebase Analytics. Inputs
-     * without this annotation are ignored.
-     */
-    @Retention(AnnotationRetention.RUNTIME)
-    @Target(AnnotationTarget.CLASS)
-    annotation class TrackInput
-
     override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {
         if (notification is BallastNotification.InputAccepted) {
-            if (notification.input.isAnnotatedWith(TrackInput::class)) {
+            if (notification.input.isAnnotatedWith(FirebaseAnalyticsTrackInput::class)) {
                 analytics.logEvent("action") {
                     param(Keys.ViewModelName, notification.vm.name)
                     param(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")

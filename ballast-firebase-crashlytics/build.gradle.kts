@@ -44,9 +44,18 @@ kotlin {
     explicitApi()
 
     // targets
+    jvm { }
     android {
         publishAllLibraryVariants()
     }
+    js(BOTH) {
+        browser {
+            testTask {
+                enabled = false
+            }
+        }
+    }
+    ios { }
 
     // sourcesets
     sourceSets {

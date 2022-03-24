@@ -21,20 +21,10 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         const val ExceptionType = "ExceptionType"
     }
 
-    /**
-     * By default, all Inputs are sent to Crashlytics for the "debug log" to help in diagnosing
-     * crashes. Some Inputs may occur very frequently but contain little useful information for
-     * diagnostics (such as updating TextFields), and can be excluded from the debug log by
-     * annotating the class with @Ignore.
-     */
-    @Retention(AnnotationRetention.RUNTIME)
-    @Target(AnnotationTarget.CLASS)
-    annotation class Ignore
-
     override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {
         when (notification) {
             is BallastNotification.InputAccepted -> {
-                if (!notification.input.isAnnotatedWith(Ignore::class)) {
+                if (!notification.input.isAnnotatedWith(FirebaseCrashlyticsIgnore::class)) {
                     crashlytics.setCustomKeys {
                         key(Keys.ViewModelName, notification.vm.name)
                         key(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")

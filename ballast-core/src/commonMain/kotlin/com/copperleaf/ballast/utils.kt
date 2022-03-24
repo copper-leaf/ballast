@@ -153,6 +153,7 @@ private fun <Inputs : Any, Events : Any, State : Any> List<BallastInterceptor<*,
 
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.build(
 ): BallastViewModelConfiguration<Inputs, Events, State> {
+    val vmName = name ?: "$inputHandler-vm"
     return DefaultViewModelConfiguration<Inputs, Events, State>(
         initialState = initialState.requireTyped("initialState"),
         inputHandler = inputHandler.requireTyped("inputHandler"),
@@ -163,8 +164,8 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         eventsDispatcher = eventsDispatcher,
         sideJobsDispatcher = sideJobsDispatcher,
         interceptorDispatcher = interceptorDispatcher,
-        name = name ?: "$inputHandler-vm",
-        logger = logger,
+        name = vmName,
+        logger = logger(vmName),
     )
 }
 

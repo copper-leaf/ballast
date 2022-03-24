@@ -7,6 +7,7 @@ import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
+import com.copperleaf.ballast.debugger.idea.IntellijPluginBallastLogger
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerEventHandler
@@ -64,19 +65,7 @@ class BallastDebuggerInjectorImpl(
     private fun commonBuilder(): BallastViewModelConfiguration.Builder {
         return BallastViewModelConfiguration.Builder()
             .apply {
-                logger = object : BallastLogger {
-                    override fun debug(message: String) {
-                        ideaPluginLogger.debug(message)
-                    }
-
-                    override fun info(message: String) {
-                        ideaPluginLogger.info(message)
-                    }
-
-                    override fun error(throwable: Throwable) {
-                        ideaPluginLogger.error(throwable)
-                    }
-                }
+                logger = { IntellijPluginBallastLogger(ideaPluginLogger) }
             }
     }
 

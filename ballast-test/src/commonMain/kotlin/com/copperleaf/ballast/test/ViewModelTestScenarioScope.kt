@@ -24,7 +24,7 @@ public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : 
      * A callback function for viewing logs emitted during this test scenario. This includes logs from a
      * [LoggingInterceptor], and additional logs from this test runner.
      */
-    public fun logger(logger: BallastLogger)
+    public fun logger(logger: (String)->BallastLogger)
 
     /**
      * Set the timeout for waiting for test side-jobs to complete for this test scenario.

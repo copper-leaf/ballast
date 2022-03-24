@@ -1,15 +1,24 @@
-## 0.13.0
+## 0.13.0 - 2022-03-24
 
-- Renames `ballast-crashlytics` module to `ballast-firebase-crashlytics`
-- Fixes issue where JS Debugger cannot connect because browser websocket clients can't send headers
-- **BREAKING CHANGE:** Renames `sideEffect()` to `sideJob()` to be more accurate and less confusing in comparison to 
-  other Kotlin MVI libraries
-- SideJobs are now posted to the VM immediately, rather than collected and dispatched explicitly after handling.
+- [BREAKING CHANGE] Renames `ballast-crashlytics` module to `ballast-firebase-crashlytics`
+- [BREAKING CHANGE] Renames `sideEffect()` to `sideJob()` to be more accurate and less confusing in comparison to 
+  other Kotlin MVI libraries.
+- [BREAKING CHANGE] `BallastViewModel` no longer implements the `SendChannel` interface, it exposes the `send` and 
+  `trySend` methods directly. It also adds `sendAndAwaitCompletion()` to send an Input and wait for it to completely 
+  finish processing.
+- [BREAKING CHANGE] The `logger` property of `BallastViewModelConfiguration.Builder` is now a function, which receives
+  the viewModel name when built, to pass as the tag of a logger.
+- [BREAKING CHANGE] Moves annotations for Firebase into commonMain and renames them:
+  - `@FirebaseCrashlyticsInterceptor.Ignore` --> `@FirebaseCrashlyticsIgnore`
+  - `@FirebaseAnalyticsInterceptor.TrackInput` --> `@FirebaseAnalyticsTrackInput`
+- [FUNCTIONAL CHANGE] SideJobs are now posted to the VM immediately, rather than collected and dispatched explicitly 
+  after handling. The default implementation still requires that SideJobs are sent as the last statements of the 
+  `InputHandler`, though.
   - By writing a custom `InputStrategy.Guardian`, you could remove the restriction that sideJobs must be started at the
-    end of the Input, and potentially actually call `sideJob()` and wait for the sideJob to start before continuing. 
-    This is dangerous and should not be taken lightly, but it is now possible, whereas it was not before.
-- `BallastViewModel` no longer implements the `SendChannel` interface, it exposes the `send` and `trySend` methods 
-  directly. It also adds `sendAndAwaitCompletion()` to send an Input and wait for it to completely finish processing.
+    end of the Input. This is dangerous and you shouldn't do it unless you really know what you're doing.
+- [BUG FIX] Fixes issue where JS Debugger cannot connect because JS browser websocket clients can't send headers
+- [NEW] Adds platform-specific `BallastLogger` implementations (`AndroidBallastLogger`, `JsConsoleBallastLogger`). The 
+  default logger of `BallastViewModelConfiguration` is still `NoOpLogger()`.  
 
 ## 0.12.0 - 2022-03-17
 

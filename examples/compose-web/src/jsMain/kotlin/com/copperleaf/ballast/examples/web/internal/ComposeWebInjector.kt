@@ -3,6 +3,7 @@ package com.copperleaf.ballast.examples.web.internal
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
+import com.copperleaf.ballast.core.JsConsoleBallastLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.examples.bgg.repository.BggRepositoryImpl
@@ -140,7 +141,7 @@ class ComposeWebInjectorImpl(
             .apply {
                 this += LoggingInterceptor()
                 this += BallastDebuggerInterceptor(debuggerConnection)
-                logger = JsConsoleLogger()
+                logger = { JsConsoleBallastLogger() }
             }
     }
 }

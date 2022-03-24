@@ -26,6 +26,14 @@ public final class com/copperleaf/ballast/debugger/idea/BallastIdeaPlugin {
 	public fun <init> ()V
 }
 
+public final class com/copperleaf/ballast/debugger/idea/IntellijPluginBallastLogger : com/copperleaf/ballast/BallastLogger {
+	public static final field $stable I
+	public fun <init> (Lcom/intellij/openapi/diagnostic/Logger;)V
+	public fun debug (Ljava/lang/String;)V
+	public fun error (Ljava/lang/Throwable;)V
+	public fun info (Ljava/lang/String;)V
+}
+
 public abstract class com/copperleaf/ballast/debugger/idea/base/ComposeSettings : com/intellij/openapi/options/Configurable {
 	public static final field $stable I
 	public fun <init> ()V

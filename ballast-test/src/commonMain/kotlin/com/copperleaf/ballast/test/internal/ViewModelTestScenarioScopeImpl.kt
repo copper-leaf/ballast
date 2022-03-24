@@ -21,7 +21,7 @@ internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State 
     internal var solo: Boolean = false
     internal var skip: Boolean = false
 
-    internal var logger: BallastLogger? = null
+    internal var logger: ((String)->BallastLogger)? = null
     internal var timeout: Duration? = null
     internal var inputStrategy: InputStrategy? = null
 
@@ -36,7 +36,7 @@ internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State 
         this.skip = true
     }
 
-    override fun logger(logger: BallastLogger) {
+    override fun logger(logger: (String)->BallastLogger) {
         this.logger = logger
     }
 

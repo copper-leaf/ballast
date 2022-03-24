@@ -1,0 +1,3 @@
+public abstract interface annotation class com/copperleaf/ballast/firebase/FirebaseCrashlyticsIgnore : java/lang/annotation/Annotation {
+}
+

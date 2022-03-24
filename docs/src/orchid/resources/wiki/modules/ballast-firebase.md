@@ -41,9 +41,9 @@ Once installed, the Firebase Crashlytics integration will automatically start lo
 However, it's likely that you don't actually want all Inputs sent to Firebase, especially for things like updating text, 
 because they will spam the logs and hide the actual important steps the user had taken which led up to the error. 
 Alternatively, you will probably have some inputs that contain sensitive information (passwords, API keys, PII, etc.) 
-that also should not be set to Firebase. By annotating any Input with `FirebaseCrashlyticsInterceptor.Ignore`, it will
-not be sent in the crash logs. Each Input will be logged using its `.toString()` value, so be sure to override 
-`.toString()` for any inputs you do want tracked to remove any sensitive info from them.
+that also should not be set to Firebase. By annotating any Input with `FirebaseCrashlyticsIgnore`, it will not be sent 
+in the crash logs. Each Input will be logged using its `.toString()` value, so be sure to override `.toString()` for any
+inputs you do want tracked to remove any sensitive info from them.
 
 In addition to logs, the `FirebaseCrashlyticsInterceptor` will also record any exceptions that are thrown but do not 
 crash the app as a [non-fatal exception][3]
@@ -78,9 +78,9 @@ constructor() : AndroidViewModel<
 
 While Crashlytics takes an opt-out approach to logging Inputs, Analytics is entirely opt-in. Most Inputs in your app 
 probably aren't necessary to track, what you're mostly interested in is conversions. The `FirebaseAnalyticsInterceptor` 
-will only track Inputs that are annotated with `FirebaseAnalyticsInterceptor.TrackInput`, and ignore the rest. Each 
-Input will be logged using its `.toString()` value, so be sure to override `.toString()` for any inputs you want tracked
-to remove any sensitive info from them.
+will only track Inputs that are annotated with `FirebaseAnalyticsTrackInput`, and ignore the rest. Each Input will be
+logged using its `.toString()` value, so be sure to override `.toString()` for any inputs you want tracked to remove any
+sensitive info from them.
 
 ## Installation
 

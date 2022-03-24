@@ -22,7 +22,9 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
     internal val filter: InputFilter<Inputs, Events, State>?,
 ) : ViewModelTestSuiteScope<Inputs, Events, State> {
 
-    internal var suiteLogger: BallastLogger = SimpleTestLogger()
+    internal var skip: Boolean = false
+
+    internal var suiteLogger: (String)->BallastLogger = { SimpleTestLogger() }
     internal var defaultTimeout: Duration = 30.seconds
     internal var inputStrategy: InputStrategy = LifoInputStrategy()
 
@@ -32,7 +34,11 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
     internal var defaultInitialStateBlock: (() -> State)? = null
     internal val scenarioBlocks = mutableListOf<ViewModelTestScenarioScopeImpl<Inputs, Events, State>>()
 
-    override fun logger(logger: BallastLogger) {
+    override fun skip() {
+        this.skip = true
+    }
+
+    override fun logger(logger: (String)->BallastLogger) {
         this.suiteLogger = logger
     }
 

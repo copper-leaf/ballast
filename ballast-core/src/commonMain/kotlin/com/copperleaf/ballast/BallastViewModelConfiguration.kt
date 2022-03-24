@@ -29,6 +29,6 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
         public var eventsDispatcher: CoroutineDispatcher = Dispatchers.Default,
         public var sideJobsDispatcher: CoroutineDispatcher = Dispatchers.Default,
         public var interceptorDispatcher: CoroutineDispatcher = Dispatchers.Default,
-        public var logger: BallastLogger = NoOpLogger(),
+        public var logger: (String) -> BallastLogger = { NoOpLogger() },
     )
 }
