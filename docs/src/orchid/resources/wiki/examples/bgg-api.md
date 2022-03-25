@@ -19,7 +19,7 @@ How to use:
   if you fetched data from one hotlist type (say Board Games), then change to another type (like Video Games), then the
   list will also be refreshed, even if "Force Refresh" is not checked.
 
-<div id="bgg"></div>
+<div id="example_bgg"></div>
 <br><br>
 
 _Pro Tip: Open your {{ 'Ballast Debugger' | anchor }} with this page open to see all Ballast activity in real-time, or

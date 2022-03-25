@@ -18,10 +18,10 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 fun main() {
     val components: Map<String, (ComposeWebInjector) -> Component> = mapOf(
-        "counter" to { CounterComponent(it) },
-        "bgg" to { BggComponent(it) },
-        "kitchen_sink" to { KitchenSinkComponent(it) },
-        "scorekeeper" to { ScorekeeperComponent(it) },
+        "example_counter" to { CounterComponent(it) },
+        "example_bgg" to { BggComponent(it) },
+        "example_kitchen_sink" to { KitchenSinkComponent(it) },
+        "example_scorekeeper" to { ScorekeeperComponent(it) },
     )
 
     val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)

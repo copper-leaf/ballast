@@ -20,7 +20,7 @@ How to use:
 - Player scores will be saved to your browser's LocalStorage with every change, and restored when reloading this page
   (TODO: implement a [SavedState module][#3] to have this done automatically)
 
-<div id="scorekeeper"></div>
+<div id="example_scorekeeper"></div>
 <br><br>
 
 _Pro Tip: Open your {{ 'Ballast Debugger' | anchor }} with this page open to see all Ballast activity in real-time, or
