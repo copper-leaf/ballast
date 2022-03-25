@@ -1,3 +1,7 @@
+## 0.13.1 - 2022-03-25
+
+- [BUG FIX] Fix regression in debugger, where you could not view or rollback to previous States.
+
 ## 0.13.0 - 2022-03-24
 
 - [BREAKING CHANGE] Renames `ballast-crashlytics` module to `ballast-firebase-crashlytics`

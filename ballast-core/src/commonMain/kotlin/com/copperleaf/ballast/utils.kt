@@ -310,7 +310,9 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
         }
 
         is BallastNotification.StateChanged -> {
-            addValueToCache("State")
+            // since states are always emitted only once and do not have status changed over time, we compute the
+            // value directly and never cache it
+            computeValueForSubject(this.state)
         }
 
         is BallastNotification.EventProcessingStarted -> {
