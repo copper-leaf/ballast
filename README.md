@@ -75,10 +75,10 @@ Because Ballast was initially designed entirely in a non-Android context, it sho
 platform as long as it works with Coroutines and Flows. However, the following targets are officially supported, in
 that they have been tested and are known to work there, or have specific features for that platform
 
-- [Android](https://copper-leaf.github.io/ballast/platforms/android)
-- [iOS](https://copper-leaf.github.io/ballast/platforms/ios) (requires new Kotlin Native Memory Model)
-- [Compose Desktop](https://copper-leaf.github.io/ballast/platforms/compose-desktop)
-- [Compose Web](https://copper-leaf.github.io/ballast/platforms/compose-web)
+- [Android](https://copper-leaf.github.io/ballast/wiki/platforms/android)
+- [iOS](https://copper-leaf.github.io/ballast/wiki/platforms/ios) (requires new Kotlin Native Memory Model)
+- [Compose Desktop](https://copper-leaf.github.io/ballast/wiki/platforms/compose-desktop)
+- [Compose Web](https://copper-leaf.github.io/ballast/wiki/platforms/compose-web)
 
 # Installation
 
