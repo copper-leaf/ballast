@@ -17,16 +17,17 @@ Ballast to run in a variety of scenarios, such as:
 
 Typically, a single ViewModel serves as the store for a single Screen, and is not shared among multiple screens. Data
 that should persist through multiple screens should either be passed directly through the navigation request, or be
-managed by your "repository layer" and re-fetched from the later screen.
+managed by your [repository layer][2] and re-fetched from the later screen.
 
 ## Contract
 
 The Contract is a declarative model what is happening in a screen. The Contract is entirely separate from any Ballast
-APIs, so while this shows the opinionated structure of a ViewModel's Contract, you are free to swap it out for any other
-classes you may already have defined. There is no requirement for any of these components to serializable in any way.
+APIs, so while the snippet below shows the opinionated structure of a ViewModel's Contract, you are free to swap it out 
+for any other classes you may already have defined. There is no requirement for any of these components to serializable 
+in any way.
 
-The contract is canonically a single top-level with a name like `*Contract`, and it has 3 nested classes named `State`,
-`Inputs`, and `Events`.
+The contract is canonically a single top-level `object` with a name like `*Contract`, and it has 3 nested classes named 
+`State`, `Inputs`, and `Events`.
 
 ```kotlin
 object LoginScreenContract {
@@ -52,18 +53,29 @@ object LoginScreenContract {
 ### State
 
 The most important component of the MVI contract, and of the Ballast library, is the State. All the data in your UI that
-changes meaningfully should be modeled in your State. States are persistent in-memory, and you can observe a `StateFlow`
-of your ViewModel state, or access it once as a snapshot at that point in time. How you build your UI and model your
-Inputs should be derived completely from how you model your State.
+changes meaningfully should be modeled in your State. States are persistent, held in-memory, and guaranteed to always 
+exist through the StateFlow. You will typically observe a `StateFlow` of your ViewModel state, but you can also access 
+it once as a snapshot at that point in time. How you build your UI and model your Inputs should be derived completely 
+from how you model your State.
 
 State is modeled as a Kotlin immutable `data class`:
 
 ```kotlin
 data class State(
-    val username: TextFieldValue,
-    val password: TextFieldValue,
+    val loggingIn: Boolean = false,
+    val username: TextFieldValue = TextFieldValue(),
+    val password: TextFieldValue = TextFieldValue(),
 )
 ```
+
+Many articles on MVI suggest for using a `sealed class` to model UI state. However, experience has shown me that UI 
+states are rarely so cleanly delineated between such discrete states; you're more likely to have the UI go through a 
+range of mixed values and states as data is loaded, refreshed, or changed by the user. Additionally, a `sealed class` as 
+your State is only capable of modeling a single feature, but real-world UIs commonly have many features that all must be 
+modeled simultaneously.
+
+For these reasons, Ballast's opinion is that the Contract's State class should be a `data class`. But `sealed classes`
+work great as individual properties within that State!
 
 ### Inputs
 
@@ -169,7 +181,7 @@ The `EventHandlerScope` DSL is able to post Inputs back into the queue.
 Inputs are normally processed in a queue, one-at-a-time, but there are lots of great use-cases for concurrent work in
 the MVI model. Side-jobs allow you to start coroutines that run in the "background" of your ViewModel, on the side of
 the normal Input queue. These side-jobs are bound by the same lifecycle as the ViewModel, and can even collect from
-an infinite flows.
+infinite flows.
 
 Unlike all other components in Ballast, Side-jobs are just part of the `InputHandlerScope` DSL. You call 
 `sideJob()`, provide it with a `key` that is used to determine when to restart it, and run your code in the lambda.
@@ -230,9 +242,9 @@ makes it possible to intercept all the objects moving throughout the ViewModel a
 functionality, without requiring any changes to the Contract or Processor code.
 
 A basic Interceptor works like a [Decorator][1], being attached to the ViewModel without affecting any of the normal
-processing behavior of the ViewModel. It receives `BallastNotification` from the ViewModel to notify the status of every 
-feature as it goes through the steps of processing, such as being queued, completed, or failed. Basic Interceptors are 
-purely a read-only mechanism, and are not able to make any changes to the ViewModel.
+processing behavior of the ViewModel. It receives `BallastNotifications` from the ViewModel to notify the status of 
+every feature as it goes through the steps of processing, such as being queued, completed, or failed. Basic Interceptors 
+are purely a read-only mechanism, and are not able to make any changes to the ViewModel.
 
 ```kotlin
 public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
@@ -291,3 +303,4 @@ applications:
 
 
 [1]: https://en.wikipedia.org/wiki/Decorator_pattern
+[2]: {{ 'Ballast Repository' | link }}

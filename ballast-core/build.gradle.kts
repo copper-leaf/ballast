@@ -55,7 +55,13 @@ kotlin {
             }
         }
     }
-    ios { }
+    nativeTargetGroup(
+        "ios",
+        iosArm32(),
+        iosArm64(),
+        iosX64(),
+        iosSimulatorArm64(),
+    )
 
     // sourcesets
     sourceSets {
@@ -67,7 +73,7 @@ kotlin {
         // Common Sourcesets
         val commonMain by getting {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
             }
         }
         val commonTest by getting {
@@ -85,7 +91,7 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
             }
         }
 

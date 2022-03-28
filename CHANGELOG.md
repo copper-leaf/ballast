@@ -1,3 +1,7 @@
+## 0.14.0 - 2022-03-28
+
+- Attempts to get iOS support working and documented, with M1 Simulator support
+
 ## 0.13.1 - 2022-03-25
 
 - [BUG FIX] Fix regression in debugger, where you could not view or rollback to previous States.

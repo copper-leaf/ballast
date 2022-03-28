@@ -55,7 +55,13 @@ kotlin {
             }
         }
     }
-    ios { }
+    nativeTargetGroup(
+        "ios",
+        iosArm32(),
+        iosArm64(),
+        iosX64(),
+        iosSimulatorArm64(),
+    )
 
     // sourcesets
     sourceSets {
@@ -84,7 +90,7 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
             }
         }
 

@@ -55,7 +55,13 @@ kotlin {
             }
         }
     }
-    ios { }
+    nativeTargetGroup(
+        "ios",
+        iosArm32(),
+        iosArm64(),
+        iosX64(),
+        iosSimulatorArm64(),
+    )
 
     // sourcesets
     sourceSets {

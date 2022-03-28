@@ -124,7 +124,7 @@ See the [website](https://copper-leaf.github.io/ballast/) for detailed documenta
 
 # License
 
-Thistle is licensed under the BSD 3-Clause License, see [LICENSE.md](https://github.com/copper-leaf/ballast/tree/main/LICENSE.md).
+Ballast is licensed under the BSD 3-Clause License, see [LICENSE.md](https://github.com/copper-leaf/ballast/tree/main/LICENSE.md).
 
 # References
 

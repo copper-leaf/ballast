@@ -15,9 +15,9 @@ The core idea is to model your UI not as discrete UI elements with click listene
 that all needs to be synced and updated manually, but instead to lift that state into a ViewModel and update the entire
 UI whenever the ViewModel state changes. This idea of "lifting state" naturally forms a loop in your UI, where:
 
-- the **ViewModel** holds [**State**](#state), which gets pushed to the UI with every change
+- the **ViewModel** holds **State**, which gets pushed to the UI with every change
 - the UI updates itself to match the current **State**
-- The user interacts with the UI, producing [**Inputs**](#inputs), or their "intent" to change the UI state.
+- The user interacts with the UI, producing **Inputs**, or their "intent" to change the UI state.
 - The **Inputs** get sent back to the **ViewModel**, where it processes the **Inputs** to change the State
 
 Notably, in this loop, the UI is never responsible for updating the **State** itself, and there is no business logic
@@ -42,38 +42,33 @@ Ballast. A more complete diagram of the Ballast MVI model looks more like the di
 
 ```mermaid
 flowchart TD
-    subgraph Fragment
-        UI
+    subgraph UI
+        View
         EventHandler
     end
-    subgraph Ballast
-        ViewModel
+    subgraph ViewModel
         InputChannel
+        EventChannel
         InputFilter
         InputHandler
         SideJob
-
-        ViewModel--Inputs-->InputChannel
 
         InputChannel--Inputs-->InputFilter
         InputFilter--Reject-->id1{Rejected}
         InputFilter--Accept-->InputHandler
 
-        InputHandler--postEvent-->EventHandler
-        InputHandler--updateState-->ViewModel
+        InputHandler--postEvent-->EventChannel
+        InputHandler--updateState-->StateFlow
         InputHandler--sideJob-->SideJob
+        EventChannel--Events-->EventHandler
+        EventHandler--postInput-->InputChannel
 
-        subgraph VM
-            SideJob
-
-            SideJob--postInput-->ViewModel
-            SideJob--postEvent-->EventHandler
-        end
+        SideJob--postInput-->InputChannel
+        SideJob--postEvent-->EventChannel
     end
 
-    UI--trySend-->ViewModel
-    ViewModel-- observeState -->UI
-
+    View--trySend-->InputChannel
+    StateFlow--ObserveState-->View
 ```
 
 ## UI Programming Through the Years
@@ -188,7 +183,7 @@ class CounterActivity : AppCompatActivity(), CounterView {
 }
 ```
 
-This approach gaineda lot of popularity because it allowed one to test the busisness logic in a normal unit test, 
+This approach gained a lot of popularity because it allowed one to test the busisness logic in a normal unit test, 
 without needing a full real or emulated environment. But this approach has a number of flaws, some of which are inherent
 in its design, and some are just problems with the real-world implementation of it.
 
@@ -218,14 +213,15 @@ MVP: Good in theory, but rarely implemented well in practice.
 - _2016 to 2019 on Android with Databinding, but never became too popular_
 
 Once everyone started noticing the problems inherent in traditional- and MVP-style UI programming, the natural fix 
-became pretty apparent: rather than the interactions driving the UI, the UI should be driven by state. So let's start
-developing our UI by first creating a model of the screen's state, and assemble or synchronize the UI to that state.
+became pretty apparent: rather than the interactions driving the UI, let's use a state model to drive the UI. One starts
+by developing creating a model of the screen's state, and then builds a UI that is assembled or synchronized to match 
+that model.
 
 These are the early days of reactive programming, when Angular.JS because king, React was just starting to be developed, 
 and all the UI toolkits started creating their own "MVVM" frameworks. The main idea with these is that you take 
 something like a "Presenter" or "Controller" class, declare the state that lives within that Controller, and let a 
 framework worry about applying that state to the UI for you. Additionally, the MVVM frameworks bind in the other 
-direction, too, automatically wiring up click listeners so that they always run code in the Controller.
+direction, too, automatically wiring up click listeners and such so that they always run code in the Controller.
 
 This was a huge improvement over the previous attempts. We now have a way to make sure any changes to the state will 
 always be present in the UI, even changes made from other threads, and the framework enforces that all changes to the
@@ -264,7 +260,7 @@ State themselves.
 This idea is what Facebook started with the Flux architecture and React, and soon afterwards you started seeing more and
 more platforms rewriting their UI toolkits around this exact philosophy. Flutter, Swift UI, Jetpack Compose, all based 
 around this idea that the UI shouldn't have to manage anything itself, but should be driven entirely by some model of
-State based on hand-written code. 
+State and applied to the UI with hand-written code. 
 
 This MVI model has proven itself over the last few years to be incredibly durable and robust, even useful outside of 
 pure UI applications. And the more I work on Ballast and really figure out how this pattern works, the more flexible and
@@ -346,8 +342,9 @@ object LoginScreenContract {
 Obviously, the initial thought when building out a Contract is to put every single variable into the State, and you
 absolutely can do that. But with sufficiently large screens, this may become a bit too verbose and introduce a lot of
 back-and-forth jumping between the UI and the VM, which may not be strictly necessary. Assuming your entire UI,
-including its listeners, is updated with each state change, you can leave some amount of logic purely in the UI, and
-have the State and Inputs only model the things which are actually important from a business logic perspective.
+including its listeners, is updated with each state change (both local and ViewModel states), you can leave some amount
+of logic purely in the UI, and have the State and Inputs only model the things which are actually important from a 
+business logic perspective.
 
 As an example, let's take a Checkout screen. At the end of the flow, once the user has entered all their information, we
 want to show a popup to confirm the user actually wants to submit the order to help prevent accidental clicks submitting
@@ -433,7 +430,7 @@ object CheckoutContract {
 fun Checkout(state: CheckoutContract.State, postInput: (CheckoutContract.Inputs)->Unit) {
     ItemsInCard(state.cart)
 
-    var isConfirmationDialogShowing by remember { mutableStateOf(isConfirmationDialogShowing) }
+    var isConfirmationDialogShowing by remember { mutableStateOf(false) }
 
     Button(onClick = { isConfirmationDialogShowing = true }) {
         Text("Checkout")
@@ -523,7 +520,7 @@ indicator for as long as anything is still loading.
 
 But with this implementation, if we sent both Inputs at the same time and allowed them to run in parallel, the progress
 indicator would be dismissed after only 1 second, and 1 second after that the user would see an unpleasant "jank" as the
-list of posts arrived unexpectedly.
+list of posts arrives unexpectedly.
 
 The following are some strategies we could employ to provide a better UX to the user, with their pros and cons
 
@@ -531,7 +528,7 @@ The following are some strategies we could employ to provide a better UX to the 
 
 The first thing we could do is to make sure that only 1 Input is executing at a time. This would ensure no race
 conditions are possible from interleaved code, but it would also mean that this snippet now takes 3 seconds to complete,
-instead of 2. It also leaves a tiny amount of time between when `LoadPosts` finished as sets `loading` to `false`, and
+instead of 2. It also leaves a tiny amount of time between when `LoadPosts` finished and sets `loading` to `false`, and
 when `LoadLatestPostContent` starts and sets it back to true. If the device is fast enough, the user might not notice,
 but slower devices may result in the progress indicator being briefly dismissed, then shown again.
 
@@ -662,7 +659,7 @@ suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) 
         }
     }
     is Inputs.LoadLatestPostContent -> {
-        sideJob("LoadPosts") {
+        sideJob("LoadLatestPostContent") {
             val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
             postInput(Inputs.LatestPostContentLoaded(latestPost))
         }
