@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.debugger.di
 
 import androidx.compose.runtime.compositionLocalOf
-import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
@@ -22,6 +21,7 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindowManager
 import io.ktor.client.engine.cio.CIO
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -57,7 +57,10 @@ class BallastDebuggerInjectorImpl(
     private val ideaPluginLogger: Logger = Logger.getInstance(BallastIdeaPlugin::class.java)
     private val prefs: IdeaPluginPrefs = IdeaPluginPrefsImpl(project)
     private val toolWindowManager: ToolWindowManager get() = ToolWindowManager.getInstance(project)
-    private val applicationScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val uncaughtExceptionHandler = CoroutineExceptionHandler { _, _ ->
+        // ignore
+    }
+    private val applicationScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default + uncaughtExceptionHandler)
     private val debuggerConnection by lazy {
         BallastDebuggerClientConnection(CIO, applicationScope).also { it.connect() }
     }
