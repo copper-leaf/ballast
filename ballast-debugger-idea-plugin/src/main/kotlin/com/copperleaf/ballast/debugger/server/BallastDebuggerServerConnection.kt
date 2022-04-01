@@ -40,7 +40,6 @@ public class BallastDebuggerServerConnection(
         withContext(Dispatchers.IO) {
             embeddedServer(CIO, port = port) {
                 install(WebSockets)
-//                install(CallLogging)
 
                 routing {
                     get("/") {

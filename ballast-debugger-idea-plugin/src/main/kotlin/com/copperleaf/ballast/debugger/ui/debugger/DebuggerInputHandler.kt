@@ -5,6 +5,7 @@ import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
+import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.models.updateConnection
 import com.copperleaf.ballast.debugger.models.updateViewModel
@@ -130,11 +131,17 @@ class DebuggerInputHandler(
                 it.copy(
                     allMessages = it.allMessages + input.message,
                     applicationState = it.applicationState.updateConnection(input.message.connectionId) {
-                        updateViewModel(input.message.viewModelName) {
-                            // on the server, we do not have the actual values, since we do not assume them to be
-                            // serializable and sent to the server. Only the text is actually sent
-                            updateWithDebuggerEvent(input.message, null)
+
+                        if(input.message is BallastDebuggerEvent.Heartbeat) {
+                            copy(connectionBallastVersion = input.message.connectionBallastVersion)
+                        } else {
+                            updateViewModel(input.message.viewModelName) {
+                                // on the server, we do not have the actual values, since we do not assume them to be
+                                // serializable and sent to the server. Only the text is actually sent
+                                updateWithDebuggerEvent(input.message, null)
+                            }
                         }
+
                     }
                 )
             }

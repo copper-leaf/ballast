@@ -15,6 +15,7 @@ import com.copperleaf.ballast.debugger.models.serialize
 import com.copperleaf.ballast.debugger.models.updateConnection
 import com.copperleaf.ballast.debugger.models.updateViewModel
 import com.copperleaf.ballast.debugger.models.updateWithDebuggerEvent
+import com.copperleaf.ballast.debugger.utils.now
 import io.github.copper_leaf.ballast_debugger.BALLAST_VERSION
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -42,7 +43,6 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
@@ -52,6 +52,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
@@ -93,7 +94,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     private var waitForEvent = CompletableDeferred<Unit>()
 
     private var applicationState: BallastApplicationState = BallastApplicationState()
-    private val uuids: MutableMap<Any, String> = mutableMapOf()
+    private val uuids: MutableMap<Any, Pair<String, LocalDateTime>> = mutableMapOf()
 
     public fun connect(): Job {
         var failedAttempts = 0
@@ -191,10 +192,10 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         waitForEvent.complete(Unit)
     }
 
-    private fun getUuid(notification: BallastNotification<*, *, *>): String {
+    private fun getUuid(notification: BallastNotification<*, *, *>): Pair<String, LocalDateTime> {
         return notification.associate(
             cache = uuids,
-            computeValueForSubject = { generateUuid() },
+            computeValueForSubject = { generateUuid() to LocalDateTime.now() },
         )
     }
 
@@ -215,7 +216,10 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     debuggerEventJson
                         .encodeToString(
                             BallastDebuggerEvent.serializer(),
-                            BallastDebuggerEvent.Heartbeat(connectionId)
+                            BallastDebuggerEvent.Heartbeat(
+                                connectionId = connectionId,
+                                connectionBallastVersion = ballastVersion,
+                            )
                         )
                         .let { Frame.Text(it) }
                 )
@@ -234,8 +238,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 val event = if (message.notification != null) {
                     check(message.debuggerEvent == null) { "Must provide a notification or a debugger event, not both" }
 
-                    val uuid = getUuid(message.notification)
-                    message.notification.serialize(connectionId, uuid)
+                    val (uuid, timestamp) = getUuid(message.notification)
+                    message.notification.serialize(connectionId, uuid, firstSeen = timestamp, now = LocalDateTime.now())
                 } else if (message.debuggerEvent != null) {
                     message.debuggerEvent
                 } else {
@@ -317,7 +321,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                         notification = null,
                         debuggerEvent = BallastDebuggerEvent.RefreshViewModelComplete(
                             connectionId,
-                            action.viewModelName
+                            action.viewModelName,
                         ),
                         updateConnectionState = false,
                     )

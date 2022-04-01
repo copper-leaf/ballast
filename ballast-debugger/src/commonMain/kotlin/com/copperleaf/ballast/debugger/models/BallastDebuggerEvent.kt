@@ -10,10 +10,10 @@ public sealed class BallastDebuggerEvent {
     public abstract val connectionId: String
     public abstract val viewModelName: String?
     public abstract val uuid: String?
+    public abstract val timestamp: LocalDateTime
 
-    public val timestamp: LocalDateTime = LocalDateTime.now()
 
-// Events not from INterceptor, but used for app internal communication
+// Events not from Interceptor, but used for app internal communication
 // ---------------------------------------------------------------------------------------------------------------------
 
     /**
@@ -22,9 +22,11 @@ public sealed class BallastDebuggerEvent {
     @Serializable
     public class Heartbeat(
         override val connectionId: String,
+        public val connectionBallastVersion: String,
     ) : BallastDebuggerEvent() {
         override val viewModelName: String? = null
         override val uuid: String? = null
+        override val timestamp: LocalDateTime = LocalDateTime.now()
     }
 
     /**
@@ -37,6 +39,7 @@ public sealed class BallastDebuggerEvent {
         override val viewModelName: String,
     ) : BallastDebuggerEvent() {
         override val uuid: String? = null
+        override val timestamp: LocalDateTime = LocalDateTime.now()
     }
 
     /**
@@ -48,6 +51,7 @@ public sealed class BallastDebuggerEvent {
         override val viewModelName: String,
     ) : BallastDebuggerEvent() {
         override val uuid: String? = null
+        override val timestamp: LocalDateTime = LocalDateTime.now()
     }
 
 // ViewModel
@@ -59,6 +63,7 @@ public sealed class BallastDebuggerEvent {
         override val viewModelName: String,
         public val viewModelType: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -66,6 +71,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
     ) : BallastDebuggerEvent()
 
 // Inputs
@@ -76,6 +82,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val inputType: String,
         public val inputToStringValue: String,
@@ -86,6 +93,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val inputType: String,
         public val inputToStringValue: String,
@@ -96,6 +104,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val inputType: String,
         public val inputToStringValue: String,
@@ -106,6 +115,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val inputType: String,
         public val inputToStringValue: String,
@@ -116,6 +126,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val inputType: String,
         public val inputToStringValue: String,
@@ -126,6 +137,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val inputType: String,
         public val inputToStringValue: String,
@@ -136,6 +148,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val inputType: String,
         public val inputToStringValue: String,
@@ -150,6 +163,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val eventType: String,
         public val eventToStringValue: String,
@@ -160,6 +174,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val eventType: String,
         public val eventToStringValue: String,
@@ -170,6 +185,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val eventType: String,
         public val eventToStringValue: String,
@@ -180,6 +196,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val eventType: String,
         public val eventToStringValue: String,
@@ -191,6 +208,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
     ) : BallastDebuggerEvent()
 
     @Serializable
@@ -198,6 +216,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
     ) : BallastDebuggerEvent()
 
 // States
@@ -208,6 +227,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val stateType: String,
         public val stateToStringValue: String,
@@ -221,6 +241,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val key: String,
     ) : BallastDebuggerEvent()
@@ -230,6 +251,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val key: String,
         public val restartState: SideJobScope.RestartState,
@@ -240,6 +262,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val key: String,
         public val restartState: SideJobScope.RestartState,
@@ -250,6 +273,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val key: String,
         public val restartState: SideJobScope.RestartState,
@@ -260,6 +284,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val key: String,
         public val restartState: SideJobScope.RestartState,
@@ -274,6 +299,7 @@ public sealed class BallastDebuggerEvent {
         override val connectionId: String,
         override val viewModelName: String,
         override val uuid: String,
+        override val timestamp: LocalDateTime,
 
         public val stacktrace: String,
     ) : BallastDebuggerEvent()

@@ -82,12 +82,18 @@ extension Publishers {
 public class BallastObservable<Inputs: AnyObject, Events: AnyObject, State: AnyObject>: ObservableObject {
     private var subscriptions = Set<AnyCancellable>()
     private let vm: Ballast_coreIosViewModel<Inputs, Events, State>
-    @Published var state: State
+    @Published public private(set) var state: State
 
-    init(vm: Ballast_coreIosViewModel<Inputs, Events, State>, eventHandler: Ballast_coreEventHandler) {
+    init(vm: Ballast_coreIosViewModel<Inputs, Events, State>) {
         self.vm = vm
         self.state = self.vm.initialState
+    }
 
+    func trySend(_ input: Inputs) {
+        self.vm.trySend(element: input)
+    }
+    
+    func start(eventHandler: Ballast_coreEventHandler) {
         collect(self.vm.onEachState, with: eventHandler)
                 .sink(
                     receiveCompletion: { completion in  },
@@ -96,8 +102,9 @@ public class BallastObservable<Inputs: AnyObject, Events: AnyObject, State: AnyO
                 .store(in: &subscriptions)
     }
 
-    func trySend(_ input: Inputs) {
-        self.vm.trySend(element: input)
+    func clearSubscriptions() {
+        subscriptions.forEach { cancellable in cancellable.cancel() }
+        subscriptions.removeAll()
     }
 }
 ```
@@ -106,6 +113,10 @@ Then, from any SwiftUI View, you can observe one of your `IosViewModels` by wrap
 initialization should be placed in the View's `init()` block, which corresponds to Android's `onViewCreated()`. Note 
 that Kotlin's Swift name translation will convert the nested class names like `ExampleContract.Inputs.Initialize` to
 drop the second `.`, looking like `ExampleContract.InputsInitialize` in Swift.
+
+_Disclaimer: I am not an iOS developer, so this may be the entirely wrong way to go about things. I have gotten this to
+work in a POC application, but a full production iOS app built with Ballast will likely look different. If you figure 
+out a good pattern, I invite you to update these docs to demonstrate that pattern!_
 
 ```swift
 import SwiftUI
@@ -121,13 +132,15 @@ struct ExampleView: View {
             eventHandler: ExampleEventHandler()
     )
 
-    init() {
-        vm.trySend(ExampleContract.InputsInitialize())
-    }
-
     var body: some View {
-        // use any properties of the VM State with `vm.state`.
-        // Send inputs to the VM with `vm.trySend()`
+        VStack { 
+            // ...
+        }
+        .onAppear {
+            vm.start(eventHandler: ExampleEventHandler())
+            vm.trySend(ExampleContract.InputsInitialize())
+        }
+        .onDisappear { vm.clearSubscriptions() }
     }
 }
 ```

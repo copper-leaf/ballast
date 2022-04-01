@@ -50,7 +50,7 @@ public fun BallastApplicationState.updateConnection(
                     this[indexOfConnection] = this[indexOfConnection].block().copy(lastSeen = LocalDateTime.now())
                 } else {
                     // this is the first time we're seeing this connection, create a new entry for it
-                    this.add(0, BallastConnectionState(connectionId).block())
+                    this.add(0, BallastConnectionState(connectionId, firstSeen  = LocalDateTime.now()).block())
                 }
             }
             .toList(),
@@ -104,7 +104,7 @@ public fun BallastConnectionState.updateViewModel(
                         this[indexOfViewModel] = this[indexOfViewModel].block().copy(lastSeen = LocalDateTime.now())
                     } else {
                         // this is the first time we're seeing this connection, create a new entry for it
-                        this.add(0, BallastViewModelState(connectionId, viewModelName).block())
+                        this.add(0, BallastViewModelState(connectionId, viewModelName, firstSeen  = LocalDateTime.now()).block())
                     }
                 }
             }
@@ -173,7 +173,7 @@ public fun BallastViewModelState.updateInput(
             .apply {
                 if (indexOfInput != -1) {
                     // we're updating a value in an existing connection
-                    this[indexOfInput] = this[indexOfInput].block().copy(lastSeen = LocalDateTime.now())
+                    this[indexOfInput] = this[indexOfInput].block()
                 } else {
                     // this is the first time we're seeing this connection, create a new entry for it
                     this.add(
@@ -354,6 +354,8 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 viewModelName = viewModelName,
                 viewModelType = viewModelType,
                 refreshing = true,
+                firstSeen = event.timestamp,
+                lastSeen = event.timestamp,
             )
         }
         is BallastDebuggerEvent.RefreshViewModelComplete -> {
@@ -373,6 +375,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
                     status = BallastInputState.Status.Queued,
+                    firstSeen = event.timestamp,
                 )
             }
         }
@@ -382,6 +385,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
                     status = BallastInputState.Status.Running,
+                    lastSeen = event.timestamp,
                 )
             }
         }
@@ -390,8 +394,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
+                    lastSeen = event.timestamp,
                     status = BallastInputState.Status.Completed(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                     ),
                 )
             }
@@ -401,8 +406,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
+                    lastSeen = event.timestamp,
                     status = BallastInputState.Status.Cancelled(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                     ),
                 )
             }
@@ -412,8 +418,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
+                    lastSeen = event.timestamp,
                     status = BallastInputState.Status.Error(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                         stacktrace = event.stacktrace,
                     ),
                 )
@@ -425,6 +432,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
                     status = BallastInputState.Status.Dropped,
+                    lastSeen = event.timestamp,
                 )
             }
         }
@@ -434,6 +442,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                     type = event.inputType,
                     toStringValue = event.inputToStringValue,
                     status = BallastInputState.Status.Rejected,
+                    lastSeen = event.timestamp,
                 )
             }
         }
@@ -444,6 +453,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                     type = event.eventType,
                     toStringValue = event.eventToStringValue,
                     status = BallastEventState.Status.Queued,
+                    firstSeen = event.timestamp,
                 )
             }
         }
@@ -453,6 +463,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                     type = event.eventType,
                     toStringValue = event.eventToStringValue,
                     status = BallastEventState.Status.Running,
+                    lastSeen = event.timestamp,
                 )
             }
         }
@@ -461,8 +472,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     type = event.eventType,
                     toStringValue = event.eventToStringValue,
+                    lastSeen = event.timestamp,
                     status = BallastEventState.Status.Completed(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                     ),
                 )
             }
@@ -472,8 +484,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     type = event.eventType,
                     toStringValue = event.eventToStringValue,
+                    lastSeen = event.timestamp,
                     status = BallastEventState.Status.Error(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                         stacktrace = event.stacktrace,
                     ),
                 )
@@ -489,6 +502,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
         is BallastDebuggerEvent.StateChanged -> {
             appendStateSnapshot(event.uuid, actualValue) {
                 copy(
+                    emittedAt = event.timestamp,
                     type = event.stateType,
                     toStringValue = event.stateToStringValue,
                 )
@@ -500,6 +514,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     key = event.key,
                     status = BallastSideJobState.Status.Queued,
+                    firstSeen = event.timestamp,
                 )
             }
         }
@@ -509,6 +524,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                     key = event.key,
                     restartState = event.restartState,
                     status = BallastSideJobState.Status.Running,
+                    lastSeen = event.timestamp,
                 )
             }
         }
@@ -517,8 +533,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     key = event.key,
                     restartState = event.restartState,
+                    lastSeen = event.timestamp,
                     status = BallastSideJobState.Status.Completed(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                     ),
                 )
             }
@@ -528,8 +545,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     key = event.key,
                     restartState = event.restartState,
+                    lastSeen = event.timestamp,
                     status = BallastSideJobState.Status.Cancelled(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                     ),
                 )
             }
@@ -539,8 +557,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 copy(
                     key = event.key,
                     restartState = event.restartState,
+                    lastSeen = event.timestamp,
                     status = BallastSideJobState.Status.Error(
-                        duration = (LocalDateTime.now() - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
+                        duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
                         stacktrace = event.stacktrace
                     ),
                 )
@@ -565,7 +584,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
     }
 
     return updatedState.copy(
-        lastSeen = LocalDateTime.now(),
+        lastSeen = event.timestamp,
         fullHistory = newHistory
     )
 }

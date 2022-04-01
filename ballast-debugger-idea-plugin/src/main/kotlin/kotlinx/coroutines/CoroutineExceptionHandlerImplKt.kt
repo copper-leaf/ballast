@@ -10,4 +10,8 @@ class CoroutineExceptionHandlerImpl : AbstractCoroutineContextElement(CoroutineE
     override fun handleException(context: CoroutineContext, exception: Throwable) {
         // ignore
     }
+
+    fun handleCoroutineException(context: CoroutineContext, exception: Throwable) {
+        // ignore
+    }
 }

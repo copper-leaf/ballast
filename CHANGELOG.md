@@ -1,6 +1,14 @@
+## 0.15.0 - 2022-03-31
+
+- Fix several bugs in Debugger UI 
+  - Kotlin coroutines versions were in conflict and crashing the debugger
+  - Timestamps not correctly reported once ViewModel was refreshed
+  - Connection Ballast Version not reported correctly once refreshed
+
 ## 0.14.0 - 2022-03-28
 
 - Attempts to get iOS support working and documented, with M1 Simulator support
+- Updates Coroutines to 1.6.0, for the Native's new memory model support
 
 ## 0.13.1 - 2022-03-25
 
