@@ -31,11 +31,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
     implementation("io.ktor:ktor-client-cio:1.6.7")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
-        version {
-            strictly("1.5.2")
-        }
-    }
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     implementation(project(":ballast-core"))
