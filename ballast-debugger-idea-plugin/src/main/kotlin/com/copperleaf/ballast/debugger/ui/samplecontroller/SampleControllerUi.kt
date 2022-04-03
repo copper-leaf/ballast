@@ -28,7 +28,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,10 +50,6 @@ object SampleControllerUi {
         val parentCoroutineScope = rememberCoroutineScope()
         val viewModel = remember(injector, parentCoroutineScope) {
             injector.sampleControllerViewModel(parentCoroutineScope)
-        }
-
-        LaunchedEffect(viewModel) {
-            viewModel.send(SampleControllerContract.Inputs.Initialize)
         }
 
         val uiState by viewModel.observeStates().collectAsState()

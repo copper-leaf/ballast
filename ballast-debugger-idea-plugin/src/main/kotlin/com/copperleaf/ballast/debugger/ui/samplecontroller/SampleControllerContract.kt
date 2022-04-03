@@ -13,6 +13,7 @@ object SampleControllerContract {
     sealed class Inputs {
         object Initialize : Inputs()
         data class UpdateInputStrategy(val inputStrategy: InputStrategySelection) : Inputs()
+        object StartViewModel : Inputs()
         data class UpdateViewModel(val viewModel: KitchenSinkViewModel) : Inputs()
         object BrowseSampleSources : Inputs()
     }

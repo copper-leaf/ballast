@@ -2,6 +2,7 @@ rootProject.name = "ballast"
 
 include(":ballast-core")
 include(":ballast-repository")
+include(":ballast-saved-state")
 
 include(":ballast-firebase-crashlytics")
 include(":ballast-firebase-analytics")

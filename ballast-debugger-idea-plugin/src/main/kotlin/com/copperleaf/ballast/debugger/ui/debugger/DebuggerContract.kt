@@ -1,5 +1,8 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
+import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.CONNECTIONS_DEFAULT_VALUE
+import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.EVENTS_DEFAULT_VALUE
+import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.VIEW_MODELS_DEFAULT_VALUE
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
@@ -24,9 +27,13 @@ object DebuggerContract {
         val focusedViewModelName: String? = null,
         val focusedDebuggerEventUuid: String? = null,
 
-        val connectionsPanePercentage: SplitPaneState = SplitPaneState(0.30f, true),
-        val viewModelsPanePercentage: SplitPaneState = SplitPaneState(0.35f, true),
-        val eventsPanePercentage: SplitPaneState = SplitPaneState(0.45f, true),
+        val connectionsPanePercentage: SplitPaneState = SplitPaneState(CONNECTIONS_DEFAULT_VALUE, true),
+        val connectionsPanePercentageValue: Float = CONNECTIONS_DEFAULT_VALUE,
+        val viewModelsPanePercentage: SplitPaneState = SplitPaneState(VIEW_MODELS_DEFAULT_VALUE, true),
+        val viewModelsPanePercentageValue: Float = VIEW_MODELS_DEFAULT_VALUE,
+        val eventsPanePercentage: SplitPaneState = SplitPaneState(EVENTS_DEFAULT_VALUE, true),
+        val eventsPanePercentageValue: Float = EVENTS_DEFAULT_VALUE,
+
         val selectedViewModelContentTab: ViewModelContentTab = ViewModelContentTab.Inputs,
     ) {
         val focusedConnection: BallastConnectionState? = applicationState
@@ -70,6 +77,10 @@ object DebuggerContract {
         data class SendDebuggerAction(val action: BallastDebuggerAction) : Inputs()
 
         data class UpdateSelectedViewModelContentTab(val value: ViewModelContentTab) : Inputs()
+
+        data class UpdateConnectionsPanePercentageValue(val value: Float) : Inputs()
+        data class UpdateViewModelsPanePercentageValue(val value: Float) : Inputs()
+        data class UpdateEventsPanePercentageValue(val value: Float) : Inputs()
     }
 
     sealed class Events

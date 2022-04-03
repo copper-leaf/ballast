@@ -43,6 +43,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
@@ -349,7 +350,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     ?.actualState as? State
 
                 if (stateToRestore != null) {
-                    sendToQueue(Queued.RestoreState(stateToRestore))
+                    sendToQueue(Queued.RestoreState(null, stateToRestore))
                 } else {
                 }
             }

@@ -4,6 +4,8 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.forViewModel
+import com.copperleaf.ballast.plusAssign
+import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
 import kotlinx.coroutines.CoroutineScope
 
 class DebuggerViewModel(
@@ -11,6 +13,7 @@ class DebuggerViewModel(
     configurationBuilder: BallastViewModelConfiguration.Builder,
     inputHandler: DebuggerInputHandler,
     eventHandler: DebuggerEventHandler,
+    savedStateAdapter: DebuggerSavedStateAdapter,
 ) : BasicViewModel<
     DebuggerContract.Inputs,
     DebuggerContract.Events,
@@ -18,6 +21,7 @@ class DebuggerViewModel(
     config = configurationBuilder
         .apply {
             inputStrategy = FifoInputStrategy()
+            this += BallastSavedStateInterceptor(savedStateAdapter)
         }
         .forViewModel(
             initialState = DebuggerContract.State(),

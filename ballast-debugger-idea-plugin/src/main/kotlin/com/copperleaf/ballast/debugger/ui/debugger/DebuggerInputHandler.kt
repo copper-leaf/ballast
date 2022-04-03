@@ -3,7 +3,6 @@ package com.copperleaf.ballast.debugger.ui.debugger
 import androidx.compose.runtime.snapshotFlow
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
@@ -11,14 +10,11 @@ import com.copperleaf.ballast.debugger.models.updateConnection
 import com.copperleaf.ballast.debugger.models.updateViewModel
 import com.copperleaf.ballast.debugger.models.updateWithDebuggerEvent
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerConnection
+import com.copperleaf.ballast.observeFlows
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import org.jetbrains.compose.splitpane.SplitPaneState
+import kotlinx.coroutines.flow.map
 
-class DebuggerInputHandler(
-    private val prefs: IdeaPluginPrefs,
-) : InputHandler<
+class DebuggerInputHandler : InputHandler<
     DebuggerContract.Inputs,
     DebuggerContract.Events,
     DebuggerContract.State> {
@@ -29,15 +25,6 @@ class DebuggerInputHandler(
         input: DebuggerContract.Inputs
     ) = when (input) {
         is DebuggerContract.Inputs.StartServer -> {
-            updateState {
-                it.copy(
-                    connectionsPanePercentage = SplitPaneState(prefs.connectionsPanePercentage, true),
-                    viewModelsPanePercentage = SplitPaneState(prefs.viewModelsPanePercentage, true),
-                    eventsPanePercentage = SplitPaneState(prefs.eventsPanePercentage, true),
-                    selectedViewModelContentTab = prefs.selectedViewModelContentTab,
-                )
-            }
-
             sideJob("Websocket Server") {
                 val server = BallastDebuggerServerConnection(
                     port = input.port,
@@ -48,19 +35,21 @@ class DebuggerInputHandler(
                 server.runServer()
             }
 
-            sideJob("SplitPane State Observer") {
-                snapshotFlow { currentStateWhenStarted.connectionsPanePercentage.positionPercentage }
-                    .distinctUntilChanged()
-                    .onEach { prefs.connectionsPanePercentage = it }
-                    .launchIn(this)
-                snapshotFlow { currentStateWhenStarted.viewModelsPanePercentage.positionPercentage }
-                    .distinctUntilChanged()
-                    .onEach { prefs.viewModelsPanePercentage = it }
-                    .launchIn(this)
-                snapshotFlow { currentStateWhenStarted.eventsPanePercentage.positionPercentage }
-                    .distinctUntilChanged()
-                    .onEach { prefs.eventsPanePercentage = it }
-                    .launchIn(this)
+            observeFlows("SplitPane State Observer") {
+                listOf(
+                    snapshotFlow { currentStateWhenStarted.connectionsPanePercentage.positionPercentage }
+                        .distinctUntilChanged()
+                        .map { DebuggerContract.Inputs.UpdateConnectionsPanePercentageValue(it) },
+
+                    snapshotFlow { currentStateWhenStarted.viewModelsPanePercentage.positionPercentage }
+                        .distinctUntilChanged()
+                        .map { DebuggerContract.Inputs.UpdateViewModelsPanePercentageValue(it) },
+
+                    snapshotFlow { currentStateWhenStarted.eventsPanePercentage.positionPercentage }
+                        .distinctUntilChanged()
+                        .map { DebuggerContract.Inputs.UpdateEventsPanePercentageValue(it) }
+
+                )
             }
         }
 
@@ -132,7 +121,7 @@ class DebuggerInputHandler(
                     allMessages = it.allMessages + input.message,
                     applicationState = it.applicationState.updateConnection(input.message.connectionId) {
 
-                        if(input.message is BallastDebuggerEvent.Heartbeat) {
+                        if (input.message is BallastDebuggerEvent.Heartbeat) {
                             copy(connectionBallastVersion = input.message.connectionBallastVersion)
                         } else {
                             updateViewModel(input.message.viewModelName) {
@@ -154,7 +143,15 @@ class DebuggerInputHandler(
 
         is DebuggerContract.Inputs.UpdateSelectedViewModelContentTab -> {
             updateState { it.copy(selectedViewModelContentTab = input.value) }
-            prefs.selectedViewModelContentTab = input.value
+        }
+        is DebuggerContract.Inputs.UpdateConnectionsPanePercentageValue -> {
+            updateState { it.copy(connectionsPanePercentageValue = input.value) }
+        }
+        is DebuggerContract.Inputs.UpdateEventsPanePercentageValue -> {
+            updateState { it.copy(eventsPanePercentageValue = input.value) }
+        }
+        is DebuggerContract.Inputs.UpdateViewModelsPanePercentageValue -> {
+            updateState { it.copy(viewModelsPanePercentageValue = input.value) }
         }
     }
 }

@@ -225,6 +225,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         }
                         is Queued.RestoreState -> {
                             _state.value = queued.state
+                            queued.deferred?.complete(Unit)
                         }
                     }
                 }

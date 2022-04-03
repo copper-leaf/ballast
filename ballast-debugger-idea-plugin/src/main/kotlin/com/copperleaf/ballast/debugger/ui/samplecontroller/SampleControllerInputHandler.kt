@@ -3,14 +3,12 @@ package com.copperleaf.ballast.debugger.ui.samplecontroller
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.debugger.di.BallastDebuggerInjector
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
 import com.copperleaf.ballast.examples.util.ExamplesContext
 import com.copperleaf.ballast.postEventWithState
 import com.copperleaf.ballast.postInput
 
 class SampleControllerInputHandler(
     private val injector: BallastDebuggerInjector,
-    private val prefs: IdeaPluginPrefs,
 ) : InputHandler<
     SampleControllerContract.Inputs,
     SampleControllerContract.Events,
@@ -23,20 +21,15 @@ class SampleControllerInputHandler(
     ) = when (input) {
         is SampleControllerContract.Inputs.Initialize -> {
             updateState { it.copy(sampleSourcesUrl = "${ExamplesContext.repoBaseUrlWithVersion}/${ExamplesContext.sampleSourcesPathInRepo}") }
-            postInput(
-                SampleControllerContract.Inputs.UpdateInputStrategy(
-                    prefs.sampleInputStrategy
-                )
-            )
+            postInput(SampleControllerContract.Inputs.StartViewModel)
         }
         is SampleControllerContract.Inputs.UpdateInputStrategy -> {
             updateState { it.copy(inputStrategy = input.inputStrategy) }
-
-            sideJob("UpdateInputStrategy") {
-                prefs.sampleInputStrategy = input.inputStrategy
-
+            postInput(SampleControllerContract.Inputs.StartViewModel)
+        }
+        is SampleControllerContract.Inputs.StartViewModel -> {
+            sideJob("StartViewModel") {
                 val vm = injector.kitchenSinkViewModel(this, currentStateWhenStarted.inputStrategy.get())
-
                 postInput(SampleControllerContract.Inputs.UpdateViewModel(vm))
             }
         }

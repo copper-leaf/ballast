@@ -3,17 +3,20 @@ package com.copperleaf.ballast.debugger.di
 import androidx.compose.runtime.compositionLocalOf
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.core.LoggingInterceptor
+import com.copperleaf.ballast.core.PrintlnLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
-import com.copperleaf.ballast.debugger.idea.IntellijPluginBallastLogger
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl
+import com.copperleaf.ballast.debugger.idea.settings.InMemoryIdeaPluginPrefs
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerEventHandler
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerInputHandler
+import com.copperleaf.ballast.debugger.ui.debugger.DebuggerSavedStateAdapter
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerViewModel
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerEventHandler
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerInputHandler
+import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerSavedStateAdapter
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerViewModel
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.plusAssign
@@ -55,7 +58,8 @@ class BallastDebuggerInjectorImpl(
     private val project: Project,
 ) : BallastDebuggerInjector {
     private val ideaPluginLogger: Logger = Logger.getInstance(BallastIdeaPlugin::class.java)
-    private val prefs: IdeaPluginPrefs = IdeaPluginPrefsImpl(project)
+//    private val prefs: IdeaPluginPrefs = IdeaPluginPrefsImpl(project)
+    private val prefs: IdeaPluginPrefs = InMemoryIdeaPluginPrefs
     private val toolWindowManager: ToolWindowManager get() = ToolWindowManager.getInstance(project)
     private val uncaughtExceptionHandler = CoroutineExceptionHandler { _, _ ->
         // ignore
@@ -68,7 +72,9 @@ class BallastDebuggerInjectorImpl(
     private fun commonBuilder(): BallastViewModelConfiguration.Builder {
         return BallastViewModelConfiguration.Builder()
             .apply {
-                logger = { IntellijPluginBallastLogger(ideaPluginLogger) }
+//                logger = { IntellijPluginBallastLogger(ideaPluginLogger) }
+                logger = { PrintlnLogger(it) }
+                this += LoggingInterceptor()
             }
     }
 
@@ -76,8 +82,9 @@ class BallastDebuggerInjectorImpl(
         return DebuggerViewModel(
             coroutineScope = coroutineScope,
             configurationBuilder = commonBuilder(),
-            inputHandler = DebuggerInputHandler(prefs),
+            inputHandler = DebuggerInputHandler(),
             eventHandler = DebuggerEventHandler(),
+            savedStateAdapter = DebuggerSavedStateAdapter(prefs)
         )
     }
 
@@ -85,8 +92,9 @@ class BallastDebuggerInjectorImpl(
         return SampleControllerViewModel(
             coroutineScope = coroutineScope,
             configurationBuilder = commonBuilder(),
-            inputHandler = SampleControllerInputHandler(this, prefs),
+            inputHandler = SampleControllerInputHandler(this),
             eventHandler = SampleControllerEventHandler(),
+            savedStateAdapter = SampleControllerSavedStateAdapter(prefs)
         )
     }
 
