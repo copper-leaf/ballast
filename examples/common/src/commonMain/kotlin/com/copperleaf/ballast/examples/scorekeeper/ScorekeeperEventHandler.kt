@@ -4,7 +4,7 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
 
 class ScorekeeperEventHandler(
-    private val displayErrorMessage: (String) -> Unit
+    private val displayErrorMessage: suspend (String) -> Unit
 ) : EventHandler<
     ScorekeeperContract.Inputs,
     ScorekeeperContract.Events,

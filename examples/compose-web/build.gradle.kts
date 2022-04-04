@@ -24,6 +24,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-core"))
+                implementation(project(":ballast-saved-state"))
                 implementation(project(":ballast-debugger"))
                 implementation(project(":examples:common"))
             }

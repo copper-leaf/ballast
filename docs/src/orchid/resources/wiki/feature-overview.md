@@ -3,7 +3,7 @@
 
 # High-level Feature Overview
 
-## ViewModel
+## ViewModels
 
 The ViewModel is Ballast's container for implementing the MVI pattern. It holds onto all data and assembles your
 components together to process work in a predictable manner. There are a number of ViewModel implementations provided by
@@ -19,7 +19,7 @@ Typically, a single ViewModel serves as the store for a single Screen, and is no
 that should persist through multiple screens should either be passed directly through the navigation request, or be
 managed by your [repository layer][2] and re-fetched from the later screen.
 
-## Contract
+## Contracts
 
 The Contract is a declarative model what is happening in a screen. The Contract is entirely separate from any Ballast
 APIs, so while the snippet below shows the opinionated structure of a ViewModel's Contract, you are free to swap it out 
@@ -115,13 +115,13 @@ sealed class Events {
 }
 ```
 
-## Processor
+## Handlers
 
 Everything in the Contract is entirely declarative, but at some point Ballast needs to _do something_ with everything in
 the Contract. There are several elements of a complete Ballast ViewModel that get composed together to implement the
 full MVI pattern.
 
-### Input Handler
+### Input Handlers
 
 All of Ballast's processing revolves, literally, around the Input Handler. It is the only place in the MVI loop that is
 allowed to run arbitrary code, and it is based upon Kotlin Coroutines to allow the entire processor loop to run
@@ -150,7 +150,7 @@ class LoginScreenInputHandler : InputHandler<Inputs, Events, State> {
 The `InputHandlerScope` DSL is able to update the ViewModel State, post Events, start sideJobs, and call any other 
 suspending functions within the Input queue.
 
-### Event Handler
+### Event Handlers
 
 The Event Handler works very similarly to the Input Handler, but should implement `EventHandler` instead. Events are 
 sent from the Input Handler into a queue, and the EventHandler will pull them out of the queue to be processed
@@ -304,3 +304,49 @@ applications:
 
 [1]: https://en.wikipedia.org/wiki/Decorator_pattern
 [2]: {{ 'Ballast Repository' | link }}
+
+
+### Logging
+
+Ballast offers a simple logging API integrated throughout the library. An instance of `BallastLogger` installed in the 
+`BallastViewModelConfiguration` is exposed through all interfaces where custom code is run, so you don't have to juggle
+injecting Loggers and properly matching up tags amongst all the different classes that make up the Ballast ViewModel.
+
+```kotlin
+import LoginScreenContract.*
+
+class LoginScreenInputHandler : InputHandler<Inputs, Events, State> {
+    override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(
+        input: Inputs
+    ) = when (input) {
+        is UsernameChanged -> { }
+        is PasswordChanged -> { }
+        is LoginButtonClicked -> { 
+            logger.info("Attempting Logging In...")
+            val loginSuccessful = attemptLogin()
+            if(loginSuccessful) {
+                logger.info("Login success")
+            } else {
+                logger.info("Login failed")
+            }
+        }
+        is RegisterButtonClicked -> { }
+    }
+}
+```
+
+Ballast offers several logger implementations out-of-the-box:
+
+- `NoOpLogger`: The default implementation, it simply drops all messages and exceptions so nothing gets logged 
+  accidentally. It's recommended to use this in production builds, as well, and using [Ballast Firebase][1] to control
+  what actually gets logged in production.
+- `PrintlnLogger`: Useful for quick-and-dirty logging on all platforms. It just writes log messages to stdout through
+  println.
+- `AndroidBallastLogger`: Only available on Android, writes logs to the default LogCat at the appropriate levels.
+
+By default, only logs written directly to the logger will be displayed, but by installing the `LoggingInterceptor` into
+the `BallastViewModelConfiguration` you'll get automatic logging of all activity within the ViewModel. This interceptor
+maintains a list of all Inputs and a copy of the latest State, so it may consume large amounts of memory or write 
+sensitive information to the logger, and as such should never be used in production.
+
+[1]: {{ 'Ballast Firebase' | link }}

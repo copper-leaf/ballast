@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
-import com.copperleaf.ballast.savedstate.PerformSaveStateScope
+import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
 import org.jetbrains.compose.splitpane.SplitPaneState
 
@@ -12,20 +12,20 @@ class DebuggerSavedStateAdapter(
     DebuggerContract.Events,
     DebuggerContract.State> {
 
-    override suspend fun PerformSaveStateScope<
+    override suspend fun SaveStateScope<
         DebuggerContract.Inputs,
         DebuggerContract.Events,
         DebuggerContract.State>.save() {
-        diff({ connectionsPanePercentageValue }) {
+        saveDiff({ connectionsPanePercentageValue }) {
             prefs.connectionsPanePercentage = it
         }
-        diff({ viewModelsPanePercentageValue }) {
+        saveDiff({ viewModelsPanePercentageValue }) {
             prefs.viewModelsPanePercentage = it
         }
-        diff({ eventsPanePercentageValue }) {
+        saveDiff({ eventsPanePercentageValue }) {
             prefs.eventsPanePercentage = it
         }
-        diff({ selectedViewModelContentTab }) {
+        saveDiff({ selectedViewModelContentTab }) {
             prefs.selectedViewModelContentTab = it
         }
     }

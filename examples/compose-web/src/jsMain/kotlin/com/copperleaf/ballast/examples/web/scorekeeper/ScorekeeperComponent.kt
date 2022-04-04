@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.examples.web.scorekeeper
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,14 +9,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperContract
 import com.copperleaf.ballast.examples.scorekeeper.models.Player
 import com.copperleaf.ballast.examples.util.ExamplesContext
-import com.copperleaf.ballast.examples.web.internal.Component
-import com.copperleaf.ballast.examples.web.internal.ComposeWebInjector
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaButton
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaButtonFeatures
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaButtonGroup
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaColor
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaInput
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaPanel
+import com.copperleaf.ballast.examples.web.util.Component
+import com.copperleaf.ballast.examples.web.util.ComposeWebInjector
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaButton
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaButtonFeatures
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaButtonGroup
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaColor
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaInput
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaPanel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.target
@@ -36,10 +35,6 @@ class ScorekeeperComponent(
         val viewModelCoroutineScope = rememberCoroutineScope()
         val vm = remember(viewModelCoroutineScope) { injector.scorekeeperViewModel(viewModelCoroutineScope) }
         val vmState by vm.observeStates().collectAsState()
-
-        LaunchedEffect(vm) {
-            vm.send(ScorekeeperContract.Inputs.Initialize)
-        }
 
         ScoreKeeperUI(vmState) { vm.trySend(it) }
     }
@@ -63,23 +58,31 @@ class ScorekeeperComponent(
                 }
             },
         ) {
-            val (playerName, setPlayerName) = remember { mutableStateOf("") }
-            BulmaInput(
-                "New Player Name",
-                playerName,
-                setPlayerName
-            )
-            BulmaButton({
-                postInput(ScorekeeperContract.Inputs.AddPlayer(playerName))
-                setPlayerName("")
-            }) {
-                Text("Add")
-            }
-            Hr { }
-
+            NewPlayerForm(uiState, postInput)
             PlayersList(uiState, postInput)
             Buttons(uiState, postInput)
         }
+    }
+
+
+    @Composable
+    private fun NewPlayerForm(
+        uiState: ScorekeeperContract.State,
+        postInput: (ScorekeeperContract.Inputs) -> Unit,
+    ) {
+        val (playerName, setPlayerName) = remember { mutableStateOf("") }
+        BulmaInput(
+            "New Player Name",
+            playerName,
+            setPlayerName
+        )
+        BulmaButton({
+            postInput(ScorekeeperContract.Inputs.AddPlayer(playerName))
+            setPlayerName("")
+        }) {
+            Text("Add")
+        }
+        Hr { }
     }
 
     @Composable

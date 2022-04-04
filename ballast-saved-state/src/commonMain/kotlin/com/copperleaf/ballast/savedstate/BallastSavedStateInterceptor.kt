@@ -70,7 +70,8 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
                 .receiveAsFlow()
                 .onEach { nextState ->
                     if (stateRestored) {
-                        val scope = PerformSaveStateScopeImpl<Inputs, Events, State>(
+                        val scope = SaveStateScopeImpl<Inputs, Events, State>(
+                            logger = logger,
                             hostViewModelName = hostViewModelName,
                             previousState = previousState,
                             nextState = nextState,
@@ -96,7 +97,8 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
                 println("Restoring state")
                 val stateRestoredDeferred = CompletableDeferred<Unit>()
 
-                val scope = PerformRestoreStateScopeImpl<Inputs, Events, State>(
+                val scope = RestoreStateScopeImpl<Inputs, Events, State>(
+                    logger = logger,
                     hostViewModelName = hostViewModelName,
                 )
                 val restoredState = with(adapter) {

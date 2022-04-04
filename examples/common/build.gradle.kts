@@ -68,6 +68,7 @@ kotlin {
             dependencies {
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-repository"))
+                implementation(project(":ballast-saved-state"))
             }
         }
     }

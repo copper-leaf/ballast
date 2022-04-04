@@ -3,9 +3,9 @@ package com.copperleaf.ballast.examples.web
 import androidx.compose.runtime.remember
 import com.copperleaf.ballast.examples.web.bgg.BggComponent
 import com.copperleaf.ballast.examples.web.counter.CounterComponent
-import com.copperleaf.ballast.examples.web.internal.Component
-import com.copperleaf.ballast.examples.web.internal.ComposeWebInjector
-import com.copperleaf.ballast.examples.web.internal.ComposeWebInjectorImpl
+import com.copperleaf.ballast.examples.web.util.Component
+import com.copperleaf.ballast.examples.web.util.ComposeWebInjector
+import com.copperleaf.ballast.examples.web.util.ComposeWebInjectorImpl
 import com.copperleaf.ballast.examples.web.kitchensink.KitchenSinkComponent
 import com.copperleaf.ballast.examples.web.scorekeeper.ScorekeeperComponent
 import kotlinx.browser.document

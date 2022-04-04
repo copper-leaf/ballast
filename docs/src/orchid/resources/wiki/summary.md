@@ -11,6 +11,7 @@
 - [Modules](modules/index.md)
   - [Ballast Core](modules/ballast-core.md) 
   - [Ballast Repository](modules/ballast-repository.md) 
+  - [Ballast Saved State](modules/ballast-saved-state.md) 
   - [Ballast Firebase](modules/ballast-firebase.md) 
   - [Ballast Debugger](modules/ballast-debugger.md) 
   - [Ballast Test](modules/ballast-test.md) 

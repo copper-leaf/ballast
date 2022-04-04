@@ -8,10 +8,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkContract
 import com.copperleaf.ballast.examples.util.ExamplesContext
-import com.copperleaf.ballast.examples.web.internal.Component
-import com.copperleaf.ballast.examples.web.internal.ComposeWebInjector
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaButton
-import com.copperleaf.ballast.examples.web.internal.bulma.BulmaPanel
+import com.copperleaf.ballast.examples.web.util.Component
+import com.copperleaf.ballast.examples.web.util.ComposeWebInjector
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaButton
+import com.copperleaf.ballast.examples.web.util.bulma.BulmaPanel
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.target
 import org.jetbrains.compose.web.dom.A

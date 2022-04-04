@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.debugger.ui.samplecontroller
 
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
-import com.copperleaf.ballast.savedstate.PerformSaveStateScope
+import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
 
 class SampleControllerSavedStateAdapter(
@@ -11,11 +11,11 @@ class SampleControllerSavedStateAdapter(
     SampleControllerContract.Events,
     SampleControllerContract.State> {
 
-    override suspend fun PerformSaveStateScope<
+    override suspend fun SaveStateScope<
         SampleControllerContract.Inputs,
         SampleControllerContract.Events,
         SampleControllerContract.State>.save() {
-        diff({ inputStrategy }) {
+        saveDiff({ inputStrategy }) {
             prefs.sampleInputStrategy = it
         }
     }

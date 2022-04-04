@@ -7,7 +7,7 @@ public interface AndroidSavedStateAdapter<Inputs : Any, Events : Any, State : An
     abstract val savedStateHandle: SavedStateHandle
     open val prefix: (hostViewModelName: String) -> String get() = { it }
 
-    suspend fun <Prop> PerformSaveStateScope<Inputs, Events, State>.saveDiffToSavedStateHandle(
+    suspend fun <Prop> SaveStateScope<Inputs, Events, State>.saveDiffToSavedStateHandle(
         key: String,
         computeProperty: State.() -> Prop,
     ) {
@@ -16,13 +16,13 @@ public interface AndroidSavedStateAdapter<Inputs : Any, Events : Any, State : An
         }
     }
 
-    suspend fun PerformSaveStateScope<Inputs, Events, State>.saveAllToSavedStateHandle() {
+    suspend fun SaveStateScope<Inputs, Events, State>.saveAllToSavedStateHandle() {
         saveAll {
             savedStateHandle.set(prefix(hostViewModelName), it)
         }
     }
 
-    fun <Prop> PerformRestoreStateScope<Inputs, Events, State>.get(key: String, defaultValue: () -> Prop): Prop {
+    fun <Prop> RestoreStateScope<Inputs, Events, State>.get(key: String, defaultValue: () -> Prop): Prop {
         return savedStateHandle.get<Prop>("${prefix(hostViewModelName)}.$key") ?: defaultValue()
     }
 }

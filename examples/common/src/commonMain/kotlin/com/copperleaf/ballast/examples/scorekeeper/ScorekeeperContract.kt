@@ -9,8 +9,6 @@ object ScorekeeperContract {
     )
 
     sealed class Inputs {
-        object Initialize : Inputs()
-
         data class AddPlayer(val playerName: String) : Inputs()
         data class RemovePlayer(val playerName: String) : Inputs()
         data class ChangeScore(val amount: Int) : Inputs()
