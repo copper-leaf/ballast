@@ -22,7 +22,7 @@ class BallastCoreTests {
         eventHandler = TestEventHandler(),
         filter = TestInputFilter(),
     ) {
-        skip()
+//        skip()
         defaultInitialState { TestContract.State() }
 
         scenario("update string value only") {

@@ -8,6 +8,8 @@ robust and opinionated, but also provides many ways to extend the functionality 
 the core MVI model. Any additional functionality outside of Core will typically be implemented as an Interceptor and 
 provided to the `BallastViewModelConfiguration`.
 
+# Usage
+
 ## ViewModels
 
 The Core module provides several ViewModel base classes, so Ballast can integrate natively with a variety of platforms.
@@ -66,7 +68,7 @@ applications:
 Ballast Core also includes `DefaultGuardian`, which you can use if you need to create your own `InputStrategy` to 
 maintain the same level of safety as the core `InputStrategies`.
 
-## Installation
+# Installation
 
 ```kotlin
 repositories {

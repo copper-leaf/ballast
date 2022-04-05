@@ -22,3 +22,4 @@
   - [Kitchen Sink](examples/kitchensink.md)
 - [Feature Comparison](feature-comparison.md)
 - [Roadmap](roadmap.md)
+- [Changelog](changelog.md)

@@ -201,10 +201,6 @@ public final class com/copperleaf/ballast/examples/bgg/ui/BggInputHandler : com/
 	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/examples/bgg/ui/BggViewModel : com/copperleaf/ballast/core/BasicViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/examples/bgg/repository/BggRepository;)V
-}
-
 public final class com/copperleaf/ballast/examples/counter/CounterContract {
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/CounterContract;
 }
@@ -260,10 +256,6 @@ public final class com/copperleaf/ballast/examples/counter/CounterInputHandler :
 	public fun <init> ()V
 	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/copperleaf/ballast/examples/counter/CounterViewModel : com/copperleaf/ballast/core/BasicViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)V
 }
 
 public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkContract {
@@ -363,10 +355,6 @@ public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkInputH
 	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel : com/copperleaf/ballast/core/BasicViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function0;)V
-}
-
 public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract {
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract;
 }
@@ -425,10 +413,6 @@ public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperContra
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$Inputs$Initialize : com/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$Inputs {
-	public static final field INSTANCE Lcom/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$Inputs$Initialize;
-}
-
 public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$Inputs$RemovePlayer : com/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$Inputs {
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;
@@ -467,19 +451,23 @@ public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperContra
 }
 
 public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperEventHandler : com/copperleaf/ballast/EventHandler {
-	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public fun <init> (Lkotlin/jvm/functions/Function2;)V
 	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperInputHandler : com/copperleaf/ballast/InputHandler {
-	public fun <init> (Lcom/copperleaf/ballast/examples/scorekeeper/prefs/ScoreKeeperPrefs;)V
+	public fun <init> ()V
 	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperViewModel : com/copperleaf/ballast/core/BasicViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/examples/scorekeeper/prefs/ScoreKeeperPrefs;Lkotlin/jvm/functions/Function1;)V
+public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperSavedStateAdapter : com/copperleaf/ballast/savedstate/SavedStateAdapter {
+	public fun <init> (Lcom/copperleaf/ballast/examples/scorekeeper/prefs/ScoreKeeperPrefs;)V
+	public fun onRestoreComplete (Lcom/copperleaf/ballast/examples/scorekeeper/ScorekeeperContract$State;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun onRestoreComplete (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun restore (Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun save (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/examples/scorekeeper/models/Player {

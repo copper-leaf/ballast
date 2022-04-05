@@ -14,9 +14,6 @@ documentation.
 
 - [Synchrony Module][#2]: Synchronize the VM state between multiple clients over a network connection, for building
   realtime multi-user applications
-- [SavedState Support][#3]: Automatically persist and restore state to a ViewModel between sessions. Will definitely
-  support `SavedStateHandle` for Android, and should include a way to do more manual save/restore with any other 
-  platform to use any persistent store.
 - [Finite State Machine DSL][#7]: Ballast is basically an FSM already, and it would be nice to build a dedicated DSL
   like [Tinder/StateMachine][a] on top of Ballast so it could be used on any Kotlin target
 - [Undo/redo functionality][#10]: An undo/redo controller that tracks "frames" for when Inputs are processed, and move

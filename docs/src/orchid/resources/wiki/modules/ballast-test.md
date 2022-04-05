@@ -7,6 +7,8 @@ Ballast Test gives you a DSL you can include in any Kotlin testing framework to 
 results of their processing. It is currently a work-in-progress and is likely to be changed significantly before 
 Ballast's 1.0.0 release.
 
+# Usage
+
 After [including the dependency](#Installation) into your test sourceSet, you can run `viewModelTest()`, which gives you
 a DSL for setting up specific scenarios and asserting what happened during the execution of those scenarios. 
 `viewModelTest()` is a suspending function, so it will need to be run within `runBlocking` in your tests.
@@ -64,7 +66,7 @@ fun testExampleViewModel() = runBlocking<Unit> {
 }
 ```
 
-## Installation
+# Installation
 
 ```kotlin
 repositories {

@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.debugger.ui.samplecontroller
 
-import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
-
+import com.copperleaf.ballast.debugger.ui.kitchensink.KitchenSinkViewModel
 
 object SampleControllerContract {
     data class State(

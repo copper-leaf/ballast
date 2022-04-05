@@ -14,11 +14,11 @@ import com.copperleaf.ballast.debugger.ui.debugger.DebuggerEventHandler
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerInputHandler
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerSavedStateAdapter
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerViewModel
+import com.copperleaf.ballast.debugger.ui.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerEventHandler
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerInputHandler
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerSavedStateAdapter
 import com.copperleaf.ballast.debugger.ui.samplecontroller.SampleControllerViewModel
-import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.plusAssign
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project

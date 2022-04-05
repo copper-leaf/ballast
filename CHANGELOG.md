@@ -4,7 +4,11 @@
   - Kotlin coroutines versions were in conflict and crashing the debugger
   - Timestamps not correctly reported once ViewModel was refreshed
   - Connection Ballast Version not reported correctly once refreshed
-
+- Adds new `ballast-saved-state` module
+- Adds `ballast-test` API for isolating a single input
+- Reverts Coroutines version back to 1.5.2. To use Ballast on iOS with the new memory model, manually include the 
+  1.6.0 dependency
+  
 ## 0.14.0 - 2022-03-28
 
 - Attempts to get iOS support working and documented, with M1 Simulator support

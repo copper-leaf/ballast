@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
+import com.copperleaf.ballast.savedstate.RestoreStateScope
 import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
 import org.jetbrains.compose.splitpane.SplitPaneState
@@ -30,7 +31,10 @@ class DebuggerSavedStateAdapter(
         }
     }
 
-    override suspend fun restore(): DebuggerContract.State {
+    override suspend fun RestoreStateScope<
+        DebuggerContract.Inputs,
+        DebuggerContract.Events,
+        DebuggerContract.State>.restore(): DebuggerContract.State {
         return DebuggerContract.State(
             connectionsPanePercentage = SplitPaneState(prefs.connectionsPanePercentage, true),
             viewModelsPanePercentage = SplitPaneState(prefs.viewModelsPanePercentage, true),

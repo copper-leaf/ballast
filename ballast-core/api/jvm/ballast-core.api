@@ -312,7 +312,8 @@ public final class com/copperleaf/ballast/Queued$HandleInput : com/copperleaf/ba
 }
 
 public final class com/copperleaf/ballast/Queued$RestoreState : com/copperleaf/ballast/Queued {
-	public fun <init> (Ljava/lang/Object;)V
+	public fun <init> (Lkotlinx/coroutines/CompletableDeferred;Ljava/lang/Object;)V
+	public final fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 	public final fun getState ()Ljava/lang/Object;
 }
 
@@ -452,6 +453,8 @@ public final class com/copperleaf/ballast/core/ParallelInputStrategy$Guardian : 
 
 public final class com/copperleaf/ballast/core/PrintlnLogger : com/copperleaf/ballast/BallastLogger {
 	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun debug (Ljava/lang/String;)V
 	public fun error (Ljava/lang/Throwable;)V
 	public fun info (Ljava/lang/String;)V

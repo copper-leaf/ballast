@@ -19,6 +19,8 @@ then add the [`ballast-debugger`](#Installation) dependency to your project.
 
 <div id="intellij-plugin-card"></div>
 
+# Usage
+
 You will need to create a `BallastDebuggerClientConnection` with your choice of [Ktor client engine][1] and connect it 
 on an application-wide CoroutineScope. This will start a Websocket connection to the IntelliJ plugin's server over 
 localhost on port 9684. The connection will automatically retry the connection until it succeeds. Finally, add the 
@@ -72,7 +74,7 @@ constructor() : AndroidViewModel<
 )
 ```
 
-## Installation
+# Installation
 
 ```kotlin
 repositories {

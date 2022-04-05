@@ -23,6 +23,8 @@ Ballast Repository is built around 3 core concepts: the MVI model as implemented
 ViewModel, the `Cached<T>` interface to hold and update data within the Repository, and the `EventBus` to facilitate
 communication between Repository instances throughout the entire layer.
 
+# Usage
+
 ## BallastRepository
 
 `BallastRepository` is a special `BallastViewModel` implementation that is intended to be used as the "ViewModel" of 
@@ -225,7 +227,7 @@ Repository and wait for it to get changed there, at which point the updated valu
 Also, do not unwrap the Cached value in the UI ViewModel, continue to hold onto it as the wrapped `Cached<T>` value so 
 that the UI can use the Cached DSL to optimize its display of the inner value.
 
-## Installation
+# Installation
 
 ```kotlin
 repositories {

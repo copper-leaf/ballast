@@ -13,13 +13,19 @@ class ScorekeeperSavedStateAdapter(
     ScorekeeperContract.Events,
     ScorekeeperContract.State> {
 
-    override suspend fun SaveStateScope<ScorekeeperContract.Inputs, ScorekeeperContract.Events, ScorekeeperContract.State>.save() {
+    override suspend fun SaveStateScope<
+        ScorekeeperContract.Inputs,
+        ScorekeeperContract.Events,
+        ScorekeeperContract.State>.save() {
         saveDiff({ this.players }) { players ->
             prefs.scoresheetState = players.map { it.name to it.score }.toMap()
         }
     }
 
-    override suspend fun RestoreStateScope<ScorekeeperContract.Inputs, ScorekeeperContract.Events, ScorekeeperContract.State>.restore(): ScorekeeperContract.State {
+    override suspend fun RestoreStateScope<
+        ScorekeeperContract.Inputs,
+        ScorekeeperContract.Events,
+        ScorekeeperContract.State>.restore(): ScorekeeperContract.State {
         val playerList = prefs
             .scoresheetState
             .entries

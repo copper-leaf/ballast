@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.ui.samplecontroller
 
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
+import com.copperleaf.ballast.savedstate.RestoreStateScope
 import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
 
@@ -20,7 +21,10 @@ class SampleControllerSavedStateAdapter(
         }
     }
 
-    override suspend fun restore(): SampleControllerContract.State {
+    override suspend fun RestoreStateScope<
+        SampleControllerContract.Inputs,
+        SampleControllerContract.Events,
+        SampleControllerContract.State>.restore(): SampleControllerContract.State {
         return SampleControllerContract.State(
             sampleSourcesUrl = "blah",
             inputStrategy = prefs.sampleInputStrategy,
@@ -30,4 +34,5 @@ class SampleControllerSavedStateAdapter(
     override suspend fun onRestoreComplete(restoredState: SampleControllerContract.State): SampleControllerContract.Inputs {
         return SampleControllerContract.Inputs.Initialize
     }
+
 }
