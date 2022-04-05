@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.test
 
-public interface ViewModelTestScenarioInputSequenceScope<Inputs : Any, Events : Any, State : Any> {
+public interface BallastScenarioInputSequenceScope<Inputs : Any, Events : Any, State : Any> {
 
     /**
      * Send an input to the ViewModel for processing, and wait for it to be completely finished processing before
@@ -17,14 +17,14 @@ public interface ViewModelTestScenarioInputSequenceScope<Inputs : Any, Events : 
     public suspend fun send(input: Inputs)
 
     /**
-     * An alias for [ViewModelTestScenarioInputSequenceScope.sendAndAwait].
+     * An alias for [BallastScenarioInputSequenceScope.sendAndAwait].
      */
     public suspend operator fun Inputs.unaryPlus() {
         sendAndAwait(this)
     }
 
     /**
-     * An alias for [ViewModelTestScenarioInputSequenceScope.send].
+     * An alias for [BallastScenarioInputSequenceScope.send].
      */
     public suspend operator fun Inputs.unaryMinus() {
         send(this)

@@ -3,19 +3,19 @@ package com.copperleaf.ballast.test.internal
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.test.BallastScenarioInputSequenceScope
+import com.copperleaf.ballast.test.BallastScenarioScope
 import com.copperleaf.ballast.test.TestResults
-import com.copperleaf.ballast.test.ViewModelTestScenarioInputSequenceScope
-import com.copperleaf.ballast.test.ViewModelTestScenarioScope
 import com.copperleaf.ballast.test.internal.vm.TestInterceptorWrapper
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
 import kotlin.time.Duration
 
-internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>(
+internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override val name: String
-) : ViewModelTestScenarioScope<Inputs, Events, State> {
+) : BallastScenarioScope<Inputs, Events, State> {
     internal var givenBlock: (() -> State)? = null
     internal lateinit var onInputSequenceBlock:
-        suspend ViewModelTestScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit
+        suspend BallastScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit
     internal lateinit var verifyBlock: TestResults<Inputs, Events, State>.() -> Unit
 
     internal var solo: Boolean = false
@@ -56,7 +56,7 @@ internal class ViewModelTestScenarioScopeImpl<Inputs : Any, Events : Any, State 
         givenBlock = block
     }
 
-    override fun running(block: suspend ViewModelTestScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit) {
+    override fun running(block: suspend BallastScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit) {
         onInputSequenceBlock = block
     }
 

@@ -6,7 +6,7 @@ import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlin.time.Duration
 
-public interface ViewModelTestSuiteScope<Inputs : Any, Events : Any, State : Any> {
+public interface BallastTestSuiteScope<Inputs : Any, Events : Any, State : Any> {
 
     /**
      * Do not run this test suite.
@@ -36,12 +36,17 @@ public interface ViewModelTestSuiteScope<Inputs : Any, Events : Any, State : Any
 
     /**
      * Provide a default initial State used for running all tests in this suite. Each scenario may override this initial
-     * state with their own [ViewModelTestScenarioScope.given] block
+     * state with their own [BallastScenarioScope.given] block
      */
     public fun defaultInitialState(block: () -> State)
 
     /**
      * Add a scenario to this ViewModel test suite.
      */
-    public fun scenario(name: String, block: ViewModelTestScenarioScope<Inputs, Events, State>.() -> Unit)
+    public fun scenario(name: String, block: BallastScenarioScope<Inputs, Events, State>.() -> Unit)
+
+    /**
+     * Isolate a single Input
+     */
+    public fun isolatedScenario(input: Inputs, name: String = input.toString(), block: BallastIsolatedScenarioScope<Inputs, Events, State>.() -> Unit)
 }

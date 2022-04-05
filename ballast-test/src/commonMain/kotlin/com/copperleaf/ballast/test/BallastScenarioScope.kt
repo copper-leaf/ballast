@@ -6,7 +6,7 @@ import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlin.time.Duration
 
-public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : Any> {
+public interface BallastScenarioScope<Inputs : Any, Events : Any, State : Any> {
     public val name: String
 
     /**
@@ -52,12 +52,12 @@ public interface ViewModelTestScenarioScope<Inputs : Any, Events : Any, State : 
      * one input to actually be accepted and be processed by the ViewModel before starting to process the next.
      *
      * This entire script will run to completion and all sent inputs will be handled before final test results are
-     * collected and sent to [ViewModelTestScenarioScope.resultsIn] for verification.
+     * collected and sent to [BallastScenarioScope.resultsIn] for verification.
      */
-    public fun running(block: suspend ViewModelTestScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit)
+    public fun running(block: suspend BallastScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit)
 
     /**
-     * Once the scneario test script in [ViewModelTestScenarioScope.running] has completed, inspect and make assertions
+     * Once the scneario test script in [BallastScenarioScope.running] has completed, inspect and make assertions
      * on what actually happened during the test, and what it produced as a result. The properties in [TestResults]
      * correspond directly to the callbacks of [BallastInterceptor], and the relative ordering of properties in each
      * list is maintained with respect to the order the inputs were delivered to the test.

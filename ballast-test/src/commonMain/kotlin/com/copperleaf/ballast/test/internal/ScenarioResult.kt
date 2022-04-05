@@ -3,11 +3,11 @@ package com.copperleaf.ballast.test.internal
 import kotlin.time.Duration
 
 internal sealed class ScenarioResult<Inputs : Any, Events : Any, State : Any> {
-    abstract val scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>
+    abstract val scenario: BallastScenarioScopeImpl<Inputs, Events, State>
     abstract fun printResults(): String
 
     data class Passed<Inputs : Any, Events : Any, State : Any>(
-        override val scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>,
+        override val scenario: BallastScenarioScopeImpl<Inputs, Events, State>,
         val time: Duration
     ) : ScenarioResult<Inputs, Events, State>() {
         override fun printResults(): String {
@@ -16,7 +16,7 @@ internal sealed class ScenarioResult<Inputs : Any, Events : Any, State : Any> {
     }
 
     data class Failed<Inputs : Any, Events : Any, State : Any>(
-        override val scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>,
+        override val scenario: BallastScenarioScopeImpl<Inputs, Events, State>,
         val time: Duration,
         val reason: Throwable,
     ) : ScenarioResult<Inputs, Events, State>() {
@@ -26,7 +26,7 @@ internal sealed class ScenarioResult<Inputs : Any, Events : Any, State : Any> {
     }
 
     data class Skipped<Inputs : Any, Events : Any, State : Any>(
-        override val scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>,
+        override val scenario: BallastScenarioScopeImpl<Inputs, Events, State>,
     ) : ScenarioResult<Inputs, Events, State>() {
         override fun printResults(): String {
             return "Scenario '${scenario.name}': Skipped"

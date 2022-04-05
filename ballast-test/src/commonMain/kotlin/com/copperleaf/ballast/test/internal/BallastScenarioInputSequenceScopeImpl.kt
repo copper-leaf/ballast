@@ -1,14 +1,14 @@
 package com.copperleaf.ballast.test.internal
 
 import com.copperleaf.ballast.BallastLogger
-import com.copperleaf.ballast.test.ViewModelTestScenarioInputSequenceScope
+import com.copperleaf.ballast.test.BallastScenarioInputSequenceScope
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
 import kotlinx.coroutines.CompletableDeferred
 
-internal class ViewModelTestScenarioInputSequenceScopeImpl<Inputs : Any, Events : Any, State : Any>(
+internal class BallastScenarioInputSequenceScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val logger: BallastLogger,
     private val vm: TestViewModel<Inputs, Events, State>
-) : ViewModelTestScenarioInputSequenceScope<Inputs, Events, State> {
+) : BallastScenarioInputSequenceScope<Inputs, Events, State> {
 
     override suspend fun send(input: Inputs) {
         logger.debug("        before send ProcessInput")

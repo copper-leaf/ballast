@@ -7,8 +7,9 @@ import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
-import com.copperleaf.ballast.test.ViewModelTestScenarioScope
-import com.copperleaf.ballast.test.ViewModelTestSuiteScope
+import com.copperleaf.ballast.test.BallastIsolatedScenarioScope
+import com.copperleaf.ballast.test.BallastScenarioScope
+import com.copperleaf.ballast.test.BallastTestSuiteScope
 import com.copperleaf.ballast.test.internal.vm.TestInterceptorWrapper
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
 import kotlin.time.Duration
@@ -16,15 +17,15 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
-internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any>(
+internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any>(
     internal val inputHandler: InputHandler<Inputs, Events, State>,
     internal val eventHandler: EventHandler<Inputs, Events, State>,
     internal val filter: InputFilter<Inputs, Events, State>?,
-) : ViewModelTestSuiteScope<Inputs, Events, State> {
+) : BallastTestSuiteScope<Inputs, Events, State> {
 
     internal var skip: Boolean = false
 
-    internal var suiteLogger: (String)->BallastLogger = { SimpleTestLogger() }
+    internal var suiteLogger: (String) -> BallastLogger = { SimpleTestLogger() }
     internal var defaultTimeout: Duration = 30.seconds
     internal var inputStrategy: InputStrategy = LifoInputStrategy()
 
@@ -32,13 +33,13 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         mutableListOf()
 
     internal var defaultInitialStateBlock: (() -> State)? = null
-    internal val scenarioBlocks = mutableListOf<ViewModelTestScenarioScopeImpl<Inputs, Events, State>>()
+    internal val scenarioBlocks = mutableListOf<BallastScenarioScopeImpl<Inputs, Events, State>>()
 
     override fun skip() {
         this.skip = true
     }
 
-    override fun logger(logger: (String)->BallastLogger) {
+    override fun logger(logger: (String) -> BallastLogger) {
         this.suiteLogger = logger
     }
 
@@ -58,7 +59,24 @@ internal class ViewModelTestSuiteScopeImpl<Inputs : Any, Events : Any, State : A
         defaultInitialStateBlock = block
     }
 
-    override fun scenario(name: String, block: ViewModelTestScenarioScope<Inputs, Events, State>.() -> Unit) {
-        scenarioBlocks += ViewModelTestScenarioScopeImpl<Inputs, Events, State>(name).apply(block)
+    override fun scenario(name: String, block: BallastScenarioScope<Inputs, Events, State>.() -> Unit) {
+        scenarioBlocks += BallastScenarioScopeImpl<Inputs, Events, State>(name).apply(block)
+    }
+
+    override fun isolatedScenario(
+        input: Inputs,
+        name: String,
+        block: BallastIsolatedScenarioScope<Inputs, Events, State>.() -> Unit
+    ) {
+
+        scenarioBlocks += BallastIsolatedScenarioScopeImpl(
+            delegate = BallastScenarioScopeImpl<Inputs, Events, State>(name).apply {
+                running {
+                    +input
+                }
+            }
+        )
+            .apply(block)
+            .delegate
     }
 }

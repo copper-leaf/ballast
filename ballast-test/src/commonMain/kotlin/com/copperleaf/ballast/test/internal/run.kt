@@ -25,7 +25,7 @@ import kotlin.time.measureTime
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
-    testSuite: ViewModelTestSuiteScopeImpl<Inputs, Events, State>,
+    testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) = supervisorScope {
     if(testSuite.skip) return@supervisorScope
 
@@ -72,8 +72,8 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 private suspend fun <Inputs : Any, Events : Any, State : Any>  runScenario(
-    testSuite: ViewModelTestSuiteScopeImpl<Inputs, Events, State>,
-    scenario: ViewModelTestScenarioScopeImpl<Inputs, Events, State>
+    testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
+    scenario: BallastScenarioScopeImpl<Inputs, Events, State>
 ) = supervisorScope {
     val scenarioLoggerFactory = scenario.logger ?: testSuite.suiteLogger
     val scenarioTimeout = scenario.timeout ?: testSuite.defaultTimeout
@@ -115,7 +115,7 @@ private suspend fun <Inputs : Any, Events : Any, State : Any>  runScenario(
         testViewModel.impl.attachEventHandler(TestEventHandler(testSuite.eventHandler))
     }
 
-    val inputSequenceScope = ViewModelTestScenarioInputSequenceScopeImpl(scenarioLogger, testViewModel)
+    val inputSequenceScope = BallastScenarioInputSequenceScopeImpl(scenarioLogger, testViewModel)
 
     // run the scenario input sequence
     scenarioLogger.debug("    before onInputSequenceBlock")
