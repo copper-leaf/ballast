@@ -18,14 +18,13 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.js.Js
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
+@ExperimentalTime
 interface ComposeWebInjector {
 
     fun kitchenSinkViewModel(
@@ -46,7 +45,7 @@ interface ComposeWebInjector {
     ): ScorekeeperViewModel
 }
 
-@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
+@ExperimentalTime
 class ComposeWebInjectorImpl(
     private val applicationScope: CoroutineScope,
 ) : ComposeWebInjector {

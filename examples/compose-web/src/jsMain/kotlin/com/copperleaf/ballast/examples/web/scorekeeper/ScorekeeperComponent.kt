@@ -17,7 +17,6 @@ import com.copperleaf.ballast.examples.web.util.bulma.BulmaButtonGroup
 import com.copperleaf.ballast.examples.web.util.bulma.BulmaColor
 import com.copperleaf.ballast.examples.web.util.bulma.BulmaInput
 import com.copperleaf.ballast.examples.web.util.bulma.BulmaPanel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.target
 import org.jetbrains.compose.web.dom.A
@@ -26,7 +25,7 @@ import org.jetbrains.compose.web.dom.I
 import org.jetbrains.compose.web.dom.Text
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
+@ExperimentalTime
 class ScorekeeperComponent(
     private val injector: ComposeWebInjector
 ) : Component {

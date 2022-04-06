@@ -13,7 +13,7 @@ import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
 import kotlinx.coroutines.CoroutineScope
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
+@ExperimentalTime
 class ScorekeeperViewModel(
     viewModelCoroutineScope: CoroutineScope,
     prefs: ScoreKeeperPrefs,

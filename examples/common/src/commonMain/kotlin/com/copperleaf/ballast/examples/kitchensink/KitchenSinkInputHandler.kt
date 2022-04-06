@@ -3,11 +3,9 @@ package com.copperleaf.ballast.examples.kitchensink
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.observeFlows
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
-@ExperimentalCoroutinesApi
 class KitchenSinkInputHandler : InputHandler<
     KitchenSinkContract.Inputs,
     KitchenSinkContract.Events,

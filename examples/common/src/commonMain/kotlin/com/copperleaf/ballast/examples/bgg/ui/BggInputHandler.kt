@@ -4,10 +4,8 @@ import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.examples.bgg.repository.BggRepository
 import com.copperleaf.ballast.observeFlows
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.map
 
-@ExperimentalCoroutinesApi
 class BggInputHandler(
     val repository: BggRepository
 ) : InputHandler<

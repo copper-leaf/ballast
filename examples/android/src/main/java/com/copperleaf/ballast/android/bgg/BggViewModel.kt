@@ -15,7 +15,6 @@ import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.coroutines.EmptyCoroutineContext
 
 val bggRepository by lazy {
@@ -38,7 +37,6 @@ val bggRepository by lazy {
     )
 }
 
-@ExperimentalCoroutinesApi
 class BggViewModel : AndroidViewModel<
     BggContract.Inputs,
     BggContract.Events,

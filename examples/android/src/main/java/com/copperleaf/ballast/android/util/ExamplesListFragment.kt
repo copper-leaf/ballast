@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ListItem
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
@@ -17,7 +16,6 @@ import com.copperleaf.ballast.android.R
 
 class ExamplesListFragment : Fragment() {
 
-    @OptIn(ExperimentalMaterialApi::class)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return ComposeView(requireContext())
             .apply {

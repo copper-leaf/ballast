@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalTime::class)
-
 package com.copperleaf.ballast.android.util
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
@@ -13,7 +11,6 @@ import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlin.time.ExperimentalTime
 
 private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 private val httpClient = HttpClient(OkHttp)

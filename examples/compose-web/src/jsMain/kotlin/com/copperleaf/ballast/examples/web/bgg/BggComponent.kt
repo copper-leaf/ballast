@@ -20,7 +20,6 @@ import com.copperleaf.ballast.examples.web.util.bulma.BulmaSelect
 import com.copperleaf.ballast.repository.cache.Cached
 import com.copperleaf.ballast.repository.cache.getCachedOrEmptyList
 import com.copperleaf.ballast.repository.cache.isLoading
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.target
 import org.jetbrains.compose.web.dom.A
@@ -30,7 +29,7 @@ import org.jetbrains.compose.web.dom.Img
 import org.jetbrains.compose.web.dom.Text
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
+@ExperimentalTime
 class BggComponent(
     private val injector: ComposeWebInjector
 ) : Component {

@@ -4,12 +4,10 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.forViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlin.time.ExperimentalTime
 import com.copperleaf.ballast.examples.counter.CounterContract
 import com.copperleaf.ballast.examples.counter.CounterInputHandler
 import com.copperleaf.ballast.examples.counter.CounterEventHandler
 
-@ExperimentalTime
 class CounterViewModel(
     viewModelCoroutineScope: CoroutineScope,
     configurationBuilder: BallastViewModelConfiguration.Builder,

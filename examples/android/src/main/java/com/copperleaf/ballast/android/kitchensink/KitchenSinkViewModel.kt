@@ -5,10 +5,7 @@ import com.copperleaf.ballast.core.AndroidViewModel
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkContract
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkInputHandler
 import com.copperleaf.ballast.forViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
 class KitchenSinkViewModel : AndroidViewModel<
     KitchenSinkContract.Inputs,
     KitchenSinkContract.Events,

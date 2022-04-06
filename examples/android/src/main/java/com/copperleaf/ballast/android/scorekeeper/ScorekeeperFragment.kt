@@ -21,7 +21,6 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.ListItem
@@ -50,7 +49,6 @@ import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperContract
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.scorekeeper.models.Player
 
-@OptIn(ExperimentalMaterialApi::class)
 class ScorekeeperFragment : Fragment() {
 
     val snackbarHostState = SnackbarHostState()

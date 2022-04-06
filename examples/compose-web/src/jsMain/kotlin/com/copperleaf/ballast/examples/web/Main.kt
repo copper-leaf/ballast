@@ -3,11 +3,11 @@ package com.copperleaf.ballast.examples.web
 import androidx.compose.runtime.remember
 import com.copperleaf.ballast.examples.web.bgg.BggComponent
 import com.copperleaf.ballast.examples.web.counter.CounterComponent
+import com.copperleaf.ballast.examples.web.kitchensink.KitchenSinkComponent
+import com.copperleaf.ballast.examples.web.scorekeeper.ScorekeeperComponent
 import com.copperleaf.ballast.examples.web.util.Component
 import com.copperleaf.ballast.examples.web.util.ComposeWebInjector
 import com.copperleaf.ballast.examples.web.util.ComposeWebInjectorImpl
-import com.copperleaf.ballast.examples.web.kitchensink.KitchenSinkComponent
-import com.copperleaf.ballast.examples.web.scorekeeper.ScorekeeperComponent
 import kotlinx.browser.document
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,7 @@ import kotlinx.coroutines.SupervisorJob
 import org.jetbrains.compose.web.renderComposable
 import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
+@ExperimentalTime
 fun main() {
     val components: Map<String, (ComposeWebInjector) -> Component> = mapOf(
         "example_counter" to { CounterComponent(it) },

@@ -9,9 +9,7 @@ import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperSavedStateAdapter
 import com.copperleaf.ballast.forViewModel
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 class ScorekeeperViewModel : AndroidViewModel<
     ScorekeeperContract.Inputs,
     ScorekeeperContract.Events,

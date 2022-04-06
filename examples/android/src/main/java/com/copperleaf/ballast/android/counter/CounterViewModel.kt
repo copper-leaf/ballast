@@ -8,9 +8,7 @@ import com.copperleaf.ballast.examples.counter.CounterInputHandler
 import com.copperleaf.ballast.forViewModel
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
-import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalTime::class)
 class CounterViewModel(
     savedStateHandle: SavedStateHandle,
 ) : AndroidViewModel<
