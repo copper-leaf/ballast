@@ -1,4 +1,4 @@
-## 0.15.0 - 2022-03-31
+## 0.15.0 - 2022-04-06
 
 - Fix several bugs in Debugger UI 
   - Kotlin coroutines versions were in conflict and crashing the debugger

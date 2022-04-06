@@ -40,8 +40,6 @@ allPages:
     - type: 'page'
       itemId: 'Home'
     - type: 'wiki'
-    - type: 'page'
-      itemId: 'Changelog'
   layoutConfig:
     wrapPageInBox: true
     wrapTitleInBox: false
