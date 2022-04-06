@@ -64,7 +64,7 @@ class ScorekeeperComponent(
         }
     }
 
-
+    @Suppress("UNUSED_PARAMETER")
     @Composable
     private fun NewPlayerForm(
         uiState: ScorekeeperContract.State,

@@ -5,7 +5,7 @@ import android.preference.PreferenceManager
 import com.copperleaf.ballast.android.MainApplication
 import com.copperleaf.ballast.examples.scorekeeper.prefs.ScoreKeeperPrefs
 
-
+@Suppress("DEPRECATION")
 class ScorekeeperPrefsImpl : ScoreKeeperPrefs {
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(
         MainApplication.getInstance()

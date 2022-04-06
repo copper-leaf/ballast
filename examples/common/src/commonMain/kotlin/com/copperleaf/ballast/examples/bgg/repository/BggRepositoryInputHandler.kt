@@ -10,6 +10,7 @@ import com.copperleaf.ballast.repository.bus.observeInputsFromBus
 import com.copperleaf.ballast.repository.cache.fetchWithCache
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class BggRepositoryInputHandler(
     private val eventBus: EventBus,
     private val api: BggApi,
@@ -18,7 +19,6 @@ class BggRepositoryInputHandler(
     Any,
     BggRepositoryContract.State> {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun InputHandlerScope<
         BggRepositoryContract.Inputs,
         Any,

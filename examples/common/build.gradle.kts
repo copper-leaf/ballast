@@ -66,9 +66,9 @@ kotlin {
         // Common Sourcesets
         val commonMain by getting {
             dependencies {
-                implementation(project(":ballast-core"))
-                implementation(project(":ballast-repository"))
-                implementation(project(":ballast-saved-state"))
+                api(project(":ballast-core"))
+                api(project(":ballast-repository"))
+                api(project(":ballast-saved-state"))
             }
         }
     }

@@ -30,8 +30,6 @@ fun IdeaPluginTheme(
 
     val swingColor = SwingColor()
 
-    val coroutineScope = rememberCoroutineScope { SupervisorJob() + Dispatchers.Default }
-
     MaterialTheme(
         colors = materialColors.copy(
             background = swingColor.background,

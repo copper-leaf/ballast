@@ -40,11 +40,11 @@ class BggComponent(
         val vm = remember(viewModelCoroutineScope) { injector.bggViewModel(viewModelCoroutineScope) }
         val vmState by vm.observeStates().collectAsState()
 
-        CounterUI(vmState) { vm.trySend(it) }
+        Content(vmState) { vm.trySend(it) }
     }
 
     @Composable
-    private fun CounterUI(
+    private fun Content(
         uiState: BggContract.State,
         postInput: (BggContract.Inputs) -> Unit,
     ) {
