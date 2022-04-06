@@ -5,6 +5,7 @@ import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
 import com.copperleaf.ballast.impl.TestContract
 import com.copperleaf.ballast.impl.TestEventHandler
+import com.copperleaf.ballast.impl.TestInputFilter
 import com.copperleaf.ballast.impl.TestInputHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlin.test.Test
@@ -22,7 +23,6 @@ class BallastCoreTests {
         eventHandler = TestEventHandler(),
         filter = TestInputFilter(),
     ) {
-//        skip()
         defaultInitialState { TestContract.State() }
 
         scenario("update string value only") {
@@ -274,7 +274,7 @@ class BallastCoreTests {
             running {
                 -TestContract.Inputs.MultipleStateUpdates
                 -TestContract.Inputs.MultipleStateUpdates
-                -TestContract.Inputs.MultipleStateUpdates
+                +TestContract.Inputs.MultipleStateUpdates
             }
             resultsIn {
                 assertEquals(

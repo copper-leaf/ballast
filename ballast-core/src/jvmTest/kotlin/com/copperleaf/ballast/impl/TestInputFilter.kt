@@ -1,6 +1,6 @@
-package com.copperleaf.ballast
+package com.copperleaf.ballast.impl
 
-import com.copperleaf.ballast.impl.TestContract
+import com.copperleaf.ballast.InputFilter
 
 class TestInputFilter : InputFilter<
     TestContract.Inputs,

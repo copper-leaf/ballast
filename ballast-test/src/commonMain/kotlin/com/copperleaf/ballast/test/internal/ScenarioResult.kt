@@ -21,7 +21,7 @@ internal sealed class ScenarioResult<Inputs : Any, Events : Any, State : Any> {
         val reason: Throwable,
     ) : ScenarioResult<Inputs, Events, State>() {
         override fun printResults(): String {
-            return "Scenario '${scenario.name}': Failed ($time)"
+            return "Scenario '${scenario.name}': Failed ($time)\n  Reason: ${reason.message}"
         }
     }
 
