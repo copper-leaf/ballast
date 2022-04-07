@@ -1,6 +1,6 @@
 ---
 extraJs:
-  - 'assets/example/distributions/compose-web.js'
+  - 'assets/example/distributions/examples.js'
 ---
 
 # {{ page.title }}

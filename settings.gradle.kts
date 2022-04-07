@@ -12,8 +12,6 @@ include(":ballast-debugger-idea-plugin")
 
 include(":ballast-test")
 
-include(":examples:common")
-include(":examples:android")
-include(":examples:compose-web")
+include(":examples")
 
 include(":docs")

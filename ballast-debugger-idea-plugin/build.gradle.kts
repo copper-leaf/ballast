@@ -37,7 +37,6 @@ dependencies {
     implementation(project(":ballast-core"))
     implementation(project(":ballast-debugger"))
     implementation(project(":ballast-saved-state"))
-    implementation(project(":examples:common"))
 }
 
 buildConfig {

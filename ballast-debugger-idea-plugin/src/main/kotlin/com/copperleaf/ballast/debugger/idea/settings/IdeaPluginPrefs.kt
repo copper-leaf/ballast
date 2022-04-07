@@ -3,7 +3,6 @@ package com.copperleaf.ballast.debugger.idea.settings
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.CONNECTIONS_DEFAULT_VALUE
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.EVENTS_DEFAULT_VALUE
 import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.VIEW_MODELS_DEFAULT_VALUE
-import com.copperleaf.ballast.debugger.ui.samplecontroller.InputStrategySelection
 import com.copperleaf.ballast.debugger.ui.widgets.ViewModelContentTab
 import com.intellij.ide.util.PropertiesComponent
 import com.intellij.openapi.project.Project
@@ -20,15 +19,6 @@ interface IdeaPluginPrefs {
     var viewModelsPanePercentage: Float
     var eventsPanePercentage: Float
     var selectedViewModelContentTab: ViewModelContentTab
-    var sampleInputStrategy: InputStrategySelection
-}
-
-object InMemoryIdeaPluginPrefs : IdeaPluginPrefs {
-    override var connectionsPanePercentage: Float = CONNECTIONS_DEFAULT_VALUE
-    override var viewModelsPanePercentage: Float = VIEW_MODELS_DEFAULT_VALUE
-    override var eventsPanePercentage: Float = EVENTS_DEFAULT_VALUE
-    override var selectedViewModelContentTab: ViewModelContentTab = ViewModelContentTab.Inputs
-    override var sampleInputStrategy: InputStrategySelection = InputStrategySelection.Lifo
 }
 
 class IdeaPluginPrefsImpl(
@@ -69,10 +59,4 @@ class IdeaPluginPrefsImpl(
             ?.let { storedValue -> runCatching { ViewModelContentTab.valueOf(storedValue) }.getOrNull() }
             ?: ViewModelContentTab.Inputs
         set(value) { properties.setValue(SELECTED_VM_CONTENT_TAB_KEY, value.name) }
-
-    override var sampleInputStrategy: InputStrategySelection
-        get() = properties.getValue(SAMPLE_INPUT_STRATEGY_KEY)
-            ?.let { storedValue -> runCatching { InputStrategySelection.valueOf(storedValue) }.getOrNull() }
-            ?: InputStrategySelection.Lifo
-        set(value) { properties.setValue(SAMPLE_INPUT_STRATEGY_KEY, value.name) }
 }

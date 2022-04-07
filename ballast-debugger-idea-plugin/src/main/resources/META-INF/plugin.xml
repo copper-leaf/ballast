@@ -20,8 +20,8 @@ caching/repository layer of your application.
 <ul>
   <li>Debugger UI for inspecting all ViewModel features in real-time</i>
   <li>Sample panel for getting a feel for the features of Ballast, which connects itself to the Debugger</i>
+  <li>Time-travel debugging</i>
   <li>[Coming soon] Templates for creating Ballast components</i>
-  <li>[Coming soon] Time-travel debugging</i>
 </ul>
 <br><br>
 
@@ -56,12 +56,6 @@ This IDEA plugin is built upon the best features of Kotlin:
             icon="AllIcons.Actions.Preview"
             anchor="bottom"
             factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastDebuggerToolWindow"/>
-        <toolWindow
-            id="Ballast Sample"
-            secondary="true"
-            icon="AllIcons.Actions.SyncPanels"
-            anchor="right"
-            factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastSampleToolWindow"/>
 
 <!--        <fileTemplateGroup-->
 <!--            implementation="com.copperleaf.ballast.debugger.idea.templates.ExposeOtherTemplates"/>-->

@@ -1,3 +1,8 @@
+## 0.15.1 - 2022-04-08
+
+- Fix bug in IntelliJ plugin where settings were not being saved
+- Removes "sample" from IntelliJ plugin, as that example and several more are available from the documentation site
+
 ## 0.15.0 - 2022-04-06
 
 - Fix several bugs in Debugger UI 

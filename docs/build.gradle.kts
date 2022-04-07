@@ -38,7 +38,7 @@ orchidBuild.mustRunAfter(check)
 build.dependsOn(orchidBuild)
 
 val copyExampleComposeWebSources by tasks.registering(Copy::class) {
-    from(project.rootDir.resolve("examples/compose-web/build/distributions"))
+    from(project.rootDir.resolve("examples/build/distributions"))
     into(project.projectDir.resolve("src/orchid/resources/assets/example/distributions"))
 }
 orchidServe.dependsOn(copyExampleComposeWebSources)

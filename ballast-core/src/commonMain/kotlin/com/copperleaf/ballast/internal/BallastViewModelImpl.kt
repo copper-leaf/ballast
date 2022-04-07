@@ -156,8 +156,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         coroutineScope: CoroutineScope,
         getHost: () -> BallastViewModel<Inputs, Events, State>,
     ) {
-        check(!started) { "VM is already started" }
         check(!cleared) { "VM is cleared, it cannot be restarted" }
+        check(!started) { "VM is already started" }
         started = true
         host = getHost
         viewModelScope = coroutineScope + uncaughtExceptionHandler
@@ -170,8 +170,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     private fun onCleared() {
-        check(started) { "VM is not started!" }
         check(!cleared) { "VM is already cleared" }
+        check(started) { "VM is not started!" }
         started = false
         cleared = true
 
@@ -195,8 +195,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // ---------------------------------------------------------------------------------------------------------------------
 
     private fun checkValidState() {
-        check(started) { "VM is not started!" }
         check(!cleared) { "VM is cleared!" }
+        check(started) { "VM is not started!" }
     }
 
     private fun startInternal() {
