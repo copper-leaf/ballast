@@ -5,27 +5,21 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-
-public fun interface Closeable {
-    public fun close()
-}
 
 public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     coroutineScope: CoroutineScope,
-) : BallastViewModel<Inputs, Events, State> by impl, Closeable {
+) : BallastViewModel<Inputs, Events, State> by impl {
 
     final override val type: String = "IosViewModel"
     public val initialState: State = impl.initialState
 
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,
-        coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
+        coroutineScope: CoroutineScope = MainScope(),
     ) : this(
         BallastViewModelImpl(config),
         coroutineScope
@@ -35,28 +29,21 @@ public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private 
         impl.start(coroutineScope) { this@IosViewModel }
     }
 
-    /**
-     * Observe the changes to state and emitted events from an iOS View. This is typically called from viewWillAppear
-     * or viewDidAppear, and cleared in viewWillDisappear.
-     */
-    public fun onEachState(
-        eventHandler: EventHandler<Inputs, Events, State>,
-        onStateChanged: (State) -> Unit,
-    ): Closeable {
-        val statesJob = impl.viewModelScope.launch {
-            impl.observeStates().collect { onStateChanged(it) }
-        }
-        val eventsJob = impl.viewModelScope.launch {
-            impl.attachEventHandler(eventHandler)
-        }
-
-        return Closeable {
-            statesJob.cancel()
-            eventsJob.cancel()
-        }
+    public val stateCallbacks: FlowAdapter<State> by lazy {
+        FlowAdapter(impl.viewModelScope, observeStates())
     }
 
-    override fun close() {
+    public fun attachEventHandler(
+        handler: EventHandler<Inputs, Events, State>
+    ): Canceller {
+        return JobCanceller(
+            impl.viewModelScope.launch {
+                impl.attachEventHandler(handler)
+            }
+        )
+    }
+
+    public fun close() {
         impl.viewModelScope.cancel()
     }
 }
