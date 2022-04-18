@@ -6,7 +6,7 @@ import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.debuggerEventJson
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
-import io.github.copper_leaf.ballast_debugger_idea_plugin.BALLAST_VERSION
+import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.http.cio.websocket.Frame

@@ -22,7 +22,7 @@ import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
-import io.github.copper_leaf.ballast_debugger_idea_plugin.BALLAST_VERSION
+import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 

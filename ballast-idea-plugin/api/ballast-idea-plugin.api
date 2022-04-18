@@ -383,8 +383,8 @@ public final class com/copperleaf/ballast/debugger/ui/widgets/ComposableSingleto
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ballast_debugger_idea_plugin ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ballast_debugger_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-1$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/debugger/ui/widgets/ComposableSingletons$ViewModelKt {
@@ -392,8 +392,8 @@ public final class com/copperleaf/ballast/debugger/ui/widgets/ComposableSingleto
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$ballast_debugger_idea_plugin ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$ballast_debugger_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-1$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/debugger/ui/widgets/ConnectionKt {
