@@ -1,3 +1,9 @@
+## 1.0.0 - 2022-04-19
+
+- Ballast is now considered stable with its first 1.0.0 release!
+- Adds Repository `fetchWithCache` function to observe a Flow rather than emit a one-shot data source
+- Adopt Flow/Coroutine adapters from KaMPKit instead of using home-grown ones
+
 ## 0.15.1 - 2022-04-08
 
 - Fix bug in IntelliJ plugin where settings were not being saved
