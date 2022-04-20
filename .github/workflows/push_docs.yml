@@ -1,0 +1,26 @@
+# On pushes to docs, build the examples JS bundle and update Orchid documentation site.
+
+name: 'Push to `docs` (Update documentation site)'
+
+on:
+  push:
+    branches: ['docs']
+
+jobs:
+  publishDocumentationOnMacOs:
+    runs-on: 'macos-latest'
+    env:
+      GITHUB_ACTOR: '${{ github.actor }}'
+      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+    steps:
+      - uses: 'actions/checkout@v2'
+      - run: 'git fetch --prune --unshallow --tags'
+      - name: 'Set up JDK 11'
+        uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: 11
+      - name: 'Build example Compose Web site'
+        run: './gradlew :examples:mpp:build --stacktrace -PreleaseDocs -PorchidEnvironment=prod'
+      - name: 'Publish Documentation'
+        run: './gradlew :docs:publish --stacktrace -PreleaseDocs -PorchidEnvironment=prod'

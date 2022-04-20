@@ -1,4 +1,3 @@
-
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.get
 import org.gradle.kotlin.dsl.invoke
@@ -159,6 +158,7 @@ open class License(
             EPL_V1, EPL_V2
         )
     }
+
     object EPL_V2 : License(
         spdxIdentifier = "EPL-2.0",
         url = "https://opensource.org/licenses/EPL-2.0"
@@ -238,11 +238,54 @@ fun Project.getCommitsSinceLastTag(latestTagName: String): List<String> =
 
 fun Project.hasUncommittedChanges(): Boolean = runCommand("git status --porcelain").isBlank()
 
-fun String.parseVersion(): Triple<Int, Int, Int> {
+fun String.parseVersion(sha: String): SemanticVersion {
     return this
         .split('.')
         .map { it.trim().toIntOrNull() ?: 0 }
-        .let { Triple(it.component1(), it.component2(), it.component3()) }
+        .let { SemanticVersion(it[0], it[1], it[2], sha) }
+}
+
+fun SemanticVersion.bump(
+    currentSha: String,
+    hasUncommittedChanges: Boolean,
+    commitsSinceLastTag: List<String>,
+    minorVersionBumpCommitPrefix: String,
+    majorVersionBumpCommitPrefix: String,
+): SemanticVersion {
+    var (_major, _minor, _patch) = this
+
+    if (currentSha != this.sha || hasUncommittedChanges) {
+        _patch++
+    }
+
+    for (commit in commitsSinceLastTag) {
+        if (commit.startsWith(minorVersionBumpCommitPrefix)) {
+            _patch = 0
+            _minor++
+        } else if (commit.startsWith(majorVersionBumpCommitPrefix)) {
+            _patch = 0
+            _minor = 0
+            _major++
+        }
+    }
+
+    return SemanticVersion(major = _major, minor = _minor, patch = _patch, sha = currentSha)
+}
+
+fun ProjectVersion.log() {
+    println(
+        buildString {
+            if (previousVersion == null) {
+                appendLine("$projectVersion (${projectSemanticVersion.sha})")
+            } else {
+                appendLine("${previousVersion.format()} (${previousVersion.sha}) -> $projectVersion (${projectSemanticVersion.sha})")
+            }
+
+            for (commit in commitsSincePreviousVersion) {
+                appendLine("  - $commit")
+            }
+        }
+    )
 }
 
 fun Project.getProjectVersion(
@@ -259,33 +302,26 @@ fun Project.getProjectVersion(
     val currentSha = getCurrentSha()
     val commitsSinceLastTag = getCommitsSinceLastTag(latestTagName)
     val isRelease = hasProperty("release")
+    val isDocsUpdate = !isRelease && hasProperty("releaseDocs")
     val hasUncommittedChanges = hasUncommittedChanges()
 
-    val (major, minor, patch) = when {
-        latestTagName.isBlank() -> {
-            initialVersion.parseVersion()
-        }
-        else -> {
-            var (_major, _minor, _patch) = latestTagName.parseVersion()
+    val isFirstVersion = latestTagName.isBlank()
 
-            if (currentSha != latestTagSha || hasUncommittedChanges) {
-                _patch++
-            }
-
-            for (commit in commitsSinceLastTag) {
-                if (commit.startsWith(minorVersionBumpCommitPrefix)) {
-                    _patch = 0
-                    _minor++
-                } else if (commit.startsWith(majorVersionBumpCommitPrefix)) {
-                    _patch = 0
-                    _minor = 0
-                    _major++
-                }
-            }
-
-            Triple(_major, _minor, _patch)
-        }
+    val previousVersion: SemanticVersion? = if (isFirstVersion) {
+        null
+    } else {
+        latestTagName.parseVersion(latestTagSha)
     }
+
+    val nextVersion: SemanticVersion = previousVersion
+        ?.bump(
+            currentSha = currentSha,
+            hasUncommittedChanges = hasUncommittedChanges,
+            commitsSinceLastTag = commitsSinceLastTag,
+            minorVersionBumpCommitPrefix = minorVersionBumpCommitPrefix,
+            majorVersionBumpCommitPrefix = majorVersionBumpCommitPrefix,
+        )
+        ?: initialVersion.parseVersion("")
 
     // make checks on version
     if (failWithUncommittedChanges) {
@@ -296,60 +332,100 @@ fun Project.getProjectVersion(
     }
 
     return ProjectVersion(
-        previousVersion = latestTagName,
-        major = major,
-        minor = minor,
-        patch = patch,
-        snapshot = !isRelease,
+        previousVersion = previousVersion,
+        nextVersion = nextVersion,
+        isRelease = isRelease,
+        isDocsUpdate = isDocsUpdate,
         snapshotSuffix = snapshotSuffix,
-        sha = currentSha,
-        commits = commitsSinceLastTag
+        latestSha = currentSha,
+        commitsSincePreviousVersion = commitsSinceLastTag
     ).also {
         if (logChanges) {
-            println(
-                "$latestTagName ($latestTagSha) -> $it ($currentSha) \n  * " + commitsSinceLastTag.joinToString(
-                    separator = "\n  - "
-                )
-            )
+            it.log()
         }
     }
 }
 
-data class ProjectVersion(
-    val previousVersion: String,
+data class SemanticVersion(
     val major: Int,
     val minor: Int,
     val patch: Int,
-    val snapshot: Boolean,
-    val snapshotSuffix: String,
+
     val sha: String,
-    val commits: List<String>
 ) {
-    val shortVersion: String = "$major.$minor"
-    val releaseVersion: String = "$major.$minor.$patch"
-    val fullVersion: String = "$releaseVersion${if (snapshot) snapshotSuffix else ""}"
-    val documentationVersion: String = if (snapshot) {
-        previousVersion
-    } else {
-        releaseVersion
+    override fun toString(): String {
+        return "SemVer(major=$major, minor=$minor, patch=$patch)"
     }
 
-    override fun toString(): String = fullVersion
+    fun format(
+        isSnapshot: Boolean = false,
+        snapshotSuffix: String = "",
+    ): String {
+        return if (isSnapshot) "$major.$minor.$patch$snapshotSuffix" else "$major.$minor.$patch"
+    }
+}
+
+data class ProjectVersion(
+    val previousVersion: SemanticVersion?,
+    val nextVersion: SemanticVersion,
+
+    val isRelease: Boolean,
+    val isDocsUpdate: Boolean,
+
+    val snapshotSuffix: String,
+    val latestSha: String,
+    val commitsSincePreviousVersion: List<String>
+) {
+    val previousOrInitialVersion: SemanticVersion
+        get() {
+            return previousVersion ?: nextVersion
+        }
+    val projectSemanticVersion: SemanticVersion
+        get() {
+            return if (isRelease) {
+                nextVersion
+            } else if (isDocsUpdate) {
+                previousOrInitialVersion
+            } else {
+                nextVersion
+            }
+        }
+    val projectVersion: String
+        get() {
+            return if (isRelease) {
+                nextVersion.format(false, snapshotSuffix)
+            } else if (isDocsUpdate) {
+                previousOrInitialVersion.format(false, snapshotSuffix)
+            } else {
+                nextVersion.format(true, snapshotSuffix)
+            }
+        }
+
+    val documentationVersion: String
+        get() {
+            return if (isRelease) {
+                // we're releasing a new version of the library, use the newest version
+                nextVersion.format(false, snapshotSuffix)
+            } else if(isDocsUpdate) {
+                // we're publishing an update to the documentation site without releasing an actual update to the library
+                previousOrInitialVersion.format(false, snapshotSuffix)
+            } else {
+                // we're just developing, use the current snapshot version
+                nextVersion.format(true, snapshotSuffix)
+            }
+        }
+
+    override fun toString(): String = projectVersion
 
     fun debug(): String {
         return """
             |ProjectVersion(
-            |    major=$major
-            |    minor=$minor
-            |    patch=$patch
-            |    snapshot=$snapshot
-            |    snapshotSuffix=$snapshotSuffix
-            |    sha=$sha
-            |    commits=$commits
-            |    shortVersion=$shortVersion
-            |    releaseVersion=$releaseVersion
-            |    fullVersion=$fullVersion
+            |    projectVersion=$projectVersion
             |    documentationVersion=$documentationVersion
+            |    isRelease=$isDocsUpdate
+            |    snapshotSuffix=$snapshotSuffix
+            |    latestSha=$latestSha
+            |    commitsSincePreviousVersion=${commitsSincePreviousVersion.size}
             |)
         """.trimMargin()
     }

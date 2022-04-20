@@ -169,7 +169,7 @@ class LoginScreenEventHandler : EventHandler<Inputs, Events, State> {
     override suspend fun EventHandlerScope<Inputs, Events, State>.handleEvent(
         event: Events
     ) = when (event) {
-        is Events.Notification -> {}
+        is Events.Notification -> { }
     }
 }
 ```

@@ -3,8 +3,8 @@ public final class com/copperleaf/ballast/examples/ComposableSingletons$MainKt {
 	public static field lambda-1 Lkotlin/jvm/functions/Function4;
 	public static field lambda-2 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun getLambda-1$examples ()Lkotlin/jvm/functions/Function4;
-	public final fun getLambda-2$examples ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-1$mpp ()Lkotlin/jvm/functions/Function4;
+	public final fun getLambda-2$mpp ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/copperleaf/ballast/examples/MainKt {
@@ -33,7 +33,7 @@ public final class com/copperleaf/ballast/examples/bgg/ComposableSingletons$BggC
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/bgg/ComposableSingletons$BggComposeUiKt;
 	public static field lambda-1 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun getLambda-1$examples ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-1$mpp ()Lkotlin/jvm/functions/Function3;
 }
 
 public abstract interface class com/copperleaf/ballast/examples/bgg/api/BggApi {
@@ -257,8 +257,8 @@ public final class com/copperleaf/ballast/examples/counter/ComposableSingletons$
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$examples ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$examples ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-1$mpp ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$mpp ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/examples/counter/CounterComponent : com/copperleaf/ballast/examples/util/Component {
@@ -355,15 +355,15 @@ public final class com/copperleaf/ballast/examples/kitchensink/ComposableSinglet
 	public static field lambda-8 Lkotlin/jvm/functions/Function3;
 	public static field lambda-9 Lkotlin/jvm/functions/Function3;
 	public fun <init> ()V
-	public final fun getLambda-1$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-4$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-5$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-6$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-7$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-8$examples ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-9$examples ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-1$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-2$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-3$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-4$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-5$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-6$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-7$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-8$mpp ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-9$mpp ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/copperleaf/ballast/examples/kitchensink/KitchenSinkComponent : com/copperleaf/ballast/examples/util/Component {
@@ -506,10 +506,10 @@ public final class com/copperleaf/ballast/examples/kitchensink/controller/Compos
 	public static field lambda-3 Lkotlin/jvm/functions/Function2;
 	public static field lambda-4 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$examples ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$examples ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-3$examples ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$examples ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-1$mpp ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$mpp ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-3$mpp ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$mpp ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/examples/kitchensink/controller/InputStrategySelection : java/lang/Enum {
@@ -613,8 +613,8 @@ public final class com/copperleaf/ballast/examples/scorekeeper/ComposableSinglet
 	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$examples ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$examples ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-1$mpp ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$mpp ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/examples/scorekeeper/ScorekeeperComponent : com/copperleaf/ballast/examples/util/Component {
