@@ -81,5 +81,5 @@ build/
 *.iml
 .DS_Store
 
-examples/src/jsMain/resources/bgg/hot/*
+examples/mpp/src/jsMain/resources/bgg/hot/*
 docs/src/orchid/resources/assets/example/distributions/**/*

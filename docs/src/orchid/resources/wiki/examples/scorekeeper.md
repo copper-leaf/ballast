@@ -1,6 +1,6 @@
 ---
 extraJs:
-  - 'assets/example/distributions/examples.js'
+  - 'assets/example/distributions/mpp.js'
 ---
 
 # {{ page.title }}
@@ -18,7 +18,7 @@ How to use:
   scores will be "committed" and their total values updated accordingly. Alternatively, you may click on an individual
   player's score to commit it immediately.
 - Player scores will be saved to your browser's LocalStorage with every change, and restored when reloading this page
-  (TODO: implement a [SavedState module][#3] to have this done automatically)
+  using the [Saved State module][1]
 
 <div id="example_scorekeeper"></div>
 <br><br>
@@ -26,4 +26,4 @@ How to use:
 _Pro Tip: Open your {{ 'Ballast Debugger' | anchor }} with this page open to see all Ballast activity in real-time, or
 just read the browser's Console logs._
 
-[#3]: https://github.com/copper-leaf/ballast/issues/3
+[1]: {{ 'Ballast Saved State' | link }}

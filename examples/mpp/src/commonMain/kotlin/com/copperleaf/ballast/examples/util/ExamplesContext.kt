@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.examples.util
 
-import io.github.copper_leaf.examples.BALLAST_VERSION
-
+import io.github.copper_leaf.mpp.BALLAST_VERSION
 
 object ExamplesContext {
     val githubRepo = "https://github.com/copper-leaf/ballast"
@@ -10,7 +9,7 @@ object ExamplesContext {
     val repoBaseUrlWithVersion: String =
         "$githubRepo/tree/$BALLAST_VERSION"
     val sampleSourcesPathInRepo: String =
-        "examples/common/src/commonMain/kotlin/com/copperleaf/ballast/examples"
+        "examples/mpp/src/commonMain/kotlin/com/copperleaf/ballast/examples"
     val samplesUrlWithVersion =
         "${repoBaseUrlWithVersion}/${sampleSourcesPathInRepo}"
 }

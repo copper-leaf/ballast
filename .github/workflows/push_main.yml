@@ -59,7 +59,7 @@ jobs:
       - name: 'Publish Artifacts'
         run: './gradlew publishAllPublicationsToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Build example Compose Web site'
-        run: './gradlew :examples:build --stacktrace -Prelease -PorchidEnvironment=prod'
+        run: './gradlew :examples:mpp:build --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Publish Documentation'
         run: './gradlew :docs:publish --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Close Sonatype Staging Repository'

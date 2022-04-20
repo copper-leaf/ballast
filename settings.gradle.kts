@@ -11,5 +11,6 @@ include(":ballast-firebase-analytics")
 include(":ballast-idea-plugin")
 include(":ballast-test")
 
-include(":examples")
+include(":examples:mpp")
+
 include(":docs")

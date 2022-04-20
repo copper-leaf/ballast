@@ -2,7 +2,7 @@ site:
   theme: Copper
   baseUrl: 'https://copper-leaf.github.io/ballast/'
   about:
-    siteName: Ballat
+    siteName: Ballast
     siteDescription: Opinionated Application State Management framework for Kotlin Multiplatform
 
 theme:
