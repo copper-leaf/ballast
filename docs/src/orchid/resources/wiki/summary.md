@@ -3,6 +3,7 @@
 
 - [Features](feature-overview.md)
 - [Thinking in Ballast MVI](mental-model.md)
+- [Usage Guide](usage-guide.md)
 - [Platforms](platforms/index.md)
   - [Android](platforms/android.md) 
   - [iOS](platforms/ios.md) 
