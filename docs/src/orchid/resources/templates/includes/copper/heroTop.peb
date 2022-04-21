@@ -1,0 +1,13 @@
+{% import 'macros/ctaButtons' %}
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">{{ site.about.siteName }}</p>
+  <p class="subtitle is-4 has-text-centered">{{ site.about.siteDescription }}</p>
+
+  <div class="columns is-mobile has-text-centered">
+  {{ _primaryButton(theme, 'is-fullwidth', 'column') }}
+  {{ _secondaryButton(theme, 'is-fullwidth', 'column') }}
+  </div>
+</div>
+

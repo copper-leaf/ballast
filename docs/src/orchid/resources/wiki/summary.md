@@ -21,6 +21,7 @@
   - [Scorekeeper](examples/scorekeeper.md)
   - [API Call and Cache](examples/bgg-api.md)
   - [Kitchen Sink](examples/kitchensink.md)
+  - [KaMPKit](examples/kamp-kit.md)
 - [Feature Comparison](feature-comparison.md)
 - [Roadmap](roadmap.md)
 - [Changelog](changelog.md)
