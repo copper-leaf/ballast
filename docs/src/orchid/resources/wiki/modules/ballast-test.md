@@ -4,8 +4,7 @@
 # {{ page.title }}
 
 Ballast Test gives you a DSL you can include in any Kotlin testing framework to setup sequences of inputs and assert the
-results of their processing. It is currently a work-in-progress and is likely to be changed significantly before 
-Ballast's 1.0.0 release.
+results of their processing.
 
 # Usage
 
