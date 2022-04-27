@@ -96,7 +96,7 @@ kotlin {
         // Android JVM Sourcesets
         val androidMain by getting {
             dependencies {
-                implementation("androidx.fragment:fragment-ktx:1.4.1")
+                implementation(libs.androidx.fragment)
             }
         }
         val androidAndroidTestRelease by getting { }

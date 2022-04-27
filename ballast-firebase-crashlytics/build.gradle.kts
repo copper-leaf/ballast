@@ -86,8 +86,8 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 api(project(":ballast-core"))
-                implementation(project.dependencies.platform("com.google.firebase:firebase-bom:29.0.0"))
-                implementation("com.google.firebase:firebase-crashlytics-ktx")
+                implementation(project.dependencies.platform(libs.firebase.bom))
+                implementation(libs.firebase.crashlytics)
             }
         }
         val androidAndroidTestRelease by getting { }

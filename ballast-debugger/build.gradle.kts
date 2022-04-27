@@ -85,12 +85,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-core"))
-                implementation("io.ktor:ktor-client-core:1.6.5")
-                implementation("io.ktor:ktor-client-websockets:1.6.5")
-                implementation("io.ktor:ktor-client-serialization:1.6.5")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
-                implementation("com.benasher44:uuid:0.3.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.websockets)
+                implementation(libs.ktor.client.serialization)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.benasher44.uuid)
             }
         }
         val commonTest by getting {
@@ -108,17 +108,12 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("io.ktor:ktor-client-cio:1.6.5")
             }
         }
 
         // Android JVM Sourcesets
         val androidMain by getting {
-            dependencies {
-                implementation("androidx.lifecycle:lifecycle-common:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
-            }
+            dependencies { }
         }
         val androidAndroidTestRelease by getting { }
         val androidTest by getting {

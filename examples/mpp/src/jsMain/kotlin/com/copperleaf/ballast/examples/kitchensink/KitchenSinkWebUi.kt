@@ -15,7 +15,9 @@ object KitchenSinkWebUi {
     ) {
         Text("State")
         Hr { }
-        Text("${uiState.infiniteCounter}")
+        Text("Completed Input: ${uiState.completedInputCounter}")
+        Br { }
+        Text("Counter: ${uiState.infiniteCounter}")
         Br { }
         if (uiState.loading) {
             Progress { }

@@ -5,6 +5,7 @@ plugins {
     `copper-leaf-base`
     `copper-leaf-version`
     `copper-leaf-lint`
+    kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.github.gmazzo.buildconfig")
     id("org.jetbrains.intellij")
@@ -16,6 +17,10 @@ val publishConfiguration: PublishConfiguration = Config.publishConfiguration(pro
 
 description = "Debugger UI application for Ballast MVI"
 
+configurations.all {
+    resolutionStrategy.sortArtifacts(ResolutionStrategy.SortOrder.DEPENDENCY_FIRST)
+}
+
 dependencies {
     // compose Desktop Intellij Plugin
     compileOnly(compose.desktop.currentOs)
@@ -24,19 +29,19 @@ dependencies {
     implementation(compose.materialIconsExtended)
 
     // Ktor websocker server
-    implementation("io.ktor:ktor-server-core:1.6.7")
-    implementation("io.ktor:ktor-server-cio:1.6.7")
-    implementation("io.ktor:ktor-websockets:1.6.7")
-    implementation("org.slf4j:slf4j-nop:1.7.36")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
-    implementation("io.ktor:ktor-client-cio:1.6.7")
-    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation(libs.kotlinx.coroutines.swing)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.cio)
+    implementation(libs.ktor.server.websockets)
+    implementation(libs.slf4j.nop)
+    implementation(libs.ktor.client.cio)
 
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     implementation(project(":ballast-core"))
-    implementation(project(":ballast-debugger"))
     implementation(project(":ballast-saved-state"))
+    implementation(project(":ballast-debugger"))
 }
 
 buildConfig {

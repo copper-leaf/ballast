@@ -13,6 +13,7 @@ import com.copperleaf.ballast.debugger.models.BallastSideJobState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.ui.widgets.ViewModelContentTab
+import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.jetbrains.compose.splitpane.SplitPaneState
 
@@ -21,6 +22,7 @@ object DebuggerContract {
         val actions: MutableSharedFlow<BallastDebuggerAction> = MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE),
 
         val allMessages: List<BallastDebuggerEvent> = emptyList(),
+        val ballastVersion: String = BALLAST_VERSION,
         val applicationState: BallastApplicationState = BallastApplicationState(),
 
         val focusedConnectionId: String? = null,

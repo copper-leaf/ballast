@@ -16,13 +16,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
+import com.copperleaf.ballast.debugger.server.ClientModelMapper
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
-import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
@@ -47,7 +48,16 @@ fun ConnectionsList(
                         }
                     ) {
                         TopAppBar(
-                            title = { Text("Connections", overflow = TextOverflow.Ellipsis, maxLines = 1) }
+                            title = {
+                                Column {
+                                    Text("Connections", overflow = TextOverflow.Ellipsis, maxLines = 1)
+                                    Text(
+                                        text = "Plugin version: ${uiState.ballastVersion}",
+                                        style = MaterialTheme.typography.subtitle2,
+                                        color = LocalContentColor.current,
+                                    )
+                                }
+                            }
                         )
                     }
                 }
@@ -135,11 +145,14 @@ fun ConnectionSummary(
                 )
             },
             overlineText = {
+                val isSupported = remember(connectionState.connectionBallastVersion) {
+                    ClientModelMapper.isSupported(connectionState.connectionBallastVersion)
+                }
                 Text(
                     text = "${connectionState.connectionId} (${connectionState.connectionBallastVersion})",
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    color = if (connectionState.connectionBallastVersion == BALLAST_VERSION) {
+                    color = if (isSupported) {
                         LocalContentColor.current
                     } else {
                         MaterialTheme.colors.error

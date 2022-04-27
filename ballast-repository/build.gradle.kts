@@ -95,11 +95,7 @@ kotlin {
 
         // Android JVM Sourcesets
         val androidMain by getting {
-            dependencies {
-                implementation("androidx.lifecycle:lifecycle-common:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
-            }
+            dependencies { }
         }
         val androidAndroidTestRelease by getting { }
         val androidTest by getting {

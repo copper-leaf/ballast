@@ -90,14 +90,13 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
 
         // Android JVM Sourcesets
         val androidMain by getting {
-            dependencies {
-            }
+            dependencies { }
         }
         val androidAndroidTestRelease by getting { }
         val androidTest by getting {

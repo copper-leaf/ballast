@@ -24,7 +24,7 @@ class KitchenSinkInputHandler : InputHandler<
         is KitchenSinkContract.Inputs.LongRunningInput -> {
             updateState { it.copy(loading = true) }
             delay(5000)
-            updateState { it.copy(loading = false) }
+            updateState { it.copy(loading = false, completedInputCounter = it.completedInputCounter + 1) }
         }
 
         is KitchenSinkContract.Inputs.LongRunningEvent -> {

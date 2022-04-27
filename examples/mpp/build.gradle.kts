@@ -88,11 +88,11 @@ kotlin {
                 implementation(project(":ballast-saved-state"))
                 implementation(project(":ballast-debugger"))
 
-                implementation("io.ktor:ktor-client-core:1.6.7")
-                implementation("io.ktor:ktor-client-logging:1.6.7")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
-                implementation("com.russhwolf:multiplatform-settings:0.8.1")
-                implementation("com.russhwolf:multiplatform-settings-no-arg:0.8.1")
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.multiplatformSettings.core)
+                implementation(libs.multiplatformSettings.noArg)
             }
         }
 
@@ -108,16 +108,16 @@ kotlin {
         val androidMain by getting {
             dependsOn(composeMain)
             dependencies {
-                implementation("androidx.core:core-ktx:1.7.0")
-                implementation("androidx.appcompat:appcompat:1.4.1")
-                implementation("com.google.android.material:material:1.5.0")
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-                implementation("androidx.activity:activity-compose:1.4.0")
-                implementation("androidx.navigation:navigation-fragment-ktx:2.4.1")
-                implementation("androidx.navigation:navigation-ui-ktx:2.4.1")
-                implementation("androidx.navigation:navigation-compose:2.4.1")
+                implementation(libs.androidx.core)
+                implementation(libs.androidx.appcompat)
+                implementation(libs.androidx.material)
+                implementation(libs.androidx.lifecycle.runtime)
+                implementation(libs.androidx.compose.activity)
+                implementation(libs.androidx.navigation)
+                implementation(libs.androidx.navigation.ui)
+                implementation(libs.androidx.navigation.compose)
 
-                implementation("io.ktor:ktor-client-okhttp:1.6.7")
+                implementation(libs.ktor.client.okhttp)
             }
         }
 
@@ -129,7 +129,7 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 api(compose.desktop.components.splitPane)
 
-                implementation("io.ktor:ktor-client-okhttp:1.6.7")
+                implementation(libs.ktor.client.okhttp)
             }
         }
 
@@ -139,7 +139,7 @@ kotlin {
                 implementation(compose.web.core)
                 implementation(compose.runtime)
 
-                implementation("io.ktor:ktor-client-js:1.6.7")
+                implementation(libs.ktor.client.js)
             }
         }
     }

@@ -3,10 +3,7 @@ package com.copperleaf.ballast.debugger.server
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.BALLAST_VERSION_HEADER
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.CONNECTION_ID_HEADER
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
-import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
-import com.copperleaf.ballast.debugger.models.debuggerEventJson
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
-import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.http.cio.websocket.Frame
@@ -54,6 +51,10 @@ public class BallastDebuggerServerConnection(
                             ?: call.parameters[BALLAST_VERSION_HEADER]
                             ?: ""
 
+                        val modelMapper = ClientModelMapper.getForVersion(
+                            connectionBallastVersion = connectionBallastVersion,
+                        )
+
                         // notify that a connection was started
                         postInput(
                             DebuggerContract.Inputs.ConnectionEstablished(
@@ -62,14 +63,15 @@ public class BallastDebuggerServerConnection(
                             )
                         )
 
-                        if (connectionBallastVersion == BALLAST_VERSION) {
-                            // for now, require clients and server to be on same version
+                        if (modelMapper != null) {
+                            // get the mapper for a particular version of the API, to allow clients with different '
+                            // versions to connect to the same debugger server
                             joinAll(
-                                processOutgoing(connectionId),
-                                processIncoming(),
+                                processOutgoing(modelMapper, connectionId),
+                                processIncoming(modelMapper),
                             )
                         } else {
-                            // otherwise, drop the connection immediately
+                            // otherwise, drop the connection immediately, the client's version in incompatible
                         }
                     }
                 }
@@ -77,31 +79,36 @@ public class BallastDebuggerServerConnection(
         }
     }
 
-    private fun DefaultWebSocketServerSession.processOutgoing(connectionId: String): Job {
+    private fun DefaultWebSocketServerSession.processOutgoing(
+        clientModelMapper: ClientModelMapper,
+        connectionId: String
+    ): Job {
         val session = this
         return outgoingActions
             .filter { it.connectionId == connectionId }
             .onEach { message ->
-                // send the message through the from the client UI back to the device, to request it perform certain
+                // send the message from the client UI back to the device, to request that it perform certain
                 // actions on the device
                 session.send(
-                    debuggerEventJson
-                        .encodeToString(BallastDebuggerAction.serializer(), message)
+                    clientModelMapper
+                        .mapOutgoing(message)
                         .let { Frame.Text(it) }
                 )
             }
             .launchIn(this)
     }
 
-    private fun DefaultWebSocketServerSession.processIncoming(): Job {
+    private fun DefaultWebSocketServerSession.processIncoming(
+        clientModelMapper: ClientModelMapper,
+    ): Job {
         return incoming
             .receiveAsFlow()
             .filterIsInstance<Frame.Text>()
             .onEach {
                 val text = it.readText()
 
-                debuggerEventJson
-                    .decodeFromString(BallastDebuggerEvent.serializer(), text)
+                clientModelMapper
+                    .mapIncoming(text)
                     .let { DebuggerContract.Inputs.DebuggerEventReceived(it) }
                     .let { postInput(it) }
             }

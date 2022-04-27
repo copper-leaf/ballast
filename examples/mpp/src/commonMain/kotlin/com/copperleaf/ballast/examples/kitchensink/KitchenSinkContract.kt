@@ -3,6 +3,7 @@ package com.copperleaf.ballast.examples.kitchensink
 object KitchenSinkContract {
     data class State(
         val loading: Boolean = false,
+        val completedInputCounter: Int = 0,
         val infiniteCounter: Int = 0,
     )
 

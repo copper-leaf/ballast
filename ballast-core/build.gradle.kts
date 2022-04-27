@@ -73,7 +73,7 @@ kotlin {
         // Common Sourcesets
         val commonMain by getting {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+                api(libs.kotlinx.coroutines.core)
             }
         }
         val commonTest by getting {
@@ -91,16 +91,16 @@ kotlin {
         val jvmTest by getting {
             dependencies {
                 implementation(kotlin("test-junit"))
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+                implementation(libs.kotlinx.coroutines.test)
             }
         }
 
         // Android JVM Sourcesets
         val androidMain by getting {
             dependencies {
-                implementation("androidx.lifecycle:lifecycle-common:2.4.1")
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+                api(libs.androidx.lifecycle.common)
+                api(libs.androidx.lifecycle.runtime)
+                api(libs.androidx.lifecycle.viewmodel)
             }
         }
         val androidAndroidTestRelease by getting { }

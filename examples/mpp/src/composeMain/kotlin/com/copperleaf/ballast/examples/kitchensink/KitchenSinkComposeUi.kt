@@ -33,7 +33,8 @@ object KitchenSinkComposeUi {
         ) {
             Text("State", style = MaterialTheme.typography.h5)
             Divider()
-            Text("${uiState.infiniteCounter}")
+            Text("Completed Input: ${uiState.completedInputCounter}")
+            Text("Counter: ${uiState.infiniteCounter}")
             Box(Modifier.size(48.dp), contentAlignment = Alignment.Center) {
                 if (uiState.loading) {
                     CircularProgressIndicator()
