@@ -1,0 +1,37 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
+#end
+
+import com.copperleaf.ballast.savedstate.RestoreStateScope
+import com.copperleaf.ballast.savedstate.SaveStateScope
+import com.copperleaf.ballast.savedstate.SavedStateAdapter
+
+#parse("File Header.java")
+class ${featureName}SavedStateAdapter(
+    private val prefs: ${featureName}SavedStateAdapter.Prefs
+) : SavedStateAdapter<
+    ${featureName}Contract.Inputs,
+    ${featureName}Contract.Events,
+    ${featureName}Contract.State> {
+    
+    interface Prefs { 
+        var loading: Boolean
+    }
+
+    override suspend fun SaveStateScope<
+        ${featureName}Contract.Inputs,
+        ${featureName}Contract.Events,
+        ${featureName}Contract.State>.save() {
+        saveDiff({ loading }) { loading ->
+            prefs.loading = loading
+        }
+    }
+
+    override suspend fun RestoreStateScope<
+        ${featureName}Contract.Inputs,
+        ${featureName}Contract.Events,
+        ${featureName}Contract.State>.restore(): ${featureName}Contract.State {
+        return ${featureName}Contract.State(
+            loading = prefs.loading,
+        )
+    }
+}

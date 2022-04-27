@@ -6,18 +6,14 @@
 Ballast Debugger is a tool for inspecting the status of all components in your Ballast ViewModels in a IntelliJ plugin.
 It supports features one would expect from an MVI graphical debugger:
 
-<div id="intellij-plugin-button"></div>
-
 - Inspecting the status and data within all ViewModel features in real-time
 - Time-travel debugging
 - Resending Inputs for re-processing
-- Templates for creating new Ballast components (coming soon)
-- Sample panel for getting a feel for the features of Ballast, which connects itself to the Debugger
 
 The Ballast Debugger must first be installed as a plugin in IntelliJ Idea (Community or Ultimate) or Android Studio, and
-then add the [`ballast-debugger`](#Installation) dependency to your project.
-
-<div id="intellij-plugin-card"></div>
+then add the [`ballast-debugger`](#Installation) dependency to your project. This page documents how to set up the 
+debugger library in your application, while the {{ 'Ballast Intellij Plugin' | anchor }} page demonstrates usage of the
+debugger UI, as well as the other features of the Intellij plugin.
 
 # Usage
 
@@ -97,12 +93,6 @@ kotlin {
     }
 }
 ```
-
-<script src="https://plugins.jetbrains.com/assets/scripts/mp-widget.js"></script>
-<script>
-  MarketplaceWidget.setupMarketplaceWidget('install', 18702, "#intellij-plugin-button");
-  MarketplaceWidget.setupMarketplaceWidget('card', 18702, "#intellij-plugin-card");
-</script>
 
 [1]: https://ktor.io/docs/http-client-engines.html
 [2]: https://plugins.jetbrains.com/plugin/18702-ballast/versions

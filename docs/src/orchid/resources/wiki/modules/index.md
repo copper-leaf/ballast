@@ -8,4 +8,5 @@
 - {{ 'Ballast Repository' | anchor }}
 - {{ 'Ballast Firebase' | anchor }}
 - {{ 'Ballast Debugger' | anchor }} 
+- {{ 'Ballast IntelliJ Plugin' | anchor }} 
 - {{ 'Ballast Test' | anchor }}

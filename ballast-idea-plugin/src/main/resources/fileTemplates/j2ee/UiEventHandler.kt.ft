@@ -1,0 +1,22 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
+#end
+
+import com.copperleaf.ballast.EventHandler
+import com.copperleaf.ballast.EventHandlerScope
+
+#parse("File Header.java")
+class ${featureName}EventHandler : EventHandler<
+    ${featureName}Contract.Inputs,
+    ${featureName}Contract.Events,
+    ${featureName}Contract.State> {
+    override suspend fun EventHandlerScope<
+        ${featureName}Contract.Inputs,
+        ${featureName}Contract.Events,
+        ${featureName}Contract.State>.handleEvent(
+        event: ${featureName}Contract.Events
+    ) = when (event) {
+        is ${featureName}Contract.Events.NavigateUp -> {
+
+        }
+    }
+}

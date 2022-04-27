@@ -3,6 +3,7 @@ package com.copperleaf.ballast.debugger.idea.templates
 import com.intellij.ide.fileTemplates.FileTemplateDescriptor
 import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptor
 import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptorFactory
+import org.jetbrains.kotlin.idea.KotlinIcons
 
 /**
  * Provide a set of File Templates for creating new Ballast components for:
@@ -20,12 +21,18 @@ import com.intellij.ide.fileTemplates.FileTemplateGroupDescriptorFactory
 class ExposeOtherTemplates : FileTemplateGroupDescriptorFactory {
 
     override fun getFileTemplatesDescriptor(): FileTemplateGroupDescriptor {
-        return FileTemplateGroupDescriptor("Ballast Android Fragment", null).apply {
-            addTemplate(FileTemplateDescriptor("BallastAndroidFragment.kt"))
-            addTemplate(FileTemplateDescriptor("BallastAndroidViewModel.kt"))
-            addTemplate(FileTemplateDescriptor("BallastUiContract.kt"))
-            addTemplate(FileTemplateDescriptor("BallastUiEventHandler.kt"))
-            addTemplate(FileTemplateDescriptor("BallastUiInputHandler.kt"))
+        return FileTemplateGroupDescriptor("Ballast", KotlinIcons.MPP).apply {
+            BallastUi.UiTemplate.values().forEach {
+                addTemplate(FileTemplateDescriptor(it.templateName, it.icon))
+            }
+
+            BallastRepository.RepositoryTemplate.values().forEach {
+                addTemplate(FileTemplateDescriptor(it.templateName, it.icon))
+            }
+
+            BallastViewModel.ViewModelTemplate.values().forEach {
+                addTemplate(FileTemplateDescriptor(it.templateName, it.icon))
+            }
         }
     }
 }

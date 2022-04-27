@@ -1,0 +1,37 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
+#end
+
+import com.copperleaf.ballast.BallastViewModelConfiguration
+import com.copperleaf.ballast.repository.AndroidBallastRepository
+import com.copperleaf.ballast.repository.bus.EventBus
+import com.copperleaf.ballast.repository.cache.Cached
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+#parse("File Header.java")
+class ${featureName}RepositoryImpl(
+    eventBus: EventBus,
+    configBuilder: BallastViewModelConfiguration.Builder,
+) : AndroidBallastRepository<
+    ${featureName}RepositoryContract.Inputs,
+    ${featureName}RepositoryContract.State>(
+    eventBus = eventBus,
+    configBuilder = configBuilder
+        .apply {
+            this.inputHandler = ${featureName}RepositoryInputHandler(eventBus)
+            this.initialState = ${featureName}RepositoryContract.State()
+            this.name = "${featureName} Repository"
+        },
+), ${featureName}Repository {
+    override fun clearAllCaches() {
+        trySend(${featureName}RepositoryContract.Inputs.ClearCaches)
+    }
+
+    override fun getDataList(refreshCache: Boolean): Flow<Cached<List<String>>> {
+        trySend(${featureName}RepositoryContract.Inputs.Initialize)
+        trySend(${featureName}RepositoryContract.Inputs.RefreshDataList(refreshCache))
+        return observeStates()
+            .map { it.dataList }
+    }
+}

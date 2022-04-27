@@ -1,0 +1,21 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
+#end
+
+import com.copperleaf.ballast.core.AndroidViewModel
+import com.copperleaf.ballast.BallastViewModelConfiguration
+import com.copperleaf.ballast.forViewModel
+
+#parse("File Header.java")
+class ${featureName}ViewModel(
+    configBuilder: BallastViewModelConfiguration.Builder,
+) : AndroidViewModel<
+    ${featureName}Contract.Inputs,
+    ${featureName}Contract.Events,
+    ${featureName}Contract.State>(
+    config = configBuilder
+        .forViewModel(
+            inputHandler = ${featureName}InputHandler(),
+            initialState = ${featureName}Contract.State(),
+            name = "${featureName}",
+        ),
+)

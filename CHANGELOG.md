@@ -1,3 +1,8 @@
+## 1.1.0 - 2022-04-28
+
+- Allow IntelliJ Plugin Debugger to work with all 1.x.x client versions
+- Adds templates to Intellij Plugin
+
 ## 1.0.0 - 2022-04-19
 
 - Ballast is now considered stable with its first 1.0.0 release!

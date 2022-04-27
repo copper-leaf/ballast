@@ -21,7 +21,7 @@ caching/repository layer of your application.
   <li>Debugger UI for inspecting all ViewModel features in real-time</i>
   <li>Sample panel for getting a feel for the features of Ballast, which connects itself to the Debugger</i>
   <li>Time-travel debugging</i>
-  <li>[Coming soon] Templates for creating Ballast components</i>
+  <li>Templates for creating Ballast components</i>
 </ul>
 <br><br>
 
@@ -39,6 +39,7 @@ This IDEA plugin is built upon the best features of Kotlin:
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>org.jetbrains.compose.intellij.platform</depends>
+    <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Settings UI -->
@@ -57,15 +58,25 @@ This IDEA plugin is built upon the best features of Kotlin:
             anchor="bottom"
             factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastDebuggerToolWindow"/>
 
-<!--        <fileTemplateGroup-->
-<!--            implementation="com.copperleaf.ballast.debugger.idea.templates.ExposeOtherTemplates"/>-->
+        <fileTemplateGroup
+            implementation="com.copperleaf.ballast.debugger.idea.templates.ExposeOtherTemplates"/>
     </extensions>
 
     <actions>
-<!--        <action-->
-<!--            id="com.copperleaf.ballast.debugger.idea.templates.NewBallastComponent"-->
-<!--            class="com.copperleaf.ballast.debugger.idea.templates.NewBallastComponent">-->
-<!--            <add-to-group group-id="NewGroup"/>-->
-<!--        </action>-->
+        <action
+            id="com.copperleaf.ballast.debugger.idea.templates.BallastUi"
+            class="com.copperleaf.ballast.debugger.idea.templates.BallastUi">
+            <add-to-group group-id="NewGroup"/>
+        </action>
+        <action
+            id="com.copperleaf.ballast.debugger.idea.templates.BallastRepository"
+            class="com.copperleaf.ballast.debugger.idea.templates.BallastRepository">
+            <add-to-group group-id="NewGroup"/>
+        </action>
+        <action
+            id="com.copperleaf.ballast.debugger.idea.templates.BallastViewModel"
+            class="com.copperleaf.ballast.debugger.idea.templates.BallastViewModel">
+            <add-to-group group-id="NewGroup"/>
+        </action>
     </actions>
 </idea-plugin>

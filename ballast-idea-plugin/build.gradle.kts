@@ -62,6 +62,7 @@ intellij {
 
     plugins.set(
         listOf(
+            "org.jetbrains.kotlin",
             "org.jetbrains.compose.intellij.platform:0.1.0",
         )
     )
