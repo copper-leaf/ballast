@@ -4,8 +4,9 @@ import androidx.compose.foundation.ContextMenuArea
 import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -90,10 +91,10 @@ fun StateSnapshotSummary(
 @Composable
 fun StateSnapshotDetails(
     uiState: DebuggerContract.State,
-    StateSnapshotState: BallastStateSnapshot,
+    stateSnapshot: BallastStateSnapshot,
     postStateSnapshot: (DebuggerContract.Inputs) -> Unit,
 ) {
-    SelectionContainer {
-        Text(StateSnapshotState.toStringValue)
+    Box(Modifier.fillMaxSize()) {
+        IntellijEditor(stateSnapshot.toStringValue)
     }
 }

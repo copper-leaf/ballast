@@ -3,21 +3,20 @@ package com.copperleaf.ballast.debugger.ui.widgets
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import com.copperleaf.ballast.debugger.models.BallastEventState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
+import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
@@ -90,13 +89,17 @@ fun EventDetails(
     eventState: BallastEventState,
     postInput: (DebuggerContract.Inputs) -> Unit,
 ) {
-    SelectionContainer {
-        Column {
-            Text(eventState.toStringValue)
+    val errorStatus = eventState.status as? BallastEventState.Status.Error
 
-            (eventState.status as? BallastEventState.Status.Error)?.let {
-                Text(it.stacktrace, fontFamily = FontFamily.Monospace)
-            }
+    if(errorStatus == null) {
+        Box(Modifier.fillMaxSize()) {
+            IntellijEditor(eventState.toStringValue)
         }
+    } else {
+        VSplitPane(
+            rememberSplitPaneState(initialPositionPercentage = 0.5f),
+            topContent = { IntellijEditor(eventState.toStringValue, Modifier.fillMaxSize()) },
+            bottomContent = { IntellijEditor(errorStatus.stacktrace, Modifier.fillMaxSize()) },
+        )
     }
 }

@@ -34,7 +34,7 @@ class BallastPluginSettingsPanel(
             injector.prefs.debuggerPort = debuggerPort
             initialDebuggerPort = injector.prefs.debuggerPort
         }
-        row("Debugger port") {
+        row("Debugger port (default: 9684)") {
             intTextField(1024..65535).bindIntText(::debuggerPort)
         }
     }

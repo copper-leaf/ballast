@@ -26,6 +26,7 @@ val publishConfiguration: PublishConfiguration = Config.publishConfiguration(pro
 orchid {
     githubToken = publishConfiguration.githubToken
     version = Config.projectVersion(project).documentationVersion
+    diagnose = true
 }
 
 val build by tasks

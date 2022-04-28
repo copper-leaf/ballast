@@ -1,7 +1,10 @@
 ## 1.1.0 - 2022-04-28
 
-- Allow IntelliJ Plugin Debugger to work with all 1.x.x client versions
-- Adds templates to Intellij Plugin
+- Many improvements to the Intellij plugin
+  - Allow Debugger to work with all `1.x.x` client versions
+  - The Debugger's port can now be changed in the Preferences dialog
+  - File templates are now provided to quickly generate components from the `Right-click > New` menu
+  - The values and errors show for inputs, events, states, and sideJobs in the debugger are now more nicely formatted
 
 ## 1.0.0 - 2022-04-19
 
@@ -13,7 +16,7 @@
 
 - Fix bug in IntelliJ plugin where settings were not being saved
 - Removes "sample" from IntelliJ plugin, as that example and several more are available from the documentation site
-
+ 
 ## 0.15.0 - 2022-04-06
 
 - Fix several bugs in Debugger UI 

@@ -10,38 +10,37 @@ Ballast has an official Intellij plugin which offers several useful tools for de
 - Templates for creating new Ballast components
 
 The plugin is still in its early days of development, but will be gaining more features and additional configuration 
-settings as time goes on. This page documents how to install and use the Intellij plugin, while the 
-[Ballast Debugger][2] page shows how to install the debugger into your application.
-
-<div id="intellij-plugin-card"></div>
+settings as time goes on. This page documents how to install and use all the features of the Intellij plugin, while the 
+[Ballast Debugger][2] page shows how to install the debugger into your application so it can connect to the plugin.
 
 # Usage
 
 ## Debugger
 
-<div id="intellij-plugin-button"></div>
-
 ### Installation
 
+<div id="intellij-plugin-button"></div>
+<br>
+
 The button above will take you to the plugin landing page, or you can search for "Ballast" in the plugin marketplace
-within IntelliJ-based IDEs. Note that because the plugin's UI is built with [Compose for IDE Plugin Development][1],
-which is still very early and only available in the latest versions of IntelliJ IDEA, and it should work in both
-Community and Ultimate editions. However, at this time, Android Studio is not supported.
+within IntelliJ-based IDEs. Note that the plugin's UI is built with [Compose for IDE Plugin Development][1], which is
+still very early and only available in the latest versions of IntelliJ IDEA. It should work in both Community and
+Ultimate editions on IntelliJ IDEA, however, at this time, the latest stable version of Android Studio is not supported.
 
 ### Connecting to the debugger
 
 Once installed, a new "Ballast Debugger" tool window will be added to the bottom-right of the IDE, which can be opened
 to start the debugger. The debugger communicates via websockets to client applications that have the 
-[Ballast Debugger][2] interceptor installed. The debugger communicates over localhost on port 9684, which is currently
-hardcoded but configuring the port is coming soon. For desktop and other applications not running in a virtual machine, 
-you can connect using the normal loopback interface at `127.0.0.1:9684`. Android emulators must use the emulated 
-device's interface to the host computer's loopback at `10.1.1.20:9684`.
+[Ballast Debugger][2] interceptor installed. The debugger communicates over localhost on port `9684`, which can be 
+changed from within the Preferences dialog. For desktop and other applications not running in a virtual machine, you can 
+connect using the normal loopback interface at `127.0.0.1`. Android emulators must use the emulated device's alias 
+to the host computer's loopback at `10.1.1.20`.
 
 The debugger's websocket server will only be active for as long as the tool window is open, but the client interceptors
 will continually attempt to reconnect to the server if the connection is terminated (such as by closing the tool 
 window). The clients attempt a reconnection every few seconds, and any time it needs to send an event to the server. If
 the tool window is open, simply by interacting with your app it will reconnect to the debugger UI in the Intellij 
-plugin.
+plugin, there is no need to restart your application or force a reconnection attempt.
 
 Once connected, the client connection will send all events from its connected ViewModels through the websocket, and be 
 interpreted by the server and displayed in real-time. The connection will also send a heartbeat every few seconds, so
@@ -72,7 +71,7 @@ may vary between different platforms.
 ## Scaffolding
 
 You can quickly create files for new Ballast components from the file explorers "Right-click > New" menu, using 
-Intellij's [File and Code Templates feature][5] 
+Intellij's [File and Code Templates feature][5].
 
 There are 3 options for creating new components, which themselves have several options for the components available to 
 generate:
@@ -100,14 +99,8 @@ You can also change the content generated from any template in `Preferences > Ed
 though this is not recommended as future changes to the templates in the Intellij plugin will not be reflected 
 automatically in your edited version.
 
-<script src="https://plugins.jetbrains.com/assets/scripts/mp-widget.js"></script>
-<script>
-  MarketplaceWidget.setupMarketplaceWidget('install', 18702, "#intellij-plugin-button");
-  MarketplaceWidget.setupMarketplaceWidget('card', 18702, "#intellij-plugin-card");
-</script>
-
 [1]: https://plugins.jetbrains.com/plugin/18439-compose-for-ide-plugin-development-experimental-
 [2]: {{ 'Ballast Debugger' | link }}
 [3]: {{ 'Ballast Repository' | link }}
-[4]: {{ 'Ballast SavedState' | link }}
+[4]: {{ 'Ballast Saved State' | link }}
 [5]: https://www.jetbrains.com/help/idea/settings-file-and-code-templates.html

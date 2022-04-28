@@ -34,6 +34,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
@@ -41,14 +42,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
+import com.copperleaf.ballast.debugger.di.LocalProject
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.now
+import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.fileTypes.FileTypes
+import com.intellij.openapi.util.text.StringUtil
+import com.intellij.ui.EditorTextField
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.SplitPaneState
 import org.jetbrains.compose.splitpane.SplitterScope
+import org.jetbrains.compose.splitpane.VerticalSplitPane
 import java.awt.Cursor
 import java.time.format.DateTimeFormatter
 import kotlin.time.Duration
@@ -163,6 +170,33 @@ fun SplitPane(
     }
 }
 
+@Composable
+fun VSplitPane(
+    splitPaneState: SplitPaneState,
+    modifier: Modifier = Modifier,
+    topContent: @Composable () -> Unit,
+    bottomContent: @Composable () -> Unit,
+) {
+    VerticalSplitPane(
+        splitPaneState = splitPaneState,
+        modifier = modifier,
+    ) {
+        first(minSize = minSplitPaneSize) {
+            Box(Modifier.fillMaxSize()) {
+                topContent()
+            }
+        }
+        second(minSize = minSplitPaneSize) {
+            Box(Modifier.fillMaxSize()) {
+                bottomContent()
+            }
+        }
+        splitter {
+            ColoredSplitter(false)
+        }
+    }
+}
+
 fun Modifier.cursorForResize(
     isHorizontal: Boolean,
 ): Modifier = composed {
@@ -213,4 +247,25 @@ fun SplitterScope.ColoredSplitter(isHorizontal: Boolean) {
 fun Modifier.highlight(enabled: Boolean = true): Modifier {
     val next = if (enabled) Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.12f)) else Modifier
     return this.then(next)
+}
+
+@Suppress("UNUSED_PARAMETER")
+@Composable
+fun IntellijEditor(
+    text: String,
+    modifier: Modifier = Modifier,
+    fileType: String = "txt",
+) {
+    val project = LocalProject.current
+
+    val document = remember(text) {
+        EditorFactory.getInstance().createDocument(StringUtil.convertLineSeparators(text))
+    }
+
+    SwingPanel(
+        modifier = modifier,
+        background = MaterialTheme.colors.surface,
+        factory = { EditorTextField(document, project, FileTypes.PLAIN_TEXT, true) },
+        update = { },
+    )
 }

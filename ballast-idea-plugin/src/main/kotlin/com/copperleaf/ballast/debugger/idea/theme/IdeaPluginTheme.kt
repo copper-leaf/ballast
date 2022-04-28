@@ -5,13 +5,11 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.Color
 import com.copperleaf.ballast.debugger.di.BallastDebuggerInjector
 import com.copperleaf.ballast.debugger.di.LocalInjector
+import com.copperleaf.ballast.debugger.di.LocalProject
 import com.intellij.openapi.project.Project
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 
 @Composable
 fun IdeaPluginTheme(
@@ -39,7 +37,10 @@ fun IdeaPluginTheme(
         ),
         typography = typography,
         content = {
-            CompositionLocalProvider(LocalInjector provides BallastDebuggerInjector.getInstance(project)) {
+            CompositionLocalProvider(
+                LocalProject provides project,
+                LocalInjector provides BallastDebuggerInjector.getInstance(project),
+            ) {
                 content()
             }
         }

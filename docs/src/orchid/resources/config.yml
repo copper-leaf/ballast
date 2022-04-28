@@ -35,6 +35,10 @@ theme:
     linkVisited: 'BLUE'
 
 allPages:
+  extraJs:
+    - "https://plugins.jetbrains.com/assets/scripts/mp-widget.js"
+    - asset: 'assets/js/jb-plugin.js'
+      inlined: true
   menu:
     # Menu in left sidebar
     - type: 'page'

@@ -24,3 +24,12 @@ code[class*="language-"] .token::selection {
   color: initial !important;
   background: #a2abba !important;
 }
+
+#intellij-plugin-card > div {
+  width: 100% !important;
+}
+
+#intellij-plugin-card > div > iframe {
+  width: 100% !important;
+}
+

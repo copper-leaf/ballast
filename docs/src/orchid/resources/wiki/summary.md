@@ -15,6 +15,7 @@
   - [Ballast Saved State](modules/ballast-saved-state.md) 
   - [Ballast Firebase](modules/ballast-firebase.md) 
   - [Ballast Debugger](modules/ballast-debugger.md) 
+  - [Ballast Intellij Plugin](modules/ballast-intellij-plugin.md) 
   - [Ballast Test](modules/ballast-test.md) 
 - [Examples](examples/index.md)
   - [Simple Counter](examples/counter.md)
