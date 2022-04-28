@@ -1,13 +1,13 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefs
 import com.copperleaf.ballast.savedstate.RestoreStateScope
 import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
 import org.jetbrains.compose.splitpane.SplitPaneState
 
 class DebuggerSavedStateAdapter(
-    private val prefs: IdeaPluginPrefs,
+    private val prefs: BallastPluginPrefs,
 ) : SavedStateAdapter<
     DebuggerContract.Inputs,
     DebuggerContract.Events,
@@ -36,6 +36,7 @@ class DebuggerSavedStateAdapter(
         DebuggerContract.Events,
         DebuggerContract.State>.restore(): DebuggerContract.State {
         return DebuggerContract.State(
+            port = prefs.debuggerPort,
             connectionsPanePercentage = SplitPaneState(prefs.connectionsPanePercentage, true),
             viewModelsPanePercentage = SplitPaneState(prefs.viewModelsPanePercentage, true),
             eventsPanePercentage = SplitPaneState(prefs.eventsPanePercentage, true),
@@ -44,6 +45,6 @@ class DebuggerSavedStateAdapter(
     }
 
     override suspend fun onRestoreComplete(restoredState: DebuggerContract.State): DebuggerContract.Inputs {
-        return DebuggerContract.Inputs.StartServer(9684)
+        return DebuggerContract.Inputs.StartServer(restoredState.port)
     }
 }

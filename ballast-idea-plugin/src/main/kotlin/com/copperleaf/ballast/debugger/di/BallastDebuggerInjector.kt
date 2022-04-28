@@ -2,8 +2,8 @@ package com.copperleaf.ballast.debugger.di
 
 import androidx.compose.runtime.compositionLocalOf
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefs
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefs
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerEventHandler
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerInputHandler
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerSavedStateAdapter
@@ -14,6 +14,8 @@ import kotlinx.coroutines.CoroutineScope
 val LocalInjector = compositionLocalOf<BallastDebuggerInjector> { error("LocalInjector not provided") }
 
 interface BallastDebuggerInjector {
+    val prefs: BallastPluginPrefs
+
     fun debuggerViewModel(
         coroutineScope: CoroutineScope,
     ): DebuggerViewModel
@@ -30,7 +32,7 @@ interface BallastDebuggerInjector {
 class BallastDebuggerInjectorImpl(
     private val project: Project,
 ) : BallastDebuggerInjector {
-    private val prefs: IdeaPluginPrefs = IdeaPluginPrefsImpl(project)
+    override val prefs: BallastPluginPrefs = BallastPluginPrefsImpl(project)
 
     override fun debuggerViewModel(coroutineScope: CoroutineScope): DebuggerViewModel {
         return DebuggerViewModel(

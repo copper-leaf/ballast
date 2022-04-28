@@ -70,7 +70,16 @@ fun ViewModelList(
                         }
                     ) {
                         TopAppBar(
-                            title = { Text("ViewModels", overflow = TextOverflow.Ellipsis, maxLines = 1) }
+                            title = {
+                                Column {
+                                    Text(
+                                        text = connectionState.connectionId,
+                                        style = MaterialTheme.typography.overline,
+                                        color = LocalContentColor.current,
+                                    )
+                                    Text("ViewModels", overflow = TextOverflow.Ellipsis, maxLines = 1)
+                                }
+                            }
                         )
                     }
                 }

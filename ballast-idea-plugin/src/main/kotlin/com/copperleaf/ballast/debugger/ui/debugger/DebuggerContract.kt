@@ -1,8 +1,8 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.CONNECTIONS_DEFAULT_VALUE
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.EVENTS_DEFAULT_VALUE
-import com.copperleaf.ballast.debugger.idea.settings.IdeaPluginPrefsImpl.Companion.VIEW_MODELS_DEFAULT_VALUE
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl.Companion.CONNECTIONS_DEFAULT_VALUE
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl.Companion.EVENTS_DEFAULT_VALUE
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl.Companion.VIEW_MODELS_DEFAULT_VALUE
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
@@ -19,6 +19,7 @@ import org.jetbrains.compose.splitpane.SplitPaneState
 
 object DebuggerContract {
     data class State constructor(
+        val port: Int = 0,
         val actions: MutableSharedFlow<BallastDebuggerAction> = MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE),
 
         val allMessages: List<BallastDebuggerEvent> = emptyList(),
@@ -63,7 +64,7 @@ object DebuggerContract {
     }
 
     sealed class Inputs {
-        data class StartServer(val port: Int = 9684) : Inputs()
+        data class StartServer(val port: Int) : Inputs()
 
         class ConnectionEstablished(val connectionId: String, val connectionBallastVersion: String) : Inputs()
 

@@ -50,9 +50,14 @@ fun ConnectionsList(
                         TopAppBar(
                             title = {
                                 Column {
-                                    Text("Connections", overflow = TextOverflow.Ellipsis, maxLines = 1)
                                     Text(
                                         text = "Plugin version: ${uiState.ballastVersion}",
+                                        style = MaterialTheme.typography.overline,
+                                        color = LocalContentColor.current,
+                                    )
+                                    Text("Connections", overflow = TextOverflow.Ellipsis, maxLines = 1)
+                                    Text(
+                                        text = "Port: ${uiState.port}",
                                         style = MaterialTheme.typography.subtitle2,
                                         color = LocalContentColor.current,
                                     )
