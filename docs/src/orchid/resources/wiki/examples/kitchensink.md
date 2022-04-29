@@ -11,5 +11,4 @@ The "Kitchen Sink" example demonstrates the usage of all of Ballasts core APIs. 
 <div id="example_kitchen_sink"></div>
 <br><br>
 
-_Pro Tip: Open your {{ 'Ballast Debugger' | anchor }} with this page open to see all Ballast activity in real-time, or
-just read the browser's Console logs._
+{% snippet 'debuggerProTip' %}

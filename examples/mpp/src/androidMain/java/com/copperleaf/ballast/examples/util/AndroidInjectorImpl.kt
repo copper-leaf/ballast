@@ -21,6 +21,7 @@ class AndroidInjectorImpl(
     engineFactory = OkHttp,
     bggApi = ::BggApiImpl,
     loggerFactory = ::AndroidBallastLogger,
+    debuggerHost = "10.0.2.2",
 ), AndroidInjector {
 
     override fun kitchenSinkControllerViewModel(): KitchenSinkControllerViewModel {

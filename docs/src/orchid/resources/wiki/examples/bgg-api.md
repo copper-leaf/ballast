@@ -22,13 +22,14 @@ How to use:
 <div id="example_bgg"></div>
 <br><br>
 
-_Pro Tip: Open your {{ 'Ballast Debugger' | anchor }} with this page open to see all Ballast activity in real-time, or
-just read the browser's Console logs._
+{% snippet 'debuggerProTip' %}
 
-** _Disclaimer: Because of CORS restrictions it is not possible to hit the BGG API directly, so the responses have been
+{% alert 'danger' :: compileAs('md') %}
+**Disclaimer**: Because of CORS restrictions it is not possible to hit the BGG API directly, so the responses have been
 cached in this documentation site's domain. This site is not updated on any regular schedule so the data will definitely
 out-out-date. These cached responses are for demonstration purposes ONLY, and BGG will always remain the full owner of
-the API responses and all data/images within it._
+the API responses and all data/images within it.
+{% endalert %}
 
 [1]: https://boardgamegeek.com/
 [2]: https://boardgamegeek.com/wiki/page/BGG_XML_API2

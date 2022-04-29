@@ -6,10 +6,15 @@
 Ballast can be used from SwiftUI, but it requires a bit of boilerplate to be added to your iOS Swift code. The ViewModel
 implementation needed for iOS is `IosViewModel`.
 
-> The following instructions for integrating Ballast into Swift are largely taken from Touchlab's wonderful 
-> [KaMPKit project][1]. The KaMPKit repo has been forked, and its Repository and ViewModel layers replaced with Ballast 
-> in the [copper-leaf fork][2] to show example usage of Ballast in iOS, rather than the custom equivalents used in the
-> standard project.
+{% alert 'info' :: compileAs('md') %}
+The following instructions for integrating Ballast into Swift are largely taken from Touchlab's wonderful
+[KaMPKit project][1]. The KaMPKit repo has been forked, and its Repository and ViewModel layers replaced with Ballast
+in the [copper-leaf fork][2] to show example usage of Ballast in iOS, rather than the custom equivalents used in the
+standard project.
+
+[1]: https://github.com/touchlab/KaMPKit
+[2]: https://github.com/copper-leaf/KaMPKit-ballast
+{% endalert %}
 
 ## Initial Setup (one-time)
 

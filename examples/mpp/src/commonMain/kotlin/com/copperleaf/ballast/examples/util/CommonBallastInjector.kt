@@ -12,10 +12,10 @@ import com.copperleaf.ballast.examples.bgg.ui.BggContract
 import com.copperleaf.ballast.examples.bgg.ui.BggInputHandler
 import com.copperleaf.ballast.examples.counter.CounterContract
 import com.copperleaf.ballast.examples.counter.CounterInputHandler
-import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerContract
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkContract
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkInputHandler
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
+import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerContract
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerInputHandler
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerSavedStateAdapter
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperContract
@@ -40,6 +40,7 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
     private val engineFactory: HttpClientEngineFactory<T>,
     private val bggApi: (HttpClient) -> BggApi,
     private val loggerFactory: (String) -> BallastLogger,
+    private val debuggerHost: String,
 ) {
     private val preferences = ExamplesPreferencesImpl(Settings())
     private val httpClient = HttpClient(engineFactory) {
@@ -53,7 +54,14 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         }
     }
     private val debuggerConnection by lazy {
-        BallastDebuggerClientConnection(engineFactory, applicationScope).also { it.connect() }
+        BallastDebuggerClientConnection(
+            engineFactory = engineFactory,
+            applicationCoroutineScope = applicationScope,
+            host = debuggerHost,
+        ).also {
+            println("Start trying to connect to debugger")
+            it.connect()
+        }
     }
     protected val eventBus = EventBusImpl()
     protected val bggRepository by lazy {

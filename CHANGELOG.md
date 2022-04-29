@@ -1,4 +1,4 @@
-## 1.1.0 - 2022-04-28
+## 1.1.0 - 2022-04-29
 
 - Many improvements to the Intellij plugin
   - Allow Debugger to work with all `1.x.x` client versions

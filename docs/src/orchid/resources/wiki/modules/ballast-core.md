@@ -15,58 +15,59 @@ provided to the `BallastViewModelConfiguration`.
 The Core module provides several ViewModel base classes, so Ballast can integrate natively with a variety of platforms.
 
 - `AndroidViewModel`: A subclass of `androidx.lifecycle.ViewModel`
-- `IosViewModel`: A custom ViewModel that is tied to an iOS `ViewController`'s lifecycle
-- `BasicViewModel`: A generic ViewModel which can be used in any arbitrary context, including Kotlin targets that don't
-  have their own platform-specific ViewModel. `BasicViewModel`'s lifecycle is controlled by a `coroutineScope` provided
-  to it upon creation.
+- `IosViewModel`: A custom ViewModel that can be integrated with Combine Publishers for SwiftUI
+- `BasicViewModel`: A generic ViewModel for Kotlin targets that don't have their own platform-specific ViewModel, or for
+  anywhere you want to manually control the lifecycle of the ViewModel. `BasicViewModel`'s lifecycle is controlled by a 
+  `coroutineScope` provided to it upon creation. When the scope gets cancelled, the ViewModel gets closed and can not be
+  used again.
 
 ## Interceptors
 
-The Core module comes with only one Interceptor, `LoggingInterceptor`. It will print all Ballast activity to the logger
-provided to the `BallastViewModelConfiguration`. Ballast Core also includes two different Logger implementations, 
-`NoOpLogger`, which is used by default and simply discards all logs, and `PrintlnLogger` which writes all logs to 
-`println()`. Be sure to only include `LoggingInterceptor()` in debug builds, as logging in production may cause 
-performance degradation, and risks leaking sensitive info through the logs as there is no log filtering capability 
-included.
+The Core module comes with only one Interceptor, 
+
+- `LoggingInterceptor`: It will print all Ballast activity to the logger provided in the `BallastViewModelConfiguration`.
+  The information logged by this interceptor may be quite verbose, but it can be really handy for quickly inspecting 
+  the data in your ViewModel and what happened in what order.
+
+The `LoggingInterceptor` writes to a logger installed into the `BallastViewModelConfiguration`, which may be used by 
+InputHandlers or other Ballast features as well.
+
+{% snippet 'loggers' %}
+
+{% alert 'danger' :: compileAs('md') %}
+Be sure to only include `LoggingInterceptor()` and the logger in debug builds, as logging in production may cause 
+performance degradation and risks leaking sensitive info through to the application logs. It should not be used to 
+create a paper-trail of activity in your app, you should use something like [Ballast Firebase][1] to more selectively
+create the paper-trail.
+
+[1]: {{ 'Ballast Firebase' | link }}
+{% endalert %}
 
 ```kotlin
-@HiltViewModel
-class ExampleViewModel
-@Inject
-constructor() : AndroidViewModel<
+class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
         ExampleContract.Inputs,
         ExampleContract.Events,
         ExampleContract.State>(
-    config = BallastViewModelConfiguration.Builder()
-        .apply {
-            logger = PrintlnLogger()
-            this += LoggingInterceptor()
-        }
-        .forViewModel(
-            initialState = ExampleContract.State(),
-            inputHandler = ExampleInputHandler(),
-            name = "Example",
-        )
+  coroutineScope = coroutineScope,
+  config = BallastViewModelConfiguration.Builder()
+    .apply {
+      if(DEBUG) { // some build-time constant
+        logger = PrintlnLogger()
+        this += LoggingInterceptor()
+      }
+    }
+    .forViewModel(
+      initialState = ExampleContract.State(),
+      inputHandler = ExampleInputHandler(),
+      name = "Example",
+    ),
+  eventHandler = ExampleEventHandler(),
 )
 ```
 
 ## Input Strategies
 
-Ballast offers 3 different Input Strategies out-of-the-box, which each adapt Ballast's core functionality for different
-applications:
-
-- `LifoInputStrategy`: A last-in-first-out strategy for handling Inputs, and the default strategy if none is provided.
-  Only 1 Input will be processed at a time, and if a new Input is received while one is still working, the running Input
-  will be cancelled to immediately accept the new one. Corresponds to `Flow.collectLatest { }`, best for UI ViewModels.
-- `FifoInputStrategy`: A first-in-first-out strategy for handling Inputs. Inputs will be processed in the same order
-  they were sent and only ever one-at-a-time, but instead of cancelling running Inputs, new ones are queued and will be
-  consumed later when the queue is free. Corresponds to the normal `Flow.collect { }`, best for non-UI ViewModels.
-- `ParallelInputStrategy`: For specific edge-cases where neither of the above strategies works. Inputs are all handled
-  concurrently so you don't have to worry about blocking the queue or having Inputs cancelled. However, it places
-  additional restrictions on State reads/changes to prevent usage that might lead to race conditions.
-
-Ballast Core also includes `DefaultGuardian`, which you can use if you need to create your own `InputStrategy` to 
-maintain the same level of safety as the core `InputStrategies`.
+{% snippet 'inputStrategies' %}
 
 # Installation
 

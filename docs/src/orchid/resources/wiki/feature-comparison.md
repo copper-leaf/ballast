@@ -38,15 +38,17 @@ from one of the developers of Orbit MVI.
 <i class="fas fa-minus-circle" style="color: #ebc634"></i>&nbsp;Partially supported&nbsp;&nbsp;
 <i class="fas fa-ban" style="color: red"></i>&nbsp;Not supported&nbsp;&nbsp;
 
-> **: MVI Style refers to the general API of the library: Redux-style sends discrete objects to the library and uses some 
-> kind of transformer class to split out the objects into discrete streams for each input type. Additionally, a true Redux
-> style only transforms state, with mapper functions receiving the current state and returning the updated state, 
-> typically called a `reducer` (`(State, Input)->State`).
-> 
-> The MVVM+ style discards the discrete input classes, and instead offers helper functions within the ViewModel to
-> translate function calls on the ViewModel into lambdas that are processed in the expected MVI manner. MVVM+ typically
-> offers a richer API, more functionality, and reduced boilerplate, but makes it less obvious what's actually going on 
-> within the library.
+{% alert 'info' :: compileAs('md') %}
+**: MVI Style refers to the general API of the library: Redux-style sends discrete objects to the library and uses some
+kind of transformer class to split out the objects into discrete streams for each input type. Additionally, a true Redux
+style only transforms state, with mapper functions receiving the current state and returning the updated state,
+typically called a `reducer` (`(State, Input)->State`).
+
+The MVVM+ style discards the discrete input classes, and instead offers helper functions within the ViewModel to
+translate function calls on the ViewModel into lambdas that are processed in the expected MVI manner. MVVM+ typically
+offers a richer API, more functionality, and reduced boilerplate, but makes it less obvious what's actually going on
+within the library.
+{% endalert %}
 
 [01]: https://appmattus.medium.com/top-android-mvi-libraries-in-2021-de1afe890f27
 

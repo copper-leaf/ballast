@@ -3,16 +3,16 @@ package com.copperleaf.ballast.examples.util
 import androidx.compose.material.SnackbarHostState
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.PrintlnLogger
+import com.copperleaf.ballast.examples.bgg.BggViewModel
 import com.copperleaf.ballast.examples.bgg.ui.BggEventHandler
 import com.copperleaf.ballast.examples.counter.CounterEventHandler
-import com.copperleaf.ballast.examples.bgg.BggViewModel
 import com.copperleaf.ballast.examples.counter.CounterViewModel
-import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
-import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
-import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkEventHandler
+import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerEventHandler
+import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperEventHandler
+import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +24,7 @@ class ComposeDesktopInjectorImpl(
     engineFactory = OkHttp,
     bggApi = ::BggApiImpl,
     loggerFactory = { PrintlnLogger() },
+    debuggerHost = "127.0.0.1",
 ), ComposeDesktopInjector {
 
     override fun kitchenSinkControllerViewModel(

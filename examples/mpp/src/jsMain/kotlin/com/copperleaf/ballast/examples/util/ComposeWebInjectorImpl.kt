@@ -24,6 +24,7 @@ class ComposeWebInjectorImpl(
     engineFactory = Js,
     bggApi = ::BggApiImpl,
     loggerFactory = { JsConsoleBallastLogger() },
+    debuggerHost = "127.0.0.1",
 ), ComposeWebInjector {
 
     override fun kitchenSinkControllerViewModel(

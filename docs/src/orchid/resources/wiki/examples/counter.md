@@ -10,5 +10,4 @@ This example is just a simple counter to demonstrate the bare basics of sending 
 <div id="example_counter"></div>
 <br><br>
 
-_Pro Tip: Open your {{ 'Ballast Debugger' | anchor }} with this page open to see all Ballast activity in real-time, or
-just read the browser's Console logs._
+{% snippet 'debuggerProTip' %}

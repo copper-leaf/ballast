@@ -77,6 +77,11 @@ changelog:
 
 snippets:
   sections:
+    - tags: [ 'file_snippets' ]
+      adapter:
+        type: 'file'
+        baseDirs: [ 'snippets' ]
+        recursive: false
     - tags: ['embedded_snippets']
       adapter:
         type: 'embedded'

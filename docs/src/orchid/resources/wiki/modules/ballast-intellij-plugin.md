@@ -15,9 +15,7 @@ settings as time goes on. This page documents how to install and use all the fea
 
 # Usage
 
-## Debugger
-
-### Installation
+## Installation
 
 <div id="intellij-plugin-button"></div>
 <br>
@@ -27,6 +25,8 @@ within IntelliJ-based IDEs. Note that the plugin's UI is built with [Compose for
 still very early and only available in the latest versions of IntelliJ IDEA. It should work in both Community and
 Ultimate editions on IntelliJ IDEA, however, at this time, the latest stable version of Android Studio is not supported.
 
+## Debugger
+
 ### Connecting to the debugger
 
 Once installed, a new "Ballast Debugger" tool window will be added to the bottom-right of the IDE, which can be opened
@@ -34,7 +34,7 @@ to start the debugger. The debugger communicates via websockets to client applic
 [Ballast Debugger][2] interceptor installed. The debugger communicates over localhost on port `9684`, which can be 
 changed from within the Preferences dialog. For desktop and other applications not running in a virtual machine, you can 
 connect using the normal loopback interface at `127.0.0.1`. Android emulators must use the emulated device's alias 
-to the host computer's loopback at `10.1.1.20`.
+to the host computer's loopback at `10.0.2.2`.
 
 The debugger's websocket server will only be active for as long as the tool window is open, but the client interceptors
 will continually attempt to reconnect to the server if the connection is terminated (such as by closing the tool 

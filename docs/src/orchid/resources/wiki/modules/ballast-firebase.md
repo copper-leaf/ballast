@@ -47,6 +47,10 @@ that also should not be set to Firebase. By annotating any Input with `FirebaseC
 in the crash logs. Each Input will be logged using its `.toString()` value, so be sure to override `.toString()` for any
 inputs you do want tracked to remove any sensitive info from them.
 
+{% alert 'warning' :: compileAs('md') %}
+Add `@FirebaseCrashlyticsIgnore` to Inputs you do not want to sent to Firebase, to protect sensitive information.
+{% endalert %}
+
 In addition to logs, the `FirebaseCrashlyticsInterceptor` will also record any exceptions that are thrown but do not 
 crash the app as a [non-fatal exception][3]
 
@@ -83,6 +87,11 @@ probably aren't necessary to track, what you're mostly interested in is conversi
 will only track Inputs that are annotated with `FirebaseAnalyticsTrackInput`, and ignore the rest. Each Input will be
 logged using its `.toString()` value, so be sure to override `.toString()` for any inputs you want tracked to remove any
 sensitive info from them.
+
+{% alert 'warning' :: compileAs('md') %}
+Make sure any inputs annotated with `@FirebaseAnalyticsTrackInput` do not leak any senesitive information through 
+`.toString()`.
+{% endalert %}
 
 # Installation
 

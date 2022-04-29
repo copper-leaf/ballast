@@ -23,7 +23,6 @@ How to use:
 <div id="example_scorekeeper"></div>
 <br><br>
 
-_Pro Tip: Open your {{ 'Ballast Debugger' | anchor }} with this page open to see all Ballast activity in real-time, or
-just read the browser's Console logs._
+{% snippet 'debuggerProTip' %}
 
 [1]: {{ 'Ballast Saved State' | link }}

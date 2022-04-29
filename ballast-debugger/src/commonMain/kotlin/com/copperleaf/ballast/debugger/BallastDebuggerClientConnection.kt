@@ -53,6 +53,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.datetime.LocalDateTime
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
@@ -61,7 +62,7 @@ import kotlin.time.ExperimentalTime
 public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     engineFactory: HttpClientEngineFactory<T>,
     private val applicationCoroutineScope: CoroutineScope,
-    private val host: String = "127.0.0.1", // 10.1.1.20 on Android
+    private val host: String = "127.0.0.1", // 10.0.2.2 on Android
     private val port: Int = 9684,
     private val ballastVersion: String = BALLAST_VERSION,
     private val connectionId: String = generateUuid(),
@@ -102,6 +103,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
             start = CoroutineStart.UNDISPATCHED,
             context = Dispatchers.Default,
         ) {
+            println("Starting connection")
             while (true) {
                 val currentTimeoutValue = when (failedAttempts) {
                     0 -> ZERO
@@ -115,38 +117,45 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                 try {
                     coroutineScope {
-                        // either wait for a given timeout to reconnect, or if a new event comes in connect immediately
-                        withTimeoutOrNull(currentTimeoutValue) {
-                            waitForEvent.await()
-                        }
-
-                        client.webSocket(
-                            method = HttpMethod.Get,
-                            request = {
-                                url("ws", host, port, "/ballast/debugger") {
-                                    parameters[CONNECTION_ID_HEADER] = connectionId
-                                    parameters[BALLAST_VERSION_HEADER] = ballastVersion
-                                }
-                                header(CONNECTION_ID_HEADER, connectionId)
-                                header(BALLAST_VERSION_HEADER, ballastVersion)
-                            }
-                        ) {
+                        attemptConnection(currentTimeoutValue) {
                             println("Connected to Ballast debugger: $connectionId")
                             failedAttempts = 0
-                            joinAll(
-                                heartbeat(),
-                                processOutgoing(),
-                                processIncoming(),
-                            )
                         }
                     }
                 } catch (e: CancellationException) {
                     throw e
                 } catch (t: Throwable) {
+                    t.printStackTrace()
                 }
             }
         }
         return job
+    }
+
+    private suspend fun attemptConnection(currentTimeoutValue: Duration, onSuccessfulConnection: ()->Unit) {
+        // either wait for a given timeout to reconnect, or if a new event comes in connect immediately
+        withTimeoutOrNull(currentTimeoutValue) {
+            waitForEvent.await()
+        }
+
+        client.webSocket(
+            method = HttpMethod.Get,
+            request = {
+                url("ws", host, port, "/ballast/debugger") {
+                    parameters[CONNECTION_ID_HEADER] = connectionId
+                    parameters[BALLAST_VERSION_HEADER] = ballastVersion
+                }
+                header(CONNECTION_ID_HEADER, connectionId)
+                header(BALLAST_VERSION_HEADER, ballastVersion)
+            }
+        ) {
+            onSuccessfulConnection()
+            joinAll(
+                heartbeat(),
+                processOutgoing(),
+                processIncoming(),
+            )
+        }
     }
 
     internal fun <Inputs : Any, Events : Any, State : Any> BallastInterceptorScope<Inputs, Events, State>.connectViewModel(
