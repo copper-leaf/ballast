@@ -5,9 +5,10 @@
 
 > Opinionated Application State Management framework for Kotlin Multiplatform
 
+![Kotlin Version](https://img.shields.io/badge/Kotlin-1.6.10-orange)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/copper-leaf/ballast)](https://github.com/copper-leaf/ballast/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.copper-leaf/ballast-core)](https://search.maven.org/artifact/io.github.copper-leaf/ballast-core)
-![Kotlin Version](https://img.shields.io/badge/Kotlin-1.6.10-orange)
+[![Intellij Plugin Version](https://img.shields.io/jetbrains/plugin/v/18702-ballast)](https://plugins.jetbrains.com/plugin/18702-ballast)
 
 ```kotlin
 object TodosContract { 
