@@ -11,6 +11,19 @@ outlined here. This guide will cover the basics of getting set up and productive
 any platform-specific functionality, or provide examples for multiple platforms to help you understand the workflow more
 generally. Refer to each individual [Platform][1] for further instructions necessary for that platform.
 
+## High-level Workflow
+
+The general workflow for Ballast involves the following steps:
+
+1) Define a Contract
+2) Write the InputHandler
+3) Write the EventHandler
+4) Combine everything into a ViewModel
+5) Inject the ViewModel to your UI and start using it
+
+These steps are described in more depth [below](#Ballast-Workflow), and while this workflow does involve a bit of 
+boilerplate the [Intellij plugin][8] can help you in quickly scaffolding out all of these classes.
+
 ## Project Architecture
 
 Ballast generally works best as part of a layered architecture, consisting of the following layers:
@@ -130,6 +143,9 @@ flowchart TD
 ```
 
 ## Ballast Workflow
+
+This section goes more in-depth into the individual components needed for the full Ballast Workflow. For a quick, 
+high-level listing of the classes needed, see [High-level Workflow](#high-level-workflow).
 
 ### Define a Contract
 
@@ -568,3 +584,4 @@ app/
 [5]: {{ 'Android' | link }}
 [6]: https://wiki.c2.com/?StringlyTyped
 [7]: {{ 'Examples' | link }}
+[8]: {{ 'Ballast Intellij Plugin' | link }}
