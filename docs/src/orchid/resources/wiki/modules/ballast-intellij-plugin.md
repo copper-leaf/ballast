@@ -3,6 +3,8 @@
 
 # {{ page.title }}
 
+## Overview
+
 Ballast has an official Intellij plugin which offers several useful tools for developing applications with Ballast:
 
 - Real-time inspection of the status and data within all ViewModel features
@@ -13,21 +15,19 @@ The plugin is still in its early days of development, but will be gaining more f
 settings as time goes on. This page documents how to install and use all the features of the Intellij plugin, while the 
 [Ballast Debugger][2] page shows how to install the debugger into your application so it can connect to the plugin.
 
-# Usage
+## Usage
 
-## Installation
+### Debugger
 
-<div id="intellij-plugin-button"></div>
-<br>
+The following video shows some example usage of the debugger
 
-The button above will take you to the plugin landing page, or you can search for "Ballast" in the plugin marketplace
-within IntelliJ-based IDEs. Note that the plugin's UI is built with [Compose for IDE Plugin Development][1], which is
-still very early and only available in the latest versions of IntelliJ IDEA. It should work in both Community and
-Ultimate editions on IntelliJ IDEA, however, at this time, the latest stable version of Android Studio is not supported.
+<video controls="controls" width="800" height="600" name="Ballast Debugger Example">
+  <source src="{{ 'assets/media/debugger_example_720p.mp4' | asset }}">
+</video>
 
-## Debugger
+_[Video direct download link]({{ 'assets/media/debugger_example_720p.mp4' | asset }})_
 
-### Connecting to the debugger
+#### Connecting to the debugger
 
 Once installed, a new "Ballast Debugger" tool window will be added to the bottom-right of the IDE, which can be opened
 to start the debugger. The debugger communicates via websockets to client applications that have the 
@@ -46,7 +46,7 @@ Once connected, the client connection will send all events from its connected Vi
 interpreted by the server and displayed in real-time. The connection will also send a heartbeat every few seconds, so
 you can see whether the connection is still alive, even if nothing is happening in your ViewModels.
 
-### Using the Debugger
+#### Using the Debugger
 
 Once connected, the connection will be assigned a UUID and added to the "Connections" column, with the most recent 
 connections at the top of the list. You can right-click the header to clear all connections from that column.
@@ -68,10 +68,17 @@ top of the list. You can select any item to focus it and view more details about
 shows is typically the result of calling `.toString()` on the object in the client, and so the actual representation
 may vary between different platforms. 
 
-## Scaffolding
+### Scaffolding
 
 You can quickly create files for new Ballast components from the file explorers "Right-click > New" menu, using 
-Intellij's [File and Code Templates feature][5].
+Intellij's [File and Code Templates feature][5]. See the following clip for example usage in a Compose Desktop 
+application.
+
+<video controls="controls" width="800" height="600" name="Ballast Scaffolding Example">
+  <source src="{{ 'assets/media/scaffolding_example_720p.mp4' | asset }}">
+</video>
+
+_[Video direct download link]({{ 'assets/media/scaffolding_example_720p.mp4' | asset }})_
 
 There are 3 options for creating new components, which themselves have several options for the components available to 
 generate:
@@ -104,3 +111,14 @@ automatically in your edited version.
 [3]: {{ 'Ballast Repository' | link }}
 [4]: {{ 'Ballast Saved State' | link }}
 [5]: https://www.jetbrains.com/help/idea/settings-file-and-code-templates.html
+
+
+## Installation
+
+<div id="intellij-plugin-button"></div>
+<br>
+
+The button above will take you to the plugin landing page, or you can search for "Ballast" in the plugin marketplace
+within IntelliJ-based IDEs. Note that the plugin's UI is built with [Compose for IDE Plugin Development][1], which is
+still very early and only available in the latest versions of IntelliJ IDEA. It should work in both Community and
+Ultimate editions on IntelliJ IDEA, however, at this time, the latest stable version of Android Studio is not supported.

@@ -3,6 +3,8 @@
 
 # {{ page.title }}
 
+## Overview
+
 Ballast Debugger is a tool for inspecting the status of all components in your Ballast ViewModels in a IntelliJ plugin.
 It supports features one would expect from an MVI graphical debugger:
 
@@ -16,7 +18,7 @@ This page documents how to set up the debugger library in your application, whil
 [Ballast Intellij Plugin][4] page demonstrates usage of the debugger UI, as well as the other features of the Intellij 
 plugin.
 
-# Usage
+## Usage
 
 You will need to create a `BallastDebuggerClientConnection` with your choice of [Ktor client engine][1] and connect it 
 on an application-wide CoroutineScope. This will start a Websocket connection to the IntelliJ plugin's server over 
@@ -69,7 +71,7 @@ class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
 )
 ```
 
-# Installation
+## Installation
 
 ```kotlin
 repositories {

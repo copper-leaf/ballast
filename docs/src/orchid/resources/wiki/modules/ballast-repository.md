@@ -3,6 +3,8 @@
 
 # {{ page.title }}
 
+## Overview
+
 MVI has been known for a while as a great option for managing UI state, but most applications will also need to manage
 some state that lives longer than a single screen. This would be things like account management, or caching of expensive
 computations or API calls, and MVI can actually be a great fit for this Repository Layer, too. The [Repository Layer][1]
@@ -23,9 +25,34 @@ Ballast Repository is built around 3 core concepts: the MVI model as implemented
 ViewModel, the `Cached<T>` interface to hold and update data within the Repository, and the `EventBus` to facilitate
 communication between Repository instances throughout the entire layer.
 
-# Usage
+## Example Use-Case
 
-## BallastRepository
+Before diving into the usage of the Repository module, it may be helpful to get a basic intuition for when you might 
+need it, and how this layer of your application is intended to work. Consider the following situation:
+
+You have an app where users can log on and view how much they've used your service, and how much it costs them. The 
+users may have multiple linked accounts and switch between the accounts freely. Viewing their usage is tied to the
+individual account, but billing is aggregated among all accounts to simplify paying the bill. 
+
+We want to minimize the number of API calls for a snappy user-experience, so we cache every API response. Whenever the 
+user changes the current account, we want to refresh their usage data, but not the billing info, since we want to show
+the new usage data for the new account, but the billing data does not need to be changed.
+
+In this model, using a [BallastRepository](#BallastRepository), we would hold the user account info in an 
+`AccountRepository`, the usage data in `UsageRepository`, and billing info in `BillingRepository`. All the cached data 
+is held within a [`Cached<T>`](#Cached) property of each Repository's State. Changing accounts involves sending an Input 
+to `AccountRepository`, which then makes its own changes and then sends the relevant Input through the 
+[`EventBus`](#EventBus) to the `BillingRepository`. The UI layer does not need to know any specifics of what's going on 
+in the Repository layer, as it just passively observes the `Cached` properties. Furthermore, it also does not need to 
+know anything about the specific organization of data in it, when changing one property needs to clear the cache of 
+another, etc. You can easily wire up any screen to change the account or fetch the usage/billing info, trust that it 
+will be fetched only once if needed or else returned from the cache, and know that the relevant UI will be updated 
+automatically whenever the repository finished updating its cached without having to do any specific UI handling for 
+that. 
+
+## Usage
+
+### BallastRepository
 
 `BallastRepository` is a special `BallastViewModel` implementation that is intended to be used as the "ViewModel" of 
 your Repository layer. Unlike UI ViewModels, the Repositories do not have `EventHandlers`, as Events sent from the 
@@ -194,7 +221,7 @@ There is a lot of boilerplate to this method, and eventually there may be a gene
 for you. But for now, it's best to just be explicit, so you can easily track what data is being changed and at what time
 within each Repository.
 
-## EventBus
+### EventBus
 
 The `EventBus` class is basically just a wrapper around a `SharedFlow`. It should share the same instance among all 
 Repositories, so that one Repository can post an event to the bus, and it will be delivered to another Repository.
@@ -207,7 +234,7 @@ themselves.
 Values can be sent from one Repository to another with the normal `InputHandlerScope.postEvent()`. You can post any 
 non-null value, as the `Events` type is `Any`.
 
-## Cached
+### Cached
 
 `Cached` is a sealed class which holds the data in your Repository and notifies observers of all changes to that value 
 as it is loaded. It can be one of 4 states: `NotLoaded`, `Fetching`, `Value`, or `FetchingFailed`. 
@@ -227,7 +254,7 @@ Repository and wait for it to get changed there, at which point the updated valu
 Also, do not unwrap the Cached value in the UI ViewModel, continue to hold onto it as the wrapped `Cached<T>` value so 
 that the UI can use the Cached DSL to optimize its display of the inner value.
 
-# Installation
+## Installation
 
 ```kotlin
 repositories {

@@ -3,14 +3,16 @@
 
 # {{ page.title }}
 
+## Overview
+
 The Ballast Core module provides all the core capabilities of the entire Ballast MVI framework. The Core framework is 
 robust and opinionated, but also provides many ways to extend the functionality through Interceptors without impacting
 the core MVI model. Any additional functionality outside of Core will typically be implemented as an Interceptor and 
 provided to the `BallastViewModelConfiguration`.
 
-# Usage
+## Usage
 
-## ViewModels
+### ViewModels
 
 The Core module provides several ViewModel base classes, so Ballast can integrate natively with a variety of platforms.
 
@@ -21,7 +23,7 @@ The Core module provides several ViewModel base classes, so Ballast can integrat
   `coroutineScope` provided to it upon creation. When the scope gets cancelled, the ViewModel gets closed and can not be
   used again.
 
-## Interceptors
+### Interceptors
 
 The Core module comes with only one Interceptor, 
 
@@ -65,11 +67,11 @@ class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
 )
 ```
 
-## Input Strategies
+### Input Strategies
 
 {% snippet 'inputStrategies' %}
 
-# Installation
+## Installation
 
 ```kotlin
 repositories {

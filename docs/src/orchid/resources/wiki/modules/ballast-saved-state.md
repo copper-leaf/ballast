@@ -3,6 +3,8 @@
 
 # {{ page.title }}
 
+## Overview
+
 Ballast ViewModels are held entirely in memory, but there are lots of cases where the ViewModel state needs to be saved
 in one session and restored in another. The traditional way to do this is to put all that saving/loading logic within 
 the InputHandler itself, but this can become messy and error-prone. 
@@ -14,7 +16,7 @@ the State is being loaded.
 Ballast Saved State offers a standard API to let you save the State to any persistent store you wish, but also offers
 out-of-the-box integration with `SavedStateHandle`.
 
-# Usage
+## Usage
 
 Start by creating a `SavedStateAdapter` for your ViewModel. This adapter includes functions to `save()` and `restore()`
 the state, which will get called at the appropriate times. 
@@ -80,7 +82,7 @@ class ExampleViewModel(
 )
 ```
 
-# Installation
+## Installation
 
 ```kotlin
 repositories {

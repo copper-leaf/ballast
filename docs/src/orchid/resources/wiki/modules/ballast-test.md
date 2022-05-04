@@ -3,10 +3,12 @@
 
 # {{ page.title }}
 
+## Overview
+
 Ballast Test gives you a DSL you can include in any Kotlin testing framework to setup sequences of inputs and assert the
 results of their processing.
 
-# Usage
+## Usage
 
 After [including the dependency](#Installation) into your test sourceSet, you can run `viewModelTest()`, which gives you
 a DSL for setting up specific scenarios and asserting what happened during the execution of those scenarios. 
@@ -65,7 +67,7 @@ fun testExampleViewModel() = runBlocking<Unit> {
 }
 ```
 
-# Installation
+## Installation
 
 ```kotlin
 repositories {

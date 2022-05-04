@@ -91,10 +91,11 @@ repositories {
 // for plain JVM or Android projects
 dependencies {
     implementation("io.github.copper-leaf:ballast-core:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
     implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
     implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
     implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
     testImplementation("io.github.copper-leaf:ballast-test:{{site.version}}")
 }
 
@@ -104,10 +105,11 @@ kotlin {
         val commonMain by getting {
             dependencies {
               implementation("io.github.copper-leaf:ballast-core:{{site.version}}")
+              implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
               implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
               implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
               implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
+              implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
             }
         }
         val commonTest by getting {

@@ -3,12 +3,14 @@
 
 # {{ page.title }}
 
+## Overview
+
 Ballast's Firebase modules offer an easy, declarative way to send data automatically to Firebase on Android. Analytics 
 and Crashlytics are both supported, each with different modules, so you can pick and choose the features you need.
 
-# Usage
+## Usage
 
-## Crashlytics
+### Crashlytics
 
 Ballast's Crashlytics integration provides automatic tracing of your Inputs and gives you Logs and Keys attached to your
 crash reports to aid in identifying and getting to the root cause of your application issues. Crashlytics should be 
@@ -54,7 +56,7 @@ Add `@FirebaseCrashlyticsIgnore` to Inputs you do not want to sent to Firebase, 
 In addition to logs, the `FirebaseCrashlyticsInterceptor` will also record any exceptions that are thrown but do not 
 crash the app as a [non-fatal exception][3]
 
-## Analytics
+### Analytics
 
 Ballast's Firebase Analytics integration provides automatic tracking of your Inputs to the Firebase Analytics dashboard. 
 Firebase Analytics should be integrated in your app [as normal][4], and then you need to add the 
@@ -93,7 +95,7 @@ Make sure any inputs annotated with `@FirebaseAnalyticsTrackInput` do not leak a
 `.toString()`.
 {% endalert %}
 
-# Installation
+## Installation
 
 ```kotlin
 repositories {
