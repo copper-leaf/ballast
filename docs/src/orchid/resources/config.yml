@@ -106,3 +106,17 @@ services:
   generators:
     disabled:
       - 'kotlindoc'
+  compilers:
+    binaryExtensions:
+      - 'jpg'
+      - 'jpeg'
+      - 'png'
+      - 'pdf'
+      - 'gif'
+      - 'svg'
+      - 'otf'
+      - 'eot'
+      - 'ttf'
+      - 'woff'
+      - 'woff2'
+      - 'mp4'
