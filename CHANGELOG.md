@@ -1,3 +1,13 @@
+## 1.2.0 - 2022-05-18
+
+- Improvements to `AndroidViewModel`
+  - Adds `attachEventHandler()` override which runs on a `CoroutineScope` rather than a `Lifecycle`, which is 
+    better-suited for Compose EventHandlers
+  - Adds `attachEventHandlerOnLifecycle()` to be more explicit about when the eventHandler is running on a Lifecycle
+  - Original `attachEventHandler()` is now marked as deprecated, and should be replaced with 
+    `attachEventHandlerOnLifecycle()`
+  - Adds `observeStatesOnLifecycle()` method for more easily collecting states in XML-based Views 
+
 ## 1.1.0 - 2022-04-29
 
 - Many improvements to the Intellij plugin

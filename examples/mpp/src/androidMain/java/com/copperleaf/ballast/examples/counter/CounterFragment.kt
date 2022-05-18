@@ -12,16 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.copperleaf.ballast.examples.databinding.FragmentCounterBinding
 import com.copperleaf.ballast.examples.util.BallastViewModelFactory
-import com.copperleaf.ballast.examples.counter.CounterComposeUi
-import com.copperleaf.ballast.examples.counter.CounterContract
-import com.copperleaf.ballast.examples.counter.CounterEventHandler
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 class CounterFragment : Fragment() {
 
@@ -48,14 +40,12 @@ class CounterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        vm.attachEventHandler(this, eventHandler)
-        // events are sent back to the screen
-        lifecycleScope.launchWhenResumed {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                vm.observeStates()
-                    .onEach { state -> binding?.updateWithState(state) { vm.trySend(it) } }
-                    .launchIn(this)
-            }
+        // events are sent back to the screen during the Fragment's Lifecycle RESUMED state
+        vm.attachEventHandlerOnLifecycle(this, eventHandler)
+
+        // Collect the state on the Fragment's Lifecycle RESUMED state, updating the entire UI with each change
+        vm.observeStatesOnLifecycle(this) {
+            binding?.updateWithState(it) { vm.trySend(it) }
         }
     }
 

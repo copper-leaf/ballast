@@ -9,10 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
-import com.copperleaf.ballast.eventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 public open class AndroidViewModel<Inputs : Any, Events : Any, State : Any>
@@ -30,22 +31,44 @@ private constructor(
         impl.start(viewModelScope) { this@AndroidViewModel }
     }
 
-    fun attachEventHandler(
+    public fun observeStatesOnLifecycle(
         lifecycleOwner: LifecycleOwner,
-        handler: EventHandler<Inputs, Events, State>
-    ) {
-        // events are sent back to the screen
-        lifecycleOwner.lifecycleScope.launchWhenResumed {
-            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+        targetState: Lifecycle.State = Lifecycle.State.RESUMED,
+        onStateChanged: (State) -> Unit,
+    ): Job = with(lifecycleOwner) {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(targetState) {
+                observeStates()
+                    .onEach(onStateChanged)
+                    .launchIn(this)
+            }
+        }
+    }
+
+    public fun attachEventHandlerOnLifecycle(
+        lifecycleOwner: LifecycleOwner,
+        handler: EventHandler<Inputs, Events, State>,
+        targetState: Lifecycle.State = Lifecycle.State.RESUMED,
+    ): Job = with(lifecycleOwner) {
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(targetState) {
                 impl.attachEventHandler(handler)
             }
         }
     }
 
-    fun attachEventHandler(
+    @Deprecated("replace with attachEventHandlerOnLifecycle", replaceWith = ReplaceWith("attachEventHandlerOnLifecycle(lifecycleOwner, handler)"))
+    public fun attachEventHandler(
+        lifecycleOwner: LifecycleOwner,
+        handler: EventHandler<Inputs, Events, State>
+    ) {
+        attachEventHandlerOnLifecycle(lifecycleOwner, handler, Lifecycle.State.RESUMED)
+    }
+
+    public fun attachEventHandler(
         coroutineScope: CoroutineScope = impl.viewModelScope,
         handler: EventHandler<Inputs, Events, State>
-    ) : Job {
+    ): Job {
         return coroutineScope.launch {
             impl.attachEventHandler(handler)
         }

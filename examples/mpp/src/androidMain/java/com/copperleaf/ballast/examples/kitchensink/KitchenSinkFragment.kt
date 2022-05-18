@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +25,6 @@ import com.copperleaf.ballast.examples.util.BallastViewModelFactory
 
 class KitchenSinkFragment : Fragment() {
 
-    val eventHandler = KitchenSinkControllerEventHandler()
     val vm: KitchenSinkControllerViewModel by viewModels { BallastViewModelFactory(this) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,6 +32,10 @@ class KitchenSinkFragment : Fragment() {
             .apply {
                 setContent {
                     val uiState by vm.observeStates().collectAsState()
+
+                    LaunchedEffect(vm) {
+                        vm.attachEventHandler(this, KitchenSinkControllerEventHandler())
+                    }
 
                     var dropdownExpanded by remember { mutableStateOf(false) }
 
@@ -59,9 +63,5 @@ class KitchenSinkFragment : Fragment() {
                     ) { vm.trySend(it) }
                 }
             }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        vm.attachEventHandler(this, eventHandler)
     }
 }

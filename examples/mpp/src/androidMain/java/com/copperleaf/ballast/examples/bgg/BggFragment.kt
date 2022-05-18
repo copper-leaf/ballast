@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,15 +16,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.copperleaf.ballast.examples.util.BallastViewModelFactory
-import com.copperleaf.ballast.examples.bgg.BggComposeUi
 import com.copperleaf.ballast.examples.bgg.models.HotListType
 import com.copperleaf.ballast.examples.bgg.ui.BggContract
 import com.copperleaf.ballast.examples.bgg.ui.BggEventHandler
+import com.copperleaf.ballast.examples.util.BallastViewModelFactory
 
 class BggFragment : Fragment() {
 
-    val eventHandler = BggEventHandler()
     val vm: BggViewModel by viewModels { BallastViewModelFactory(this) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,6 +30,10 @@ class BggFragment : Fragment() {
             .apply {
                 setContent {
                     val uiState by vm.observeStates().collectAsState()
+
+                    LaunchedEffect(vm) {
+                        vm.attachEventHandler(this, BggEventHandler())
+                    }
 
                     var dropdownExpanded by remember { mutableStateOf(false) }
 
@@ -57,9 +60,5 @@ class BggFragment : Fragment() {
                     ) { vm.trySend(it) }
                 }
             }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        vm.attachEventHandler(this, eventHandler)
     }
 }

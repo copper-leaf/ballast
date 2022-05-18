@@ -360,9 +360,15 @@ public final class com/copperleaf/ballast/core/AndroidBallastLogger : com/copper
 public class com/copperleaf/ballast/core/AndroidViewModel : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
 	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 	public final fun attachEventHandler (Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;)V
+	public final fun attachEventHandler (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/EventHandler;)Lkotlinx/coroutines/Job;
+	public static synthetic fun attachEventHandler$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/EventHandler;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public final fun attachEventHandlerOnLifecycle (Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;Landroidx/lifecycle/Lifecycle$State;)Lkotlinx/coroutines/Job;
+	public static synthetic fun attachEventHandlerOnLifecycle$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;Landroidx/lifecycle/Lifecycle$State;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
 	public fun getName ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun observeStatesOnLifecycle (Landroidx/lifecycle/LifecycleOwner;Landroidx/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/Job;
+	public static synthetic fun observeStatesOnLifecycle$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Landroidx/lifecycle/LifecycleOwner;Landroidx/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
