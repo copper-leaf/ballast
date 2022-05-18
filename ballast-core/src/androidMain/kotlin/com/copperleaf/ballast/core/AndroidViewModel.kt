@@ -9,7 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
+import com.copperleaf.ballast.eventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 public open class AndroidViewModel<Inputs : Any, Events : Any, State : Any>
 private constructor(
@@ -35,6 +38,15 @@ private constructor(
             lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 impl.attachEventHandler(handler)
             }
+        }
+    }
+
+    fun attachEventHandler(
+        coroutineScope: CoroutineScope = impl.viewModelScope,
+        handler: EventHandler<Inputs, Events, State>
+    ) {
+        coroutineScope.launch {
+            impl.attachEventHandler(handler)
         }
     }
 }
