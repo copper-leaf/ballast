@@ -125,6 +125,12 @@ kotlin {
 
 See the [website](https://copper-leaf.github.io/ballast/) for detailed documentation and usage instructions.
 
+# Community Chat
+
+Join us at https://kotlinlang.slack.com in the `#ballast` channel for support, or to show off what you're building with Ballast!
+
+https://kotlinlang.slack.com/archives/C03GTEJ9Y3E
+
 # License
 
 Ballast is licensed under the BSD 3-Clause License, see [LICENSE.md](https://github.com/copper-leaf/ballast/tree/main/LICENSE.md).
