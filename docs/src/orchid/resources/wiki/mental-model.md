@@ -78,13 +78,13 @@ back in time and walk through the evolution of UI programming through the years 
 favored pattern that it is today.
 
 Note that this brief history is based on my personal experiences and observations over the last ~10 years of software
-development, and draws heavily from a native Android and web dev perspective. You may have a different opinion on the 
-exact timelines, descriptions, pros, or cons of certain patterns, but I'm not looking to start an argument. I'm simply 
+development, and draws heavily from a native Android and web dev perspective. You may have a different opinion on the
+exact timelines, descriptions, pros, or cons of certain patterns, but I'm not looking to start an argument. I'm simply
 wanting to show the evolution that I have observed, that ultimately led to the Ballast MVI library as it stands today.
 
 ### Traditional UI programming
 
-In traditional UI programming, there is no separation (or only superficial separation) between the UI elements and the 
+In traditional UI programming, there is no separation (or only superficial separation) between the UI elements and the
 code that is run when interacting with those elements. Take the following snippet, which is something you might see in a
 traditional Android Activity's UI implementing a simple counter:
 
@@ -145,9 +145,9 @@ This approach, so common in many older applications, has a number of problems:
 - _Not really used on Web_
 - _2013 to 2019 on Android_
 
-Early attempts to solve these problems started to spring up, especially with the **MVP** pattern on Android. The main 
-idea here was to move all the "business logic" code out of the "view" and into a "presenter" class. The View connects 
-all its clicks and other interactions to call methods on the Presenter, and the Presenter acts as fake "view" so the 
+Early attempts to solve these problems started to spring up, especially with the **MVP** pattern on Android. The main
+idea here was to move all the "business logic" code out of the "view" and into a "presenter" class. The View connects
+all its clicks and other interactions to call methods on the Presenter, and the Presenter acts as fake "view" so the
 code isn't directly tied to the Android View or Browser.
 
 ```kotlin
@@ -183,26 +183,26 @@ class CounterActivity : AppCompatActivity(), CounterView {
 }
 ```
 
-This approach gained a lot of popularity because it allowed one to test the busisness logic in a normal unit test, 
+This approach gained a lot of popularity because it allowed one to test the busisness logic in a normal unit test,
 without needing a full real or emulated environment. But this approach has a number of flaws, some of which are inherent
 in its design, and some are just problems with the real-world implementation of it.
 
-- The Presenter had to add a `currentCount` variable, since it no longer has direct access to the View to read the 
+- The Presenter had to add a `currentCount` variable, since it no longer has direct access to the View to read the
   current text in the UI element. We now have the same value in 2 separate places.
 - What if we want to change the `currentCount` variable from multiple places?
-  - Answer: We need to make sure that code updates both the internal variable and the UI element
+    - Answer: We need to make sure that code updates both the internal variable and the UI element
 - What's the value shown in the UI before clicking the button?
-  - Answer: We need to make sure the default value in the UI matches that of the Presenter's value.
-- What if I need to make a really quick addition to the UI. Do I really have to jump through all these hoops? 
-  - Answer: Yes. The MVP pattern means you need to add all the boilerplate for it.
+    - Answer: We need to make sure the default value in the UI matches that of the Presenter's value.
+- What if I need to make a really quick addition to the UI. Do I really have to jump through all these hoops?
+    - Answer: Yes. The MVP pattern means you need to add all the boilerplate for it.
 - But this really needs to go out quickly. I'm just going to do it the normal way.
-  - Answer: I mean, I can't really stop you, but you really shouldn't...
+    - Answer: I mean, I can't really stop you, but you really shouldn't...
 
-And this is the main reason why I personally don't think MVP is a very good design pattern. It is really only a 
+And this is the main reason why I personally don't think MVP is a very good design pattern. It is really only a
 superficial separation, but you're basically writing the same code you would normally but with much more boilerplate.
-There is nothing in the pattern itself that requires you to follow it, and in practice, it's likely you'll run into 
-portions of code that do not follow the pattern strictly, giving you a frankenstein mix of code split between 
-programming styles, and state being held all over the place, leaving you worse off than not having the MVP pattern at 
+There is nothing in the pattern itself that requires you to follow it, and in practice, it's likely you'll run into
+portions of code that do not follow the pattern strictly, giving you a frankenstein mix of code split between
+programming styles, and state being held all over the place, leaving you worse off than not having the MVP pattern at
 all.
 
 MVP: Good in theory, but rarely implemented well in practice.
@@ -212,30 +212,30 @@ MVP: Good in theory, but rarely implemented well in practice.
 - _2010 to 2016 on web with Angular.JS_
 - _2016 to 2019 on Android with Databinding, but never became too popular_
 
-Once everyone started noticing the problems inherent in traditional- and MVP-style UI programming, the natural fix 
+Once everyone started noticing the problems inherent in traditional- and MVP-style UI programming, the natural fix
 became pretty apparent: rather than the interactions driving the UI, let's use a state model to drive the UI. One starts
-by developing creating a model of the screen's state, and then builds a UI that is assembled or synchronized to match 
+by developing creating a model of the screen's state, and then builds a UI that is assembled or synchronized to match
 that model.
 
-These are the early days of reactive programming, when Angular.JS because king, React was just starting to be developed, 
-and all the UI toolkits started creating their own "MVVM" frameworks. The main idea with these is that you take 
-something like a "Presenter" or "Controller" class, declare the state that lives within that Controller, and let a 
-framework worry about applying that state to the UI for you. Additionally, the MVVM frameworks bind in the other 
+These are the early days of reactive programming, when Angular.JS because king, React was just starting to be developed,
+and all the UI toolkits started creating their own "MVVM" frameworks. The main idea with these is that you take
+something like a "Presenter" or "Controller" class, declare the state that lives within that Controller, and let a
+framework worry about applying that state to the UI for you. Additionally, the MVVM frameworks bind in the other
 direction, too, automatically wiring up click listeners and such so that they always run code in the Controller.
 
-This was a huge improvement over the previous attempts. We now have a way to make sure any changes to the state will 
+This was a huge improvement over the previous attempts. We now have a way to make sure any changes to the state will
 always be present in the UI, even changes made from other threads, and the framework enforces that all changes to the
 UI must go through the Controller and the MVVM framework.
 
 MVVM started with Angular.JS and we started seeing MVVM frameworks popping up everywhere: Android, Xamarin, a thousand
-different Javascript frameworks, etc. But MVVM is not without its issues: most notably being that the MVVM framework 
-needs to have intimate knowledge of both the View and your Controller. The framework itself would have to be updated 
-anytime the underlying Views changed, as well as knowing about all container types that might hold data in the 
-Controller, to know how to convert those values into something displayed in the UI. 
+different Javascript frameworks, etc. But MVVM is not without its issues: most notably being that the MVVM framework
+needs to have intimate knowledge of both the View and your Controller. The framework itself would have to be updated
+anytime the underlying Views changed, as well as knowing about all container types that might hold data in the
+Controller, to know how to convert those values into something displayed in the UI.
 
-As a result, MVVM frameworks tended to lag behind the actual frameworks themselves, the frameworks themselves were 
+As a result, MVVM frameworks tended to lag behind the actual frameworks themselves, the frameworks themselves were
 pretty large and might not always have the best performance, and especially for things like displaying lists of content,
-it was just more difficult than it needed to be. 
+it was just more difficult than it needed to be.
 
 ### MVI
 
@@ -244,35 +244,35 @@ it was just more difficult than it needed to be.
 - _2019 to now on iOS, with Swift UI_
 - _2017 to now with Flutter_
 
-MVI was the next iteration of UI programming, and by all accounts it seems to be the one that will stick around. It 
-solves many of the problems outlined with traditional programming, but does it in a much more lightweight and 
-unobtrusive way than MVVM, giving all the power back into the hands of the programmer and allowing them to write the 
-same code they would expect when working with a UI toolkit, but providing structure around the state and interactions 
+MVI was the next iteration of UI programming, and by all accounts it seems to be the one that will stick around. It
+solves many of the problems outlined with traditional programming, but does it in a much more lightweight and
+unobtrusive way than MVVM, giving all the power back into the hands of the programmer and allowing them to write the
+same code they would expect when working with a UI toolkit, but providing structure around the state and interactions
 required of the UI.
 
-The core difference between MVVM and MVI is this: MVVM uses an automated middle-man to apply state to UI and send 
-change requests from the UI to the Controller (or ViewModel). MVI forgoes that middleman and implements a more 
-transparent mechanism for moving State and Inputs between the UI and ViewModel, and asks the programmer to be that 
+The core difference between MVVM and MVI is this: MVVM uses an automated middle-man to apply state to UI and send
+change requests from the UI to the Controller (or ViewModel). MVI forgoes that middleman and implements a more
+transparent mechanism for moving State and Inputs between the UI and ViewModel, and asks the programmer to be that
 middle-man. Instead of automatically applying the State to the UI, the MVI pattern gives the programmer the State that
-should be applied to the UI, and allows the programmer to pick their UI toolkit and programming style to apply the 
+should be applied to the UI, and allows the programmer to pick their UI toolkit and programming style to apply the
 State themselves.
 
 This idea is what Facebook started with the Flux architecture and React, and soon afterwards you started seeing more and
-more platforms rewriting their UI toolkits around this exact philosophy. Flutter, Swift UI, Jetpack Compose, all based 
+more platforms rewriting their UI toolkits around this exact philosophy. Flutter, Swift UI, Jetpack Compose, all based
 around this idea that the UI shouldn't have to manage anything itself, but should be driven entirely by some model of
-State and applied to the UI with hand-written code. 
+State and applied to the UI with hand-written code.
 
-This MVI model has proven itself over the last few years to be incredibly durable and robust, even useful outside of 
+This MVI model has proven itself over the last few years to be incredibly durable and robust, even useful outside of
 pure UI applications. And the more I work on Ballast and really figure out how this pattern works, the more flexible and
-powerful I find it to be, enabling all sorts of incredible use-cases that are simply impossible with traditional 
+powerful I find it to be, enabling all sorts of incredible use-cases that are simply impossible with traditional
 programming techniques, like time-travel debugging, undo/redo, multi-user synchronization, and many others.
 
-Hopefully this brief history of UI programming has given you some things to think about which will help you understand 
+Hopefully this brief history of UI programming has given you some things to think about which will help you understand
 more about the specific design choices of Ballast, as outlined throughout the rest of this document.
 
 ## UI Contract
 
-All of Ballast was designed around an opinionated way to write your UI code to optimize the MVI pattern and make all 
+All of Ballast was designed around an opinionated way to write your UI code to optimize the MVI pattern and make all
 your application screens/components look and work very similarly. It all starts with creating a "Contract", and from
 there we'll work to allow Ballast to manage that Contract.
 
@@ -343,7 +343,7 @@ Obviously, the initial thought when building out a Contract is to put every sing
 absolutely can do that. But with sufficiently large screens, this may become a bit too verbose and introduce a lot of
 back-and-forth jumping between the UI and the VM, which may not be strictly necessary. Assuming your entire UI,
 including its listeners, is updated with each state change (both local and ViewModel states), you can leave some amount
-of logic purely in the UI, and have the State and Inputs only model the things which are actually important from a 
+of logic purely in the UI, and have the State and Inputs only model the things which are actually important from a
 business logic perspective.
 
 As an example, let's take a Checkout screen. At the end of the flow, once the user has entered all their information, we
@@ -476,6 +476,346 @@ need to house every single property. There is nuance to how you structure a Cont
 to read the code and understand what the UI is doing, and if it's getting bloated with a bunch of boilerplate inputs or
 state properties, you may want to take a step back and ask yourself whether something actually needs to be in the
 ViewModel or not.
+
+### Kinds of State Classes
+
+If you look online for how to model a UI state, you'll come across some common patterns, but also some anti-patterns. I
+firmly believe that a `data class` is the best way to start modeling your UI state, and this is the form that is
+encouraged throughout the Ballast library and documentation. This section aims to show you why I believe this to be
+the best starting point. That's not to say it's the best for all situations, but I do believe it will give you the best
+result while causing the fewest difficulties in the majority of use-cases.
+
+#### Sealed Class
+
+Using a `sealed class` seems to be the most popular solution if you go by the articles you find on a quick web search.
+And it's clear to understand why: compared to the traditional way of building UIs, a sealed class gives you a way to
+ensure that the data on your screen is consistent with itself. Take the following example from the article
+[Modelling UI State on Android][7]:
+
+```kotlin
+sealed class TrafficLightState {
+    object Loading : TrafficLightState()
+    object Error : TrafficLightState()
+    data class Success(val color: Color) : TrafficLightState()
+}
+```
+
+This assumes that you visit a screen, it immediately starts loading data from a remote source, and then returns a
+result. The result may have been the data you're looking for, or maybe something went wrong like a network failure, and
+this form gives a clear indication of what exactly to show in the UI. You can also easily translate this into a UML
+state diagram:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Loading
+    Loading --> Error
+    Loading --> Success
+```
+
+But what happens if the error was an intermittent network failure, and you want to refresh the data? Then, it will move
+from `Error` back to `Loading`, and whatever error message you displayed is now hidden as the progress indicator is
+shown again. That's not an issue, this is probably what the user would expect. Here's the change needed to model this
+action in the state diagram:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Loading
+    Loading --> Error
+    Loading --> Success
+    Error --> Loading
+```
+
+But what if you added a pull-to-refresh action, so that the user can request the state update? The screen displayed the
+data with the `Success` state, but then hides it all to display the progress indicator in the `Loading` state. Not great
+UX. Well, we can fix that by adding a new state to the UI, such as
+`data class Refreshing(val color: Color) : TrafficLightState()`, that can signal to the UI to display the progress
+indicator and the traffic light color at the same time. The state diagram now looks like this:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Loading
+    Loading --> Error
+    Loading --> Success
+    Success --> Refreshing
+    Refreshing --> Error
+    Refreshing --> Success
+```
+
+Or if we wanted to update the error refreshing state so that the error is still shown with the progress indicator over
+it, well that's yet another discrete state we need to model:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Loading
+    Loading --> Error
+    Loading --> Success
+    Error --> RefreshingFromError
+    RefreshingFromError --> Error
+    RefreshingFromError --> Success
+    Success --> RefreshingFromSuccess
+    RefreshingFromSuccess --> Error
+    RefreshingFromSuccess --> Success
+```
+
+I hope you see where I'm going with this.
+
+The idea that a state is so easily mapped 1-1 to discrete values sounds great in theory, but doesn't hold up so well to
+real-world, non-trivial use-cases. It's difficult to extend, leads to repetition, and you end up with a combinatorial
+matrix of states that can quickly grow really complex. And while the sealed subclasses themselves model the discrete
+states well, they actually do nothing to model the _transitions_ between states. You can't use the type system to ensure
+you don't move from one state to another, and if you need to move between states and carry the data with it (such as
+from `Success` to `RefreshingFromSuccess`), then you have to abuse the type system to perform type-checks or type-casts
+to actually make that transition.
+
+And finally, to drive the point home, let's consider what the actual UI code looks like here in this final case.
+Assuming we want to share the UI widgets whenever possible we get this:
+
+```kotlin
+@Composable
+fun TrafficLight(state: TrafficLightState) {
+    // display progress bar in Loading or Refreshing states
+    if(state is Loading || state is RefreshingFromSuccess || state is RefreshingFromError) {
+        CircularProgressIndicator()
+    }
+
+    // display the traffic light color when it's available
+    val trafficLightColor: Color? = when(state) {
+        is Success -> state.color
+        is RefreshingFromSuccess -> state.color
+        else -> null
+    }
+    if(trafficLightColor != null) {
+        TrafficLightColor(trafficLightColor)
+    }
+
+    // and a similar thing happens with the error text, except we just check types directly
+    if(state is Error || state is RefreshingFromError) {
+        TrafficLightError()
+    }
+}
+```
+
+Alternatively, you could have discrete `@Composable` functions for each discrete state, but then there's no UI
+consistency between those states. If you make a change to one, you'd have to duplicate that change everywhere. Or if you
+keep it in one function, as in the example above, you have to put in a ton of logic in the UI portion just to
+accommodate the discrete UI types, while still not really having discrete UIs for it.
+
+The linked article suggests that the sealed class is best because its cardinality (number of possible states) is 5 vs
+16 with a data class. But actually, if you expand the use-case to allow pull-to-refresh, the cardinality actually
+becomes:
+
+```
+   1 Loading
+   1 Error
+   3 Success
+   1 RefreshingFromError
+ + 3 RefreshingFromSuccess
+--------------------------
+   9 Total
+```
+
+Cardinality of 9 is still better than 16, but this is really broken up into 5 discrete cases, each of which must be
+handled explicitly. In contrast, there's only 3 "cases" that need to be considered with the data class, and the implicit
+combinations of those cases account for all 16 cardinal states. Additionally, you'd have to explicitly account for the
+transitions between states, of which there are 8. So in all, there are 17 pieces of data that need to be managed
+explicitly between the states and the transitions, versus 16 that are managed implicitly with a data class. Again, with
+small numbers of discrete states, this isn't necessarily a deal-breaker, but with larger complex screens it absolutely
+is. And making changes to the state of a data class will implicitly make the update everywhere needed, while those same
+changes to sealed classes would need an exponentially large number of code updates to accommodate them with each
+successive change.
+
+So again, while this style sounds great in theory, it really just doesn't hold up when put into real-world code.
+
+#### Data Class
+
+Whereas a `sealed class` maps well to discrete states but causes complexity when it comes to actually applying that to
+the UI and its interactions, a `data class` does the opposite: you first think about the data you want to display on the
+UI, and you write your code to enforce the consistency of it. For example, the [Modelling UI State on Android][7]
+article uses the following as an example of what not to do (and what I think you _should_ do):
+
+```kotlin
+data class TrafficLightState(
+    val isLoading: Boolean,
+    val isError: Boolean,
+    val color: Color?
+)
+```
+
+That article's argument against this state is that it has invalid states. For example, you could have `isError` true at
+the same time that `color` is non-null, and what do you show in the UI at that point?
+
+The answer is pretty simple: just don't let that happen. Since it's a single object, you have full control over every
+property of it, and you can put that kind of logic directly within the class to ensure we never get a state that has
+both data and an error:
+
+```kotlin
+data class TrafficLightState(
+    val isLoading: Boolean,
+    val isError: Boolean,
+    val color: Color?
+) {
+    init {
+        if(isError && color != null) {
+            throw IllegalStateException("error: cannot have both an error and color at the same time")
+        }
+    }
+}
+```
+
+Notice that with this 1 change, we can now model all potential use-cases from the `sealed class` scenario, even the
+complex transitions of pull-to-refresh:
+
+```kotlin
+val Loading = TrafficLightState(
+    isLoading = true,
+    isError = false,
+    color = null,
+)
+val Error = TrafficLightState(
+    isLoading = false,
+    isError = true,
+    color = null,
+)
+val Success = TrafficLightState(
+    isLoading = false,
+    isError = false,
+    color = Color.Green,
+)
+val RefreshingAfterSuccess = TrafficLightState(
+    isLoading = true,
+    isError = false,
+    color = Color.Green,
+)
+val RefreshingAfterError = TrafficLightState(
+    isLoading = true,
+    isError = true,
+    color = null,
+)
+```
+
+Without making any changes to the state class itself, we were able to extend it to support the additional use-cases
+without adding any complexity to the screen. Furthermore, modeling the additional use-cases in the UI comes for free:
+by adding the code to do pull-to-refresh, all we need to do is `state.copy(isLoading = true)`, and whatever state we were
+previously in, be it error or success, will be displayed properly in the UI. For example:
+
+```kotlin
+@Composable
+fun TrafficLight(state: TrafficLightState) {
+    // display progress bar in Loading or Refreshing states
+    if(state.isLoading) {
+        CircularProgressIndicator()
+    }
+
+    // display the traffic light color when it's available
+    if(state.color != null) {
+        TrafficLightColor(state.color)
+    }
+
+    // and a similar thing happens with the error text, except we just check types directly
+    if(state.isError) {
+        TrafficLightError()
+    }
+}
+```
+
+So much cleaner than the version using a `sealed class`! When it comes down to it, it's the same exact UI, using the
+same `if`-statements, but this is so much more readable. It's much easier to look at this code and figure out which
+properties we need to set to get the UI to look a certain way, than if we were to model it with the sealed class. In
+reality, we don't care as much as having discrete UI states as we do _consistent_ UI states. While the sealed class
+approach does give us incredibly consistent data models for the state, it doesn't actually produce a very consistent UI
+unless we do a lot of work to make it so. In contrast, data classes aren't as great as making a consistent model, but
+make for a much more consistent UI, which is what the user is actually looking at and interacting with. And when using
+an MVI approach like Ballast to protect updates to the state, you can enforce the consistency of the state yourself just
+in how your make updates to it.
+
+Furthermore, this style is actually not completely divorced from sealed classes! You can use the `data class` as the
+main state holder, and still define individual mutually-exlusive properties within that state as `sealed classes`, to
+get the same kind of benefit! These intermediary classes can be modeled with the built-in `Result` type, or you can
+write your own wrapper for a more domain-specific result. For example:
+
+```kotlin
+data class TrafficLightState(
+    val isLoading: Boolean,
+    val color: Result<Color>?,
+)
+@Composable
+fun TrafficLight(state: TrafficLightState) {
+    if(state.isLoading) {
+        CircularProgressIndicator()
+    }
+
+    // state.color is null until loading hs completed, at which point it is either Success or Failure
+    state.color?.fold(
+        onSuccess = {
+            TrafficLightColor(it)
+        },
+        onFailure = {
+            TrafficLightError()
+        }
+    )
+}
+```
+
+#### Multiple Streams
+
+The final approach to modeling a UI state isn't really even compatible with Ballast, but it's a pattern I see
+considerably less frequently now with `StateFlow` than I did in years-past when `LiveData` reigned supreme on Android.
+The general idea was that instead of having a single stream of data representing your state as a single object (be it
+a `sealed class` or a `data class`), the `ViewModel` itself is the UI state. Each property you want to expose to the UI
+is a separate reactive property, so that anything you want to update in the UI just needs to observe the appropriate
+property and react in kind:
+
+Also taking the example from [Modelling UI State on Android][7] (but replacing `LiveData` with `StateFlow`):
+
+```kotlin
+class TrafficLightViewModel : ViewModel() {
+    private val _loading = mutableStateFlow<Boolean>(false)
+    private val _error = mutableStateFlow<Boolean>(false)
+    private val _color = mutableStateFlow<Color?>(null)
+
+    val loading: StateFlow<Boolean> get() = _loading.asStateFlow()
+    val error: StateFlow<Boolean> get() = _error.asStateFlow()
+    val color: StateFlow<Color?> get() = _color.asStateFlow()
+}
+```
+
+This effectively gives us the same type of UI code as with the `data class`, but we have lost control of any kind of
+combination of values from within the data holder itself. We would have to combine the 3 values into a single stream
+in order to actually check that we don't get ourselves into an invalid state, which gets real ugly really quickly:
+
+```kotlin
+class TrafficLightViewModel : ViewModel() {
+    private val _loading = mutableStateFlow<Boolean>(false)
+    private val _error = mutableStateFlow<Boolean>(false)
+    private val _color = mutableStateFlow<Color?>(null)
+
+    val loading: StateFlow<Boolean> get() = _loading.asStateFlow()
+    val error: StateFlow<Boolean> get() = _error.asStateFlow()
+    val color: StateFlow<Color?> get() = _color.asStateFlow()
+
+    init {
+        combine(error, color) { errorValue, colorValue -> errorValue to colorValue }
+            .onEach { errorValue, colorValue ->
+                if(errorValue && colorValue != null) {
+                    throw IllegalStateException("error: cannot have both an error and color at the same time")
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+}
+```
+
+Not only is this a lot of code needed to combine the values to check for illegal combinations, but we are forced to
+observe those flows in a coroutine to check. This means that if we ever detect an invalid scenario, the stacktrace will
+only point us to the flow itself, and really gives us no indication of which portion of our code actually set those
+properties in an invalid way.
+
+In addition, there's not really any consistency between these values when we set them. If the code making the updates
+happens to be a bit slow, the `combine` function may collect a pair of values that are invalid, without us actually
+intending to make that the UI state. The state just happened to be invalid as it transitioned.
+Having to update the flows independently means there's no kind of "transation" that could be applied to ensure there's
+no ephemeral invalid states. But with a `data class`, a single `.update { it.copy() }` can freely change multiple
+properties at once without causing there to be any invalid intermediate states.
 
 ## Async Logic
 
@@ -774,3 +1114,4 @@ viewModel.trySend(Inputs.RequestLogout)
 [4]: https://guide.elm-lang.org/architecture/
 [5]: https://www.raywenderlich.com/817602-mvi-architecture-for-android-tutorial-getting-started
 [6]: https://developer.android.com/jetpack/compose/architecture
+[7]: https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9
