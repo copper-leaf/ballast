@@ -99,10 +99,10 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     override fun trySend(element: Inputs): ChannelResult<Unit> {
-        checkValidState()
+        check(started) { "VM is not started!" }
         _notifications.tryEmit(BallastNotification.InputQueued(host(), element))
         val result = _inputQueue.trySend(Queued.HandleInput(null, element))
-        if (result.isFailure) {
+        if (result.isFailure || result.isClosed) {
             _notifications.tryEmit(BallastNotification.InputDropped(host(), element))
             result.exceptionOrNull()?.printStackTrace()
         }
