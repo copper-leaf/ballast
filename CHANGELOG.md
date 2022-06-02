@@ -1,3 +1,7 @@
+## 1.2.1 - 2022-05-18
+
+- Don't check for cleared in trySend (fixes [#25](https://github.com/copper-leaf/ballast/issues/25))
+
 ## 1.2.0 - 2022-05-18
 
 - Improvements to `AndroidViewModel`
