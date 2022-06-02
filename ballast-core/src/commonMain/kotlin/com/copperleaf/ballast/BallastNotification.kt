@@ -75,7 +75,8 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
     }
 
     /**
-     * The ViewModel's Inputs channel's buffer was full and the Input could not even be queued to be processed.
+     * The ViewModel was cleared or its Inputs channel's buffer was full and the Input could not even be queued to be
+     * processed.
      */
     public class InputDropped<Inputs : Any, Events : Any, State : Any>(
         vm: BallastViewModel<Inputs, Events, State>,

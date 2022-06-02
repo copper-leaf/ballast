@@ -93,7 +93,8 @@ public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> {
 
     /**
      * Posts an Input to this ViewModel's Input Queue immediately without suspending using [SendChannel.trySend]. If
-     * the input channel's buffer is full, the input will be dropped, as reported by the returned [ChannelResult].
+     * the input channel's buffer is full or if the ViewModel is cleared, the input will be dropped, as reported by the
+     * returned [ChannelResult].
      */
     public fun trySend(element: Inputs): ChannelResult<Unit>
 
