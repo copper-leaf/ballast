@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/boardgame.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/boardgamecompany.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/boardgameperson.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/rpg.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/rpgcompany.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/rpgperson.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/videogame.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/example/distributions/bgg/hot/videogamecompany.xml</loc>
+        <lastmod>2022-06-03</lastmod>
+        <priority>0.5</priority>
+    </url>
+</urlset>

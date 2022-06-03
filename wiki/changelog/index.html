@@ -1,0 +1,1767 @@
+
+
+<!DOCTYPE html>
+<html class="">
+<head>
+
+
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.21.1"/>
+<link rel="icon" href="https://copper-leaf.github.io/ballast/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Changelog</title>
+
+
+<meta name="description" content="Opinionated Application State Management framework for Kotlin Multiplatform">
+
+
+
+<link rel="prev" href="https://copper-leaf.github.io/ballast/wiki/roadmap">
+
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/19c4470f/assets/css/bulma.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/19c4470f/assets/css/extraCss.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/19c4470f/assets/css/bulma-tooltip.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/19c4470f/assets/css/bulma-accordion.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/PrismJS/prism-themes/master/themes/prism-duotone-light.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/mermaid_bulma.css"  />
+<!-- end:inject styles -->
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.21.1","baseUrl":"https://copper-leaf.github.io/ballast","environment":"prod","version":"1.2.1"};
+</script>
+
+
+    <!-- start:inject meta-components [head] -->
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+    <!-- start:inject meta-components [head] -->
+    
+
+        
+            
+        
+
+        
+            
+        
+            
+        
+            
+        
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+
+
+<div class="columns is-marginless is-desktop">
+
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-mobile is-hidden-touch">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold is-fullheight">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1363376124 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 1091552520 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Features
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/mental-model 1310147631 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage-guide 1331441841 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage-guide" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1659321014 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 1568638055 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 700286427 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  iOS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose-desktop 645190902 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose-desktop" class="">
+  
+  Compose Desktop (JVM)
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose-web 2061865206 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose-web" class="">
+  
+  Compose Web (JS)
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2058762296 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 1318538142 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 923565253 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1639463154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-firebase 704948997 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-firebase" class="">
+  
+  Ballast Firebase
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 1589370464 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 168127270 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 1064052579 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1552024347 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 659545766 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Simple Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 1958814164 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 709379856 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call and Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 1713247129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1073564434 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1112474296 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  Feature Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 718781734 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="is-active">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-desktop">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold ">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1363376124 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 1091552520 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Features
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/mental-model 1310147631 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage-guide 1331441841 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage-guide" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1659321014 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 1568638055 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 700286427 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  iOS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose-desktop 645190902 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose-desktop" class="">
+  
+  Compose Desktop (JVM)
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose-web 2061865206 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose-web" class="">
+  
+  Compose Web (JS)
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2058762296 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 1318538142 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 923565253 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1639463154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-firebase 704948997 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-firebase" class="">
+  
+  Ballast Firebase
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 1589370464 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 168127270 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 1064052579 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1552024347 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 659545766 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Simple Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 1958814164 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 709379856 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call and Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 1713247129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1073564434 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1112474296 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  Feature Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 718781734 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1019474238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="is-active">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+
+  <div class="column is-two-thirds-desktop is-three-quarters-widescreen is-four-fifths-fullhd is-paddingless column-main-right">
+  
+
+<nav
+  class="navbar is-white border-bottom"
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="container">
+    <div class="navbar-brand is-marginless">
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu is-marginless" id="navbarMain">
+      <div class="navbar-start">
+      
+<div class="navbar-item">
+  <form id="search-input" data-orchid-search>
+    <div class="field is-marginless" id="search">
+      <div class="control has-icons-left input-control">
+        <input class="input" type="text" name="query" placeholder="Search Ballast">
+
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div id="search-results" data-orchid-search-results style="display: none;">
+      <div class="carat"></div>
+      <b>
+        Search Results
+        <i class="fa fa-times" aria-hidden="true" onclick="$('[data-orchid-search-results]').hide()"></i>
+      </b>
+      <ul></ul>
+    </div>
+  </form>
+</div>
+
+      
+
+  
+  
+    
+
+<a class="navbar-item " href="https://github.com/orchidhq/Orchid">
+Orchid
+</a>
+
+
+  
+
+  
+  
+    
+<div class="navbar-item has-dropdown is-hoverable">
+
+
+<a class="navbar-item " href="">
+Copper Leaf
+</a>
+
+
+  <div class="navbar-dropdown">
+  
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/common">
+Common
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/clog">
+Clog
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kudzu">
+Kudzu
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/trellis">
+Trellis
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/thistle">
+Thistle
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/ballast">
+Ballast
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kodiak">
+Kodiak
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/krow">
+Krow
+</a>
+
+
+    
+  </div>
+</div>
+
+  
+
+
+      </div>
+
+      <div class="navbar-end">
+      
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf" title="Copper Leaf Home">
+    <i class="fas fa-home"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf/ballast" title="Github">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://twitter.com/OrchidSSG" title="Twitter">
+    <i class="fab fa-twitter"></i>
+  </a>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <div class="textured container" style="width: 100%;">
+    
+    
+
+    
+    
+      <article style="position: relative; margin-top: 60px; margin-bottom: 60px;" role="main">
+      
+      
+        <div class="box">
+        
+
+<div class="columns">
+  <div class="column is-three-quarters-desktop">
+  
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <div class="component component-changelog component-order-0">
+                            
+
+
+<section class="accordions" id="changelog">
+
+  <article class="accordion is-active">
+    <div class="accordion-header toggle">
+      <p>1.2.1 - 2022-05-18</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Don't check for cleared in trySend (fixes <a href="https://github.com/copper-leaf/ballast/issues/25">#25</a>)</li>
+<li>Improved KDoc documentation for all classes/functions in core module</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>1.2.0 - 2022-05-18</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Improvements to <code>AndroidViewModel</code>
+<ul>
+<li>Adds <code>attachEventHandler()</code> override which runs on a <code>CoroutineScope</code> rather than a <code>Lifecycle</code>, which is
+better-suited for Compose EventHandlers</li>
+<li>Adds <code>attachEventHandlerOnLifecycle()</code> to be more explicit about when the eventHandler is running on a Lifecycle</li>
+<li>Original <code>attachEventHandler()</code> is now marked as deprecated, and should be replaced with
+<code>attachEventHandlerOnLifecycle()</code></li>
+<li>Adds <code>observeStatesOnLifecycle()</code> method for more easily collecting states in XML-based Views</li>
+</ul>
+</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>1.1.0 - 2022-04-29</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Many improvements to the Intellij plugin
+<ul>
+<li>Allow Debugger to work with all <code>1.x.x</code> client versions</li>
+<li>The Debugger's port can now be changed in the Preferences dialog</li>
+<li>File templates are now provided to quickly generate components from the <code>Right-click &gt; New</code> menu</li>
+<li>The values and errors show for inputs, events, states, and sideJobs in the debugger are now more nicely formatted</li>
+</ul>
+</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>1.0.0 - 2022-04-19</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Ballast is now considered stable with its first 1.0.0 release!</li>
+<li>Adds Repository <code>fetchWithCache</code> function to observe a Flow rather than emit a one-shot data source</li>
+<li>Adopt Flow/Coroutine adapters from KaMPKit instead of using home-grown ones</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.15.1 - 2022-04-08</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Fix bug in IntelliJ plugin where settings were not being saved</li>
+<li>Removes &quot;sample&quot; from IntelliJ plugin, as that example and several more are available from the documentation site</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.15.0 - 2022-04-06</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Fix several bugs in Debugger UI
+<ul>
+<li>Kotlin coroutines versions were in conflict and crashing the debugger</li>
+<li>Timestamps not correctly reported once ViewModel was refreshed</li>
+<li>Connection Ballast Version not reported correctly once refreshed</li>
+</ul>
+</li>
+<li>Adds new <code>ballast-saved-state</code> module</li>
+<li>Adds <code>ballast-test</code> API for isolating a single input</li>
+<li>Reverts Coroutines version back to 1.5.2. To use Ballast on iOS with the new memory model, manually include the
+1.6.0 dependency</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.14.0 - 2022-03-28</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Attempts to get iOS support working and documented, with M1 Simulator support</li>
+<li>Updates Coroutines to 1.6.0, for the Native's new memory model support</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.13.1 - 2022-03-25</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>[BUG FIX] Fix regression in debugger, where you could not view or rollback to previous States.</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.13.0 - 2022-03-24</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>[BREAKING CHANGE] Renames <code>ballast-crashlytics</code> module to <code>ballast-firebase-crashlytics</code></li>
+<li>[BREAKING CHANGE] Renames <code>sideEffect()</code> to <code>sideJob()</code> to be more accurate and less confusing in comparison to
+other Kotlin MVI libraries.</li>
+<li>[BREAKING CHANGE] <code>BallastViewModel</code> no longer implements the <code>SendChannel</code> interface, it exposes the <code>send</code> and
+<code>trySend</code> methods directly. It also adds <code>sendAndAwaitCompletion()</code> to send an Input and wait for it to completely
+finish processing.</li>
+<li>[BREAKING CHANGE] The <code>logger</code> property of <code>BallastViewModelConfiguration.Builder</code> is now a function, which receives
+the viewModel name when built, to pass as the tag of a logger.</li>
+<li>[BREAKING CHANGE] Moves annotations for Firebase into commonMain and renames them:
+<ul>
+<li><code>@FirebaseCrashlyticsInterceptor.Ignore</code> --&gt; <code>@FirebaseCrashlyticsIgnore</code></li>
+<li><code>@FirebaseAnalyticsInterceptor.TrackInput</code> --&gt; <code>@FirebaseAnalyticsTrackInput</code></li>
+</ul>
+</li>
+<li>[FUNCTIONAL CHANGE] SideJobs are now posted to the VM immediately, rather than collected and dispatched explicitly
+after handling. The default implementation still requires that SideJobs are sent as the last statements of the
+<code>InputHandler</code>, though.
+<ul>
+<li>By writing a custom <code>InputStrategy.Guardian</code>, you could remove the restriction that sideJobs must be started at the
+end of the Input. This is dangerous and you shouldn't do it unless you really know what you're doing.</li>
+</ul>
+</li>
+<li>[BUG FIX] Fixes issue where JS Debugger cannot connect because JS browser websocket clients can't send headers</li>
+<li>[NEW] Adds platform-specific <code>BallastLogger</code> implementations (<code>AndroidBallastLogger</code>, <code>JsConsoleBallastLogger</code>). The
+default logger of <code>BallastViewModelConfiguration</code> is still <code>NoOpLogger()</code>.</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.12.0 - 2022-03-17</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Fixes issue with <code>inputHandler { }</code> and <code>eventHandler { }</code> functions, which previously didn't actually send the input
+or event to the lambda</li>
+<li>Move all InputHandler checks into the Guardian, so any/all of them could be thrown away by the end-user if needed</li>
+<li>make a dedicated <code>InputStrategyScope</code> to match the pattern of all other pluggable features</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.11.0 - 2022-03-15</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Adds &quot;time-travel debugging&quot; to Debugger IntelliJ plugin! Inputs can now be re-sent, and you can roll back the VM
+state to any previous point in time</li>
+<li>Makes configuration a builder instead of multiple constructors</li>
+<li>Allow BallastViewModelImpl to access the host VM, so the user-created VM is what's sent to Interceptors</li>
+<li>ViewModels now clear themselves when their coroutine scope is closed, rather than having to do it manually</li>
+<li>Adds a basic Logging facade, so all Ballast components have easy access to a common logger</li>
+<li>Tighten up the overall API a bit, to be more streamlined</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.10.0 - 2022-02-28</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Updates to Kotlin 1.6.10</li>
+<li>Fixes issue running IntelliJ plugin on Windows</li>
+<li>Starts improving the Interceptor API to eventually allow Interceptors to inject Inputs and restore States</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.9.0 - 2022-02-28</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Finishes Debugger UI, fully exposing all states of Inputs, Events, and SideEffects</li>
+<li>Converts Debugger UI to an IntelliJ Plugin, instead of a standalone desktop application</li>
+<li>Adds a few new <code>BallastNotification</code>s, to notify of Inputs and Events being queued, but not yet processed</li>
+<li>Fixed bug where SideEffect errors and cancellation was not being notified properly</li>
+<li><code>SideEffectcope</code> is now also a <code>CoroutineScope</code>, so you can <code>launch</code> other coroutines directly within the
+<code>sideEffect(key) { }</code> block without having to manually wrap it in <code>coroutineScope { }</code></li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.8.2 - 2022-02-23</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Fix issue with creating desktop packages.</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.8.1 - 2022-02-23</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Fix issue with creating desktop packages.</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.8.0 - 2022-02-22</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <p>This is a major release, with lots of new features, greatly improved safety, but with several significant breaking
+changes, as descibed below:</p>
+<ul>
+<li>Improves side-effects
+<ul>
+<li>They are now started through a Channel, instead of relying on a Mutex for safety</li>
+<li>New <code>BallastInterceptor</code> methods added to track sideEffect starts/errors</li>
+<li>SideEffects (and related APIs) now <em>require</em> a <code>key</code> to be provided, to avoid accidental restarting cause by
+disparate Inputs forgetting to provide a key</li>
+</ul>
+</li>
+<li>Improves safety of <code>ParallelInputStrategy</code> to prevent multiple updates, rather than just throwing an error at the end
+of the Input handler block if it was used incorrectly
+<ul>
+<li>Replaces <code>onCompleted</code> callback with a <code>Guardian</code> interface, which each InputStrategy can create for itself to check
+accesses during the InputHandler, rather than at the end</li>
+</ul>
+</li>
+<li>Rewrites Interceptor API
+<ul>
+<li>Instead of an interface, interceptors &quot;events&quot; are sent as a sealed class, <code>BallastNotification</code>. These
+Notifications are sent to a SharedFlow inside the core ViewModel, and each Interceptor observes this SharedFlow
+from its own coroutine, launched in the viewModel coroutineScope</li>
+</ul>
+</li>
+<li>Improves Repository <code>Cached</code> DSL:
+<ul>
+<li>Adds <code>getValueOrThrow()</code></li>
+<li>Adds <code>getCachedOrThrow()</code></li>
+</ul>
+</li>
+<li>Introduces Ballast Debugger, a realtime desktop app for observing what is happening within your application's Ballast
+ViewModels</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.7.0 - 2022-02-14</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Adds Repository module for app-wide caching and communication</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.6.0 - 2022-01-27</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Improves DSL for restarting SideEffects</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.5.0 - 2022-01-16</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Fixes issue with input Channel buffer that didn't do exactly what I expected</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.4.0 - 2022-01-14</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Tweaks API a bit</li>
+<li>SideEffects must now be the last blocks called while handling an Input, to avoid confusion about dispatching the side
+effect but not actually running until the Input processing has completed</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.3.0 - 2022-01-06</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>
+<p>Adds different strategies for accepting and processing inputs to allow for other use-cases.</p>
+</li>
+<li>
+<h2 id="020---2022-01-05"><a href="#020---2022-01-05" id="020---2022-01-05" class="anchor"></a>0.2.0 - 2022-01-05</h2>
+</li>
+<li>
+<p>Adds <code>ballast-test</code></p>
+</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+  <article class="accordion ">
+    <div class="accordion-header toggle">
+      <p>0.1.0 - 2021-11-18</p>
+    </div>
+    <div class="accordion-body">
+      <div class="accordion-content content is-medium-tablet is-large-fullhd">
+      <ul>
+<li>Initial Commit</li>
+</ul>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+
+
+                        </div>
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+  </div>
+  
+    <div class="column is-one-quarter is-hidden-touch">
+      <div class="sticky-menu" style="position: sticky; top: 30px;">
+  
+  
+    
+<p class="menu-label">In This Page</p>
+  
+
+</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+      
+      </article>
+    
+      <div class="grow"></div>
+      <div class="page-footer">
+      
+        <nav class="pagination is-rounded footer-pagination" role="navigation" aria-label="pagination">
+
+  <a class="pagination-previous" href="https://copper-leaf.github.io/ballast/wiki/roadmap">
+    <span class="icon"><i class="fas fa-chevron-left"></i></span>
+    Roadmap
+  </a>
+
+
+
+  <a class="pagination-next" disabled>
+    <span class="inner">
+      Next
+      <span class="icon"><i class="fas fa-chevron-right"></i></span>
+    </span>
+  </a>
+
+</nav>
+
+<footer class="footer border-top">
+  <div class="content is-small">
+  <p>
+  Site proudly built with <a href="https://orchid.run/">Orchid</a>.<br>
+</p>
+
+  </div>
+</footer>
+
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+
+<!-- start:inject scripts -->
+<script defer data-search-pseudo-elements="true" src="https://copper-leaf.github.io/ballast/Copper/19c4470f/releases/v5.4.0/js/all.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/19c4470f/assets/js/bulma.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/19c4470f/assets/js/bulma-accordion.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/19c4470f/assets/js/bulma-tabs.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/lunr/lunr.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/assets/js/orchidSearch.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-groovy.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/mermaid/8.13.9/mermaid.min.js"></script>
+<script >
+;
+
+document.addEventListener('DOMContentLoaded', function() {
+    mermaid.init({}, "code.language-mermaid");
+});
+</script>
+<script  src="https://copper-leaf.github.io/ballast/assets/scripts/mp-widget.js"></script>
+<script >
+
+if(document.getElementById("intellij-plugin-button") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('install', 18702, "#intellij-plugin-button");
+}
+if(document.getElementById("intellij-plugin-card") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('card', 18702, "#intellij-plugin-card");
+}
+</script>
+<!-- end:inject scripts -->
+
+
+</body>
+</html>
