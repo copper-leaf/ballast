@@ -1,28 +1,33 @@
 package com.copperleaf.ballast
 
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 
 /**
- * A scope for handling the "blocking" processing of an Input that was accepted by the VM. Inputs
- * may update the VM state, post events, and start side-jobs. Side-jobs are idempotent in that
- * if a side-job at the same key is started, the previous one is cancelled to avoid leaks.
+ * A scope for handling the "blocking" processing of an Input that was accepted by the VM. This scope defines the
+ * actions that can be taken "synchronously" during the processing on an Input, and checks to make sure that it is being
+ * handled correctly.
  *
- * Side-jobs are not started until the normal processing has completed. They are given more
- * freedom to launch coroutines that run in the background, parallel to normal Input handling, and
- * may post new Inputs or Events. However, the side-job cannot update the state, as that would
- * lead to race conditions. When a side-job would need to update the state, it should post an
- * Input which applies that value to the State.
- *
- * Posting Inputs directly from the "blocking" scope may cause deadlocks, as as such must be posted
- * from a side-job so that it is queued up as normal. In addition, posting an Input from an Input
- * doesn't make sense, as you can simply extract the "handler" code from that Input and execute it
- * directly, without going through the intermediary step of posting an extra Input.
+ * The processing of this [InputHandlerScope] is protected by an [InputStrategy.Guardian] to ensure that it is being
+ * used correctly according to the rules of the [InputStrategy] provided to the [BallastViewModelConfiguration]
+ * ([BallastViewModelConfiguration.inputStrategy]).
  */
 @BallastDsl
 public interface InputHandlerScope<Inputs : Any, Events : Any, State : Any> {
 
+    /**
+     * A reference to the [BallastLogger] set in the host ViewModel's [BallastViewModelConfiguration]
+     * ([BallastViewModelConfiguration.logger]).
+     */
     public val logger: BallastLogger
 
+    /**
+     * Returns the current state at the moment this function is called.
+     *
+     * @see [MutableStateFlow.value]
+     */
     public suspend fun getCurrentState(): State
 
     /**

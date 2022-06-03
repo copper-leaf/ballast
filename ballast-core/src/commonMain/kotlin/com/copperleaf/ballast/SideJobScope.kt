@@ -14,20 +14,32 @@ import kotlinx.coroutines.CoroutineScope
 @BallastDsl
 public interface SideJobScope<Inputs : Any, Events : Any, State : Any> : CoroutineScope {
 
-    public enum class RestartState {
-        Initial, Restarted
-    }
-
+    /**
+     * A reference to the [BallastLogger] set in the host ViewModel's [BallastViewModelConfiguration]
+     * ([BallastViewModelConfiguration.logger]).
+     */
     public val logger: BallastLogger
+
+    /**
+     * A snapshot of the ViewModel State at the point when this sideJob was started. There is no guarantee that this is
+     * the same state as when [InputHandlerScope.sideJob] was called. If you need the state at that specific point in
+     * time, you can capture a reference to the result of [InputHandlerScope.getCurrentState] in the sideJob's lambda.
+     */
     public val currentStateWhenStarted: State
+
+    /**
+     * A flag to let you know whether this is the first time this sideJob was started at the given key, or if it was
+     * called again to restart this task. A sideJob that completes normally and is then started again later at the same
+     * key will be considered a new sideJob, so this will then be [RestartState.Initial]
+     */
     public val restartState: RestartState
 
     /**
-     * After performing a side-job, dispatch a new Input back to the ViewModel (to update the State independently of
+     * After start a side-job, dispatch a new Input back to the ViewModel (to update the State independently of
      * the current state with data computed during the side-job).
      *
      * Inputs sent back to the ViewModel should not contain any data that can be derived from the ViewModel. That is,
-     * data from the current State at the time this side-job finishes may not be the same as the sState of the
+     * data from the current State at the time this side-job finishes may not be the same as the State of the
      * ViewModel at that point in time, since this side-job is running in parallel to the normal state updates. So
      * any Input sent back to the VM cannot assume any of the values in it's own "current state" are still valid, so we
      * definitely don't want to put any of those values back. Instead, let the Input pull the necessary values once it
@@ -46,4 +58,8 @@ public interface SideJobScope<Inputs : Any, Events : Any, State : Any> : Corouti
      * the result of the transaction.
      */
     public suspend fun postEvent(event: Events)
+
+    public enum class RestartState {
+        Initial, Restarted
+    }
 }

@@ -151,6 +151,9 @@ private fun <Inputs : Any, Events : Any, State : Any> List<BallastInterceptor<*,
     return this.map { it as BallastInterceptor<Inputs, Events, State> }
 }
 
+/**
+ * Create a default [BallastViewModelConfiguration] from a [BallastViewModelConfiguration.Builder].
+ */
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.build(
 ): BallastViewModelConfiguration<Inputs, Events, State> {
     val vmName = name ?: "$inputHandler-vm"
@@ -169,6 +172,10 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
     )
 }
 
+/**
+ * Set all [CoroutineDispatcher]s in your ViewModel. For convenience, you can set only the [inputsDispatcher] to use
+ * that for all dispatchers, or set the dispatcher for each feature individually.
+ */
 public fun BallastViewModelConfiguration.Builder.dispatchers(
     inputsDispatcher: CoroutineDispatcher,
     eventsDispatcher: CoroutineDispatcher = inputsDispatcher,
@@ -181,18 +188,29 @@ public fun BallastViewModelConfiguration.Builder.dispatchers(
     this.interceptorDispatcher = interceptorDispatcher
 }
 
+/**
+ * Add a [BallastInterceptor] to the [BallastViewModelConfiguration.Builder].
+ */
 public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.plusAssign(
     interceptor: BallastInterceptor<Inputs, Events, State>
 ) {
     this.interceptors += interceptor
 }
 
+/**
+ * Add many [BallastInterceptor]s to the [BallastViewModelConfiguration.Builder].
+ */
 public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.plusAssign(
     interceptors: Iterable<BallastInterceptor<Inputs, Events, State>>
 ) {
     this.interceptors += interceptors
 }
 
+/**
+ * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
+ * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
+ * [BallastViewModelConfiguration].
+ */
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
     initialState: State,
     inputHandler: InputHandler<Inputs, Events, State>,
@@ -208,6 +226,11 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         }
         .build()
 
+/**
+ * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
+ * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
+ * [BallastViewModelConfiguration].
+ */
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
     initialState: State,
     inputHandler: FilteredInputHandler<Inputs, Events, State>,

@@ -66,20 +66,25 @@ public interface InputStrategy {
         public fun checkStateUpdate() {}
 
         /**
-         *
+         * Checked on every call to [InputHandlerScope.sideJob].
          */
         public fun checkSideJob() {}
 
         /**
-         *
+         * Checked on every call to [InputHandlerScope.postEvent].
          */
         public fun checkPostEvent() {}
 
         /**
-         *
+         * Checked on every call to [InputHandlerScope.noOp].
          */
         public fun checkNoOp() {}
 
+        /**
+         * Called once the Input has finished processing and the InputHandler has returned. That [InputHandlerScope] is
+         * now closed and attempts to interact with it any further should fail, ensuring that it is not accidentally
+         * referenced and accessed by a background coroutine beyond its intended lifetime.
+         */
         public fun close() {}
     }
 }

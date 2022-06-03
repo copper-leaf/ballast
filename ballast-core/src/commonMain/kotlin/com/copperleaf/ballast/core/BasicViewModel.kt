@@ -9,6 +9,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
+/**
+ * A generic ViewModel for Kotlin targets that don't have their own platform-specific ViewModel, or for anywhere you
+ * want to manually control the lifecycle of the ViewModel. BasicViewModel's lifecycle is controlled by a coroutineScope
+ * provided to it upon creation. When the scope gets cancelled, the ViewModel gets closed and can not be used again.
+ */
 public open class BasicViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val eventHandler: EventHandler<Inputs, Events, State>,

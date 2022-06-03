@@ -57,6 +57,9 @@ private constructor(
         }
     }
 
+    /**
+     * Deprecated in 1.2.0, scheduled to be removed in 2.0.0.
+     */
     @Deprecated("replace with attachEventHandlerOnLifecycle", replaceWith = ReplaceWith("attachEventHandlerOnLifecycle(lifecycleOwner, handler)"))
     public fun attachEventHandler(
         lifecycleOwner: LifecycleOwner,

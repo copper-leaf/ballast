@@ -2,6 +2,22 @@ package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.InputStrategy
 
+/**
+ * A default [InputStrategy.Guardian] that may be used by a custom [InputStrategy] for ensuring Inputs are handled the
+ * same way as the built-in strategies. It can be overridden to make slight tweaks to its behavior, but larger tweaks
+ * should be done by creating a fully-custom Guardian implementation.
+ *
+ * This guardian enforces the following rules:
+ *
+ * - Nothing gets changed after the InputHandler returns from processing an Input (such as coroutine launched in
+ *      parallel attempting to use a reference to the original InputHandlerScope).
+ * - Starting a SideJob must be the last statement of the InputHandler. You can start multiple side-jobs from a single
+ *      Input, but all of them must be the last statements of the InputHandler. This helps prevent issues from the fact
+ *      that SideJobs are running as a lambda, but do not get started immediately when `sideJob()` is called.
+ * - There should be _something_ done during the processing of an event. This helps prevent Input types from
+ *      accidentally getting ignored, or from using an Input incorrectly (updating variables anywhere other than the VM
+ *      State, launching coroutines rather than using SideJobs, etc.)
+ */
 public open class DefaultGuardian : InputStrategy.Guardian {
 
     protected var stateAccessed: Boolean = false

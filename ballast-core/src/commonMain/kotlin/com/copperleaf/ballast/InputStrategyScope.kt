@@ -19,5 +19,9 @@ import com.copperleaf.ballast.core.ParallelInputStrategy
  */
 public interface InputStrategyScope<Inputs : Any, Events : Any, State : Any> {
 
+    /**
+     * Send a Queued item back to the ViewModel for processing. It will be protected by its [InputStrategy.Guardian] to
+     * ensure that it is processed correctly.
+     */
     public suspend fun acceptQueued(queued: Queued<Inputs, Events, State>, guardian: InputStrategy.Guardian)
 }

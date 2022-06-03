@@ -8,6 +8,12 @@ import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputStrategy
 import kotlinx.coroutines.CoroutineDispatcher
 
+/**
+ * A default implementation of [BallastViewModelConfiguration] produced by [BallastViewModelConfiguration.Builder].
+ * Using the builder is not necessary in most cases; you can create your configuration directly with
+ * [DefaultViewModelConfiguration], or you can implement [BallastViewModelConfiguration] yourself to provide a different
+ * configuration builder pattern for your application.
+ */
 public class DefaultViewModelConfiguration<Inputs : Any, Events : Any, State : Any>(
     override val initialState: State,
     override val inputHandler: InputHandler<Inputs, Events, State>,

@@ -5,6 +5,9 @@ import com.copperleaf.ballast.core.NoOpLogger
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+/**
+ * This class collects all the configurable properties of a [BallastViewModel].
+ */
 public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State : Any> {
     public val initialState: State
     public val inputHandler: InputHandler<Inputs, Events, State>

@@ -3,7 +3,18 @@ package com.copperleaf.ballast.core
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.BallastViewModelConfiguration
 
+/**
+ * [LoggingInterceptor] will print all Ballast activity to the logger provided in the [BallastViewModelConfiguration],
+ * for debugging purposes. The information logged by this interceptor may be quite verbose, but it can be really handy
+ * for quickly inspecting the data in your ViewModel and determining what happened and in what order.
+ *
+ * This Interceptor should never be used in production as it is likely to leak sensitive information to the logs. It is
+ * not designed to make a "paper trail" for production logging. You should use the
+ * [Ballast Firebase Analytics](https://copper-leaf.github.io/ballast/wiki/modules/ballast-firebase/#analytics) for that
+ * on Android, or build a customer logger suitable for production that can ensure nothing sensitive gets logged.
+ */
 public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any> : BallastInterceptor<Inputs, Events, State> {
 
     /**

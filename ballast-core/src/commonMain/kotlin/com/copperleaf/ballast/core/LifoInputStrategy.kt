@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.collectLatest
  *
  * LIFO is the default strategy if one is not explicitly provided to the ViewModel.
  *
- *
  * New inputs will be scheduled to run immediately, and any previous inputs that are still running will be cancelled.
  * LIFO guarantees that only one input will be processed at a time, and is thus protected against race
  * conditions. Each Input processed with a LIFO strategy can freely access/update the ViewModel state as many times as

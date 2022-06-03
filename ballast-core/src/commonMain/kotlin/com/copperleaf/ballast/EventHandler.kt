@@ -1,26 +1,35 @@
 package com.copperleaf.ballast
 
+import kotlinx.coroutines.channels.Channel
+
 /**
- * An interface for handling Events emitted by the ViewModel. Events are typically used to initiate side-jobs, but
- * they may also need to post additional inputs back to the ViewModel.
+ * An interface for handling Events emitted by the ViewModel. Events are one-time side-effects that _must_ be handled
+ * exactly once, though not necessarily immediately. Events are only sent as the result of processing an Input, where
+ * they will be sent back to the ViewModel, buffered into a [Channel], and then dispatched asynchronously to the
+ * registered EventHandler. Events will be run on the Dispatcher provided to the [BallastViewModelConfiguration]
+ * ([BallastViewModelConfiguration.eventsDispatcher]).
  *
- * For example, an Event may dispatch a request to display a notification bubble. The notification UI is agnostic to
- * what is calling it, but we can attach a button handler to that request that, when clicked, emits an Input back to
- * the original VM that sent the event. One could write an implementation that does this outside the VM scope itself,
- * but then we have to deal with manually managing multiple references to the VM itself. In contrast, the
- * [EventHandlerScope] can be passed to the notification handler as an implicit reference to the originating VM,
- * simplifying the management and helpding prevent leaky or unnecessary abstractions around such code. This will post an
- * Input back to the ViewModel, and ultimately back to the [InputHandler] that dispatched this Event.
+ * In most cases, a ViewModel should have exactly 1 EventHandler attached to it. If no EventHandlers are attached, then
+ * Events may get queued up and eventually cause the [Channel] to suspend, blocking the main queue. More than one
+ * EventHandler may be attached at once to distribute that work amongst the in parallel, but because they are both
+ * reading from the same [Channel], each Event will only be sent to one of the Handlers. If you have a need for multiple
+ * things to respond to all Events, use a [BallastInterceptor] instead.
  *
- * The handling of an Event is typically considered a "side-job", running in parallel to the ViewModel. It cannot
- * reference the ViewModel State itself, and so any State in the Event is the State that was current at the time the
- * Event was dispatched, but may not necessarily be the exact same State by the time the Event is actually handled.
+ * EventHandlers are typically platform-specific. While the InputHandler should be done in common code, it may need to
+ * request some action that cannot be easily handled in common code, such as navigation. So instead of performing the
+ * navigation in the InputHandler, which has no knowledge of platform-specific APIs, it delegates that action to the
+ * EventHandler, which does.
+ *
+ * Because EventHandlers are platform-specific, the manner in which they are attached to the ViewModel is also
+ * platform-specific. Refer to the documentation for your chosen ViewModel base class to see how to attach the
+ * EventHandler on that platform.
  */
 public interface EventHandler<Inputs : Any, Events : Any, State : Any> {
 
     /**
      * Asynchronously handle an Event. Prefer using a sealed class to describe all Events, and a `when` expression to
-     * ensure you're handling all Events.
+     * ensure you're handling all Events. This method will be running on the Dispatcher provided to the
+     * [BallastViewModelConfiguration] ([BallastViewModelConfiguration.eventsDispatcher]).
      */
     public suspend fun EventHandlerScope<Inputs, Events, State>.handleEvent(
         event: Events
