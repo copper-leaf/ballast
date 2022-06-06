@@ -25,18 +25,16 @@ dependencies {
     // compose Desktop Intellij Plugin
     compileOnly(compose.desktop.currentOs)
     implementation(compose.desktop.components.splitPane)
-    implementation(compose.desktop.components.splitPane)
     implementation(compose.materialIconsExtended)
 
     // Ktor websocker server
     implementation(libs.kotlinx.coroutines.swing)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.cio)
-    implementation(libs.ktor.server.websockets)
+    implementation(libs.ktor1.server.core)
+    implementation(libs.ktor1.server.cio)
+    implementation(libs.ktor1.server.websockets)
     implementation(libs.slf4j.nop)
-    implementation(libs.ktor.client.cio)
 
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     implementation(project(":ballast-core"))

@@ -85,13 +85,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-core"))
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.websockets)
-                implementation(libs.ktor.client.serialization)
-                implementation(libs.ktor.client.serialization.json)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.benasher44.uuid)
+                implementation(libs.ktor.http.utils)
             }
         }
         val commonTest by getting {

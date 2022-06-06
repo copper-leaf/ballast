@@ -53,6 +53,7 @@ interface ClientModelMapper {
 
         private val supportedClientVersions = listOf(
             Version(1, null, null) to { ClientModelMapperV2() },
+            Version(2, null, null) to { ClientModelMapperV2() },
         )
 
         fun isSupported(
@@ -69,6 +70,11 @@ interface ClientModelMapper {
             return supportedClientVersions
                 .firstOrNull { it.first.matches(version) }
                 ?.second?.invoke()
+                ?: run {
+                    println("Unsupported client version: $connectionBallastVersion")
+
+                    null
+                }
         }
     }
 }
