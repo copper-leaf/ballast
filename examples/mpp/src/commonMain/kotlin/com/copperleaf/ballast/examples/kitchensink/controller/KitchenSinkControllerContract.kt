@@ -11,8 +11,10 @@ object KitchenSinkControllerContract {
     sealed class Inputs {
         data class UpdateInputStrategy(val inputStrategy: InputStrategySelection) : Inputs()
         data class UpdateViewModel(val viewModel: KitchenSinkViewModel) : Inputs()
+        object GoBack : Inputs()
     }
 
     sealed class Events {
+        object NavigateBackwards : Events()
     }
 }

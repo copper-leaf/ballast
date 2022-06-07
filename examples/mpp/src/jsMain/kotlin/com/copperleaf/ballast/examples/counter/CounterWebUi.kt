@@ -1,8 +1,12 @@
 package com.copperleaf.ballast.examples.counter
 
 import androidx.compose.runtime.Composable
-import com.copperleaf.ballast.examples.counter.CounterContract
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import com.copperleaf.ballast.examples.util.ExamplesContext
+import com.copperleaf.ballast.examples.util.LocalInjector
 import com.copperleaf.ballast.examples.util.bulma.BulmaButton
 import com.copperleaf.ballast.examples.util.bulma.BulmaButtonGroup
 import com.copperleaf.ballast.examples.util.bulma.BulmaColor
@@ -15,10 +19,13 @@ import org.jetbrains.compose.web.dom.Text
 
 object CounterWebUi {
     @Composable
-    public fun Content(
-        uiState: CounterContract.State,
-        postInput: (CounterContract.Inputs) -> Unit,
-    ) {
+    public fun WebContent() {
+        val injector = LocalInjector.current
+
+        val viewModelCoroutineScope = rememberCoroutineScope()
+        val vm = remember(viewModelCoroutineScope) { injector.counterViewModel(viewModelCoroutineScope) }
+        val uiState by vm.observeStates().collectAsState()
+
         BulmaPanel(
             headingStart = { Text("Counter") },
             headingEnd = {
@@ -35,7 +42,7 @@ object CounterWebUi {
         ) {
             BulmaButtonGroup {
                 Control {
-                    BulmaButton(onClick = { postInput(CounterContract.Inputs.Decrement(1)) }) {
+                    BulmaButton(onClick = { vm.trySend(CounterContract.Inputs.Decrement(1)) }) {
                         Text("-")
                     }
                 }
@@ -48,7 +55,7 @@ object CounterWebUi {
                     }
                 }
                 Control {
-                    BulmaButton(onClick = { postInput(CounterContract.Inputs.Increment(1)) }) {
+                    BulmaButton(onClick = { vm.trySend(CounterContract.Inputs.Increment(1)) }) {
                         Text("+")
                     }
                 }

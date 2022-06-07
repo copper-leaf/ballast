@@ -2,6 +2,7 @@ package com.copperleaf.ballast
 
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
+import com.copperleaf.ballast.core.NoOpLogger
 import com.copperleaf.ballast.core.ParallelInputStrategy
 import com.copperleaf.ballast.impl.TestContract
 import com.copperleaf.ballast.impl.TestEventHandler
@@ -24,6 +25,7 @@ class BallastCoreTests {
         filter = TestInputFilter(),
     ) {
         defaultInitialState { TestContract.State() }
+        logger { NoOpLogger() }
 
         scenario("update string value only") {
             running {

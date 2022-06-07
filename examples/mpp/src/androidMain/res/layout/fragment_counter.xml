@@ -56,18 +56,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Compose UI"
-        android:gravity="center"
-        style="@style/TextAppearance.AppCompat.Headline"/>
-
-    <androidx.compose.ui.platform.ComposeView
-        android:id="@+id/compose_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"/>
-
 </LinearLayout>

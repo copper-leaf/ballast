@@ -17,9 +17,13 @@ object ScorekeeperContract {
         data class CommitTempScore(val playerName: String) : Inputs()
 
         data class TogglePlayerSelection(val playerName: String) : Inputs()
+
+        object GoBack : Inputs()
     }
 
     sealed class Events {
         data class ShowErrorMessage(val text: String): Events()
+
+        object NavigateBackwards : Events()
     }
 }

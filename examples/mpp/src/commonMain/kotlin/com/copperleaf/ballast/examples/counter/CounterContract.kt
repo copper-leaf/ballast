@@ -8,9 +8,10 @@ object CounterContract {
     sealed class Inputs {
         data class Increment(val amount: Int) : Inputs()
         data class Decrement(val amount: Int) : Inputs()
+        object GoBack : Inputs()
     }
 
     sealed class Events {
-
+        object NavigateBackwards : Events()
     }
 }

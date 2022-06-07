@@ -1,13 +1,16 @@
 package com.copperleaf.ballast.examples.bgg
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.copperleaf.ballast.examples.bgg.models.HotListType
 import com.copperleaf.ballast.examples.bgg.ui.BggContract
 import com.copperleaf.ballast.examples.util.ExamplesContext
+import com.copperleaf.ballast.examples.util.LocalInjector
 import com.copperleaf.ballast.examples.util.bulma.BulmaButton
 import com.copperleaf.ballast.examples.util.bulma.BulmaCheckbox
 import com.copperleaf.ballast.examples.util.bulma.BulmaPanel
@@ -26,10 +29,13 @@ import org.jetbrains.compose.web.dom.Text
 
 object BggWebUi {
     @Composable
-    public fun Content(
-        uiState: BggContract.State,
-        postInput: (BggContract.Inputs) -> Unit,
-    ) {
+    public fun WebContent() {
+        val injector = LocalInjector.current
+
+        val viewModelCoroutineScope = rememberCoroutineScope()
+        val vm = remember(viewModelCoroutineScope) { injector.bggViewModel(viewModelCoroutineScope) }
+        val uiState by vm.observeStates().collectAsState()
+
         BulmaPanel(
             headingStart = { Text("BoardGameGeek API") },
             headingEnd = {
@@ -55,7 +61,7 @@ object BggWebUi {
                 items = HotListType.values().toList(),
                 itemValue = { it.name },
                 selectedValue = uiState.bggHotListType,
-                onValueChange = { postInput(BggContract.Inputs.ChangeHotListType(it)) },
+                onValueChange = { vm.trySend(BggContract.Inputs.ChangeHotListType(it)) },
                 itemContent = { Text(it.displayName) }
             )
             BulmaCheckbox(
@@ -64,7 +70,7 @@ object BggWebUi {
                 onValueChange = { forceRefresh = it }
             )
             BulmaButton(
-                onClick = { postInput(BggContract.Inputs.FetchHotList(forceRefresh)) }
+                onClick = { vm.trySend(BggContract.Inputs.FetchHotList(forceRefresh)) }
             ) { Text("Fetch HotList") }
 
             Hr { }

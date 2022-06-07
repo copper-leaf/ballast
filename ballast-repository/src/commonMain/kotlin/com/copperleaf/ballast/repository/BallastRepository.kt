@@ -3,7 +3,6 @@ package com.copperleaf.ballast.repository
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.repository.bus.EventBus
@@ -44,11 +43,9 @@ import kotlinx.coroutines.flow.SharedFlow
 public abstract class BallastRepository<Inputs : Any, State : Any>(
     coroutineScope: CoroutineScope,
     eventBus: EventBus,
-    configBuilder: BallastViewModelConfiguration.Builder,
+    config: BallastViewModelConfiguration<Inputs, Any, State>,
 ) : BasicViewModel<Inputs, Any, State>(
     coroutineScope = coroutineScope,
-    config = configBuilder
-        .apply { inputStrategy = FifoInputStrategy() }
-        .build(),
+    config = config,
     eventHandler = EventBusEventHandler(eventBus),
 )

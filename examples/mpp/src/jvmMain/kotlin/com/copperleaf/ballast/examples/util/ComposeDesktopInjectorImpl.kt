@@ -11,11 +11,15 @@ import com.copperleaf.ballast.examples.kitchensink.KitchenSinkEventHandler
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerEventHandler
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
+import com.copperleaf.ballast.examples.mainlist.MainEventHandler
+import com.copperleaf.ballast.examples.mainlist.MainViewModel
+import com.copperleaf.ballast.examples.navigation.RouterViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 
 class ComposeDesktopInjectorImpl(
     private val applicationScope: CoroutineScope,
@@ -27,13 +31,27 @@ class ComposeDesktopInjectorImpl(
     debuggerHost = "127.0.0.1",
 ), ComposeDesktopInjector {
 
+    private val router = RouterViewModel(MainScope(), routerConfiguration())
+
+    override fun routerViewModel(): RouterViewModel {
+        return router
+    }
+
+    override fun mainViewModel(coroutineScope: CoroutineScope): MainViewModel {
+        return MainViewModel(
+            coroutineScope = coroutineScope,
+            config = mainConfiguration(),
+            eventHandler = MainEventHandler(routerViewModel())
+        )
+    }
+
     override fun kitchenSinkControllerViewModel(
         coroutineScope: CoroutineScope,
     ): KitchenSinkControllerViewModel {
         return KitchenSinkControllerViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = kitchenSinkControllerConfiguration(),
-            eventHandler = KitchenSinkControllerEventHandler(),
+            eventHandler = KitchenSinkControllerEventHandler(routerViewModel()),
         )
     }
 
@@ -44,7 +62,7 @@ class ComposeDesktopInjectorImpl(
         return KitchenSinkViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = kitchenSinkConfiguration(inputStrategy),
-            eventHandler = KitchenSinkEventHandler { /* ignore */ },
+            eventHandler = KitchenSinkEventHandler(routerViewModel()),
         )
     }
 
@@ -52,7 +70,7 @@ class ComposeDesktopInjectorImpl(
         return CounterViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = counterConfiguration(null),
-            eventHandler = CounterEventHandler(),
+            eventHandler = CounterEventHandler(routerViewModel()),
         )
     }
 
@@ -60,7 +78,7 @@ class ComposeDesktopInjectorImpl(
         return BggViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = bggConfiguration(),
-            eventHandler = BggEventHandler(),
+            eventHandler = BggEventHandler(routerViewModel()),
         )
     }
 
@@ -71,7 +89,7 @@ class ComposeDesktopInjectorImpl(
         return ScorekeeperViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = scorekeeperConfiguration(),
-            eventHandler = ScorekeeperEventHandler { snackbarHostState.showSnackbar(it) },
+            eventHandler = ScorekeeperEventHandler(routerViewModel()) { snackbarHostState.showSnackbar(it) },
         )
     }
 }

@@ -99,5 +99,9 @@ class ScorekeeperInputHandler : InputHandler<
                 )
             }
         }
+
+        is ScorekeeperContract.Inputs.GoBack -> {
+            postEvent(ScorekeeperContract.Events.NavigateBackwards)
+        }
     }
 }

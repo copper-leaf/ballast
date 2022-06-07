@@ -7,7 +7,6 @@ ktor1 = "1.6.7"
 ktor2 = "2.0.2"
 
 androidxLifecycle = "2.4.1"
-androidxNavigation = "2.4.1"
 
 multiplatformSettings = "0.8.1"
 uuid = "0.3.1"
@@ -36,14 +35,12 @@ ktor-http-utils = { module = "io.ktor:ktor-http", version.ref = "ktor2" }
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 androidx-core = { module = "androidx.core:core-ktx", version = "1.7.0" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.4.1" }
 androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.4.1" }
 androidx-material = { module = "com.google.android.material:material", version = "1.5.0" }
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version = "1.4.0" }
-androidx-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidxNavigation" }
-androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidxNavigation" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version = "29.0.0" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }

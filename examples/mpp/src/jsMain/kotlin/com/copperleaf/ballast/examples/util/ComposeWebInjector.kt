@@ -5,10 +5,18 @@ import com.copperleaf.ballast.examples.bgg.BggViewModel
 import com.copperleaf.ballast.examples.counter.CounterViewModel
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
+import com.copperleaf.ballast.examples.mainlist.MainViewModel
+import com.copperleaf.ballast.examples.navigation.RouterViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
 import kotlinx.coroutines.CoroutineScope
 
 interface ComposeWebInjector {
+
+    fun routerViewModel(): RouterViewModel
+
+    fun mainViewModel(
+        coroutineScope: CoroutineScope
+    ): MainViewModel
 
     fun kitchenSinkControllerViewModel(
         coroutineScope: CoroutineScope,

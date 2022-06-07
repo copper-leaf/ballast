@@ -18,7 +18,7 @@ class KitchenSinkInputHandler : InputHandler<
         input: KitchenSinkContract.Inputs
     ) = when (input) {
         is KitchenSinkContract.Inputs.CloseKitchenSinkWindow -> {
-            postEvent(KitchenSinkContract.Events.CloseWindow)
+            postEvent(KitchenSinkContract.Events.NavigateBackwards)
         }
 
         is KitchenSinkContract.Inputs.LongRunningInput -> {

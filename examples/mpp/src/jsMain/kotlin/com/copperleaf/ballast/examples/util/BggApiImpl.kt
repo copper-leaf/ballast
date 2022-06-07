@@ -4,10 +4,12 @@ import com.copperleaf.ballast.examples.bgg.api.BggApi
 import com.copperleaf.ballast.examples.bgg.models.BggHotListItem
 import com.copperleaf.ballast.examples.bgg.models.HotListType
 import io.ktor.client.HttpClient
-import io.ktor.client.call.receive
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.DEFAULT_PORT
+import io.ktor.http.URLProtocol
+import io.ktor.http.encodedPath
 import kotlinx.browser.window
 import kotlinx.coroutines.delay
 import org.w3c.dom.Element
@@ -42,13 +44,15 @@ class BggApiImpl(
             window.location.host to DEFAULT_PORT
         }
 
-        val response: HttpResponse = httpClient.get(
-            scheme = window.location.protocol.trimEnd(':'),
-            host = currentHost,
-            port = currentPort,
-            path = "${basePath}bgg/hot/${type.value}.xml",
-        )
-        val stringBody: String = response.receive()
+        val response: HttpResponse = httpClient.get {
+            url {
+                protocol = URLProtocol.createOrDefault(window.location.protocol.trimEnd(':'))
+                host = currentHost
+                port = currentPort
+                encodedPath = "${basePath}bgg/hot/${type.value}.xml"
+            }
+        }
+        val stringBody: String = response.bodyAsText()
 
         val parser = DOMParser()
         val doc = parser.parseFromString(stringBody, "application/xml");

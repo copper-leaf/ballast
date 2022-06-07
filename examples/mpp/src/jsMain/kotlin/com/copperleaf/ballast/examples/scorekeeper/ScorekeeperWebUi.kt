@@ -1,11 +1,14 @@
 package com.copperleaf.ballast.examples.scorekeeper
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperContract
+import androidx.compose.runtime.rememberCoroutineScope
 import com.copperleaf.ballast.examples.scorekeeper.models.Player
 import com.copperleaf.ballast.examples.util.ExamplesContext
+import com.copperleaf.ballast.examples.util.LocalInjector
 import com.copperleaf.ballast.examples.util.bulma.BulmaButton
 import com.copperleaf.ballast.examples.util.bulma.BulmaButtonFeatures
 import com.copperleaf.ballast.examples.util.bulma.BulmaButtonGroup
@@ -21,10 +24,13 @@ import org.jetbrains.compose.web.dom.Text
 
 object ScorekeeperWebUi {
     @Composable
-    public fun Content(
-        uiState: ScorekeeperContract.State,
-        postInput: (ScorekeeperContract.Inputs) -> Unit,
-    ) {
+    public fun WebContent() {
+        val injector = LocalInjector.current
+
+        val viewModelCoroutineScope = rememberCoroutineScope()
+        val vm = remember(viewModelCoroutineScope) { injector.scorekeeperViewModel(viewModelCoroutineScope) }
+        val uiState by vm.observeStates().collectAsState()
+
         BulmaPanel(
             headingStart = { Text("Scorekeeper") },
             headingEnd = {
@@ -39,9 +45,9 @@ object ScorekeeperWebUi {
                 }
             },
         ) {
-            NewPlayerForm(uiState, postInput)
-            PlayersList(uiState, postInput)
-            Buttons(uiState, postInput)
+            NewPlayerForm(uiState, vm::trySend)
+            PlayersList(uiState, vm::trySend)
+            Buttons(uiState, vm::trySend)
         }
     }
 

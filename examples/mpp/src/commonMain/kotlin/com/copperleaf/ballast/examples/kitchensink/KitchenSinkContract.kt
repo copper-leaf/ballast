@@ -24,9 +24,9 @@ object KitchenSinkContract {
     }
 
     sealed class Events {
-        object CloseWindow : Events()
-
         class LongRunningEvent : Events()
         class ErrorRunningEvent : Events()
+
+        object NavigateBackwards : Events()
     }
 }

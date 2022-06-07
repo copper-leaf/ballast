@@ -1,16 +1,24 @@
-package com.copperleaf.ballast.navigation
-
-import com.copperleaf.ballast.navigation.routing.Destination
-import com.copperleaf.ballast.navigation.routing.MissingDestination
-import com.copperleaf.ballast.navigation.routing.NavGraph
-import com.copperleaf.ballast.navigation.routing.NavToken
-import com.copperleaf.ballast.navigation.routing.Tag
+package com.copperleaf.ballast.navigation.routing
 
 public object RouterContract {
     public data class State(
         val navGraph: NavGraph,
-        val backstack: List<NavToken>,
-    )
+        val backstack: List<NavToken> = emptyList(),
+    ) {
+        override fun toString(): String {
+            return """|
+                |RouterContract(backstack=[
+                |    ${backstack.joinToString(separator = ",\n    ") { 
+                        when(it) {
+                            is Destination -> "'${it.originalUrl}'"
+                            is MissingDestination -> "(Not Found)"
+                            is Tag -> "[${it.tag}]"
+                        }
+                    }}
+                |])
+            """.trimMargin()
+        }
+    }
 
     public sealed class Inputs {
         /**

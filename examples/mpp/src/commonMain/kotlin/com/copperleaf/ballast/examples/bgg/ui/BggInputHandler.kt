@@ -33,5 +33,8 @@ class BggInputHandler(
         is BggContract.Inputs.HotListUpdated -> {
             updateState { it.copy(bggHotList = input.bggHotList) }
         }
+        is BggContract.Inputs.GoBack -> {
+            postEvent(BggContract.Events.NavigateBackwards)
+        }
     }
 }

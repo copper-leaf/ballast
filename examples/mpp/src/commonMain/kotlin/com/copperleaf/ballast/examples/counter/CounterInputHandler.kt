@@ -19,5 +19,8 @@ class CounterInputHandler : InputHandler<
         is CounterContract.Inputs.Decrement -> {
             updateState { it.copy(count = it.count - input.amount) }
         }
+        is CounterContract.Inputs.GoBack -> {
+            postEvent(CounterContract.Events.NavigateBackwards)
+        }
     }
 }

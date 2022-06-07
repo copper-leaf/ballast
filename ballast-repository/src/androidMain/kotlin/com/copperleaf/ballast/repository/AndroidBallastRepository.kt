@@ -4,8 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.build
-import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.repository.bus.EventBus
 import com.copperleaf.ballast.repository.bus.EventBusEventHandler
@@ -25,12 +23,10 @@ private constructor(
 
     public constructor(
         eventBus: EventBus,
-        configBuilder: BallastViewModelConfiguration.Builder,
+        config: BallastViewModelConfiguration<Inputs, Any, State>,
     ) : this(
         impl = BallastViewModelImpl(
-            config = configBuilder
-                .apply { inputStrategy = FifoInputStrategy() }
-                .build<Inputs, Any, State>()
+            config = config
         ),
         eventBus = eventBus,
     )

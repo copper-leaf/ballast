@@ -1,12 +1,7 @@
-package com.copperleaf.ballast.navigation
+package com.copperleaf.ballast.navigation.routing
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.navigation.routing.Destination
-import com.copperleaf.ballast.navigation.routing.MissingDestination
-import com.copperleaf.ballast.navigation.routing.NavToken
-import com.copperleaf.ballast.navigation.routing.Tag
-import com.copperleaf.ballast.navigation.routing.findMatch
 
 public class RouterInputHandler : InputHandler<
     RouterContract.Inputs,

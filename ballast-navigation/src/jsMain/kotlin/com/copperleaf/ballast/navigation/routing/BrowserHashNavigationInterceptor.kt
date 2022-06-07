@@ -1,8 +1,9 @@
-package com.copperleaf.ballast.navigation
+package com.copperleaf.ballast.navigation.routing
 
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.navigation.routing.RouterContract
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.channels.awaitClose
@@ -14,9 +15,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import org.w3c.dom.PopStateEvent
+import org.w3c.dom.HashChangeEvent
+import org.w3c.dom.events.Event
 
-public class BrowserHistoryNavigationInterceptor : BallastInterceptor<
+public class BrowserHashNavigationInterceptor : BallastInterceptor<
     RouterContract.Inputs,
     RouterContract.Events,
     RouterContract.State,
@@ -43,23 +45,24 @@ public class BrowserHistoryNavigationInterceptor : BallastInterceptor<
                 .map { it.state.currentDestination }
                 .distinctUntilChanged()
                 .onEach {
-                    window.history.pushState(null, "", it?.path)
+                    window.location.hash = it?.path ?: ""
                 }
                 .launchIn(this)
         }
     }
 
-    private fun onPopStateAsFlow(): Flow<PopStateEvent> {
+    private fun hashChangeEventAsFlow(): Flow<HashChangeEvent> {
         return callbackFlow {
-            val callback = { event: PopStateEvent ->
-                this@callbackFlow.trySend(event)
+            val callback = { event: Event ->
+                val hashChangeEvent = event as HashChangeEvent
+                this@callbackFlow.trySend(hashChangeEvent)
 
                 Unit
             }
-            window.onpopstate = callback
+            window.addEventListener("hashchange", callback)
 
             awaitClose {
-                window.onpopstate = null
+                window.removeEventListener("hashchange", callback)
             }
         }
     }

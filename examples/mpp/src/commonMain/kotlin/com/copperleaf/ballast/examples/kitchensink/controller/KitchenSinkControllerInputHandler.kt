@@ -29,5 +29,8 @@ class KitchenSinkControllerInputHandler(
         is KitchenSinkControllerContract.Inputs.UpdateViewModel -> {
             updateState { it.copy(viewModel = input.viewModel) }
         }
+        is KitchenSinkControllerContract.Inputs.GoBack -> {
+            postEvent(KitchenSinkControllerContract.Events.NavigateBackwards)
+        }
     }
 }
