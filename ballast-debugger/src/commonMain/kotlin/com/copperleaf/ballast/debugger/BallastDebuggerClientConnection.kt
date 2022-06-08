@@ -125,7 +125,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 } catch (e: CancellationException) {
                     throw e
                 } catch (t: Throwable) {
-                    t.printStackTrace()
                 }
             }
         }

@@ -14,7 +14,7 @@ internal fun String.parseDestination(): UnmatchedDestination {
         originalUrl = this,
         path = url.encodedPath,
         pathSegments = url.pathSegments.matchablePathSegments(),
-        query = url.parameters.entries().associate { it.key to it.value }
+        queryParameters = url.parameters.entries().associate { it.key to it.value }
     )
 }
 
@@ -98,7 +98,7 @@ internal fun String.createMatcher(computeWeight: (List<PathSegment>) -> Double =
 
 internal fun Route.matchDestinationOrThrow(unmatchedDestination: UnmatchedDestination): Destination {
     var i = 0
-    val pathParams = buildMap {
+    val pathParameters = buildMap {
         matcher.path.forEach { currentPathSegment ->
             val numberOfConsumedSegments = currentPathSegment.matchDestinationPathSegments(
                 unmatchedDestination.pathSegments,
@@ -142,8 +142,8 @@ internal fun Route.matchDestinationOrThrow(unmatchedDestination: UnmatchedDestin
         originalRoute = this,
         path = unmatchedDestination.path,
         pathSegments = unmatchedDestination.pathSegments,
-        pathParameters = pathParams,
-        queryParameters = unmatchedDestination.query,
+        pathParameters = pathParameters,
+        queryParameters = unmatchedDestination.queryParameters,
     )
 }
 

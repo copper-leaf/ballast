@@ -5,5 +5,5 @@ public data class UnmatchedDestination(
 
     val path: String,
     val pathSegments: List<String>,
-    val query: Map<String, List<String>>,
+    val queryParameters: Map<String, List<String>>,
 )

@@ -24,7 +24,7 @@ class ParserTest {
                 assertSame(originalUrl, original)
                 assertEquals("/", path)
                 assertEquals(listOf(), pathSegments)
-                assertEquals(emptyMap(), query)
+                assertEquals(emptyMap(), queryParameters)
             }
         }
         "/one".let { original ->
@@ -32,7 +32,7 @@ class ParserTest {
                 assertSame(originalUrl, original)
                 assertEquals("/one", path)
                 assertEquals(listOf("one"), pathSegments)
-                assertEquals(emptyMap(), query)
+                assertEquals(emptyMap(), queryParameters)
             }
         }
         "/one/two".let { original ->
@@ -40,7 +40,7 @@ class ParserTest {
                 assertSame(originalUrl, original)
                 assertEquals("/one/two", path)
                 assertEquals(listOf("one", "two"), pathSegments)
-                assertEquals(emptyMap(), query)
+                assertEquals(emptyMap(), queryParameters)
             }
         }
         "/one/two?asdf=123&qwerty=456".let { original ->
@@ -48,7 +48,7 @@ class ParserTest {
                 assertSame(originalUrl, original)
                 assertEquals("/one/two", path)
                 assertEquals(listOf("one", "two"), pathSegments)
-                assertEquals(mapOf("asdf" to listOf("123"), "qwerty" to listOf("456")), query)
+                assertEquals(mapOf("asdf" to listOf("123"), "qwerty" to listOf("456")), queryParameters)
             }
         }
     }
