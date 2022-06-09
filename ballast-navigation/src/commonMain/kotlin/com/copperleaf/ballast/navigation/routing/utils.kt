@@ -13,7 +13,16 @@ public val RouterContract.State.currentDestination: Destination?
             .lastOrNull {
                 it is Destination
             }
-            as? Destination?
+            as? Destination
+    }
+
+public val RouterContract.State.currentTag: Tag?
+    get() {
+        return backstack
+            .lastOrNull {
+                it is Tag
+            }
+            as? Tag
     }
 
 public val RouterContract.State.currentDestinationOrNotFound: NavToken?
@@ -125,4 +134,58 @@ public fun Route.directions(
         .joinToString(separator = "/", prefix = "/")
 
     return "$formattedPath$formattedQueryString"
+}
+
+
+public fun goBack(
+    currentState: RouterContract.State,
+): RouterContract.State {
+    return if (currentState.backstack.isEmpty()) {
+        // error, backstack was empty
+        currentState
+    } else {
+        val backstack = currentState.backstack.toMutableList()
+
+        backstack.removeLast() as Destination
+        if (backstack.lastOrNull() is Tag) {
+            // remove the tag, too
+            backstack.removeLast() as Tag
+            backstack.lastOrNull { it is Tag } as? Tag
+        }
+
+        currentState.copy(backstack = backstack.toList())
+    }
+}
+
+public fun addToTop(
+    currentState: RouterContract.State,
+    destination: String,
+    tag: String?,
+): RouterContract.State {
+    return if (destination == currentState.currentDestination?.originalUrl) {
+        // same as top destination, ignore it
+        currentState
+    } else {
+        val matchedDestination = currentState.navGraph.findMatch(destination)
+
+        val toAppendToBackstack: List<NavToken> = if (matchedDestination == null) {
+            listOf(MissingDestination(destination))
+        } else if (tag != null) {
+            listOf(Tag(tag), matchedDestination)
+        } else {
+            listOf(matchedDestination)
+        }
+
+
+        currentState.copy(backstack = currentState.backstack.dropLastWhile { it is MissingDestination } + toAppendToBackstack)
+    }
+
+}
+
+public fun NavToken.description(): String {
+    return when (this) {
+        is Destination -> "'${originalUrl}'"
+        is MissingDestination -> "(Not Found)"
+        is Tag -> "[${tag}]"
+    }
 }
