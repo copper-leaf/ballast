@@ -33,6 +33,11 @@ import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.repository.bus.EventBusImpl
 import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
+import com.copperleaf.ballast.sync.BallastSyncInterceptor
+import com.copperleaf.ballast.sync.DefaultSyncConnection
+import com.copperleaf.ballast.sync.InMemorySyncAdapter
+import com.copperleaf.ballast.sync.SyncClientType
+import com.copperleaf.ballast.sync.SyncConnection
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngineConfig
@@ -70,13 +75,22 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
             it.connect()
         }
     }
-    protected val eventBus = EventBusImpl()
-    protected val bggRepository by lazy {
+    private val eventBus = EventBusImpl()
+    private val bggRepository by lazy {
         BggRepositoryImpl(
             coroutineScope = applicationScope,
             eventBus = eventBus,
             configBuilder = commonBuilder(),
             api = bggApi(httpClient),
+        )
+    }
+
+    private val counterSyncConnection: SyncConnection<
+        CounterContract.Inputs,
+        CounterContract.Events,
+        CounterContract.State> by lazy {
+        DefaultSyncConnection(
+            InMemorySyncAdapter()
         )
     }
 
@@ -151,6 +165,7 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         )
 
     protected fun counterConfiguration(
+        syncClientType: SyncClientType,
         adapter: SavedStateAdapter<
             CounterContract.Inputs,
             CounterContract.Events,
@@ -163,6 +178,11 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
             if (adapter != null) {
                 this += BallastSavedStateInterceptor(adapter)
             }
+
+            this += BallastSyncInterceptor(
+                connection = counterSyncConnection,
+                clientType = syncClientType,
+            )
         }
         .forViewModel(
             initialState = CounterContract.State(),

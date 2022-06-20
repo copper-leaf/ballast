@@ -60,14 +60,14 @@ kotlin {
     // targets
     jvm { }
     android { }
-    js(IR) {
-        browser {
-            testTask {
-                enabled = false
-            }
-        }
-        binaries.executable()
-    }
+//    js(IR) {
+//        browser {
+//            testTask {
+//                enabled = false
+//            }
+//        }
+//        binaries.executable()
+//    }
 //    ios { }
 
     // sourcesets
@@ -88,6 +88,7 @@ kotlin {
                 implementation(project(":ballast-saved-state"))
                 implementation(project(":ballast-debugger"))
                 implementation(project(":ballast-navigation"))
+                implementation(project(":ballast-sync"))
 
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.logging)
@@ -132,15 +133,15 @@ kotlin {
             }
         }
 
-        val jsMain by getting {
-            dependsOn(commonMain)
-            dependencies {
-                implementation(compose.web.core)
-                implementation(compose.runtime)
-
-                implementation(libs.ktor.client.js)
-            }
-        }
+//        val jsMain by getting {
+//            dependsOn(commonMain)
+//            dependencies {
+//                implementation(compose.web.core)
+//                implementation(compose.runtime)
+//
+//                implementation(libs.ktor.client.js)
+//            }
+//        }
     }
 }
 
@@ -183,7 +184,7 @@ val fetchLatestBggApis by tasks.registering {
         }
     }
 }
-tasks.getByName("jsProcessResources").dependsOn(fetchLatestBggApis)
+//tasks.getByName("jsProcessResources").dependsOn(fetchLatestBggApis)
 
 fun executeAndGetXmlResponse(type: String) {
     val url = "https://boardgamegeek.com/xmlapi2/hot?type=$type"

@@ -8,8 +8,8 @@ plugins {
 apiValidation {
     ignoredProjects.addAll(
         listOf(
-            "docs",
-            "mpp",
+//            "docs",
+//            "mpp",
             "ballast-idea-plugin",
         )
     )
