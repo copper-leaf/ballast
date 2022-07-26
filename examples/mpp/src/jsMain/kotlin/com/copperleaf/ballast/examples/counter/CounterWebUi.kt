@@ -20,7 +20,7 @@ import org.jetbrains.compose.web.dom.Text
 
 object CounterWebUi {
     @Composable
-    public fun WebContent() {
+    public fun WebContent(synced: Boolean) {
         val injector = LocalInjector.current
 
         // source VM
@@ -35,7 +35,13 @@ object CounterWebUi {
 
         Text("Source")
         BulmaPanel(
-            headingStart = { Text("Source Counter") },
+            headingStart = {
+                if (synced) {
+                    Text("Source Counter")
+                } else {
+                    Text("Counter")
+                }
+            },
             headingEnd = {
                 A(
                     href = "${ExamplesContext.samplesUrlWithVersion}/counter",
@@ -71,14 +77,16 @@ object CounterWebUi {
             }
         }
 
-        Text("Replicas")
-        repeat(3) { replicaIndex ->
-            ReplicaViewModelUi(replicaIndex, SyncClientType.Replica)
-        }
+        if (synced) {
+            Text("Replicas")
+            repeat(3) { replicaIndex ->
+                ReplicaViewModelUi(replicaIndex, SyncClientType.Replica)
+            }
 
-        Text("Spectators")
-        repeat(3) { spectatorIndex ->
-            ReplicaViewModelUi(spectatorIndex + 3, SyncClientType.Spectator)
+            Text("Spectators")
+            repeat(3) { spectatorIndex ->
+                ReplicaViewModelUi(spectatorIndex + 3, SyncClientType.Spectator)
+            }
         }
     }
 

@@ -15,4 +15,4 @@ include(":ballast-test")
 
 include(":examples:mpp")
 
-//include(":docs")
+include(":docs")

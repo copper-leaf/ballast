@@ -25,12 +25,12 @@ import org.jetbrains.compose.web.renderComposable
 
 fun main() {
     val components: Map<String, @Composable () -> Unit> = mapOf(
-        "example_counter" to { CounterWebUi.WebContent() },
+        "example_counter" to { CounterWebUi.WebContent(false) },
         "example_bgg" to { BggWebUi.WebContent() },
         "example_kitchen_sink" to { KitchenSinkControllerWebUi.WebContent() },
         "example_scorekeeper" to { ScorekeeperWebUi.WebContent() },
-        "all_examples" to { },
-        "router" to {
+        "example_sync" to { CounterWebUi.WebContent(true) },
+        "example_navigation" to {
             val injector = LocalInjector.current
             val router = remember(injector) { injector.routerViewModel() }
 
@@ -51,7 +51,7 @@ fun main() {
                             // ignore, main component is in the list pane instead of its own screen
                         }
                         Routes.Counter -> {
-                            CounterWebUi.WebContent()
+                            CounterWebUi.WebContent(false)
                         }
                         Routes.BoardGameGeek -> {
                             BggWebUi.WebContent()

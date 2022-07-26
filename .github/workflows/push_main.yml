@@ -52,8 +52,8 @@ jobs:
           java-version: 11
       - name: 'Assemble Artifacts'
         run: './gradlew assemble --stacktrace -Prelease -PorchidEnvironment=prod'
-      - name: 'Publish IDEA Plugin'
-        run: './gradlew :ballast-idea-plugin:buildPlugin :ballast-idea-plugin:publishPlugin --stacktrace -Prelease -PorchidEnvironment=prod'
+#      - name: 'Publish IDEA Plugin'
+#        run: './gradlew :ballast-idea-plugin:buildPlugin :ballast-idea-plugin:publishPlugin --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Open Sonatype Staging Repository'
         run: './gradlew openSonatypeStagingRepository --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Publish Artifacts'
