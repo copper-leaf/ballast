@@ -10,7 +10,7 @@ include(":ballast-sync")
 include(":ballast-firebase-crashlytics")
 include(":ballast-firebase-analytics")
 
-include(":ballast-idea-plugin")
+//include(":ballast-idea-plugin")
 include(":ballast-test")
 
 include(":examples:mpp")

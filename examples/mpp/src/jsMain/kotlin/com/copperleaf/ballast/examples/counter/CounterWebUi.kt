@@ -11,6 +11,7 @@ import com.copperleaf.ballast.examples.util.bulma.BulmaButton
 import com.copperleaf.ballast.examples.util.bulma.BulmaButtonGroup
 import com.copperleaf.ballast.examples.util.bulma.BulmaColor
 import com.copperleaf.ballast.examples.util.bulma.BulmaPanel
+import com.copperleaf.ballast.sync.SyncClientType
 import org.jetbrains.compose.web.attributes.ATarget
 import org.jetbrains.compose.web.attributes.target
 import org.jetbrains.compose.web.dom.A
@@ -23,7 +24,7 @@ object CounterWebUi {
         val injector = LocalInjector.current
 
         val viewModelCoroutineScope = rememberCoroutineScope()
-        val vm = remember(viewModelCoroutineScope) { injector.counterViewModel(viewModelCoroutineScope) }
+        val vm = remember(viewModelCoroutineScope) { injector.counterViewModel(viewModelCoroutineScope, SyncClientType.Source) }
         val uiState by vm.observeStates().collectAsState()
 
         BulmaPanel(

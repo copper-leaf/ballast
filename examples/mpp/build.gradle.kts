@@ -60,14 +60,14 @@ kotlin {
     // targets
     jvm { }
     android { }
-//    js(IR) {
-//        browser {
-//            testTask {
-//                enabled = false
-//            }
-//        }
-//        binaries.executable()
-//    }
+    js(IR) {
+        browser {
+            testTask {
+                enabled = false
+            }
+        }
+        binaries.executable()
+    }
 //    ios { }
 
     // sourcesets
@@ -130,18 +130,19 @@ kotlin {
                 api(compose.desktop.components.splitPane)
 
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.kotlinx.coroutines.swing)
             }
         }
 
-//        val jsMain by getting {
-//            dependsOn(commonMain)
-//            dependencies {
-//                implementation(compose.web.core)
-//                implementation(compose.runtime)
-//
-//                implementation(libs.ktor.client.js)
-//            }
-//        }
+        val jsMain by getting {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(compose.web.core)
+                implementation(compose.runtime)
+
+                implementation(libs.ktor.client.js)
+            }
+        }
     }
 }
 

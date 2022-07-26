@@ -402,6 +402,12 @@ public class com/copperleaf/ballast/core/BasicViewModel : com/copperleaf/ballast
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
+public final class com/copperleaf/ballast/core/BootstrapInterceptor : com/copperleaf/ballast/BallastInterceptor {
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+}
+
 public final class com/copperleaf/ballast/core/BuildConfig {
 	public static final field BUILD_TYPE Ljava/lang/String;
 	public static final field DEBUG Z

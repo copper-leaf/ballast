@@ -10,7 +10,7 @@ apiValidation {
         listOf(
 //            "docs",
 //            "mpp",
-            "ballast-idea-plugin",
+//            "ballast-idea-plugin",
         )
     )
 }

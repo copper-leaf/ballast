@@ -9,6 +9,7 @@ import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControl
 import com.copperleaf.ballast.examples.mainlist.MainViewModel
 import com.copperleaf.ballast.examples.navigation.RouterViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.sync.SyncClientType
 import kotlinx.coroutines.CoroutineScope
 
 interface AndroidInjector {
@@ -25,7 +26,8 @@ interface AndroidInjector {
     ): KitchenSinkViewModel
 
     fun counterViewModel(
-        savedStateHandle: SavedStateHandle
+        savedStateHandle: SavedStateHandle,
+        syncClientType: SyncClientType,
     ): CounterViewModel
 
     fun bggViewModel(): BggViewModel

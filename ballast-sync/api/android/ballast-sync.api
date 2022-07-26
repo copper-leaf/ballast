@@ -1,0 +1,45 @@
+public final class com/copperleaf/ballast/sync/BallastSyncInterceptor : com/copperleaf/ballast/BallastInterceptor {
+	public fun <init> (Lcom/copperleaf/ballast/sync/SyncConnection;Lcom/copperleaf/ballast/sync/SyncClientType;)V
+	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public final class com/copperleaf/ballast/sync/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/sync/DefaultSyncConnection : com/copperleaf/ballast/sync/SyncConnection {
+	public fun <init> (Lcom/copperleaf/ballast/sync/SyncConnectionAdapter;)V
+	public fun connectViewModel (Lcom/copperleaf/ballast/BallastInterceptorScope;Lcom/copperleaf/ballast/sync/SyncClientType;Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public final class com/copperleaf/ballast/sync/InMemorySyncAdapter : com/copperleaf/ballast/sync/SyncConnectionAdapter {
+	public fun <init> ()V
+	public fun readInputsFromReplicas (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun readStateFromSource (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendInputToSource (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendSynchronizedStateToReplicas (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/sync/SyncClientType : java/lang/Enum {
+	public static final field Replica Lcom/copperleaf/ballast/sync/SyncClientType;
+	public static final field Source Lcom/copperleaf/ballast/sync/SyncClientType;
+	public static final field Spectator Lcom/copperleaf/ballast/sync/SyncClientType;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/sync/SyncClientType;
+	public static fun values ()[Lcom/copperleaf/ballast/sync/SyncClientType;
+}
+
+public abstract interface class com/copperleaf/ballast/sync/SyncConnection {
+	public abstract fun connectViewModel (Lcom/copperleaf/ballast/BallastInterceptorScope;Lcom/copperleaf/ballast/sync/SyncClientType;Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public abstract interface class com/copperleaf/ballast/sync/SyncConnectionAdapter {
+	public abstract fun readInputsFromReplicas (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun readStateFromSource (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun sendInputToSource (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun sendSynchronizedStateToReplicas (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
