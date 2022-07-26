@@ -993,7 +993,7 @@ public abstract class com/copperleaf/ballast/examples/util/CommonBallastInjector
 	protected final fun kitchenSinkControllerConfiguration ()Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	public abstract fun kitchenSinkViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/InputStrategy;)Lcom/copperleaf/ballast/examples/kitchensink/KitchenSinkViewModel;
 	protected final fun mainConfiguration ()Lcom/copperleaf/ballast/BallastViewModelConfiguration;
-	protected final fun routerConfiguration ()Lcom/copperleaf/ballast/BallastViewModelConfiguration;
+	protected final fun routerConfiguration ([Lcom/copperleaf/ballast/BallastInterceptor;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	protected final fun scorekeeperConfiguration ()Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 }
 

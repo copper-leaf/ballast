@@ -182,14 +182,13 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         CounterContract.Events,
         CounterContract.State> = commonBuilder()
         .apply {
-            if (adapter != null) {
-                this += BallastSavedStateInterceptor(adapter)
-            }
-
             this += BallastSyncInterceptor(
                 connection = counterSyncConnection,
                 clientType = syncClientType,
             )
+            if (adapter != null) {
+                this += BallastSavedStateInterceptor(adapter)
+            }
         }
         .forViewModel(
             initialState = CounterContract.State(),
