@@ -15,6 +15,7 @@ import com.copperleaf.ballast.examples.mainlist.MainViewModel
 import com.copperleaf.ballast.examples.navigation.RouterViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.navigation.routing.BrowserHashNavigationInterceptor
 import com.copperleaf.ballast.sync.SyncClientType
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.js.Js
@@ -32,7 +33,10 @@ class ComposeWebInjectorImpl(
     debuggerHost = "127.0.0.1",
 ), ComposeWebInjector {
 
-    private val router = RouterViewModel(MainScope(), routerConfiguration())
+    private val router = RouterViewModel(
+        MainScope(),
+        routerConfiguration(BrowserHashNavigationInterceptor())
+    )
 
     override fun routerViewModel(): RouterViewModel {
         return router

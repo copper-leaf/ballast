@@ -1,12 +1,12 @@
 package com.copperleaf.ballast.examples.util
 
+import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
-import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.examples.bgg.api.BggApi
 import com.copperleaf.ballast.examples.bgg.repository.BggRepositoryImpl
 import com.copperleaf.ballast.examples.bgg.ui.BggContract
@@ -98,12 +98,16 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         return BallastViewModelConfiguration.Builder()
             .apply {
                 this += LoggingInterceptor()
-                this += BallastDebuggerInterceptor(debuggerConnection)
+//                this += BallastDebuggerInterceptor(debuggerConnection)
                 logger = loggerFactory
             }
     }
 
-    protected fun routerConfiguration(): BallastViewModelConfiguration<
+    protected fun routerConfiguration(
+        vararg additionalInterceptors: BallastInterceptor<RouterContract.Inputs,
+            RouterContract.Events,
+            RouterContract.State>,
+    ): BallastViewModelConfiguration<
         RouterContract.Inputs,
         RouterContract.Events,
         RouterContract.State> = commonBuilder()
@@ -117,6 +121,9 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
             ),
             initialRoute = Routes.Main,
         )
+        .apply {
+            this += additionalInterceptors.toList()
+        }
         .build()
 
     protected fun mainConfiguration(): BallastViewModelConfiguration<
