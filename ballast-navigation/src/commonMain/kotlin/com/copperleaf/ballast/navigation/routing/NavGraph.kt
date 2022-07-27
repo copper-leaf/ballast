@@ -23,5 +23,15 @@ public data class NavGraph internal constructor(
                 routes = routesSortedByWeight
             )
         }
+
+        public operator fun invoke(
+            routingTable: RoutingTable,
+        ): NavGraph {
+            val routesSortedByWeight: List<Route> = routingTable.routes.sortedBy { it.matcher.weight }
+
+            return NavGraph(
+                routes = routesSortedByWeight
+            )
+        }
     }
 }

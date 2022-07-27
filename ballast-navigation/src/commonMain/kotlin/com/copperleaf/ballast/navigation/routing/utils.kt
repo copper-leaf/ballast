@@ -76,6 +76,23 @@ public fun BallastViewModelConfiguration.Builder.withRouter(
             }
         }
 
+public fun BallastViewModelConfiguration.Builder.withRouter(
+    routingTable: RoutingTable,
+): BallastViewModelConfiguration.Builder =
+    this
+        .apply {
+            this.inputStrategy = FifoInputStrategy()
+            this.inputHandler = RouterInputHandler()
+            this.initialState = RouterContract.State(navGraph = NavGraph(routingTable))
+            this.name = "Router"
+
+            this += BootstrapInterceptor {
+                RouterContract.Inputs.GoToDestination(
+                    routingTable.initialRoute.asStartDestinationString()
+                )
+            }
+        }
+
 public fun Route.directions(
     pathParameters: Map<String, List<String>> = emptyMap(),
     queryParameters: Map<String, List<String>> = emptyMap(),

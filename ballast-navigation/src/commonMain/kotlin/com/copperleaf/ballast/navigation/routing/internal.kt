@@ -104,6 +104,8 @@ internal fun Route.matchDestinationOrThrow(unmatchedDestination: UnmatchedDestin
                 unmatchedDestination.pathSegments,
                 i
             )
+            check(numberOfConsumedSegments >= 0)
+
             try {
                 val pathSegmentValues = unmatchedDestination.pathSegments.subList(i, i + numberOfConsumedSegments)
 

@@ -26,7 +26,6 @@ import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperContract
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperInputHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperSavedStateAdapter
 import com.copperleaf.ballast.forViewModel
-import com.copperleaf.ballast.navigation.routing.NavGraph
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.withRouter
 import com.copperleaf.ballast.plusAssign
@@ -111,19 +110,8 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         RouterContract.Inputs,
         RouterContract.Events,
         RouterContract.State> = commonBuilder()
-        .withRouter(
-            navGraph = NavGraph(
-                Routes.Main,
-                Routes.Counter,
-                Routes.BoardGameGeek,
-                Routes.Scorekeeper,
-                Routes.KitchenSink,
-            ),
-            initialRoute = Routes.Main,
-        )
-        .apply {
-            this += additionalInterceptors.toList()
-        }
+        .withRouter(routingTable = Routes)
+        .apply { this += additionalInterceptors.toList() }
         .build()
 
     protected fun mainConfiguration(): BallastViewModelConfiguration<

@@ -62,10 +62,16 @@ public class BrowserHashNavigationInterceptor : BallastInterceptor<
                     RouterContract.Events,
                     RouterContract.State,
                     >>()
-                .map { it.state.currentDestination }
+                .map {
+                    when(val destination = it.state.currentDestinationOrNotFound) {
+                        is Destination -> destination.path
+                        is MissingDestination -> destination.originalUrl
+                        else -> null
+                    }
+                }
                 .distinctUntilChanged()
                 .onEach {
-                    window.location.hash = it?.path ?: ""
+                    window.location.hash = it ?: ""
                 }
                 .launchIn(this)
         }

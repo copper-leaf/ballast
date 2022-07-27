@@ -832,7 +832,7 @@ public final class com/copperleaf/ballast/examples/navigation/RouterViewModel : 
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 }
 
-public final class com/copperleaf/ballast/examples/navigation/Routes {
+public final class com/copperleaf/ballast/examples/navigation/Routes : com/copperleaf/ballast/navigation/routing/RoutingTable {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/navigation/Routes;
 	public final fun getBoardGameGeek ()Lcom/copperleaf/ballast/navigation/routing/Route;

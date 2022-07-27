@@ -15,7 +15,7 @@ public sealed interface PathSegment {
             return if(pathSegments[currentIndex] == text) {
                 1
             } else {
-                0
+                -1
             }
         }
     }
