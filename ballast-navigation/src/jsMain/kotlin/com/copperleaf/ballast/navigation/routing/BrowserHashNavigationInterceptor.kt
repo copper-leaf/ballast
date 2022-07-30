@@ -1,14 +1,11 @@
 package com.copperleaf.ballast.navigation.routing
 
-import com.copperleaf.ballast.BallastInterceptor
-import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
 import kotlinx.browser.window
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
@@ -21,25 +18,9 @@ import kotlinx.coroutines.launch
 import org.w3c.dom.HashChangeEvent
 import org.w3c.dom.events.Event
 
-private typealias HashInterceptorScope = BallastInterceptorScope<
-    RouterContract.Inputs,
-    RouterContract.Events,
-    RouterContract.State,
-    >
+public class BrowserHashNavigationInterceptor : RouterInterceptor {
 
-private typealias RouterNotifications = Flow<BallastNotification<
-    RouterContract.Inputs,
-    RouterContract.Events,
-    RouterContract.State,
-    >>
-
-public class BrowserHashNavigationInterceptor : BallastInterceptor<
-    RouterContract.Inputs,
-    RouterContract.Events,
-    RouterContract.State,
-    > {
-
-    override fun HashInterceptorScope.start(notifications: RouterNotifications) {
+    override fun RouterInterceptorScope.start(notifications: RouterNotifications) {
         launch(start = CoroutineStart.UNDISPATCHED) {
             // start by setting the initial route from the browser hash, if provided when the webpage first loads
             onViewModelInitSetStateFromBrowserHash(notifications)
@@ -52,7 +33,7 @@ public class BrowserHashNavigationInterceptor : BallastInterceptor<
         }
     }
 
-    private fun HashInterceptorScope.updateBrowserHashOnStateChange(
+    private fun RouterInterceptorScope.updateBrowserHashOnStateChange(
         notifications: RouterNotifications
     ): Job = launch(start = CoroutineStart.UNDISPATCHED) {
         launch(start = CoroutineStart.UNDISPATCHED) {
@@ -63,7 +44,7 @@ public class BrowserHashNavigationInterceptor : BallastInterceptor<
                     RouterContract.State,
                     >>()
                 .map {
-                    when(val destination = it.state.currentDestinationOrNotFound) {
+                    when (val destination = it.state.currentDestinationOrNotFound) {
                         is Destination -> destination.path
                         is MissingDestination -> destination.originalUrl
                         else -> null
@@ -77,7 +58,7 @@ public class BrowserHashNavigationInterceptor : BallastInterceptor<
         }
     }
 
-    private fun HashInterceptorScope.updateStateOnBrowserHashChange(
+    private fun RouterInterceptorScope.updateStateOnBrowserHashChange(
         notifications: RouterNotifications
     ): Job = launch(start = CoroutineStart.UNDISPATCHED) {
         val hashChangeEventAsFlow = callbackFlow {
@@ -110,7 +91,7 @@ public class BrowserHashNavigationInterceptor : BallastInterceptor<
             .launchIn(this)
     }
 
-    private suspend fun HashInterceptorScope.onViewModelInitSetStateFromBrowserHash(
+    private suspend fun RouterInterceptorScope.onViewModelInitSetStateFromBrowserHash(
         notifications: RouterNotifications
     ) {
         // wait for the BallastNotification.ViewModelStarted to be sent
