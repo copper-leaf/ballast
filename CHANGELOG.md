@@ -1,3 +1,8 @@
+## 1.3.0 - 2022-08-16
+
+- Update IntelliJ Plugin to support 2022.1.4. It still cannot support 2022.2 or higher because it's blocked by the
+  Compose plugin that it depends on, which does not support 2022.2 yet.
+
 ## 1.2.1 - 2022-05-18
 
 - Don't check for cleared in trySend (fixes [#25](https://github.com/copper-leaf/ballast/issues/25))

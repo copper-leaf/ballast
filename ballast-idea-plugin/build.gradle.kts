@@ -57,7 +57,7 @@ buildConfig {
 intellij {
     pluginName.set("Ballast")
     type.set("IC")
-    version.set("2021.3.2")
+    version.set("2022.1.4")
     downloadSources.set(true)
 
     plugins.set(
@@ -86,11 +86,11 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("213")
-        untilBuild.set("221.*")
+        untilBuild.set("222.*")
     }
 
     runPluginVerifier {
-        ideVersions.set(listOf("2020.3.2", "2021.1", "2022.1"))
+        ideVersions.set(listOf("2020.3.2", "2021.1", "2022.1", "2022.1.4"))
     }
 }
 
