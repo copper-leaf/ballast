@@ -44,11 +44,25 @@ import kotlinx.coroutines.flow.SharedFlow
 public abstract class BallastRepository<Inputs : Any, State : Any>(
     coroutineScope: CoroutineScope,
     eventBus: EventBus,
-    configBuilder: BallastViewModelConfiguration.Builder,
+    config: BallastViewModelConfiguration<Inputs, Any, State>,
 ) : BasicViewModel<Inputs, Any, State>(
     coroutineScope = coroutineScope,
-    config = configBuilder
-        .apply { inputStrategy = FifoInputStrategy() }
-        .build(),
+    config = config,
     eventHandler = EventBusEventHandler(eventBus),
-)
+) {
+    @Deprecated(
+        message = "Use configBuilder.withRepository().build() instead.",
+        replaceWith = ReplaceWith("BallastRepository<Inputs, State>(coroutineScope = coroutineScope, eventBus = eventBus, config = configBuilder.withRepository().build<Inputs, Any, State>())", "com.copperleaf.ballast.build")
+    )
+    public constructor(
+        coroutineScope: CoroutineScope,
+        eventBus: EventBus,
+        configBuilder: BallastViewModelConfiguration.Builder,
+    ) : this(
+        coroutineScope = coroutineScope,
+        config = configBuilder
+            .withRepository()
+            .build(),
+        eventBus = eventBus,
+    )
+}

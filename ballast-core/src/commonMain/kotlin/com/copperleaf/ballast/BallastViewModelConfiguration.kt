@@ -13,7 +13,7 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
     public val inputHandler: InputHandler<Inputs, Events, State>
     public val filter: InputFilter<Inputs, Events, State>?
     public val interceptors: List<BallastInterceptor<Inputs, Events, State>>
-    public val inputStrategy: InputStrategy
+    public val inputStrategy: InputStrategy<Inputs, Events, State>
     public val inputsDispatcher: CoroutineDispatcher
     public val eventsDispatcher: CoroutineDispatcher
     public val sideJobsDispatcher: CoroutineDispatcher
@@ -27,7 +27,7 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
         public var inputHandler: InputHandler<*, *, *>? = null,
         public var filter: InputFilter<*, *, *>? = null,
         public val interceptors: MutableList<BallastInterceptor<*, *, *>> = mutableListOf(),
-        public var inputStrategy: InputStrategy = LifoInputStrategy(),
+        public var inputStrategy: InputStrategy<*, *, *> = LifoInputStrategy(),
         public var inputsDispatcher: CoroutineDispatcher = Dispatchers.Default,
         public var eventsDispatcher: CoroutineDispatcher = Dispatchers.Default,
         public var sideJobsDispatcher: CoroutineDispatcher = Dispatchers.Default,

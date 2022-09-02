@@ -19,13 +19,13 @@ import kotlinx.coroutines.flow.Flow
  * @see [FifoInputStrategy]
  * @see [ParallelInputStrategy]
  */
-public interface InputStrategy {
+public interface InputStrategy<Inputs : Any, Events : Any, State : Any> {
 
     /**
      * Create the ViewModel channel most appropriate for accepting Inputs to the ViewModel and passing them to the
      * internal processing pipeline.
      */
-    public fun <T> createQueue(): Channel<T>
+    public fun createQueue(): Channel<Queued<Inputs, Events, State>>
 
     /**
      * When an input gets cancelled, should the state be rolled back to where it was before the input was accepted? If
@@ -44,7 +44,7 @@ public interface InputStrategy {
      * processing. The Strategy will provide a Guardian to the [InputHandlerScope], to ensure the Input is being handled
      * safely according to its own rules, guarding against potential issues.
      */
-    public suspend fun <Inputs : Any, Events : Any, State : Any> InputStrategyScope<Inputs, Events, State>.processInputs(
+    public suspend fun InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
     )
 

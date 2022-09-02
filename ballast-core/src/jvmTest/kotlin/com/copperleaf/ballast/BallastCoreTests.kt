@@ -244,7 +244,7 @@ class BallastCoreTests {
         }
 
         scenario("LIFO strategy with quick multiple updates") {
-            inputStrategy { LifoInputStrategy() }
+            inputStrategy { LifoInputStrategy.typed() }
             running {
                 -TestContract.Inputs.MultipleStateUpdates
                 -TestContract.Inputs.MultipleStateUpdates
@@ -270,7 +270,7 @@ class BallastCoreTests {
         }
 
         scenario("FIFO strategy with quick multiple updates") {
-            inputStrategy { FifoInputStrategy() }
+            inputStrategy { FifoInputStrategy.typed() }
             running {
                 -TestContract.Inputs.MultipleStateUpdates
                 -TestContract.Inputs.MultipleStateUpdates
@@ -291,7 +291,7 @@ class BallastCoreTests {
         }
 
         scenario("Parallel strategy with quick multiple updates") {
-            inputStrategy { ParallelInputStrategy() }
+            inputStrategy { ParallelInputStrategy.typed() }
             running {
                 -TestContract.Inputs.MultipleStateUpdates
                 -TestContract.Inputs.MultipleStateUpdates
@@ -312,7 +312,7 @@ class BallastCoreTests {
         }
 
         scenario("Multiple side-jobs can be started by 1 input") {
-            inputStrategy { ParallelInputStrategy() }
+            inputStrategy { ParallelInputStrategy.typed() }
             running {
                 +TestContract.Inputs.MultipleSideJobs
             }
@@ -341,7 +341,7 @@ class BallastCoreTests {
         }
 
         scenario("Side-jobs can be restarted, with previous ones cancelled") {
-            inputStrategy { ParallelInputStrategy() }
+            inputStrategy { ParallelInputStrategy.typed() }
             running {
                 +TestContract.Inputs.MultipleSideJobs
                 +TestContract.Inputs.MultipleSideJobs
@@ -374,7 +374,7 @@ class BallastCoreTests {
         }
 
         scenario("Side-jobs called before other inputHandler methods throws an error") {
-            inputStrategy { ParallelInputStrategy() }
+            inputStrategy { ParallelInputStrategy.typed() }
             running {
                 +TestContract.Inputs.SideJobsNotAtEnd
             }

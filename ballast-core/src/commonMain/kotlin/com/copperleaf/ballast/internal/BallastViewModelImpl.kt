@@ -104,7 +104,6 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         val result = _inputQueue.trySend(Queued.HandleInput(null, element))
         if (result.isFailure || result.isClosed) {
             _notifications.tryEmit(BallastNotification.InputDropped(host(), element))
-            result.exceptionOrNull()?.printStackTrace()
         }
         return result
     }

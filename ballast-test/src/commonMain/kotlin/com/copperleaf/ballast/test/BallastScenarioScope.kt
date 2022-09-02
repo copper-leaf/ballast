@@ -34,7 +34,7 @@ public interface BallastScenarioScope<Inputs : Any, Events : Any, State : Any> {
     /**
      * Set the input strategy to use for this test.
      */
-    public fun inputStrategy(inputStrategy: () -> InputStrategy)
+    public fun inputStrategy(inputStrategy: () -> InputStrategy<Inputs, Events, State>)
 
     /**
      * Adds the Interceptor to this scenario

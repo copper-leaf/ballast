@@ -23,7 +23,7 @@ internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>
 
     internal var logger: ((String)->BallastLogger)? = null
     internal var timeout: Duration? = null
-    internal var inputStrategy: InputStrategy? = null
+    internal var inputStrategy: InputStrategy<Inputs, Events, State>? = null
 
     internal val interceptors: MutableList<() -> BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
         mutableListOf()
@@ -44,7 +44,7 @@ internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>
         this.timeout = timeout()
     }
 
-    override fun inputStrategy(inputStrategy: () -> InputStrategy) {
+    override fun inputStrategy(inputStrategy: () -> InputStrategy<Inputs, Events, State>) {
         this.inputStrategy = inputStrategy()
     }
 

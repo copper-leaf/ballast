@@ -5,7 +5,6 @@ import com.copperleaf.ballast.BallastNotification.InputHandledSuccessfully
 import com.copperleaf.ballast.BallastNotification.InputQueued
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
@@ -22,8 +21,6 @@ import kotlinx.coroutines.flow.onEach
  * The side-job started from the Flow uses the resulting Input's simple class name as
  * its key.
  */
-@ExperimentalCoroutinesApi
-@Suppress("NOTHING_TO_INLINE")
 public inline fun <
     reified Inputs : Any,
     Events : Any,
@@ -51,8 +48,6 @@ public inline fun <
  * The side-job started from the Flow uses the resulting Input's simple class name as
  * its key.
  */
-@ExperimentalCoroutinesApi
-@Suppress("NOTHING_TO_INLINE")
 public inline fun <
     reified Inputs : Any,
     Events : Any,
@@ -77,7 +72,6 @@ public inline fun <
  * The side-job launched here uses the `.toString()` value of [input] as the key, to avoid accidentally cancelling
  * any already-running side-jobs.
  */
-@Suppress("NOTHING_TO_INLINE")
 public inline fun <Inputs : Any, Events : Any, State : Any> InputHandlerScope<Inputs, Events, State>.postInput(
     input: Inputs
 ) {
@@ -90,7 +84,6 @@ public inline fun <Inputs : Any, Events : Any, State : Any> InputHandlerScope<In
  * Post an event which will eventually be dispatched to the VM's event handler. This event may reference values from
  * both the given Input and the current State. If the State is not needed, use [InputHandlerScope.postEvent] instead.
  */
-@Suppress("NOTHING_TO_INLINE")
 public suspend inline fun <
     Inputs : Any,
     Events : Any,
@@ -162,7 +155,7 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         inputHandler = inputHandler.requireTyped("inputHandler"),
         filter = filter.requireTypedIfPresent("filter"),
         interceptors = interceptors.mapAsTyped(),
-        inputStrategy = inputStrategy,
+        inputStrategy = inputStrategy.requireTyped("inputHandler"),
         inputsDispatcher = inputsDispatcher,
         eventsDispatcher = eventsDispatcher,
         sideJobsDispatcher = sideJobsDispatcher,
@@ -211,6 +204,10 @@ public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelCo
  * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
  * [BallastViewModelConfiguration].
  */
+@Deprecated(
+    message = "BallastViewModelConfiguration.Builder extensions should not call `.build()` on themselves. Replace with .withViewModel().build()",
+    replaceWith = ReplaceWith("this.withViewModel(initialState = initialState, inputHandler = inputHandler, filter = filter, name = name,).build()")
+)
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
     initialState: State,
     inputHandler: InputHandler<Inputs, Events, State>,
@@ -218,12 +215,12 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
     name: String? = this.name,
 ): BallastViewModelConfiguration<Inputs, Events, State> =
     this
-        .apply {
-            this.initialState = initialState
-            this.inputHandler = inputHandler
-            this.filter = filter
-            this.name = name
-        }
+        .withViewModel(
+            initialState = initialState,
+            inputHandler = inputHandler,
+            filter = filter,
+            name = name,
+        )
         .build()
 
 /**
@@ -231,11 +228,53 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
  * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
  * [BallastViewModelConfiguration].
  */
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
+    initialState: State,
+    inputHandler: InputHandler<Inputs, Events, State>,
+    filter: InputFilter<Inputs, Events, State>? = null,
+    name: String? = this.name,
+): BallastViewModelConfiguration.Builder =
+    this
+        .apply {
+            this.initialState = initialState
+            this.inputHandler = inputHandler
+            this.filter = filter
+            this.name = name
+        }
+
+/**
+ * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
+ * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
+ * [BallastViewModelConfiguration].
+ */
+@Deprecated(
+    message = "BallastViewModelConfiguration.Builder extensions should not call `.build()` on themselves. Replace with .withViewModel().build()",
+    replaceWith = ReplaceWith("this.withViewModel(initialState = initialState, inputHandler = inputHandler, name = name,).build()")
+)
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
     initialState: State,
     inputHandler: FilteredInputHandler<Inputs, Events, State>,
     name: String? = this.name,
 ): BallastViewModelConfiguration<Inputs, Events, State> =
+    this
+        .withViewModel(
+            initialState = initialState,
+            inputHandler = inputHandler,
+            filter = inputHandler,
+            name = name,
+        )
+        .build()
+
+/**
+ * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
+ * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
+ * [BallastViewModelConfiguration].
+ */
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
+    initialState: State,
+    inputHandler: FilteredInputHandler<Inputs, Events, State>,
+    name: String? = this.name,
+): BallastViewModelConfiguration.Builder =
     this
         .apply {
             this.initialState = initialState
@@ -243,8 +282,6 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
             this.filter = inputHandler
             this.name = name
         }
-        .build()
-
 
 /**
  * Used for keeping track of the state of discrete "subjects" within an Interceptor. For example, a single Input will
@@ -284,21 +321,27 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
         is InputQueued -> {
             addValueToCache(this.input)
         }
+
         is InputAccepted -> {
             addValueToCache(this.input)
         }
+
         is BallastNotification.InputRejected -> {
             removeValueFromCache(this.input)
         }
+
         is BallastNotification.InputDropped -> {
             removeValueFromCache(this.input)
         }
+
         is InputHandledSuccessfully -> {
             removeValueFromCache(this.input)
         }
+
         is BallastNotification.InputCancelled -> {
             removeValueFromCache(this.input)
         }
+
         is BallastNotification.InputHandlerError -> {
             removeValueFromCache(this.input)
         }
@@ -306,12 +349,15 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
         is BallastNotification.EventQueued -> {
             addValueToCache(this.event)
         }
+
         is BallastNotification.EventEmitted -> {
             addValueToCache(this.event)
         }
+
         is BallastNotification.EventHandledSuccessfully -> {
             removeValueFromCache(this.event)
         }
+
         is BallastNotification.EventHandlerError -> {
             removeValueFromCache(this.event)
         }
@@ -319,15 +365,19 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
         is BallastNotification.SideJobQueued -> {
             addValueToCache(this.key)
         }
+
         is BallastNotification.SideJobStarted -> {
             addValueToCache(this.key)
         }
+
         is BallastNotification.SideJobCompleted -> {
             removeValueFromCache(this.key)
         }
+
         is BallastNotification.SideJobCancelled -> {
             removeValueFromCache(this.key)
         }
+
         is BallastNotification.SideJobError -> {
             removeValueFromCache(this.key)
         }
@@ -341,9 +391,11 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
         is BallastNotification.EventProcessingStarted -> {
             addValueToCache(this.vm)
         }
+
         is BallastNotification.EventProcessingStopped -> {
             addValueToCache(this.vm)
         }
+
         is BallastNotification.UnhandledError -> {
             addValueToCache(this.vm)
         }
@@ -351,6 +403,7 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
         is BallastNotification.ViewModelStarted -> {
             addValueToCache(this.vm)
         }
+
         is BallastNotification.ViewModelCleared -> {
             removeValueFromCache(this.vm)
         }

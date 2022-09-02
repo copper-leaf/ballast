@@ -32,7 +32,7 @@ public interface BallastTestSuiteScope<Inputs : Any, Events : Any, State : Any> 
     /**
      * Set the default input strategy to use for this test suite. Each scenario may override its own strategy.
      */
-    public fun defaultInputStrategy(inputStrategy: () -> InputStrategy)
+    public fun defaultInputStrategy(inputStrategy: () -> InputStrategy<Inputs, Events, State>)
 
     /**
      * Provide a default initial State used for running all tests in this suite. Each scenario may override this initial

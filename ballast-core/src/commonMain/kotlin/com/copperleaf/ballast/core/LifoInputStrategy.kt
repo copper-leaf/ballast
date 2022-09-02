@@ -25,20 +25,31 @@ import kotlinx.coroutines.flow.collectLatest
  * Since we know only 1 Input is being procced at a time, if an input gets cancelled partway through its processing, the
  * ViewModel state will roll back to prevent the ViewModel from being left in a bad state.
  */
-public class LifoInputStrategy : InputStrategy {
+public class LifoInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor() :
+    InputStrategy<Inputs, Events, State> {
 
-    override fun <T> createQueue(): Channel<T> {
+    override fun createQueue(): Channel<Queued<Inputs, Events, State>> {
         return Channel(64, BufferOverflow.DROP_LATEST)
     }
 
     override val rollbackOnCancellation: Boolean = true
 
-    override suspend fun <Inputs : Any, Events : Any, State : Any> InputStrategyScope<Inputs, Events, State>.processInputs(
+    override suspend fun InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
     ) {
         filteredQueue
             .collectLatest { queued ->
                 acceptQueued(queued, DefaultGuardian())
             }
+    }
+
+    public companion object {
+        public operator fun invoke(): LifoInputStrategy<Any, Any, Any> {
+            return LifoInputStrategy()
+        }
+
+        public fun <Inputs : Any, Events : Any, State : Any> typed(): LifoInputStrategy<Inputs, Events, State> {
+            return LifoInputStrategy()
+        }
     }
 }

@@ -19,7 +19,7 @@ public class DefaultViewModelConfiguration<Inputs : Any, Events : Any, State : A
     override val inputHandler: InputHandler<Inputs, Events, State>,
     override val filter: InputFilter<Inputs, Events, State>?,
     override val interceptors: List<BallastInterceptor<Inputs, Events, State>>,
-    override val inputStrategy: InputStrategy,
+    override val inputStrategy: InputStrategy<Inputs, Events, State>,
     override val inputsDispatcher: CoroutineDispatcher,
     override val eventsDispatcher: CoroutineDispatcher,
     override val sideJobsDispatcher: CoroutineDispatcher,

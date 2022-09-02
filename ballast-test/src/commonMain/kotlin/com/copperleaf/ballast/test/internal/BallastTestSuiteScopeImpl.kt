@@ -27,7 +27,7 @@ internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any
 
     internal var suiteLogger: (String) -> BallastLogger = { SimpleTestLogger() }
     internal var defaultTimeout: Duration = 30.seconds
-    internal var inputStrategy: InputStrategy = LifoInputStrategy()
+    internal var inputStrategy: InputStrategy<Inputs, Events, State> = LifoInputStrategy.typed()
 
     internal val interceptors: MutableList<() -> BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
         mutableListOf()
@@ -51,7 +51,7 @@ internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any
         this.interceptors += { TestInterceptorWrapper(interceptor()) }
     }
 
-    override fun defaultInputStrategy(inputStrategy: () -> InputStrategy) {
+    override fun defaultInputStrategy(inputStrategy: () -> InputStrategy<Inputs, Events, State>) {
         this.inputStrategy = inputStrategy()
     }
 

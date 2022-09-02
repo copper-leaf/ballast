@@ -1,10 +1,19 @@
 ## 2.0.0 - 2022-09-02
 
-- Updates to Kotlin 1.7.10 
+- Updates to Kotlin 1.7.10
 - Updates Ktor to 2.1.0
 - Updates other dependencies to latest versions
 - Removes Debugger UI from IntelliJ plugin, so the that plugin can be republished without the Compose dependency, 
   allowing the templating feature in the latest IntelliJ versions, at least
+
+**New/Updated Features**
+- Adds `BootstrapInterceptor` for sending an Input when the ViewModel is created, instead of making the UI send the 
+  initial Input
+- `InputStrategy` is now typed with the same type paramters as everything else in the `DefaultViewModelConfiguration`
+- Some configuration DSL methods are deprecated:
+  - `builder.forViewModel()` should be replaced with `builder.withViewModel().build()`
+  - `BallastRepository` now takes `BallastViewModelConfiguration` in its primary constructor instead of 
+    `BallastViewModelConfiguration.Builder`. Use `builder.withRepository().build()` instead of the old constructor.
 
 ## 1.3.0 - 2022-08-16
 

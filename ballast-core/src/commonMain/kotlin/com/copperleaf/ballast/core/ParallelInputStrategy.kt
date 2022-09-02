@@ -7,7 +7,6 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
@@ -30,15 +29,15 @@ import kotlinx.coroutines.launch
  * Because multiple inputs may be processed at once, if an input is cancelled there is no meaningful way to know what
  * state should be rolled-back to. Cancelled inputs may leave the ViewModel in a bad state.
  */
-public class ParallelInputStrategy : InputStrategy {
+public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor(): InputStrategy<Inputs, Events, State> {
 
-    override fun <T> createQueue(): Channel<T> {
+    override fun createQueue(): Channel<Queued<Inputs, Events, State>> {
         return Channel(Channel.BUFFERED, BufferOverflow.SUSPEND)
     }
 
     override val rollbackOnCancellation: Boolean = false
 
-    override suspend fun <Inputs : Any, Events : Any, State : Any> InputStrategyScope<Inputs, Events, State>.processInputs(
+    override suspend fun InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
     ) {
         coroutineScope {
@@ -69,6 +68,16 @@ public class ParallelInputStrategy : InputStrategy {
         override fun checkStateUpdate() {
             performStateAccessCheck()
             super.checkStateUpdate()
+        }
+    }
+
+    public companion object {
+        public operator fun invoke() : ParallelInputStrategy<Any, Any, Any> {
+            return ParallelInputStrategy()
+        }
+
+        public fun <Inputs : Any, Events : Any, State : Any> typed(): ParallelInputStrategy<Inputs, Events, State> {
+            return ParallelInputStrategy()
         }
     }
 }
