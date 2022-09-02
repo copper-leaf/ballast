@@ -8,12 +8,10 @@ import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
-import kotlin.time.ExperimentalTime
 
 // Application
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public data class BallastApplicationState(
     public val connections: List<BallastConnectionState> = emptyList(),
 )
@@ -28,13 +26,11 @@ public data class BallastConnectionState(
     public val firstSeen: LocalDateTime = LocalDateTime.now(),
     public val lastSeen: LocalDateTime = LocalDateTime.now(),
 ) {
-    @ExperimentalTime
     public fun isActive(currentTime: LocalDateTime): Boolean {
         return (currentTime - lastSeen) <= 5.seconds
     }
 }
 
-@ExperimentalTime
 public fun BallastApplicationState.updateConnection(
     connectionId: String,
     block: BallastConnectionState.() -> BallastConnectionState,
@@ -342,7 +338,6 @@ public fun BallastViewModelState.updateSideJob(
 // Process Debugger Event
 // ---------------------------------------------------------------------------------------------------------------------
 
-@ExperimentalTime
 public fun BallastViewModelState.updateWithDebuggerEvent(
     event: BallastDebuggerEvent,
     actualValue: Any?

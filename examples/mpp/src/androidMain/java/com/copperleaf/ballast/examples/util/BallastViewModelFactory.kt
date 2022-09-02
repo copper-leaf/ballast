@@ -17,7 +17,7 @@ class BallastViewModelFactory(
 
     private val injector: AndroidInjector get() = MainApplication.getInstance().injector
 
-    override fun <T : ViewModel?> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
+    override fun <T : ViewModel> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
         return when(modelClass) {
             BggViewModel::class.java -> injector.bggViewModel() as T
             CounterViewModel::class.java -> injector.counterViewModel(handle) as T

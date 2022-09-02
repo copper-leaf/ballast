@@ -10,6 +10,7 @@ public class com/copperleaf/ballast/repository/AndroidBallastRepository : androi
 
 public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BasicViewModel {
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 }
 
 public final class com/copperleaf/ballast/repository/BuildConfig {
@@ -17,6 +18,10 @@ public final class com/copperleaf/ballast/repository/BuildConfig {
 	public static final field DEBUG Z
 	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
 	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/repository/UtilsKt {
+	public static final fun withRepository (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
 }
 
 public abstract interface class com/copperleaf/ballast/repository/bus/EventBus {

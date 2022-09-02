@@ -7,7 +7,7 @@ import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import kotlinx.coroutines.CoroutineScope
 
 class KitchenSinkControllerInputHandler(
-    private val getNewKitchenSinkViewModel: (CoroutineScope, InputStrategy)->KitchenSinkViewModel,
+    private val getNewKitchenSinkViewModel: (CoroutineScope, InputStrategy<*, *, *>)->KitchenSinkViewModel,
 ) : InputHandler<
     KitchenSinkControllerContract.Inputs,
     KitchenSinkControllerContract.Events,

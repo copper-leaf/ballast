@@ -17,7 +17,7 @@ interface ComposeDesktopInjector {
 
     fun kitchenSinkViewModel(
         coroutineScope: CoroutineScope,
-        inputStrategy: InputStrategy,
+        inputStrategy: InputStrategy<*, *, *>,
     ): KitchenSinkViewModel
 
     fun counterViewModel(

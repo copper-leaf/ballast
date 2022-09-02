@@ -118,7 +118,6 @@ class ExampleRepositoryInputHandler(
     Any,
     ExampleRepositoryContract.State> {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun InputHandlerScope<
         ExampleRepositoryContract.Inputs,
         Any,

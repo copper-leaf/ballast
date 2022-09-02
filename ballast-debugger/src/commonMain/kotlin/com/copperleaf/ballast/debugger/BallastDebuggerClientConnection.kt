@@ -39,9 +39,7 @@ import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     engineFactory: HttpClientEngineFactory<T>,
     private val applicationCoroutineScope: CoroutineScope,

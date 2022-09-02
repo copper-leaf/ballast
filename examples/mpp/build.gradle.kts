@@ -1,3 +1,4 @@
+@file:Suppress("UnstableApiUsage")
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -74,8 +75,6 @@ kotlin {
     sourceSets {
         all {
             languageSettings.apply {
-                optIn("kotlin.time.ExperimentalTime")
-                optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
                 optIn("androidx.compose.material.ExperimentalMaterialApi")
             }
         }
@@ -217,3 +216,17 @@ compose.desktop {
         mainClass = "com.copperleaf.ballast.examples.MainKt"
     }
 }
+
+//afterEvaluate {
+//    // Remove log pollution until Android support in KMP improves.
+//    project.extensions.findByType<org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension>()?.let { kmpExt ->
+//        kmpExt.sourceSets.removeAll {
+//            setOf(
+//                "androidAndroidTestRelease",
+//                "androidTestFixtures",
+//                "androidTestFixturesDebug",
+//                "androidTestFixturesRelease",
+//            ).contains(it.name)
+//        }
+//    }
+//}

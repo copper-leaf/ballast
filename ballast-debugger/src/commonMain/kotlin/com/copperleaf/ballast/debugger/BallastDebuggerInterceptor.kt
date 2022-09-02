@@ -5,9 +5,7 @@ import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
 import kotlinx.coroutines.flow.Flow
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val connection: BallastDebuggerClientConnection<*>,
 ) : BallastInterceptor<Inputs, Events, State> {

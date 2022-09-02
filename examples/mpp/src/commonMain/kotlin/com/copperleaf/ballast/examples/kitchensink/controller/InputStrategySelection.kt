@@ -6,7 +6,7 @@ import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
 
 enum class InputStrategySelection(
-    val get: () -> InputStrategy
+    val get: () -> InputStrategy<*, *, *>
 ) {
     Lifo({ LifoInputStrategy() }),
     Fifo({ FifoInputStrategy() }),

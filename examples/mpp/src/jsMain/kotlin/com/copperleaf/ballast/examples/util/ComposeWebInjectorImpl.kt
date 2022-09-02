@@ -39,7 +39,7 @@ class ComposeWebInjectorImpl(
 
     override fun kitchenSinkViewModel(
         coroutineScope: CoroutineScope,
-        inputStrategy: InputStrategy,
+        inputStrategy: InputStrategy<*, *, *>,
     ): KitchenSinkViewModel {
         return KitchenSinkViewModel(
             viewModelCoroutineScope = coroutineScope,

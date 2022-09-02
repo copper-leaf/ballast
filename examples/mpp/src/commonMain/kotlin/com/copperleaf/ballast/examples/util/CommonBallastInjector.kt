@@ -3,6 +3,7 @@ package com.copperleaf.ballast.examples.util
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
@@ -21,11 +22,11 @@ import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControl
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperContract
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperInputHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperSavedStateAdapter
-import com.copperleaf.ballast.forViewModel
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.repository.bus.EventBusImpl
 import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
+import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngineConfig
@@ -92,16 +93,19 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
                 KitchenSinkControllerSavedStateAdapter(preferences)
             )
         }
-        .forViewModel(
+        .withViewModel(
             initialState = KitchenSinkControllerContract.State(),
             inputHandler = KitchenSinkControllerInputHandler(::kitchenSinkViewModel),
             name = "KitchenSink Controller",
         )
+        .build()
 
-    abstract fun kitchenSinkViewModel(coroutineScope: CoroutineScope, inputStrategy: InputStrategy): KitchenSinkViewModel
+    abstract fun kitchenSinkViewModel(
+        coroutineScope: CoroutineScope, inputStrategy: InputStrategy<*, *, *>
+    ): KitchenSinkViewModel
 
     protected fun kitchenSinkConfiguration(
-        inputStrategy: InputStrategy,
+        inputStrategy: InputStrategy<*, *, *>,
     ): BallastViewModelConfiguration<
         KitchenSinkContract.Inputs,
         KitchenSinkContract.Events,
@@ -109,11 +113,12 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         .apply {
             this.inputStrategy = inputStrategy
         }
-        .forViewModel(
+        .withViewModel(
             initialState = KitchenSinkContract.State(),
             inputHandler = KitchenSinkInputHandler(),
             name = "KitchenSink",
         )
+        .build()
 
     protected fun counterConfiguration(
         adapter: SavedStateAdapter<
@@ -125,25 +130,27 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         CounterContract.Events,
         CounterContract.State> = commonBuilder()
         .apply {
-            if(adapter != null) {
+            if (adapter != null) {
                 this += BallastSavedStateInterceptor(adapter)
             }
         }
-        .forViewModel(
+        .withViewModel(
             initialState = CounterContract.State(),
             inputHandler = CounterInputHandler(),
             name = "Counter",
         )
+        .build()
 
     protected fun bggConfiguration(): BallastViewModelConfiguration<
         BggContract.Inputs,
         BggContract.Events,
         BggContract.State> = commonBuilder()
-        .forViewModel(
+        .withViewModel(
             initialState = BggContract.State(),
             inputHandler = BggInputHandler(bggRepository),
             name = "BGG",
         )
+        .build()
 
     protected fun scorekeeperConfiguration(): BallastViewModelConfiguration<
         ScorekeeperContract.Inputs,
@@ -154,9 +161,10 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
                 ScorekeeperSavedStateAdapter(preferences)
             )
         }
-        .forViewModel(
+        .withViewModel(
             initialState = ScorekeeperContract.State(),
             inputHandler = ScorekeeperInputHandler(),
             name = "Scorekeeper",
         )
+        .build()
 }

@@ -14,9 +14,7 @@ import com.copperleaf.ballast.test.internal.vm.TestInterceptorWrapper
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any>(
     internal val inputHandler: InputHandler<Inputs, Events, State>,
     internal val eventHandler: EventHandler<Inputs, Events, State>,

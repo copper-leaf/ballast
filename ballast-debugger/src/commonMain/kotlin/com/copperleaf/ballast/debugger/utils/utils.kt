@@ -7,19 +7,16 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
-import kotlin.time.ExperimentalTime
 import kotlin.time.toDuration
 
 public fun LocalDateTime.Companion.now(): LocalDateTime {
     return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 }
 
-@ExperimentalTime
 public operator fun LocalDateTime.minus(other: LocalDateTime): Duration {
     return this.toInstant(TimeZone.currentSystemDefault()) - other.toInstant(TimeZone.currentSystemDefault())
 }
 
-@ExperimentalTime
 public fun Duration.removeFraction(minUnit: DurationUnit): Duration {
     for (unit in DurationUnit.values().reversed()) {
         val wholeNumberInUnit = this.toLong(unit)

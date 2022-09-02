@@ -14,9 +14,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
 public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val adapter: SavedStateAdapter<Inputs, Events, State>,
 ) : BallastInterceptor<Inputs, Events, State> {

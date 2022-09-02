@@ -1,8 +1,8 @@
 package com.copperleaf.ballast.test.internal
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
+import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.LoggingInterceptor
-import com.copperleaf.ballast.forViewModel
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.test.internal.vm.TestEventHandler
@@ -10,6 +10,7 @@ import com.copperleaf.ballast.test.internal.vm.TestInputFilter
 import com.copperleaf.ballast.test.internal.vm.TestInputHandler
 import com.copperleaf.ballast.test.internal.vm.TestInterceptor
 import com.copperleaf.ballast.test.internal.vm.TestViewModel
+import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,8 +23,8 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
-@ExperimentalTime
 @ExperimentalCoroutinesApi
+@ExperimentalTime
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) = supervisorScope {
@@ -69,9 +70,8 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
     testSuite.suiteLogger("").info("All scenarios completed in $totalTestTime")
 }
 
-@ExperimentalTime
 @ExperimentalCoroutinesApi
-private suspend fun <Inputs : Any, Events : Any, State : Any>  runScenario(
+private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
     scenario: BallastScenarioScopeImpl<Inputs, Events, State>
 ) = supervisorScope {
@@ -82,7 +82,7 @@ private suspend fun <Inputs : Any, Events : Any, State : Any>  runScenario(
 
     val testInterceptor = TestInterceptor<Inputs, Events, State>()
 
-    val realConfig = BallastViewModelConfiguration.Builder(scenario.name)
+    val realConfig: BallastViewModelConfiguration<TestViewModel.Inputs<Inputs>, Events, State> = BallastViewModelConfiguration.Builder(scenario.name)
         .apply {
             this.logger = scenarioLoggerFactory
             this.inputStrategy = scenarioInputStrategy
@@ -91,13 +91,14 @@ private suspend fun <Inputs : Any, Events : Any, State : Any>  runScenario(
             this += LoggingInterceptor()
             this += testInterceptor
         }
-        .forViewModel(
+        .withViewModel(
             initialState = scenario.givenBlock?.invoke()
                 ?: testSuite.defaultInitialStateBlock?.invoke()
                 ?: error("No initial state given"),
             inputHandler = TestInputHandler(testSuite.inputHandler),
             filter = testSuite.filter?.let { TestInputFilter(it) },
         )
+        .build()
 
     val scenarioLogger = realConfig.logger
 
