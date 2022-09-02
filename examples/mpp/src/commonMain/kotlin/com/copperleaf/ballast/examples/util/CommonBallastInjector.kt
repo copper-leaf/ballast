@@ -61,8 +61,7 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
             applicationCoroutineScope = applicationScope,
             host = debuggerHost,
         ).also {
-            println("Start trying to connect to debugger")
-            it.connect()
+            it.connect(loggerFactory("Debugger"))
         }
     }
     protected val eventBus = EventBusImpl()

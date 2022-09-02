@@ -2,7 +2,6 @@ package com.copperleaf.ballast.test.internal
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
-import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.test.internal.vm.TestEventHandler
@@ -88,7 +87,6 @@ private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
             this.inputStrategy = scenarioInputStrategy
 
             this += otherInterceptors.map { it() }
-            this += LoggingInterceptor()
             this += testInterceptor
         }
         .withViewModel(

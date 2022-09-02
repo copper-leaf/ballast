@@ -89,7 +89,7 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
     if (!matchesPrerequisites(currentState)) return
 
     // VM is already fetching when another request came in. If the second request is a forced refresh, cancel the first
-    // by restarting the side-job. If the second reqeust is not a forced refresh, return and allow the original to
+    // by restarting the side-job. If the second request is not a forced refresh, return and allow the original to
     // continue executing.
     if (getValue(currentState) is Cached.Fetching && !forceRefresh) return
 
@@ -114,14 +114,14 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
                 coroutineScope {
                     doFetch(currentStateWhenStarted)
                 }
-
-                // start observing the remote source so that we can use it as we send along with the cached states
-                observe
-                    .onEach { postInput(updateState(Cached.Value(it))) }
-                    .launchIn(this)
             } catch (t: Throwable) {
                 postInput(updateState(Cached.FetchingFailed(t, currentValueUnboxed)))
             }
         }
+
+        // start observing the remote source so that we can use it as we send along with the cached states
+        observe
+            .onEach { postInput(updateState(Cached.Value(it))) }
+            .launchIn(this)
     }
 }

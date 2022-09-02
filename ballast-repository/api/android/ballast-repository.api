@@ -1,5 +1,6 @@
 public class com/copperleaf/ballast/repository/AndroidBallastRepository : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
 	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)V
+	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 	public fun getName ()Ljava/lang/String;
 	public final fun getType ()Ljava/lang/String;
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;

@@ -1,5 +1,6 @@
 public final class com/copperleaf/ballast/savedstate/BallastSavedStateInterceptor : com/copperleaf/ballast/BallastInterceptor {
-	public fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;)V
+	public fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun requestStateRestoration ()V
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V

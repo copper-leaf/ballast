@@ -4,7 +4,8 @@ public final class com/copperleaf/ballast/debugger/BallastDebuggerClientConnecti
 	public static final field Companion Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection$Companion;
 	public fun <init> (Lio/ktor/client/engine/HttpClientEngineFactory;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Lio/ktor/client/engine/HttpClientEngineFactory;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;ILjava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun connect ()Lkotlinx/coroutines/Job;
+	public final fun connect (Lcom/copperleaf/ballast/BallastLogger;)Lkotlinx/coroutines/Job;
+	public static synthetic fun connect$default (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/BallastLogger;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
 }
 
 public final class com/copperleaf/ballast/debugger/BallastDebuggerClientConnection$Companion {

@@ -14,6 +14,8 @@
   - `builder.forViewModel()` should be replaced with `builder.withViewModel().build()`
   - `BallastRepository` now takes `BallastViewModelConfiguration` in its primary constructor instead of 
     `BallastViewModelConfiguration.Builder`. Use `builder.withRepository().build()` instead of the old constructor.
+- Adds a configuration callback to `BallastSavedStateInterceptor` to allow user-specified buffering/filtering on the 
+  States as they are sent to be saved
 
 ## 1.3.0 - 2022-08-16
 

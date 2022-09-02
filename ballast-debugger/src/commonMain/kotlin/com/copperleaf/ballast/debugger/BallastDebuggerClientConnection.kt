@@ -2,6 +2,7 @@ package com.copperleaf.ballast.debugger
 
 import com.benasher44.uuid.uuid4
 import com.copperleaf.ballast.BallastInterceptorScope
+import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.associate
@@ -27,14 +28,31 @@ import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.client.request.header
 import io.ktor.client.request.url
-import io.ktor.websocket.*
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.websocket.Frame
+import io.ktor.websocket.readText
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
@@ -78,7 +96,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     private var applicationState: BallastApplicationState = BallastApplicationState()
     private val uuids: MutableMap<Any, Pair<String, LocalDateTime>> = mutableMapOf()
 
-    public fun connect(): Job {
+    public fun connect(logger: BallastLogger? = null): Job {
         var failedAttempts = 0
         val job = applicationCoroutineScope.launch(
             start = CoroutineStart.UNDISPATCHED,
@@ -98,14 +116,13 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 try {
                     coroutineScope {
                         attemptConnection(currentTimeoutValue) {
-                            println("Connected to Ballast debugger: $connectionId")
+                            logger?.debug("Connected to Ballast debugger: $connectionId")
                             failedAttempts = 0
                         }
                     }
                 } catch (e: CancellationException) {
                     throw e
                 } catch (t: Throwable) {
-                    t.printStackTrace()
                 }
             }
         }
@@ -320,6 +337,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                 Unit
             }
+
             is BallastDebuggerAction.RequestResendInput -> {
                 val inputToResend = thisViewModel
                     .inputs
@@ -331,6 +349,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 } else {
                 }
             }
+
             is BallastDebuggerAction.RequestRestoreState -> {
                 val stateToRestore = thisViewModel
                     .states

@@ -13,25 +13,27 @@ interface ClientModelMapper {
     companion object {
         @Suppress("NOTHING_TO_INLINE")
         private class Version(val major: Int, val minor: Int?, val patch: Int?) {
-            private inline fun matchesMajor(other: Version) : Boolean {
+            private inline fun matchesMajor(other: Version): Boolean {
                 return this.major == other.major
             }
-            private inline fun matchesMinor(other: Version) : Boolean {
-                return if(this.minor == null) {
+
+            private inline fun matchesMinor(other: Version): Boolean {
+                return if (this.minor == null) {
                     true
                 } else {
                     this.minor == other.minor
                 }
             }
-            private inline fun matchesPatch(other: Version) : Boolean {
-                return if(this.patch == null) {
+
+            private inline fun matchesPatch(other: Version): Boolean {
+                return if (this.patch == null) {
                     true
                 } else {
                     this.patch == other.patch
                 }
             }
 
-            fun matches(other: Version) : Boolean {
+            fun matches(other: Version): Boolean {
                 val matchesMajor = matchesMajor(other)
                 val matchesMinor = matchesMajor && matchesMinor(other)
                 val matchesPatch = matchesMinor && matchesPatch(other)
@@ -53,6 +55,7 @@ interface ClientModelMapper {
 
         private val supportedClientVersions = listOf(
             Version(1, null, null) to { ClientModelMapperV2() },
+            Version(2, null, null) to { ClientModelMapperV2() },
         )
 
         fun isSupported(
@@ -69,6 +72,11 @@ interface ClientModelMapper {
             return supportedClientVersions
                 .firstOrNull { it.first.matches(version) }
                 ?.second?.invoke()
+                ?: run {
+                    println("Unsupported client version: $connectionBallastVersion")
+
+                    null
+                }
         }
     }
 }

@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -17,6 +16,7 @@ import kotlinx.coroutines.launch
 
 public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val adapter: SavedStateAdapter<Inputs, Events, State>,
+    private val bufferFlow: (Flow<State>) -> Flow<State> = { it },
 ) : BallastInterceptor<Inputs, Events, State> {
 
     private var stateRestored: Boolean = false
@@ -40,10 +40,12 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
                         is BallastNotification.ViewModelStarted -> {
                             requestStateRestoration()
                         }
+
                         is BallastNotification.StateChanged<Inputs, Events, State> -> {
                             // send all state changes to the Channel
                             statesChannel.send(it.state)
                         }
+
                         is BallastNotification.EventProcessingStarted,
                         is BallastNotification.EventProcessingStopped,
                         is BallastNotification.UnhandledError,
@@ -66,6 +68,7 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
         launch(start = CoroutineStart.UNDISPATCHED) {
             statesChannel
                 .receiveAsFlow()
+                .let { bufferFlow(it) }
                 .onEach { nextState ->
                     if (stateRestored) {
                         val scope = SaveStateScopeImpl<Inputs, Events, State>(
@@ -92,7 +95,6 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
         restorationJob?.cancel()
         restorationJob = with(notNullScope) {
             launch {
-                println("Restoring state")
                 val stateRestoredDeferred = CompletableDeferred<Unit>()
 
                 val scope = RestoreStateScopeImpl<Inputs, Events, State>(
@@ -107,7 +109,6 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
                     Queued.RestoreState(stateRestoredDeferred, restoredState)
                 )
                 stateRestoredDeferred.await()
-                println("State restored")
                 stateRestored = true
                 val postRestoreInput = adapter.onRestoreComplete(restoredState)
                 if (postRestoreInput != null) {
