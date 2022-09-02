@@ -1,3 +1,11 @@
+## 2.0.0 - 2022-09-02
+
+- Updates to Kotlin 1.7.10 
+- Updates Ktor to 2.1.0
+- Updates other dependencies to latest versions
+- Removes Debugger UI from IntelliJ plugin, so the that plugin can be republished without the Compose dependency, 
+  allowing the templating feature in the latest IntelliJ versions, at least
+
 ## 1.3.0 - 2022-08-16
 
 - Update IntelliJ Plugin to support 2022.1.4. It still cannot support 2022.2 or higher because it's blocked by the

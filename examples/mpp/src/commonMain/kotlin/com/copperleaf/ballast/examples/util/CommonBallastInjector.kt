@@ -30,9 +30,9 @@ import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.HttpClientEngineFactory
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logger
-import io.ktor.client.features.logging.Logging
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import kotlinx.coroutines.CoroutineScope
 
 abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
@@ -42,6 +42,7 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
     private val loggerFactory: (String) -> BallastLogger,
     private val debuggerHost: String,
 ) {
+    @OptIn(com.russhwolf.settings.ExperimentalSettingsImplementation::class)
     private val preferences = ExamplesPreferencesImpl(Settings())
     private val httpClient = HttpClient(engineFactory) {
         install(Logging) {

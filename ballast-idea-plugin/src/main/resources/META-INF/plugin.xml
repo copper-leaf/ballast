@@ -38,17 +38,17 @@ This IDEA plugin is built upon the best features of Kotlin:
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>org.jetbrains.compose.intellij.platform</depends>
+<!--    <depends>org.jetbrains.compose.intellij.platform</depends>-->
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Tool Windows -->
-        <toolWindow
-            id="Ballast Debugger"
-            secondary="true"
-            icon="AllIcons.Actions.Preview"
-            anchor="bottom"
-            factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastDebuggerToolWindow"/>
+<!--        <toolWindow-->
+<!--            id="Ballast Debugger"-->
+<!--            secondary="true"-->
+<!--            icon="AllIcons.Actions.Preview"-->
+<!--            anchor="bottom"-->
+<!--            factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastDebuggerToolWindow"/>-->
 
         <!-- File Templates -->
         <fileTemplateGroup

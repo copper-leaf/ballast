@@ -21,37 +21,20 @@ import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.HttpClientEngineFactory
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.websocket.DefaultClientWebSocketSession
-import io.ktor.client.features.websocket.WebSockets
-import io.ktor.client.features.websocket.webSocket
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.client.request.header
 import io.ktor.client.request.url
+import io.ktor.websocket.*
 import io.ktor.http.HttpMethod
-import io.ktor.http.cio.websocket.Frame
-import io.ktor.http.cio.websocket.readText
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.CompletableDeferred
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.mapNotNull
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.joinAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.*
+import kotlinx.coroutines.flow.*
 import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
@@ -78,8 +61,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
     private val client: HttpClient = HttpClient(engineFactory) {
         install(WebSockets)
-        install(JsonFeature) {
-            serializer = KotlinxSerializer()
+        install(ContentNegotiation) {
+            json()
         }
         block()
     }
@@ -103,7 +86,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
             start = CoroutineStart.UNDISPATCHED,
             context = Dispatchers.Default,
         ) {
-            println("Starting connection")
             while (true) {
                 val currentTimeoutValue = when (failedAttempts) {
                     0 -> ZERO
@@ -132,7 +114,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         return job
     }
 
-    private suspend fun attemptConnection(currentTimeoutValue: Duration, onSuccessfulConnection: ()->Unit) {
+    private suspend fun attemptConnection(currentTimeoutValue: Duration, onSuccessfulConnection: () -> Unit) {
         // either wait for a given timeout to reconnect, or if a new event comes in connect immediately
         withTimeoutOrNull(currentTimeoutValue) {
             waitForEvent.await()

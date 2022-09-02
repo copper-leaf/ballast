@@ -46,7 +46,7 @@ android {
         }
     }
     lint {
-        disable("GradleDependency")
+        disable += listOf("GradleDependency")
     }
     buildFeatures {
         viewBinding = true

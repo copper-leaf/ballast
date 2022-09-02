@@ -4,18 +4,18 @@ import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.CONNECTION_ID_HEADER
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.http.cio.websocket.Frame
-import io.ktor.http.cio.websocket.readText
-import io.ktor.response.respondText
-import io.ktor.routing.get
-import io.ktor.routing.routing
+import io.ktor.server.application.call
+import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
-import io.ktor.websocket.DefaultWebSocketServerSession
-import io.ktor.websocket.WebSockets
-import io.ktor.websocket.webSocket
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.get
+import io.ktor.server.routing.routing
+import io.ktor.server.websocket.WebSocketServerSession
+import io.ktor.server.websocket.WebSockets
+import io.ktor.server.websocket.webSocket
+import io.ktor.websocket.Frame
+import io.ktor.websocket.readText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharedFlow
@@ -79,7 +79,7 @@ public class BallastDebuggerServerConnection(
         }
     }
 
-    private fun DefaultWebSocketServerSession.processOutgoing(
+    private fun WebSocketServerSession.processOutgoing(
         clientModelMapper: ClientModelMapper,
         connectionId: String
     ): Job {
@@ -98,7 +98,7 @@ public class BallastDebuggerServerConnection(
             .launchIn(this)
     }
 
-    private fun DefaultWebSocketServerSession.processIncoming(
+    private fun WebSocketServerSession.processIncoming(
         clientModelMapper: ClientModelMapper,
     ): Job {
         return incoming
