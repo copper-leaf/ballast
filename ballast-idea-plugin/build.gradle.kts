@@ -12,9 +12,9 @@ description = "Debugger UI application for Ballast MVI"
 
 dependencies {
     // compose Desktop Intellij Plugin
-    compileOnly(compose.desktop.currentOs)
-    implementation(compose.desktop.components.splitPane)
-    implementation(compose.materialIconsExtended)
+//    compileOnly(compose.desktop.currentOs)
+//    implementation(compose.desktop.components.splitPane)
+//    implementation(compose.materialIconsExtended)
 
     // Ktor websocker server
     implementation(libs.kotlinx.coroutines.swing)

@@ -1,3 +1,7 @@
+## 2.0.1 - 2022-09-06
+
+- Fixed issue publishing Intellij Plugin
+
 ## 2.0.0 - 2022-09-02
 
 - Updates to Kotlin 1.7.10

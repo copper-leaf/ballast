@@ -1,7 +1,5 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
-import com.copperleaf.ballast.debugger.ui.widgets.ViewModelContentTab
-
 /**
  * Save the UI state
  *   - Divider percentages
@@ -15,6 +13,5 @@ interface BallastPluginPrefs {
     var connectionsPanePercentage: Float
     var viewModelsPanePercentage: Float
     var eventsPanePercentage: Float
-    var selectedViewModelContentTab: ViewModelContentTab
 }
 
