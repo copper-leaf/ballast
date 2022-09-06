@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
 import com.copperleaf.ballast.debugger.idea.base.BasePluginPrefs
+import com.copperleaf.ballast.debugger.ui.widgets.ViewModelContentTab
 import com.intellij.openapi.project.Project
 
 class BallastPluginPrefsImpl(
@@ -16,4 +17,5 @@ class BallastPluginPrefsImpl(
     override var connectionsPanePercentage: Float by float(CONNECTIONS_DEFAULT_VALUE)
     override var viewModelsPanePercentage: Float by float(VIEW_MODELS_DEFAULT_VALUE)
     override var eventsPanePercentage: Float by float(EVENTS_DEFAULT_VALUE)
+    override var selectedViewModelContentTab: ViewModelContentTab by enum(ViewModelContentTab.Inputs, ViewModelContentTab::valueOf)
 }

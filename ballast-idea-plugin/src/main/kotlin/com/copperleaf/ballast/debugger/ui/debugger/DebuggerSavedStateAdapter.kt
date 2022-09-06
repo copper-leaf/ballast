@@ -4,6 +4,7 @@ import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefs
 import com.copperleaf.ballast.savedstate.RestoreStateScope
 import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
+import org.jetbrains.compose.splitpane.SplitPaneState
 
 class DebuggerSavedStateAdapter(
     private val prefs: BallastPluginPrefs,
@@ -16,6 +17,18 @@ class DebuggerSavedStateAdapter(
         DebuggerContract.Inputs,
         DebuggerContract.Events,
         DebuggerContract.State>.save() {
+        saveDiff({ connectionsPanePercentageValue }) {
+            prefs.connectionsPanePercentage = it
+        }
+        saveDiff({ viewModelsPanePercentageValue }) {
+            prefs.viewModelsPanePercentage = it
+        }
+        saveDiff({ eventsPanePercentageValue }) {
+            prefs.eventsPanePercentage = it
+        }
+        saveDiff({ selectedViewModelContentTab }) {
+            prefs.selectedViewModelContentTab = it
+        }
     }
 
     override suspend fun RestoreStateScope<
@@ -24,6 +37,10 @@ class DebuggerSavedStateAdapter(
         DebuggerContract.State>.restore(): DebuggerContract.State {
         return DebuggerContract.State(
             port = prefs.debuggerPort,
+            connectionsPanePercentage = SplitPaneState(prefs.connectionsPanePercentage, true),
+            viewModelsPanePercentage = SplitPaneState(prefs.viewModelsPanePercentage, true),
+            eventsPanePercentage = SplitPaneState(prefs.eventsPanePercentage, true),
+            selectedViewModelContentTab = prefs.selectedViewModelContentTab,
         )
     }
 

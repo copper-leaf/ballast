@@ -6,6 +6,7 @@ import org.gradle.kotlin.dsl.invoke
 plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
+    id("org.jetbrains.compose")
     id("org.jetbrains.intellij")
     id("org.jetbrains.changelog")
 }

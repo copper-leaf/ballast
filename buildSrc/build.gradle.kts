@@ -17,7 +17,7 @@ dependencies {
     implementation("org.jlleitschuh.gradle:ktlint-gradle:11.0.0")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation("com.github.gmazzo:gradle-buildconfig-plugin:3.1.0")
-    implementation("org.jetbrains.intellij.plugins:gradle-intellij-plugin:1.5.2")
+    implementation("org.jetbrains.intellij.plugins:gradle-intellij-plugin:1.4.0")
     implementation("org.jetbrains.intellij.plugins:gradle-changelog-plugin:1.3.1")
 }
 tasks.withType<JavaCompile> {

@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.debugger.di
 
+import androidx.compose.runtime.compositionLocalOf
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefs
 import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl
@@ -9,6 +10,9 @@ import com.copperleaf.ballast.debugger.ui.debugger.DebuggerSavedStateAdapter
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerViewModel
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineScope
+
+val LocalProject = compositionLocalOf<Project> { error("LocalProject not provided") }
+val LocalInjector = compositionLocalOf<BallastDebuggerInjector> { error("LocalInjector not provided") }
 
 interface BallastDebuggerInjector {
     val prefs: BallastPluginPrefs

@@ -1,5 +1,8 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl.Companion.CONNECTIONS_DEFAULT_VALUE
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl.Companion.EVENTS_DEFAULT_VALUE
+import com.copperleaf.ballast.debugger.idea.settings.BallastPluginPrefsImpl.Companion.VIEW_MODELS_DEFAULT_VALUE
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
@@ -9,8 +12,10 @@ import com.copperleaf.ballast.debugger.models.BallastInputState
 import com.copperleaf.ballast.debugger.models.BallastSideJobState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
+import com.copperleaf.ballast.debugger.ui.widgets.ViewModelContentTab
 import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 import kotlinx.coroutines.flow.MutableSharedFlow
+import org.jetbrains.compose.splitpane.SplitPaneState
 
 object DebuggerContract {
     data class State constructor(
@@ -24,6 +29,15 @@ object DebuggerContract {
         val focusedConnectionId: String? = null,
         val focusedViewModelName: String? = null,
         val focusedDebuggerEventUuid: String? = null,
+
+        val connectionsPanePercentage: SplitPaneState = SplitPaneState(CONNECTIONS_DEFAULT_VALUE, true),
+        val connectionsPanePercentageValue: Float = CONNECTIONS_DEFAULT_VALUE,
+        val viewModelsPanePercentage: SplitPaneState = SplitPaneState(VIEW_MODELS_DEFAULT_VALUE, true),
+        val viewModelsPanePercentageValue: Float = VIEW_MODELS_DEFAULT_VALUE,
+        val eventsPanePercentage: SplitPaneState = SplitPaneState(EVENTS_DEFAULT_VALUE, true),
+        val eventsPanePercentageValue: Float = EVENTS_DEFAULT_VALUE,
+
+        val selectedViewModelContentTab: ViewModelContentTab = ViewModelContentTab.Inputs,
     ) {
         val focusedConnection: BallastConnectionState? = applicationState
             .connections
@@ -64,6 +78,12 @@ object DebuggerContract {
 
         data class DebuggerEventReceived(val message: BallastDebuggerEvent) : Inputs()
         data class SendDebuggerAction(val action: BallastDebuggerAction) : Inputs()
+
+        data class UpdateSelectedViewModelContentTab(val value: ViewModelContentTab) : Inputs()
+
+        data class UpdateConnectionsPanePercentageValue(val value: Float) : Inputs()
+        data class UpdateViewModelsPanePercentageValue(val value: Float) : Inputs()
+        data class UpdateEventsPanePercentageValue(val value: Float) : Inputs()
     }
 
     sealed class Events

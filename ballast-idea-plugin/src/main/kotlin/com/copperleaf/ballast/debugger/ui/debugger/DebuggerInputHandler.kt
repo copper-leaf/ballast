@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.debugger.ui.debugger
 
+import androidx.compose.runtime.snapshotFlow
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
@@ -9,6 +10,9 @@ import com.copperleaf.ballast.debugger.models.updateConnection
 import com.copperleaf.ballast.debugger.models.updateViewModel
 import com.copperleaf.ballast.debugger.models.updateWithDebuggerEvent
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerConnection
+import com.copperleaf.ballast.observeFlows
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 class DebuggerInputHandler : InputHandler<
     DebuggerContract.Inputs,
@@ -29,6 +33,23 @@ class DebuggerInputHandler : InputHandler<
                 )
 
                 server.runServer()
+            }
+
+            observeFlows("SplitPane State Observer") {
+                listOf(
+                    snapshotFlow { currentStateWhenStarted.connectionsPanePercentage.positionPercentage }
+                        .distinctUntilChanged()
+                        .map { DebuggerContract.Inputs.UpdateConnectionsPanePercentageValue(it) },
+
+                    snapshotFlow { currentStateWhenStarted.viewModelsPanePercentage.positionPercentage }
+                        .distinctUntilChanged()
+                        .map { DebuggerContract.Inputs.UpdateViewModelsPanePercentageValue(it) },
+
+                    snapshotFlow { currentStateWhenStarted.eventsPanePercentage.positionPercentage }
+                        .distinctUntilChanged()
+                        .map { DebuggerContract.Inputs.UpdateEventsPanePercentageValue(it) }
+
+                )
             }
         }
 
@@ -118,6 +139,19 @@ class DebuggerInputHandler : InputHandler<
             val currentState = getCurrentState()
 
             currentState.actions.emit(input.action)
+        }
+
+        is DebuggerContract.Inputs.UpdateSelectedViewModelContentTab -> {
+            updateState { it.copy(selectedViewModelContentTab = input.value) }
+        }
+        is DebuggerContract.Inputs.UpdateConnectionsPanePercentageValue -> {
+            updateState { it.copy(connectionsPanePercentageValue = input.value) }
+        }
+        is DebuggerContract.Inputs.UpdateEventsPanePercentageValue -> {
+            updateState { it.copy(eventsPanePercentageValue = input.value) }
+        }
+        is DebuggerContract.Inputs.UpdateViewModelsPanePercentageValue -> {
+            updateState { it.copy(viewModelsPanePercentageValue = input.value) }
         }
     }
 }
