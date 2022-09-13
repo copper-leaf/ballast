@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
 public open class AndroidViewModel<Inputs : Any, Events : Any, State : Any>
@@ -57,15 +58,18 @@ private constructor(
         }
     }
 
-    /**
-     * Deprecated in 1.2.0, scheduled to be removed in 2.0.0.
-     */
-    @Deprecated("replace with attachEventHandlerOnLifecycle", replaceWith = ReplaceWith("attachEventHandlerOnLifecycle(lifecycleOwner, handler)"))
-    public fun attachEventHandler(
+    public fun runOnLifecycle(
         lifecycleOwner: LifecycleOwner,
-        handler: EventHandler<Inputs, Events, State>
-    ) {
-        attachEventHandlerOnLifecycle(lifecycleOwner, handler, Lifecycle.State.RESUMED)
+        eventHandler: EventHandler<Inputs, Events, State>,
+        targetState: Lifecycle.State = Lifecycle.State.RESUMED,
+        onStateChanged: (State) -> Unit,
+    ): Job = with(lifecycleOwner) {
+        lifecycleScope.launch {
+            joinAll(
+                observeStatesOnLifecycle(lifecycleOwner, targetState, onStateChanged),
+                attachEventHandlerOnLifecycle(lifecycleOwner, eventHandler, targetState),
+            )
+        }
     }
 
     public fun attachEventHandler(
