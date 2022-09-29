@@ -1,20 +1,30 @@
+## 2.1.0 - 2022-09-29
+
+- Restores the Debugger UI in the Ballast Intellij Plugin
+- Removed deprecated `AndroidViewModel.attachEventHandler()` version that should have been removed in 2.0.0, adds new 
+  `AndroidViewModel.runOnLifecycle()` to combine attaching an eventHandler and observing states with 1 method
+
+## 2.0.1 - 2022-09-06
+
+- Fixed issue publishing Intellij Plugin
+
 ## 2.0.0 - 2022-09-02
 
 - Updates to Kotlin 1.7.10
 - Updates Ktor to 2.1.0
 - Updates other dependencies to latest versions
-- Removes Debugger UI from IntelliJ plugin, so the that plugin can be republished without the Compose dependency, 
+- Removes Debugger UI from IntelliJ plugin, so the that plugin can be republished without the Compose dependency,
   allowing the templating feature in the latest IntelliJ versions, at least
 
 **New/Updated Features**
-- Adds `BootstrapInterceptor` for sending an Input when the ViewModel is created, instead of making the UI send the 
+- Adds `BootstrapInterceptor` for sending an Input when the ViewModel is created, instead of making the UI send the
   initial Input
 - `InputStrategy` is now typed with the same type paramters as everything else in the `DefaultViewModelConfiguration`
 - Some configuration DSL methods are deprecated:
   - `builder.forViewModel()` should be replaced with `builder.withViewModel().build()`
-  - `BallastRepository` now takes `BallastViewModelConfiguration` in its primary constructor instead of 
+  - `BallastRepository` now takes `BallastViewModelConfiguration` in its primary constructor instead of
     `BallastViewModelConfiguration.Builder`. Use `builder.withRepository().build()` instead of the old constructor.
-- Adds a configuration callback to `BallastSavedStateInterceptor` to allow user-specified buffering/filtering on the 
+- Adds a configuration callback to `BallastSavedStateInterceptor` to allow user-specified buffering/filtering on the
   States as they are sent to be saved
 
 ## 1.3.0 - 2022-08-16
@@ -30,12 +40,12 @@
 ## 1.2.0 - 2022-05-18
 
 - Improvements to `AndroidViewModel`
-  - Adds `attachEventHandler()` override which runs on a `CoroutineScope` rather than a `Lifecycle`, which is 
+  - Adds `attachEventHandler()` override which runs on a `CoroutineScope` rather than a `Lifecycle`, which is
     better-suited for Compose EventHandlers
   - Adds `attachEventHandlerOnLifecycle()` to be more explicit about when the eventHandler is running on a Lifecycle
-  - Original `attachEventHandler()` is now marked as deprecated, and should be replaced with 
+  - Original `attachEventHandler()` is now marked as deprecated, and should be replaced with
     `attachEventHandlerOnLifecycle()`
-  - Adds `observeStatesOnLifecycle()` method for more easily collecting states in XML-based Views 
+  - Adds `observeStatesOnLifecycle()` method for more easily collecting states in XML-based Views
 
 ## 1.1.0 - 2022-04-29
 
@@ -55,18 +65,18 @@
 
 - Fix bug in IntelliJ plugin where settings were not being saved
 - Removes "sample" from IntelliJ plugin, as that example and several more are available from the documentation site
- 
+
 ## 0.15.0 - 2022-04-06
 
-- Fix several bugs in Debugger UI 
+- Fix several bugs in Debugger UI
   - Kotlin coroutines versions were in conflict and crashing the debugger
   - Timestamps not correctly reported once ViewModel was refreshed
   - Connection Ballast Version not reported correctly once refreshed
 - Adds new `ballast-saved-state` module
 - Adds `ballast-test` API for isolating a single input
-- Reverts Coroutines version back to 1.5.2. To use Ballast on iOS with the new memory model, manually include the 
+- Reverts Coroutines version back to 1.5.2. To use Ballast on iOS with the new memory model, manually include the
   1.6.0 dependency
-  
+
 ## 0.14.0 - 2022-03-28
 
 - Attempts to get iOS support working and documented, with M1 Simulator support
@@ -79,28 +89,28 @@
 ## 0.13.0 - 2022-03-24
 
 - [BREAKING CHANGE] Renames `ballast-crashlytics` module to `ballast-firebase-crashlytics`
-- [BREAKING CHANGE] Renames `sideEffect()` to `sideJob()` to be more accurate and less confusing in comparison to 
+- [BREAKING CHANGE] Renames `sideEffect()` to `sideJob()` to be more accurate and less confusing in comparison to
   other Kotlin MVI libraries.
-- [BREAKING CHANGE] `BallastViewModel` no longer implements the `SendChannel` interface, it exposes the `send` and 
-  `trySend` methods directly. It also adds `sendAndAwaitCompletion()` to send an Input and wait for it to completely 
+- [BREAKING CHANGE] `BallastViewModel` no longer implements the `SendChannel` interface, it exposes the `send` and
+  `trySend` methods directly. It also adds `sendAndAwaitCompletion()` to send an Input and wait for it to completely
   finish processing.
 - [BREAKING CHANGE] The `logger` property of `BallastViewModelConfiguration.Builder` is now a function, which receives
   the viewModel name when built, to pass as the tag of a logger.
 - [BREAKING CHANGE] Moves annotations for Firebase into commonMain and renames them:
   - `@FirebaseCrashlyticsInterceptor.Ignore` --> `@FirebaseCrashlyticsIgnore`
   - `@FirebaseAnalyticsInterceptor.TrackInput` --> `@FirebaseAnalyticsTrackInput`
-- [FUNCTIONAL CHANGE] SideJobs are now posted to the VM immediately, rather than collected and dispatched explicitly 
-  after handling. The default implementation still requires that SideJobs are sent as the last statements of the 
+- [FUNCTIONAL CHANGE] SideJobs are now posted to the VM immediately, rather than collected and dispatched explicitly
+  after handling. The default implementation still requires that SideJobs are sent as the last statements of the
   `InputHandler`, though.
   - By writing a custom `InputStrategy.Guardian`, you could remove the restriction that sideJobs must be started at the
     end of the Input. This is dangerous and you shouldn't do it unless you really know what you're doing.
 - [BUG FIX] Fixes issue where JS Debugger cannot connect because JS browser websocket clients can't send headers
-- [NEW] Adds platform-specific `BallastLogger` implementations (`AndroidBallastLogger`, `JsConsoleBallastLogger`). The 
-  default logger of `BallastViewModelConfiguration` is still `NoOpLogger()`.  
+- [NEW] Adds platform-specific `BallastLogger` implementations (`AndroidBallastLogger`, `JsConsoleBallastLogger`). The
+  default logger of `BallastViewModelConfiguration` is still `NoOpLogger()`.
 
 ## 0.12.0 - 2022-03-17
 
-- Fixes issue with `inputHandler { }` and `eventHandler { }` functions, which previously didn't actually send the input 
+- Fixes issue with `inputHandler { }` and `eventHandler { }` functions, which previously didn't actually send the input
   or event to the lambda
 - Move all InputHandler checks into the Guardian, so any/all of them could be thrown away by the end-user if needed
 - make a dedicated `InputStrategyScope` to match the pattern of all other pluggable features
@@ -127,7 +137,7 @@
 - Converts Debugger UI to an IntelliJ Plugin, instead of a standalone desktop application
 - Adds a few new `BallastNotification`s, to notify of Inputs and Events being queued, but not yet processed
 - Fixed bug where SideEffect errors and cancellation was not being notified properly
-- `SideEffectcope` is now also a `CoroutineScope`, so you can `launch` other coroutines directly within the 
+- `SideEffectcope` is now also a `CoroutineScope`, so you can `launch` other coroutines directly within the
   `sideEffect(key) { }` block without having to manually wrap it in `coroutineScope { }`
 
 ## 0.8.2 - 2022-02-23
@@ -140,20 +150,20 @@
 
 ## 0.8.0 - 2022-02-22
 
-This is a major release, with lots of new features, greatly improved safety, but with several significant breaking 
+This is a major release, with lots of new features, greatly improved safety, but with several significant breaking
 changes, as descibed below:
 
 - Improves side-effects
   - They are now started through a Channel, instead of relying on a Mutex for safety
   - New `BallastInterceptor` methods added to track sideEffect starts/errors
-  - SideEffects (and related APIs) now _require_ a `key` to be provided, to avoid accidental restarting cause by 
+  - SideEffects (and related APIs) now _require_ a `key` to be provided, to avoid accidental restarting cause by
     disparate Inputs forgetting to provide a key
 - Improves safety of `ParallelInputStrategy` to prevent multiple updates, rather than just throwing an error at the end
   of the Input handler block if it was used incorrectly
   - Replaces `onCompleted` callback with a `Guardian` interface, which each InputStrategy can create for itself to check
     accesses during the InputHandler, rather than at the end
 - Rewrites Interceptor API
-  - Instead of an interface, interceptors "events" are sent as a sealed class, `BallastNotification`. These 
+  - Instead of an interface, interceptors "events" are sent as a sealed class, `BallastNotification`. These
     Notifications are sent to a SharedFlow inside the core ViewModel, and each Interceptor observes this SharedFlow
     from its own coroutine, launched in the viewModel coroutineScope
 - Improves Repository `Cached` DSL:

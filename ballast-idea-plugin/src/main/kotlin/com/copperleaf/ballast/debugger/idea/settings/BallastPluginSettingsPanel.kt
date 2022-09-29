@@ -21,11 +21,7 @@ class BallastPluginSettingsPanel(
     }
 
     private var initialDebuggerPort: Int = injector.prefs.debuggerPort
-    var debuggerPort: Int = initialDebuggerPort
-        set(value) {
-            println("setting debuggerPort to $value")
-            field = value
-        }
+    private var debuggerPort: Int = initialDebuggerPort
 
     override fun Panel.Content() {
         onReset { debuggerPort = initialDebuggerPort }

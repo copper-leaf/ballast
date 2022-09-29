@@ -115,7 +115,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                 try {
                     coroutineScope {
-                        attemptConnection(currentTimeoutValue) {
+                        attemptConnection(logger, currentTimeoutValue) {
                             logger?.debug("Connected to Ballast debugger: $connectionId")
                             failedAttempts = 0
                         }
@@ -123,18 +123,21 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 } catch (e: CancellationException) {
                     throw e
                 } catch (t: Throwable) {
+                    logger?.debug("Connection attempt failed: $connectionId")
+                    logger?.error(t)
                 }
             }
         }
         return job
     }
 
-    private suspend fun attemptConnection(currentTimeoutValue: Duration, onSuccessfulConnection: () -> Unit) {
+    private suspend fun attemptConnection(logger: BallastLogger?, currentTimeoutValue: Duration, onSuccessfulConnection: () -> Unit) {
         // either wait for a given timeout to reconnect, or if a new event comes in connect immediately
         withTimeoutOrNull(currentTimeoutValue) {
             waitForEvent.await()
         }
 
+        logger?.debug("Attempting to connect to Ballast debugger: $connectionId")
         client.webSocket(
             method = HttpMethod.Get,
             request = {

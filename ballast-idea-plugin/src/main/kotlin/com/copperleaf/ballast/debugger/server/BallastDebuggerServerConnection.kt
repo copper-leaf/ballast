@@ -8,6 +8,8 @@ import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.plugins.callloging.*
+import io.ktor.server.request.*
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.withContext
+import org.slf4j.event.*
 
 public class BallastDebuggerServerConnection(
     private val port: Int,
@@ -37,6 +40,9 @@ public class BallastDebuggerServerConnection(
         withContext(Dispatchers.IO) {
             embeddedServer(CIO, port = port) {
                 install(WebSockets)
+                install(CallLogging) {
+                    level = Level.INFO
+                }
 
                 routing {
                     get("/") {
