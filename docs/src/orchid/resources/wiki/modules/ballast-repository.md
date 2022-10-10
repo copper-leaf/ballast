@@ -79,7 +79,7 @@ class ExampleRepositoryImpl(
             initialState = ExampleRepositoryContract.State()
             inputHandler = ExampleRepositoryInputHandler()
             name = "Example Repository"
-        }
+        }.build()
 )
 ```
 
