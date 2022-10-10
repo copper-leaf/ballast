@@ -203,7 +203,7 @@ class ExampleRepositoryImpl(
             initialState = ExampleRepositoryContract.State()
             inputHandler = ExampleRepositoryInputHandler()
             name = "Example Repository"
-        }
+        }.build()
 ), ExampleRepository {
 
     override fun getExampleValue(refreshCache: Boolean): Flow<Cached<ExampleValue>> { 
