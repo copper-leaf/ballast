@@ -13,6 +13,8 @@ import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControl
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
 import com.copperleaf.ballast.sync.DefaultSyncConnection
+import com.copperleaf.ballast.examples.undo.UndoEventHandler
+import com.copperleaf.ballast.examples.undo.UndoViewModel
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.js.Js
 import kotlinx.browser.window
@@ -75,6 +77,16 @@ class ComposeWebInjectorImpl(
             viewModelCoroutineScope = coroutineScope,
             config = scorekeeperConfiguration(),
             eventHandler = ScorekeeperEventHandler { window.alert(it) },
+        )
+    }
+
+    override fun undoViewModel(
+        coroutineScope: CoroutineScope,
+    ): UndoViewModel {
+        return UndoViewModel(
+            viewModelCoroutineScope = coroutineScope,
+            config = undoConfiguration(),
+            eventHandler = UndoEventHandler(),
         )
     }
 }

@@ -17,6 +17,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -89,7 +90,7 @@ object SyncComposeUi {
             FloatingActionButton(
                 onClick = { replicaVm.trySend(CounterContract.Inputs.Decrement(1)) }
             ) {
-                Icon(Icons.Default.Add, "Decrement")
+                Icon(Icons.Default.Remove, "Decrement")
             }
 
             Text(

@@ -22,6 +22,8 @@ import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControl
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperContract
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperInputHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperSavedStateAdapter
+import com.copperleaf.ballast.examples.undo.UndoContract
+import com.copperleaf.ballast.examples.undo.UndoInputHandler
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.repository.bus.EventBusImpl
 import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
@@ -29,6 +31,9 @@ import com.copperleaf.ballast.savedstate.SavedStateAdapter
 import com.copperleaf.ballast.sync.BallastSyncInterceptor
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.InMemorySyncAdapter
+import com.copperleaf.ballast.undo.BallastUndoInterceptor
+import com.copperleaf.ballast.undo.DefaultUndoController
+import com.copperleaf.ballast.undo.UndoController
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -186,6 +191,25 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
             initialState = ScorekeeperContract.State(),
             inputHandler = ScorekeeperInputHandler(),
             name = "Scorekeeper",
+        )
+        .build()
+
+    public val undoController: UndoController<
+        UndoContract.Inputs,
+        UndoContract.Events,
+        UndoContract.State> = DefaultUndoController()
+
+    protected fun undoConfiguration(): BallastViewModelConfiguration<
+        UndoContract.Inputs,
+        UndoContract.Events,
+        UndoContract.State> = commonBuilder()
+        .apply {
+            this += BallastUndoInterceptor(undoController)
+        }
+        .withViewModel(
+            initialState = UndoContract.State(),
+            inputHandler = UndoInputHandler(),
+            name = "Undo",
         )
         .build()
 }
