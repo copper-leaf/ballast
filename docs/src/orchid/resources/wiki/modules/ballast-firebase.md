@@ -31,11 +31,12 @@ constructor() : AndroidViewModel<
         .apply {
             this += FirebaseCrashlyticsInterceptor(Firebase.crashlytics)
         }
-        .forViewModel(
+        .withViewModel(
             initialState = ExampleContract.State(),
             inputHandler = ExampleInputHandler(),
             name = "Example",
         )
+        .build()
 )
 ```
 
@@ -76,11 +77,12 @@ constructor() : AndroidViewModel<
         .apply {
             this += FirebaseAnalyticsInterceptor(Firebase.analytics)
         }
-        .forViewModel(
+        .withViewModel(
             initialState = ExampleContract.State(),
             inputHandler = ExampleInputHandler(),
             name = "Example",
         )
+        .build(),
 )
 ```
 

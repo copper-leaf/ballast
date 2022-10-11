@@ -3,7 +3,7 @@
 
 import com.copperleaf.ballast.core.IosViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.forViewModel
+import com.copperleaf.ballast.withViewModel
 
 #parse("File Header.java")
 class ${featureName}ViewModel(
@@ -13,9 +13,10 @@ class ${featureName}ViewModel(
     ${featureName}Contract.Events,
     ${featureName}Contract.State>(
     config = configBuilder
-        .forViewModel(
+        .withViewModel(
             inputHandler = ${featureName}InputHandler(),
             initialState = ${featureName}Contract.State(),
             name = "${featureName}",
-        ),
+        )
+        .build(),
 )

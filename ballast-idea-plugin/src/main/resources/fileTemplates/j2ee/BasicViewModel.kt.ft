@@ -3,7 +3,7 @@
 
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.forViewModel
+import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CoroutineScope
 
 #parse("File Header.java")
@@ -16,10 +16,11 @@ class ${featureName}ViewModel(
     ${featureName}Contract.State>(
     coroutineScope = coroutineScope,
     config = configBuilder
-        .forViewModel(
+        .withViewModel(
             inputHandler = ${featureName}InputHandler(),
             initialState = ${featureName}Contract.State(),
             name = "${featureName}",
-        ),
+        )
+        .build(),
     eventHandler = ${featureName}EventHandler(),
 )

@@ -74,11 +74,12 @@ class ExampleViewModel(
                 ExampleSavedStateAdapter(database)
             )
         }
-        .forViewModel(
+        .withViewModel(
             initialState = ExampleContract.State(),
             inputHandler = ExampleInputHandler(),
             name = "Example",
-        ),
+        )
+        .build(),
 )
 ```
 

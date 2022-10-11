@@ -62,11 +62,12 @@ class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
                 this += BallastDebuggerInterceptor(debuggerConnection)
             }
         }
-        .forViewModel(
+        .withViewModel(
             initialState = ExampleContract.State(),
             inputHandler = ExampleInputHandler(),
             name = "Example",
-        ),
+        )
+        .build(),
     eventHandler = ExampleEventHandler(),
 )
 ```

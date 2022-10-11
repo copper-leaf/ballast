@@ -224,11 +224,12 @@ public class ExampleViewModel(
         .apply {
             // set configuration common to all ViewModels, if needed
         }
-        .forViewModel(
+        .withViewModel(
             initialState = State(),
             inputHandler = ExampleInputHandler(),
             name = "Example"
-        ),
+        )
+        .build(),
     eventHandler = ExampleEventHandler(),
     coroutineScope = viewModelScope,
 )

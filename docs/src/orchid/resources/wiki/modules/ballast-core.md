@@ -5,9 +5,9 @@
 
 ## Overview
 
-The Ballast Core module provides all the core capabilities of the entire Ballast MVI framework. The Core framework is 
+The Ballast Core module provides all the core capabilities of the entire Ballast MVI framework. The Core framework is
 robust and opinionated, but also provides many ways to extend the functionality through Interceptors without impacting
-the core MVI model. Any additional functionality outside of Core will typically be implemented as an Interceptor and 
+the core MVI model. Any additional functionality outside of Core will typically be implemented as an Interceptor and
 provided to the `BallastViewModelConfiguration`.
 
 ## Usage
@@ -19,26 +19,26 @@ The Core module provides several ViewModel base classes, so Ballast can integrat
 - `AndroidViewModel`: A subclass of `androidx.lifecycle.ViewModel`
 - `IosViewModel`: A custom ViewModel that can be integrated with Combine Publishers for SwiftUI
 - `BasicViewModel`: A generic ViewModel for Kotlin targets that don't have their own platform-specific ViewModel, or for
-  anywhere you want to manually control the lifecycle of the ViewModel. `BasicViewModel`'s lifecycle is controlled by a 
+  anywhere you want to manually control the lifecycle of the ViewModel. `BasicViewModel`'s lifecycle is controlled by a
   `coroutineScope` provided to it upon creation. When the scope gets cancelled, the ViewModel gets closed and can not be
   used again.
 
 ### Interceptors
 
-The Core module comes with only one Interceptor, 
+The Core module comes with only one Interceptor,
 
 - `LoggingInterceptor`: It will print all Ballast activity to the logger provided in the `BallastViewModelConfiguration`.
-  The information logged by this interceptor may be quite verbose, but it can be really handy for quickly inspecting 
+  The information logged by this interceptor may be quite verbose, but it can be really handy for quickly inspecting
   the data in your ViewModel and what happened in what order.
 
-The `LoggingInterceptor` writes to a logger installed into the `BallastViewModelConfiguration`, which may be used by 
+The `LoggingInterceptor` writes to a logger installed into the `BallastViewModelConfiguration`, which may be used by
 InputHandlers or other Ballast features as well.
 
 {% snippet 'loggers' %}
 
 {% alert 'danger' :: compileAs('md') %}
-Be sure to only include `LoggingInterceptor()` and the logger in debug builds, as logging in production may cause 
-performance degradation and risks leaking sensitive info through to the application logs. It should not be used to 
+Be sure to only include `LoggingInterceptor()` and the logger in debug builds, as logging in production may cause
+performance degradation and risks leaking sensitive info through to the application logs. It should not be used to
 create a paper-trail of activity in your app, you should use something like [Ballast Firebase][1] to more selectively
 create the paper-trail.
 
@@ -47,23 +47,24 @@ create the paper-trail.
 
 ```kotlin
 class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
-        ExampleContract.Inputs,
-        ExampleContract.Events,
-        ExampleContract.State>(
-  coroutineScope = coroutineScope,
-  config = BallastViewModelConfiguration.Builder()
-    .apply {
-      if(DEBUG) { // some build-time constant
-        logger = PrintlnLogger()
-        this += LoggingInterceptor()
-      }
-    }
-    .forViewModel(
-      initialState = ExampleContract.State(),
-      inputHandler = ExampleInputHandler(),
-      name = "Example",
-    ),
-  eventHandler = ExampleEventHandler(),
+    ExampleContract.Inputs,
+    ExampleContract.Events,
+    ExampleContract.State>(
+    coroutineScope = coroutineScope,
+    config = BallastViewModelConfiguration.Builder()
+        .apply {
+            if(DEBUG) { // some build-time constant
+                logger = PrintlnLogger()
+                this += LoggingInterceptor()
+            }
+        }
+        .withViewModel(
+            initialState = ExampleContract.State(),
+            inputHandler = ExampleInputHandler(),
+            name = "Example",
+        )
+        .build(),
+    eventHandler = ExampleEventHandler(),
 )
 ```
 

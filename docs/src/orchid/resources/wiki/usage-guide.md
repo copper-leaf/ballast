@@ -251,11 +251,12 @@ class LoginScreenViewModel() : AndroidViewModel<
             this += LoggingInterceptor()
             logger = { AndroidBallastLogger(it) }
         }
-        .forViewModel(
+        .withViewModel(
             initialState = LoginScreenContract.State(),
             inputHandler = LoginScreenInputHandler(),
             name = "LoginScreen",
         )
+        .build()
 )
 
 // jsMain/ui/login/LoginScreenViewModel.kt
@@ -270,11 +271,12 @@ class LoginScreenViewModel(
             this += LoggingInterceptor()
             logger = { JsConsoleBallastLogger(it) }
         }
-        .forViewModel(
+        .withViewModel(
             initialState = LoginScreenContract.State(),
             inputHandler = LoginScreenInputHandler(),
             name = "LoginScreen",
-        ),
+        )
+        .build(),
     eventHandler = LoginScreenEventHandler(),
     coroutineScope = viewModelCoroutineScope,
 )
@@ -380,11 +382,12 @@ val platformModule = module {
     viewModel<LoginScreenViewModel> { 
         LoginScreenViewModel(
             config = get<BallastViewModelConfiguration.Builder>()
-                .forViewModel(
+                .withViewModel(
                     initialState = LoginScreenContract.State(),
                     inputHandler = get<LoginScreenInputHandler>(),
                     name = "LoginScreen",
-                ),
+                )
+                .build(),
         ) 
     }
 }
@@ -422,11 +425,12 @@ val platformModule = module {
     factory<LoginScreenViewModel> { (coroutineScope: CoroutineScope) ->
         LoginScreenViewModel(
             config = get<BallastViewModelConfiguration.Builder>()
-                .forViewModel(
+                .withViewModel(
                     initialState = LoginScreenContract.State(),
                     inputHandler = get<LoginScreenInputHandler>(),
                     name = "LoginScreen",
-                ),
+                )
+                .build(),
         ) 
     }
 }
