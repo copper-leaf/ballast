@@ -23,6 +23,7 @@ import com.copperleaf.ballast.examples.counter.CounterComponent
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkComponent
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperComponent
 import com.copperleaf.ballast.examples.sync.SyncComponent
+import com.copperleaf.ballast.examples.undo.UndoComponent
 import com.copperleaf.ballast.examples.util.Component
 import com.copperleaf.ballast.examples.util.ComposeDesktopInjector
 import com.copperleaf.ballast.examples.util.ComposeDesktopInjectorImpl
@@ -37,6 +38,7 @@ fun main() = singleWindowApplication {
         mapOf(
             "Counter" to { CounterComponent(it) },
             "Sync" to { SyncComponent(it) },
+            "Undo/Redo" to { UndoComponent(it) },
             "BoardGameGeek API" to { BggComponent(it) },
             "Kitchen Sink" to { KitchenSinkComponent(it) },
             "Scorekeeper" to { ScorekeeperComponent(it) },

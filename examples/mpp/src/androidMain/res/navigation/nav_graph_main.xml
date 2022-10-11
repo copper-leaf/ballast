@@ -13,15 +13,20 @@
             android:id="@+id/action_examplesListFragment_to_counterFragment"
             app:destination="@id/counterFragment"/>
         <action
+            android:id="@+id/action_examplesListFragment_to_syncFragment"
+            app:destination="@id/syncFragment"/>
+        <action
+            android:id="@+id/action_examplesListFragment_to_undoFragment"
+            app:destination="@id/undoFragment"/>
+        <action
             android:id="@+id/action_examplesListFragment_to_kitchenSinkFragment"
             app:destination="@id/kitchenSinkFragment"/>
         <action
-            android:id="@+id/action_examplesListFragment_to_bggFragment"
-            app:destination="@id/bggFragment"/>
-        <action
             android:id="@+id/action_examplesListFragment_to_scorekeeperFragment"
             app:destination="@id/scorekeeperFragment"/>
-        <action android:id="@+id/action_examplesListFragment_to_syncFragment" app:destination="@id/syncFragment"/>
+        <action
+            android:id="@+id/action_examplesListFragment_to_bggFragment"
+            app:destination="@id/bggFragment"/>
     </fragment>
 
     <fragment
@@ -33,16 +38,20 @@
         android:name="com.copperleaf.ballast.examples.sync.SyncFragment"
         android:label="SyncFragment"/>
     <fragment
+        android:id="@+id/undoFragment"
+        android:name="com.copperleaf.ballast.examples.undo.UndoFragment"
+        android:label="UndoFragment"/>
+    <fragment
         android:id="@+id/bggFragment"
         android:name="com.copperleaf.ballast.examples.bgg.BggFragment"
         android:label="BggFragment"/>
     <fragment
-        android:id="@+id/kitchenSinkFragment"
-        android:name="com.copperleaf.ballast.examples.kitchensink.KitchenSinkFragment"
-        android:label="KitchenSinkFragment"/>
-    <fragment
         android:id="@+id/scorekeeperFragment"
         android:name="com.copperleaf.ballast.examples.scorekeeper.ScorekeeperFragment"
         android:label="ScorekeeperFragment"/>
+    <fragment
+        android:id="@+id/kitchenSinkFragment"
+        android:name="com.copperleaf.ballast.examples.kitchensink.KitchenSinkFragment"
+        android:label="KitchenSinkFragment"/>
 
 </navigation>

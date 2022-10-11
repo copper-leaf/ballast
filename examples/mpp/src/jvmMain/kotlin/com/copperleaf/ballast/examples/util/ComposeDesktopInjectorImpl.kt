@@ -14,6 +14,8 @@ import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControl
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
 import com.copperleaf.ballast.sync.DefaultSyncConnection
+import com.copperleaf.ballast.examples.undo.UndoEventHandler
+import com.copperleaf.ballast.examples.undo.UndoViewModel
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.CoroutineScope
@@ -76,6 +78,16 @@ class ComposeDesktopInjectorImpl(
             viewModelCoroutineScope = coroutineScope,
             config = scorekeeperConfiguration(),
             eventHandler = ScorekeeperEventHandler { snackbarHostState.showSnackbar(it) },
+        )
+    }
+
+    override fun undoViewModel(
+        coroutineScope: CoroutineScope,
+    ): UndoViewModel {
+        return UndoViewModel(
+            viewModelCoroutineScope = coroutineScope,
+            config = undoConfiguration(),
+            eventHandler = UndoEventHandler(),
         )
     }
 }

@@ -222,6 +222,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         is Queued.HandleInput -> {
                             safelyHandleInput(queued.input, queued.deferred, guardian)
                         }
+
                         is Queued.RestoreState -> {
                             _state.value = queued.state
                             queued.deferred?.complete(Unit)
@@ -261,14 +262,19 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     hostViewModelName = host().name,
                     viewModelScope = viewModelScope +
                         uncaughtExceptionHandler +
-                        interceptorDispatcher,
+                        interceptorDispatcher +
+                        SupervisorJob(viewModelScope.coroutineContext.job),
                     sendQueuedToViewModel = {
                         _inputQueue.send(it)
                     }
                 )
 
                 with(interceptor) {
-                    interceptorScope.start(notificationFlow)
+                    try {
+                        interceptorScope.start(notificationFlow)
+                    } catch (e: Exception) {
+                        _notifications.tryEmit(BallastNotification.UnhandledError(host(), e))
+                    }
                 }
             }
 
@@ -281,6 +287,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 // when restoring state, always accept the item
                 return true
             }
+
             is Queued.HandleInput -> {
                 // when handling an Input, check with the InputFilter to see if it should be accepted
                 val currentState = _state.value

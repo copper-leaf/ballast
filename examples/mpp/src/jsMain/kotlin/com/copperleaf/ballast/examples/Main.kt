@@ -6,6 +6,7 @@ import com.copperleaf.ballast.examples.counter.CounterComponent
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkComponent
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperComponent
 import com.copperleaf.ballast.examples.sync.SyncComponent
+import com.copperleaf.ballast.examples.undo.UndoComponent
 import com.copperleaf.ballast.examples.util.Component
 import com.copperleaf.ballast.examples.util.ComposeWebInjector
 import com.copperleaf.ballast.examples.util.ComposeWebInjectorImpl
@@ -22,6 +23,7 @@ fun main() {
         "example_bgg" to { BggComponent(it) },
         "example_kitchen_sink" to { KitchenSinkComponent(it) },
         "example_scorekeeper" to { ScorekeeperComponent(it) },
+        "example_undo" to { UndoComponent(it) },
     )
 
     val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)

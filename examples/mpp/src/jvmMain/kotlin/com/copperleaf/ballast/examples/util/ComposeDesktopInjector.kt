@@ -8,6 +8,9 @@ import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
 import com.copperleaf.ballast.sync.DefaultSyncConnection
+import com.copperleaf.ballast.examples.undo.UndoContract
+import com.copperleaf.ballast.examples.undo.UndoViewModel
+import com.copperleaf.ballast.undo.UndoController
 import kotlinx.coroutines.CoroutineScope
 
 interface ComposeDesktopInjector {
@@ -34,4 +37,13 @@ interface ComposeDesktopInjector {
         coroutineScope: CoroutineScope,
         snackbarHostState: SnackbarHostState,
     ): ScorekeeperViewModel
+
+    public val undoController: UndoController<
+        UndoContract.Inputs,
+        UndoContract.Events,
+        UndoContract.State>
+
+    fun undoViewModel(
+        coroutineScope: CoroutineScope,
+    ): UndoViewModel
 }

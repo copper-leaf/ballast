@@ -25,6 +25,7 @@ class ExamplesListFragment : Fragment() {
 
                         ListItem(Modifier.clickable { navController.navigate(R.id.action_examplesListFragment_to_counterFragment) }) { Text("Counter") }
                         ListItem(Modifier.clickable { navController.navigate(R.id.action_examplesListFragment_to_syncFragment) }) { Text("Sync") }
+                        ListItem(Modifier.clickable { navController.navigate(R.id.action_examplesListFragment_to_undoFragment) }) { Text("Undo/Redo") }
                         ListItem(Modifier.clickable { navController.navigate(R.id.action_examplesListFragment_to_bggFragment) }) { Text("BGG") }
                         ListItem(Modifier.clickable { navController.navigate(R.id.action_examplesListFragment_to_scorekeeperFragment) }) { Text("Scorekeeper") }
                         ListItem(Modifier.clickable { navController.navigate(R.id.action_examplesListFragment_to_kitchenSinkFragment) }) { Text("Kitchen Sink") }

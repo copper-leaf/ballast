@@ -10,6 +10,7 @@ import com.copperleaf.ballast.examples.kitchensink.KitchenSinkEventHandler
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.examples.undo.UndoViewModel
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.okhttp.OkHttp
@@ -60,6 +61,12 @@ class AndroidInjectorImpl(
     override fun scorekeeperViewModel(): ScorekeeperViewModel {
         return ScorekeeperViewModel(
             scorekeeperConfiguration()
+        )
+    }
+
+    override fun undoViewModel(): UndoViewModel {
+        return UndoViewModel(
+            config = undoConfiguration(),
         )
     }
 }

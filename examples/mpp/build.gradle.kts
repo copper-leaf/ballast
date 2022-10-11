@@ -88,6 +88,7 @@ kotlin {
                 implementation(project(":ballast-saved-state"))
                 implementation(project(":ballast-debugger"))
                 implementation(project(":ballast-sync"))
+                implementation(project(":ballast-undo"))
 
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.logging)
@@ -103,6 +104,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                api(compose.materialIconsExtended)
             }
         }
 
