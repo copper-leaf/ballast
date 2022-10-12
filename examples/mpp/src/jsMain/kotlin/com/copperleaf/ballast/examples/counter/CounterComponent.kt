@@ -14,7 +14,7 @@ class CounterComponent(
     @Composable
     override fun Content() {
         val viewModelCoroutineScope = rememberCoroutineScope()
-        val vm = remember(viewModelCoroutineScope) { injector.counterViewModel(viewModelCoroutineScope) }
+        val vm = remember(viewModelCoroutineScope) { injector.counterViewModel(viewModelCoroutineScope, null) }
         val uiState by vm.observeStates().collectAsState()
 
         CounterWebUi.Content(uiState) { vm.trySend(it) }

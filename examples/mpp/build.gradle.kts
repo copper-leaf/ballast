@@ -76,6 +76,7 @@ kotlin {
         all {
             languageSettings.apply {
                 optIn("androidx.compose.material.ExperimentalMaterialApi")
+                optIn("com.copperleaf.ballast.ExperimentalBallastApi")
             }
         }
 
@@ -86,6 +87,7 @@ kotlin {
                 implementation(project(":ballast-repository"))
                 implementation(project(":ballast-saved-state"))
                 implementation(project(":ballast-debugger"))
+                implementation(project(":ballast-sync"))
 
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.logging)

@@ -21,16 +21,21 @@
         <action
             android:id="@+id/action_examplesListFragment_to_scorekeeperFragment"
             app:destination="@id/scorekeeperFragment"/>
+        <action android:id="@+id/action_examplesListFragment_to_syncFragment" app:destination="@id/syncFragment"/>
     </fragment>
 
-    <fragment
-        android:id="@+id/bggFragment"
-        android:name="com.copperleaf.ballast.examples.bgg.BggFragment"
-        android:label="BggFragment"/>
     <fragment
         android:id="@+id/counterFragment"
         android:name="com.copperleaf.ballast.examples.counter.CounterFragment"
         android:label="CounterFragment"/>
+    <fragment
+        android:id="@+id/syncFragment"
+        android:name="com.copperleaf.ballast.examples.sync.SyncFragment"
+        android:label="SyncFragment"/>
+    <fragment
+        android:id="@+id/bggFragment"
+        android:name="com.copperleaf.ballast.examples.bgg.BggFragment"
+        android:label="BggFragment"/>
     <fragment
         android:id="@+id/kitchenSinkFragment"
         android:name="com.copperleaf.ballast.examples.kitchensink.KitchenSinkFragment"

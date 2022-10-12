@@ -12,6 +12,7 @@ import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControl
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.sync.DefaultSyncConnection
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.js.Js
 import kotlinx.browser.window
@@ -48,10 +49,13 @@ class ComposeWebInjectorImpl(
         )
     }
 
-    override fun counterViewModel(coroutineScope: CoroutineScope): CounterViewModel {
+    override fun counterViewModel(
+        coroutineScope: CoroutineScope,
+        syncClientType: DefaultSyncConnection.ClientType?,
+    ): CounterViewModel {
         return CounterViewModel(
             viewModelCoroutineScope = coroutineScope,
-            config = counterConfiguration(null),
+            config = counterConfiguration(syncClientType, null),
             eventHandler = CounterEventHandler(),
         )
     }

@@ -10,6 +10,7 @@ import com.copperleaf.ballast.examples.kitchensink.KitchenSinkEventHandler
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.sync.DefaultSyncConnection
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.CoroutineScope
@@ -42,10 +43,11 @@ class AndroidInjectorImpl(
     }
 
     override fun counterViewModel(
-        savedStateHandle: SavedStateHandle
+        savedStateHandle: SavedStateHandle?,
+        syncClientType: DefaultSyncConnection.ClientType?,
     ): CounterViewModel {
         return CounterViewModel(
-            counterConfiguration(CounterSavedStateAdapter(savedStateHandle)),
+            counterConfiguration(syncClientType, savedStateHandle?.let { CounterSavedStateAdapter(it) }),
         )
     }
 

@@ -5,6 +5,7 @@ import com.copperleaf.ballast.examples.bgg.BggComponent
 import com.copperleaf.ballast.examples.counter.CounterComponent
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkComponent
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperComponent
+import com.copperleaf.ballast.examples.sync.SyncComponent
 import com.copperleaf.ballast.examples.util.Component
 import com.copperleaf.ballast.examples.util.ComposeWebInjector
 import com.copperleaf.ballast.examples.util.ComposeWebInjectorImpl
@@ -17,6 +18,7 @@ import org.jetbrains.compose.web.renderComposable
 fun main() {
     val components: Map<String, (ComposeWebInjector) -> Component> = mapOf(
         "example_counter" to { CounterComponent(it) },
+        "example_sync" to { SyncComponent(it) },
         "example_bgg" to { BggComponent(it) },
         "example_kitchen_sink" to { KitchenSinkComponent(it) },
         "example_scorekeeper" to { ScorekeeperComponent(it) },

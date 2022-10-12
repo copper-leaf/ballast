@@ -20,7 +20,7 @@ class BallastViewModelFactory(
     override fun <T : ViewModel> create(key: String, modelClass: Class<T>, handle: SavedStateHandle): T {
         return when(modelClass) {
             BggViewModel::class.java -> injector.bggViewModel() as T
-            CounterViewModel::class.java -> injector.counterViewModel(handle) as T
+            CounterViewModel::class.java -> injector.counterViewModel(handle, null) as T
             KitchenSinkControllerViewModel::class.java -> injector.kitchenSinkControllerViewModel() as T
             ScorekeeperViewModel::class.java -> injector.scorekeeperViewModel() as T
             else -> error("$modelClass not supported")
