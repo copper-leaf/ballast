@@ -22,6 +22,7 @@ import com.copperleaf.ballast.examples.bgg.BggComponent
 import com.copperleaf.ballast.examples.counter.CounterComponent
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkComponent
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperComponent
+import com.copperleaf.ballast.examples.sync.SyncComponent
 import com.copperleaf.ballast.examples.util.Component
 import com.copperleaf.ballast.examples.util.ComposeDesktopInjector
 import com.copperleaf.ballast.examples.util.ComposeDesktopInjectorImpl
@@ -35,6 +36,7 @@ fun main() = singleWindowApplication {
     val components: Map<String, (ComposeDesktopInjector) -> Component> = remember {
         mapOf(
             "Counter" to { CounterComponent(it) },
+            "Sync" to { SyncComponent(it) },
             "BoardGameGeek API" to { BggComponent(it) },
             "Kitchen Sink" to { KitchenSinkComponent(it) },
             "Scorekeeper" to { ScorekeeperComponent(it) },
@@ -44,7 +46,6 @@ fun main() = singleWindowApplication {
     val applicationScope = rememberCoroutineScope()
     val injector: ComposeDesktopInjector = remember(applicationScope) { ComposeDesktopInjectorImpl(applicationScope) }
     var focusedState: Component by remember { mutableStateOf(CounterComponent(injector)) }
-//    var focusedState: Component = CounterComponent(injector)
 
     HorizontalSplitPane(
         splitPaneState = rememberSplitPaneState(initialPositionPercentage = 0.30f)

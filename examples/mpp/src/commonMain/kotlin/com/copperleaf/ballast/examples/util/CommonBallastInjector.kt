@@ -26,6 +26,9 @@ import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.repository.bus.EventBusImpl
 import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
+import com.copperleaf.ballast.sync.BallastSyncInterceptor
+import com.copperleaf.ballast.sync.DefaultSyncConnection
+import com.copperleaf.ballast.sync.InMemorySyncAdapter
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -35,6 +38,9 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.onEach
+import kotlin.time.Duration.Companion.milliseconds
 
 abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
     private val applicationScope: CoroutineScope,
@@ -119,8 +125,14 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         )
         .build()
 
+    private val syncAdapter = InMemorySyncAdapter<
+        CounterContract.Inputs,
+        CounterContract.Events,
+        CounterContract.State>()
+
     protected fun counterConfiguration(
-        adapter: SavedStateAdapter<
+        syncClientType: DefaultSyncConnection.ClientType?,
+        savedStateAdapter: SavedStateAdapter<
             CounterContract.Inputs,
             CounterContract.Events,
             CounterContract.State>?,
@@ -129,8 +141,18 @@ abstract class CommonBallastInjector<out T : HttpClientEngineConfig>(
         CounterContract.Events,
         CounterContract.State> = commonBuilder()
         .apply {
-            if (adapter != null) {
-                this += BallastSavedStateInterceptor(adapter)
+            if (syncClientType != null) {
+                this += BallastSyncInterceptor(
+                    connection = DefaultSyncConnection(
+                        clientType = syncClientType,
+                        adapter = syncAdapter,
+                        bufferStates = { it.onEach { delay(500.milliseconds) } },
+                        bufferInputs = { it.onEach { delay(500.milliseconds) } },
+                    ),
+                )
+            }
+            if (savedStateAdapter != null) {
+                this += BallastSavedStateInterceptor(savedStateAdapter)
             }
         }
         .withViewModel(

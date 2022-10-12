@@ -6,6 +6,7 @@ import com.copperleaf.ballast.examples.counter.CounterViewModel
 import com.copperleaf.ballast.examples.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.kitchensink.controller.KitchenSinkControllerViewModel
 import com.copperleaf.ballast.examples.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.sync.DefaultSyncConnection
 import kotlinx.coroutines.CoroutineScope
 
 interface ComposeWebInjector {
@@ -21,6 +22,7 @@ interface ComposeWebInjector {
 
     fun counterViewModel(
         coroutineScope: CoroutineScope,
+        syncClientType: DefaultSyncConnection.ClientType?,
     ): CounterViewModel
 
     fun bggViewModel(
