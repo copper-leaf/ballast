@@ -245,6 +245,9 @@ public abstract interface class com/copperleaf/ballast/EventHandlerScope {
 	public abstract fun postInput (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public abstract interface annotation class com/copperleaf/ballast/ExperimentalBallastApi : java/lang/annotation/Annotation {
+}
+
 public abstract interface class com/copperleaf/ballast/FilteredInputHandler : com/copperleaf/ballast/InputFilter, com/copperleaf/ballast/InputHandler {
 }
 

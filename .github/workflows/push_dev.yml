@@ -1,0 +1,60 @@
+# On pushes to main, run tests on all supported platforms. If all tests pass, then publish release artifacts and
+# update Orchid documentation site.
+
+name: 'Push to `dev` (Check Dev Branches)'
+
+on:
+  push:
+    branches: ['dev']
+
+jobs:
+  testOnAll:
+    strategy:
+      matrix:
+        java: [11, 16]
+        os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
+    name: 'Test on ${{ matrix.os }} JDK ${{ matrix.java }}'
+    runs-on: '${{ matrix.os }}'
+    steps:
+      - uses: 'actions/checkout@v2'
+      - run: 'git fetch --prune --unshallow --tags'
+      - name: 'Set up JDK ${{ matrix.java }}'
+        uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: '${{ matrix.java }}'
+      - name: 'Run checks with Gradle'
+        run: './gradlew check --no-daemon --stacktrace'
+
+  publishArtifactsOnMacOs:
+    runs-on: 'macos-latest'
+    needs: ['testOnAll']
+    env:
+      GITHUB_ACTOR: '${{ github.actor }}'
+      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+      OSSRH_USERNAME: '${{ secrets.OSSRH_USERNAME }}'
+      OSSRH_PASSWORD: '${{ secrets.OSSRH_PASSWORD }}'
+      STAGING_PROFILE_ID: '${{ secrets.STAGING_PROFILE_ID }}'
+      SIGNING_KEY_ID: '${{ secrets.SIGNING_KEY_ID }}'
+      SIGNING_KEY: '${{ secrets.SIGNING_KEY }}'
+      SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
+      JB_SIGNING_KEY: '${{ secrets.JB_SIGNING_KEY }}'
+      JB_CHAIN: '${{ secrets.JB_CHAIN }}'
+      JB_PASSPHRASE: '${{ secrets.JB_PASSPHRASE }}'
+      JB_MARKETPLACE_TOKEN: '${{ secrets.JB_MARKETPLACE_TOKEN }}'
+    steps:
+      - uses: 'actions/checkout@v2'
+      - run: 'git fetch --prune --unshallow --tags'
+      - name: 'Set up JDK 11'
+        uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: 11
+      - name: 'Assemble Artifacts'
+        run: './gradlew build --stacktrace'
+      - name: 'Build IDEA Plugin'
+        run: './gradlew :ballast-idea-plugin:buildPlugin --stacktrace'
+      - name: 'Publish Artifacts to MavenCentral Snapshots Repository'
+        run: './gradlew publishAllPublicationsToMavenCentralSnapshotsRepository --stacktrace'
+      - name: 'Build example Compose Web site'
+        run: './gradlew :examples:mpp:build --stacktrace'
