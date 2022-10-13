@@ -209,6 +209,7 @@ public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelCo
     message = "BallastViewModelConfiguration.Builder extensions should not call `.build()` on themselves. Replace with .withViewModel().build()",
     replaceWith = ReplaceWith("this.withViewModel(initialState = initialState, inputHandler = inputHandler, filter = filter, name = name,).build()")
 )
+// to remove in 3.0.0
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
     initialState: State,
     inputHandler: InputHandler<Inputs, Events, State>,
@@ -252,6 +253,7 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
     message = "BallastViewModelConfiguration.Builder extensions should not call `.build()` on themselves. Replace with .withViewModel().build()",
     replaceWith = ReplaceWith("this.withViewModel(initialState = initialState, inputHandler = inputHandler, name = name,).build()")
 )
+// to remove in 3.0.0
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
     initialState: State,
     inputHandler: FilteredInputHandler<Inputs, Events, State>,

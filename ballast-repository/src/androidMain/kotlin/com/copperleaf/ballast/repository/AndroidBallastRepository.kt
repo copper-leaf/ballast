@@ -34,6 +34,7 @@ private constructor(
         message = "Use configBuilder.withRepository().build() instead.",
         replaceWith = ReplaceWith("AndroidBallastRepository<Inputs, State>(eventBus = eventBus, config = configBuilder.withRepository().build<Inputs, Any, State>())", "com.copperleaf.ballast.build")
     )
+    // to remove in 3.0.0
     public constructor(
         eventBus: EventBus,
         configBuilder: BallastViewModelConfiguration.Builder,

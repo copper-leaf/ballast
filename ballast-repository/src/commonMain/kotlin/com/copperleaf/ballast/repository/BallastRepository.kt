@@ -54,6 +54,7 @@ public abstract class BallastRepository<Inputs : Any, State : Any>(
         message = "Use configBuilder.withRepository().build() instead.",
         replaceWith = ReplaceWith("BallastRepository<Inputs, State>(coroutineScope = coroutineScope, eventBus = eventBus, config = configBuilder.withRepository().build<Inputs, Any, State>())", "com.copperleaf.ballast.build")
     )
+    // to remove in 3.0.0
     public constructor(
         coroutineScope: CoroutineScope,
         eventBus: EventBus,
