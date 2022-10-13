@@ -1,3 +1,11 @@
+## 2.2.0 - 2022-09-29
+
+- Adds new experimental `ballast-sync` module for synchronizing ViewModel states. Out-of-the-box only in-memory 
+  synchronization is supported, but it is possible to write your own network adapter.
+- Adds new experimental `ballast-undo` module for adding State-based undo/redo functionality to any ViewModel.
+- Fixed an issue where exceptions thrown by an Interceptor would crash the entire ViewModel without logging the 
+  exception. Now, those exceptions are caught and sent to the `BallastLogger` as a `BallastNotification.UnhandledError`.
+
 ## 2.1.0 - 2022-09-29
 
 - Restores the Debugger UI in the Ballast Intellij Plugin
