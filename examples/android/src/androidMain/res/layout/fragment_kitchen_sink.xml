@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Ballast.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Ballast.PopupOverlay"
+            app:title="Kitchen Sink"
+            app:subtitle="Ballast Examples"
+            app:menu="@menu/menu_kitchen_sink"
+            app:navigationIcon="?attr/homeAsUpIndicator"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="State"
+                android:gravity="center"
+                style="@style/TextAppearance.AppCompat.Headline"/>
+            <TextView
+                android:id="@+id/tv_completedInputs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Actions"
+                android:gravity="center"
+                tools:text="Completed Inputs: 0"/>
+            <TextView
+                android:id="@+id/tv_counter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Actions"
+                android:gravity="center"
+                tools:text="Counter: 0"/>
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Actions"
+                android:gravity="center"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Inputs"
+                android:gravity="center"
+                style="@style/TextAppearance.AppCompat.Subhead"/>
+            <Button
+                android:id="@+id/btn_LongRunningInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LongRunningInput"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_ErrorRunningInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ErrorRunningInput"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Events"
+                android:gravity="center"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_marginTop="20dp"/>
+            <Button
+                android:id="@+id/btn_LongRunningEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LongRunningEvent"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_ErrorRunningEvent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ErrorRunningEvent"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_CloseKitchenSinkWindow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CloseKitchenSinkWindow"
+                android:textAllCaps="false"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Side Jobs"
+                android:gravity="center"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_marginTop="20dp"/>
+            <Button
+                android:id="@+id/btn_LongRunningSideJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LongRunningSideJob"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_ErrorRunningSideJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ErrorRunningSideJob"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_InfiniteSideJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="InfiniteSideJob"
+                android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_CancelInfiniteSideJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CancelInfiniteSideJob"
+                android:textAllCaps="false"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,12 +1,12 @@
 package com.copperleaf.ballast
 
-import com.copperleaf.ballast.BallastNotification.InputAccepted
-import com.copperleaf.ballast.BallastNotification.InputHandledSuccessfully
-import com.copperleaf.ballast.BallastNotification.InputQueued
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 
@@ -288,9 +288,9 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
 
 /**
  * Used for keeping track of the state of discrete "subjects" within an Interceptor. For example, a single Input will
- * send Notifications for [InputQueued], [InputAccepted], and [InputHandledSuccessfully] during it's full processing
- * journey, but the `input` property of all 3 events will be the same instance, and should be associated to the same
- * value.
+ * send Notifications for [BallastNotification.InputQueued], [BallastNotification.InputAccepted], and
+ * [BallastNotification.InputHandledSuccessfully] during it's full processing journey, but the `input` property of all
+ * 3 events will be the same instance, and should be associated to the same value.
  *
  * This method will associate values for each Notification's subject (the Input, Event, or SideJob key) and store them
  * in the corresponding [cache] map. When [removeValue], values will be removed from the cache when they are completed.
@@ -321,11 +321,11 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
     }
 
     return when (this) {
-        is InputQueued -> {
+        is BallastNotification.InputQueued -> {
             addValueToCache(this.input)
         }
 
-        is InputAccepted -> {
+        is BallastNotification.InputAccepted -> {
             addValueToCache(this.input)
         }
 
@@ -337,7 +337,7 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
             removeValueFromCache(this.input)
         }
 
-        is InputHandledSuccessfully -> {
+        is BallastNotification.InputHandledSuccessfully -> {
             removeValueFromCache(this.input)
         }
 
@@ -411,4 +411,77 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
             removeValueFromCache(this.vm)
         }
     }
+}
+
+// Helpers for collecting values in interceptors
+// ---------------------------------------------------------------------------------------------------------------------
+
+/**
+ * Suspend until the ViewModel has started
+ */
+public suspend inline fun <Inputs : Any, Events : Any, State : Any> Flow<BallastNotification<Inputs, Events, State>>.awaitViewModelStart() {
+    filterIsInstance<BallastNotification.ViewModelStarted<Inputs, Events, State>>()
+        .first()
+}
+
+/**
+ * Return a `Flow` of Inputs that have been sent to the ViewModel. There is no assumption that any of these Inputs pass
+ * the [InputFilter] or have completed successfully. This should be used for synchronization or reporting on the status
+ * of Inputs, rather than performing some action as a result of an Input.
+ *
+ * The flow of Inputs can be buffered with [bufferInputs], which can be used to debounce, sample, etc. This buffering
+ * should generally be controlled by the end-user, so it should be passed into the Interceptor and forwarded to this
+ * function.
+ */
+public inline fun <Inputs : Any, Events : Any, State : Any> Flow<BallastNotification<Inputs, Events, State>>.queuedInputs(
+    bufferInputs: (Flow<Inputs>) -> Flow<Inputs>
+): Flow<Inputs> {
+    return filterIsInstance<BallastNotification.InputQueued<Inputs, Events, State>>()
+        .map { it.input }
+        .let { bufferInputs(it) }
+}
+
+/**
+ * Return a `Flow` of Inputs that have been sent to the ViewModel and accepted for processing.
+ *
+ * The flow of Inputs can be buffered with [bufferInputs], which can be used to debounce, sample, etc. This buffering
+ * should generally be controlled by the end-user, so it should be passed into the Interceptor and forwarded to this
+ * function.
+ */
+public inline fun <Inputs : Any, Events : Any, State : Any> Flow<BallastNotification<Inputs, Events, State>>.inputs(
+    bufferInputs: (Flow<Inputs>) -> Flow<Inputs>
+): Flow<Inputs> {
+    return filterIsInstance<BallastNotification.InputAccepted<Inputs, Events, State>>()
+        .map { it.input }
+        .let { bufferInputs(it) }
+}
+
+/**
+ * Return a `Flow` of Events that have been emitted by the processing of an Input.
+ *
+ * The flow of Events can be buffered with [bufferEvents], which can be used to debounce, sample, etc. This buffering
+ * should generally be controlled by the end-user, so it should be passed into the Interceptor and forwarded to this
+ * function.
+ */
+public inline fun <Inputs : Any, Events : Any, State : Any> Flow<BallastNotification<Inputs, Events, State>>.events(
+    bufferEvents: (Flow<Events>) -> Flow<Events>
+): Flow<Events> {
+    return filterIsInstance<BallastNotification.EventEmitted<Inputs, Events, State>>()
+        .map { it.event }
+        .let { bufferEvents(it) }
+}
+
+/**
+ * Return a `Flow` of the States updated by the VIewModel
+ *
+ * The flow of Events can be buffered with [bufferState], which can be used to debounce, sample, etc. This buffering
+ * should generally be controlled by the end-user, so it should be passed into the Interceptor and forwarded to this
+ * function.
+ */
+public inline fun <Inputs : Any, Events : Any, State : Any> Flow<BallastNotification<Inputs, Events, State>>.states(
+    bufferStates: (Flow<State>) -> Flow<State>
+): Flow<State> {
+    return filterIsInstance<BallastNotification.StateChanged<Inputs, Events, State>>()
+        .map { it.state }
+        .let { bufferStates(it) }
 }

@@ -4,10 +4,10 @@ import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.Queued
+import com.copperleaf.ballast.queuedInputs
+import com.copperleaf.ballast.states
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
@@ -62,9 +62,7 @@ public class DefaultSyncConnection<Inputs : Any, Events : Any, State : Any>(
                 },
                 launch(start = CoroutineStart.UNDISPATCHED) {
                     notifications
-                        .filterIsInstance<BallastNotification.StateChanged<Inputs, Events, State>>()
-                        .map { it.state }
-                        .let { bufferStates(it) }
+                        .states(bufferStates)
                         .collect { state ->
                             adapter.sendSynchronizedStateToReplicas(state)
                         }
@@ -88,9 +86,7 @@ public class DefaultSyncConnection<Inputs : Any, Events : Any, State : Any>(
         }
         launch(start = CoroutineStart.UNDISPATCHED) {
             notifications
-                .filterIsInstance<BallastNotification.InputQueued<Inputs, Events, State>>()
-                .map { it.input }
-                .let { bufferInputs(it) }
+                .queuedInputs(bufferInputs)
                 .collect { input ->
                     adapter.sendInputToSource(input)
                 }

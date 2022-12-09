@@ -4,10 +4,9 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
+import com.copperleaf.ballast.awaitViewModelStart
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 public class BootstrapInterceptor<Inputs : Any, Events : Any, State : Any>(
@@ -19,9 +18,7 @@ public class BootstrapInterceptor<Inputs : Any, Events : Any, State : Any>(
     ) {
         launch(start = CoroutineStart.UNDISPATCHED) {
             // wait for the BallastNotification.ViewModelStarted to be sent
-            notifications
-                .filterIsInstance<BallastNotification.ViewModelStarted<Inputs, Events, State>>()
-                .first()
+            notifications.awaitViewModelStart()
 
             // generate an Input
             val initialInput = getInitialInput()

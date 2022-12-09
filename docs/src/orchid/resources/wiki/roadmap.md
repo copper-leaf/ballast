@@ -12,16 +12,22 @@ an actual hard commitment to being developed. If you see an idea on this like yo
 yourself! I will gladly accept any contribution as a PR, or if you would rather develop the feature in a separate repo
 I will happily link to that repo from the Ballast documentation.
 
-- [Synchrony Module][#2]: Synchronize the VM state between multiple clients over a network connection, for building
-  realtime multi-user applications
 - [Finite State Machine DSL][#7]: Ballast is basically an FSM already, and it would be nice to build a dedicated DSL
   like [Tinder/StateMachine][a] on top of Ballast so it could be used on any Kotlin target
-- [Undo/redo functionality][#10]: An undo/redo controller that tracks "frames" for when Inputs are processed, and move
-  forward/backward through those frames to restore the ViewModel to that point in time 
+- [Refactor Repository module][#31]: The Repository Module has some good ideas about how to use the MVI for managing the 
+  repository an other layers of your application, extending the MVI pattern beyond just the UI. But the current 
+  implementation needs to be refined and streamlined.
+- [Refactor test module][#31]: The Test module currently uses some pretty hacky implementation details to run the tests
+  and gather the results correctly, but it should be possible to collect all the data needed and handle all interactions
+  just with an Interceptor, which would be much easier to maintain. 
+- [Update IntelliJ Plugin UI][#12]: Currently, the debugger panel in the IntelliJ Plugin uses Material Compose UI, whose 
+  UI elements are too big and just look out of place in the IDE. It would be nice to rewrite the UI using something like 
+  the [Compose Jetbrains Theme][c] (and maybe add some additional features in the process).
 
-[#2]: https://github.com/copper-leaf/ballast/issues/2
-[#3]: https://github.com/copper-leaf/ballast/issues/3
 [#7]: https://github.com/copper-leaf/ballast/issues/7
-[#10]: https://github.com/copper-leaf/ballast/issues/10
 [a]: https://github.com/Tinder/StateMachine
 [b]: https://github.com/Kotlin/binary-compatibility-validator
+[#31]: https://github.com/copper-leaf/ballast/issues/31
+[#12]: https://github.com/copper-leaf/ballast/issues/12
+[#6]: https://github.com/copper-leaf/ballast/issues/6
+[c]: https://github.com/DevSrSouza/compose-jetbrains-theme

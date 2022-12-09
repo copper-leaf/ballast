@@ -10,7 +10,7 @@ import com.copperleaf.ballast.BallastLogger
  */
 public class PrintlnLogger(private val tag: String? = null) : BallastLogger {
     override fun debug(message: String) {
-        if(tag != null) {
+        if (tag != null) {
             println("[$tag] $message")
         } else {
             println(message)
@@ -18,7 +18,7 @@ public class PrintlnLogger(private val tag: String? = null) : BallastLogger {
     }
 
     override fun info(message: String) {
-        if(tag != null) {
+        if (tag != null) {
             println("[$tag] $message")
         } else {
             println(message)

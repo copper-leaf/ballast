@@ -21,6 +21,6 @@ jobs:
           distribution: 'temurin'
           java-version: 11
       - name: 'Build example Compose Web site'
-        run: './gradlew :examples:mpp:build --stacktrace -PreleaseDocs -PorchidEnvironment=prod'
+        run: './gradlew :examples:web:build --stacktrace -PreleaseDocs -PorchidEnvironment=prod'
       - name: 'Publish Documentation'
         run: './gradlew :docs:publish --stacktrace -PreleaseDocs -PorchidEnvironment=prod'

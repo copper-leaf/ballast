@@ -1,6 +1,6 @@
 ---
 extraJs:
-  - 'assets/example/distributions/mpp.js'
+  - 'assets/example/distributions/web.js'
 ---
 
 # {{ page.title }}

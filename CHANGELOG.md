@@ -1,3 +1,17 @@
+## 2.3.0 - 2022-11-28
+
+- Adds new experimental `ballast-navigation` module for handling URL-based routing
+- Breaks examples into their own projects, to focus on Ballast itself instead of bogging it down with the overhead of
+  multiplatform architecture.
+  - [examples/android](https://github.com/copper-leaf/ballast/tree/main/examples/android) uses Ballast purely within the 
+    older MVC-style Views, showing how the MVI pattern is not limited to Compose or declarative UI toolkits
+  - [examples/desktop](https://github.com/copper-leaf/ballast/tree/main/examples/desktop) uses Ballast in a Compose 
+    Desktop application with Material UI. Most of what's in here could be directly translated into Android Compose with 
+    Material UI
+  - [examples/web](https://github.com/copper-leaf/ballast/tree/main/examples/web) uses Ballast in a Compose/Web (DOM)
+    application. In particular, it uses the hash-based Router interceptor, and is what is embedded into the 
+    documentation site
+
 ## 2.2.0 - 2022-09-29
 
 - Adds new experimental `ballast-sync` module for synchronizing ViewModel states. Out-of-the-box only in-memory 
@@ -27,7 +41,7 @@
 **New/Updated Features**
 - Adds `BootstrapInterceptor` for sending an Input when the ViewModel is created, instead of making the UI send the
   initial Input
-- `InputStrategy` is now typed with the same type paramters as everything else in the `DefaultViewModelConfiguration`
+- `InputStrategy` is now typed with the same type parameters as everything else in the `DefaultViewModelConfiguration`
 - Some configuration DSL methods are deprecated:
   - `builder.forViewModel()` should be replaced with `builder.withViewModel().build()`
   - `BallastRepository` now takes `BallastViewModelConfiguration` in its primary constructor instead of

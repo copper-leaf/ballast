@@ -3,7 +3,10 @@
 
 # {{ page.title }}
 
-- {{ 'Simple Counter' | anchor }}
+- {{ 'Counter' | anchor }}
 - {{ 'Scorekeeper' | anchor }}
-- {{ 'API Call and Cache' | anchor }}
+- {{ 'Sync' | anchor }}
+- {{ 'Undo/Redo' | anchor }}
+- {{ 'API Call & Cache' | anchor }}
 - {{ 'Kitchen Sink' | anchor }}
+- {{ 'Navigation' | anchor }}

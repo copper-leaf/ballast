@@ -1,5 +1,5 @@
 plugins {
-    id("com.eden.orchidPlugin") version "0.21.1"
+    id("com.eden.orchidPlugin")
     `copper-leaf-base`
     `copper-leaf-version`
     `copper-leaf-lint`
@@ -40,7 +40,7 @@ orchidBuild.mustRunAfter(check)
 build.dependsOn(orchidBuild)
 
 val copyExampleComposeWebSources by tasks.registering(Copy::class) {
-    from(project.rootDir.resolve("examples/mpp/build/distributions"))
+    from(project.rootDir.resolve("examples/web/build/distributions"))
     into(project.projectDir.resolve("src/orchid/resources/assets/example/distributions"))
 }
 orchidServe.dependsOn(copyExampleComposeWebSources)

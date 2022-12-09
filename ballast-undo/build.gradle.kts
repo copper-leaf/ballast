@@ -11,6 +11,12 @@ description = "Opinionated Application State Management framework for Kotlin Mul
 
 kotlin {
     sourceSets {
+        all {
+            languageSettings.apply {
+                optIn("kotlinx.coroutines.FlowPreview")
+            }
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-core"))
