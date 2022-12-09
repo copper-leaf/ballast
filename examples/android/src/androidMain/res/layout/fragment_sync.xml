@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.Ballast.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/Theme.Ballast.PopupOverlay"
+            app:title="Sync"
+            app:subtitle="Ballast Examples"
+            app:navigationIcon="?attr/homeAsUpIndicator"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Source"
+                android:gravity="center"
+                style="@style/TextAppearance.AppCompat.Headline"/>
+
+            <include android:id="@+id/source" layout="@layout/include_counter"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Replicas"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                style="@style/TextAppearance.AppCompat.Headline"/>
+
+            <include android:id="@+id/replica1" layout="@layout/include_counter"/>
+            <include android:id="@+id/replica2" layout="@layout/include_counter"/>
+            <include android:id="@+id/replica3" layout="@layout/include_counter"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Spectators"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                style="@style/TextAppearance.AppCompat.Headline"/>
+
+            <include android:id="@+id/spectator1" layout="@layout/include_counter"/>
+            <include android:id="@+id/spectator2" layout="@layout/include_counter"/>
+            <include android:id="@+id/spectator3" layout="@layout/include_counter"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

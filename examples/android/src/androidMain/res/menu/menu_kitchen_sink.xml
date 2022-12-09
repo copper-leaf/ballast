@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/lifo"
+        android:title="LIFO"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/fifo"
+        android:title="FIFO"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/parallel"
+        android:title="Parallel"
+        app:showAsAction="never" />
+</menu>

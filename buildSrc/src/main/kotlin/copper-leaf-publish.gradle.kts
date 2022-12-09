@@ -84,3 +84,11 @@ signing {
     )
     sign(publishing.publications)
 }
+
+tasks.withType<Sign> {
+    val signingTask = this
+    tasks.withType<AbstractPublishToMaven> {
+        val publishTask = this
+        publishTask.dependsOn(signingTask)
+    }
+}

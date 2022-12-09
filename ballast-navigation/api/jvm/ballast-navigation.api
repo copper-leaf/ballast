@@ -1,0 +1,641 @@
+public abstract interface class com/copperleaf/ballast/navigation/routing/BackstackNavigator {
+	public abstract fun getBackstack ()Ljava/util/List;
+	public abstract fun matchDestination (Ljava/lang/String;Ljava/util/Set;)Lcom/copperleaf/ballast/navigation/routing/Destination;
+	public abstract fun updateBackstack (Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/copperleaf/ballast/navigation/routing/BackstackNavigator$DefaultImpls {
+	public static synthetic fun matchDestination$default (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/Destination;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/Destination {
+	public abstract fun getOriginalDestinationUrl ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/Destination$Directions : com/copperleaf/ballast/navigation/routing/Destination$Parameters {
+	public fun <init> (Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun copy (Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getPathParameters ()Ljava/util/Map;
+	public fun getQueryParameters ()Ljava/util/Map;
+	public final fun getRoute ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/Destination$Match : com/copperleaf/ballast/navigation/routing/Destination, com/copperleaf/ballast/navigation/routing/Destination$Parameters, com/copperleaf/ballast/navigation/routing/Destination$ParametersProvider {
+	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Ljava/util/Map;
+	public final fun component5 ()Ljava/util/Set;
+	public final fun copy (Ljava/lang/String;Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/Destination$Match;Ljava/lang/String;Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnnotations ()Ljava/util/Set;
+	public fun getOriginalDestinationUrl ()Ljava/lang/String;
+	public final fun getOriginalRoute ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public fun getParameters ()Lcom/copperleaf/ballast/navigation/routing/Destination$Parameters;
+	public fun getPathParameters ()Ljava/util/Map;
+	public fun getQueryParameters ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/Destination$Mismatch : com/copperleaf/ballast/navigation/routing/Destination {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Destination$Mismatch;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/Destination$Mismatch;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/Destination$Mismatch;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getOriginalDestinationUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/Destination$Parameters {
+	public abstract fun getPathParameters ()Ljava/util/Map;
+	public abstract fun getQueryParameters ()Ljava/util/Map;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/Destination$ParametersProvider {
+	public abstract fun getParameters ()Lcom/copperleaf/ballast/navigation/routing/Destination$Parameters;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/Floating : com/copperleaf/ballast/navigation/routing/RouteAnnotation {
+	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/Floating;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/PathSegment {
+	public abstract fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;
+	public abstract fun getMustBeAtEnd ()Z
+	public abstract fun getParamName ()Ljava/lang/String;
+	public abstract fun getWeight ()I
+	public abstract fun isStatic ()Z
+	public abstract fun matchInDestination (Ljava/util/List;I)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$Directions {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConsumedParameterName ()Ljava/lang/String;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getToAppend ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/PathSegment$MatchResult {
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$AddParam : com/copperleaf/ballast/navigation/routing/PathSegment$MatchResult {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$AddParam;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$AddParam;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$AddParam;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getValues ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$Match : com/copperleaf/ballast/navigation/routing/PathSegment$MatchResult {
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$Match;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$Match;IILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$Match;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNumberOfMatchedSegments ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$Mismatch : com/copperleaf/ballast/navigation/routing/PathSegment$MatchResult {
+	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult$Mismatch;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$Parameter : com/copperleaf/ballast/navigation/routing/PathSegment {
+	public fun <init> (Ljava/lang/String;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Z
+	public final fun copy (Ljava/lang/String;Z)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Parameter;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/PathSegment$Parameter;Ljava/lang/String;ZILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Parameter;
+	public fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMustBeAtEnd ()Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOptional ()Z
+	public fun getParamName ()Ljava/lang/String;
+	public fun getWeight ()I
+	public fun hashCode ()I
+	public fun isStatic ()Z
+	public fun matchInDestination (Ljava/util/List;I)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$Static : com/copperleaf/ballast/navigation/routing/PathSegment {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Static;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/PathSegment$Static;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Static;
+	public fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMustBeAtEnd ()Z
+	public fun getParamName ()Ljava/lang/String;
+	public final fun getText ()Ljava/lang/String;
+	public fun getWeight ()I
+	public fun hashCode ()I
+	public fun isStatic ()Z
+	public fun matchInDestination (Ljava/util/List;I)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$Tailcard : com/copperleaf/ballast/navigation/routing/PathSegment {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Tailcard;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/PathSegment$Tailcard;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Tailcard;
+	public fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMustBeAtEnd ()Z
+	public final fun getName ()Ljava/lang/String;
+	public fun getParamName ()Ljava/lang/String;
+	public fun getWeight ()I
+	public fun hashCode ()I
+	public fun isStatic ()Z
+	public fun matchInDestination (Ljava/util/List;I)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/PathSegment$Wildcard : com/copperleaf/ballast/navigation/routing/PathSegment {
+	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/PathSegment$Wildcard;
+	public fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/PathSegment$Directions;
+	public fun getMustBeAtEnd ()Z
+	public fun getParamName ()Ljava/lang/String;
+	public fun getWeight ()I
+	public fun isStatic ()Z
+	public fun matchInDestination (Ljava/util/List;I)Lcom/copperleaf/ballast/navigation/routing/PathSegment$MatchResult;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/QueryParameter {
+	public abstract fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Directions;
+	public abstract fun getMustBeAtEnd ()Z
+	public abstract fun getParamName ()Ljava/lang/String;
+	public abstract fun getWeight ()I
+	public abstract fun isStatic ()Z
+	public abstract fun matchInDestination (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/QueryParameter$Directions {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;Ljava/util/Set;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/Map;Ljava/util/Set;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/util/Map;Ljava/util/Set;Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Directions;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Directions;Ljava/util/Map;Ljava/util/Set;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConsumedParameterNames ()Ljava/util/Set;
+	public final fun getError ()Ljava/lang/String;
+	public final fun getToAppend ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult {
+}
+
+public final class com/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$AddParams : com/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult {
+	public fun <init> (Ljava/util/Map;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$AddParams;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$AddParams;Ljava/util/Map;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$AddParams;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQueryParameters ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$Match : com/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$Match;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$Match;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$Match;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$Mismatch : com/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult {
+	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult$Mismatch;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/QueryParameter$Parameter : com/copperleaf/ballast/navigation/routing/QueryParameter {
+	public fun <init> (Ljava/lang/String;ZZ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun copy (Ljava/lang/String;ZZ)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Parameter;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Parameter;Ljava/lang/String;ZZILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Parameter;
+	public fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAllowMultiple ()Z
+	public fun getMustBeAtEnd ()Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getOptional ()Z
+	public fun getParamName ()Ljava/lang/String;
+	public fun getWeight ()I
+	public fun hashCode ()I
+	public fun isStatic ()Z
+	public fun matchInDestination (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/QueryParameter$Remainder : com/copperleaf/ballast/navigation/routing/QueryParameter {
+	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Remainder;
+	public fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Directions;
+	public fun getMustBeAtEnd ()Z
+	public fun getParamName ()Ljava/lang/String;
+	public fun getWeight ()I
+	public fun isStatic ()Z
+	public fun matchInDestination (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/QueryParameter$Static : com/copperleaf/ballast/navigation/routing/QueryParameter {
+	public fun <init> (Ljava/lang/String;Ljava/util/List;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Static;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Static;Ljava/lang/String;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Static;
+	public fun directions (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$Directions;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getMustBeAtEnd ()Z
+	public final fun getName ()Ljava/lang/String;
+	public fun getParamName ()Ljava/lang/String;
+	public final fun getValues ()Ljava/util/List;
+	public fun getWeight ()I
+	public fun hashCode ()I
+	public fun isStatic ()Z
+	public fun matchInDestination (Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/QueryParameter$MatchResult;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/Route {
+	public abstract fun getAnnotations ()Ljava/util/Set;
+	public abstract fun getMatcher ()Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/RouteAnnotation {
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/RouteMatcher {
+	public static final field Companion Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$Companion;
+	public abstract fun getPath ()Ljava/util/List;
+	public abstract fun getQuery ()Ljava/util/List;
+	public abstract fun getRouteFormat ()Ljava/lang/String;
+	public abstract fun getWeight ()D
+	public abstract fun match (Lcom/copperleaf/ballast/navigation/routing/Route;Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouteMatcher$Companion {
+	public final fun create (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;
+	public static synthetic fun create$default (Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$Companion;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult {
+	public abstract fun getOriginalRoute ()Lcom/copperleaf/ballast/navigation/routing/Route;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$CompleteMatch : com/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult {
+	public fun <init> (Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun copy (Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$CompleteMatch;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$CompleteMatch;Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;Ljava/util/Map;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$CompleteMatch;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getOriginalRoute ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public final fun getParsedPathParameters ()Ljava/util/Map;
+	public final fun getParsedQueryParameters ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$NoMatch : com/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult {
+	public fun <init> (Lcom/copperleaf/ballast/navigation/routing/Route;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public final fun copy (Lcom/copperleaf/ballast/navigation/routing/Route;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$NoMatch;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$NoMatch;Lcom/copperleaf/ballast/navigation/routing/Route;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$NoMatch;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getOriginalRoute ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$PartialMatch : com/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult {
+	public fun <init> (Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$PartialMatch;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$PartialMatch;Lcom/copperleaf/ballast/navigation/routing/Route;Ljava/util/Map;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$PartialMatch;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getOriginalRoute ()Lcom/copperleaf/ballast/navigation/routing/Route;
+	public final fun getParsedPathParameters ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract {
+	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/RouterContract;
+}
+
+public abstract class com/copperleaf/ballast/navigation/routing/RouterContract$Events {
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Events$BackstackChanged : com/copperleaf/ballast/navigation/routing/RouterContract$Events {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Events$BackstackChanged;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouterContract$Events$BackstackChanged;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Events$BackstackChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBackstack ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Events$BackstackEmptied : com/copperleaf/ballast/navigation/routing/RouterContract$Events {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Events$NoChange : com/copperleaf/ballast/navigation/routing/RouterContract$Events {
+	public fun <init> ()V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> ()V
+	public abstract fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$GoBack : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> ()V
+	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$GoToDestination : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> (Ljava/lang/String;Ljava/util/Set;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun copy (Ljava/lang/String;Ljava/util/Set;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$GoToDestination;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$GoToDestination;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$GoToDestination;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestination ()Ljava/lang/String;
+	public final fun getExtraAnnotations ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$ReplaceTopDestination : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> (Ljava/lang/String;Ljava/util/Set;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/util/Set;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/Set;
+	public final fun copy (Ljava/lang/String;Ljava/util/Set;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$ReplaceTopDestination;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$ReplaceTopDestination;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$ReplaceTopDestination;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestination ()Ljava/lang/String;
+	public final fun getExtraAnnotations ()Ljava/util/Set;
+	public fun hashCode ()I
+	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$RestoreBackstack : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$RestoreBackstack;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$RestoreBackstack;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs$RestoreBackstack;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestinations ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$State : java/util/List, kotlin/jvm/internal/markers/KMappedMarker {
+	public fun <init> (Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Ljava/util/List;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun add (ILcom/copperleaf/ballast/navigation/routing/Destination;)V
+	public synthetic fun add (ILjava/lang/Object;)V
+	public fun add (Lcom/copperleaf/ballast/navigation/routing/Destination;)Z
+	public synthetic fun add (Ljava/lang/Object;)Z
+	public fun addAll (ILjava/util/Collection;)Z
+	public fun addAll (Ljava/util/Collection;)Z
+	public fun clear ()V
+	public final fun component1 ()Lcom/copperleaf/ballast/navigation/routing/RoutingTable;
+	public final fun component2 ()Ljava/util/List;
+	public fun contains (Lcom/copperleaf/ballast/navigation/routing/Destination;)Z
+	public final fun contains (Ljava/lang/Object;)Z
+	public fun containsAll (Ljava/util/Collection;)Z
+	public final fun copy (Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/RouterContract$State;Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/RouterContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun get (I)Lcom/copperleaf/ballast/navigation/routing/Destination;
+	public synthetic fun get (I)Ljava/lang/Object;
+	public final fun getBackstack ()Ljava/util/List;
+	public final fun getRoutingTable ()Lcom/copperleaf/ballast/navigation/routing/RoutingTable;
+	public fun getSize ()I
+	public fun hashCode ()I
+	public fun indexOf (Lcom/copperleaf/ballast/navigation/routing/Destination;)I
+	public final fun indexOf (Ljava/lang/Object;)I
+	public fun isEmpty ()Z
+	public fun iterator ()Ljava/util/Iterator;
+	public fun lastIndexOf (Lcom/copperleaf/ballast/navigation/routing/Destination;)I
+	public final fun lastIndexOf (Ljava/lang/Object;)I
+	public fun listIterator ()Ljava/util/ListIterator;
+	public fun listIterator (I)Ljava/util/ListIterator;
+	public fun remove (I)Lcom/copperleaf/ballast/navigation/routing/Destination;
+	public synthetic fun remove (I)Ljava/lang/Object;
+	public fun remove (Ljava/lang/Object;)Z
+	public fun removeAll (Ljava/util/Collection;)Z
+	public fun replaceAll (Ljava/util/function/UnaryOperator;)V
+	public fun retainAll (Ljava/util/Collection;)Z
+	public fun set (ILcom/copperleaf/ballast/navigation/routing/Destination;)Lcom/copperleaf/ballast/navigation/routing/Destination;
+	public synthetic fun set (ILjava/lang/Object;)Ljava/lang/Object;
+	public final fun size ()I
+	public fun sort (Ljava/util/Comparator;)V
+	public fun subList (II)Ljava/util/List;
+	public fun toArray ()[Ljava/lang/Object;
+	public fun toArray ([Ljava/lang/Object;)[Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/navigation/routing/RoutingTable {
+	public static final field Companion Lcom/copperleaf/ballast/navigation/routing/RoutingTable$Companion;
+	public abstract fun findMatch (Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;)Lcom/copperleaf/ballast/navigation/routing/Destination;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RoutingTable$Companion {
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RoutingUtilsKt {
+	public static final fun addToTop (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;Ljava/lang/String;Ljava/util/Set;)V
+	public static final fun asMatchedDestination (Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;Lcom/copperleaf/ballast/navigation/routing/RouteMatcher$MatchResult$CompleteMatch;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public static final fun asMismatchedDestination (Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;)Lcom/copperleaf/ballast/navigation/routing/Destination$Mismatch;
+	public static final fun booleanPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun booleanPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun booleanQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun booleanQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun build (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;)Ljava/lang/String;
+	public static final fun directions (Lcom/copperleaf/ballast/navigation/routing/Route;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun doublePath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun doublePath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun doubleQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun doubleQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun enumPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun enumPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun enumQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun enumQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun floatPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun floatPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun floatQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun floatQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun fromEnum (Lcom/copperleaf/ballast/navigation/routing/RoutingTable$Companion;[Ljava/lang/Enum;)Lcom/copperleaf/ballast/navigation/routing/RoutingTable;
+	public static final fun getCurrentDestinationOrNotFound (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Destination;
+	public static final fun getCurrentDestinationOrNull (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public static final fun getCurrentDestinationOrThrow (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public static final fun getCurrentRouteOrNull (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Route;
+	public static final fun getCurrentRouteOrThrow (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Route;
+	public static final fun getTopDestinationWithoutAnnotation (Lcom/copperleaf/ballast/navigation/routing/RouterContract$State;Lcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public static final fun getTopDestinationsWithAnnotation (Ljava/util/List;Lcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)Ljava/util/List;
+	public static final fun goBack (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public static final fun intPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun intPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun intQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun intQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun isStatic (Lcom/copperleaf/ballast/navigation/routing/Route;)Z
+	public static final fun longPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun longPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun longQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun longQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun mapCurrentDestination (Ljava/util/List;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static final fun matchDestination (Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;Lcom/copperleaf/ballast/navigation/routing/Route;Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;)Lcom/copperleaf/ballast/navigation/routing/Destination;
+	public static final fun matchDestinationOrNull (Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;Lcom/copperleaf/ballast/navigation/routing/Route;Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public static final fun matchDestinationOrThrow (Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;Lcom/copperleaf/ballast/navigation/routing/Route;Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
+	public static final fun optionalBooleanPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalBooleanPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalBooleanQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalBooleanQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalDoublePath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalDoublePath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalDoubleQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalDoubleQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalEnumPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalEnumPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalEnumQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalEnumQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lkotlin/jvm/functions/Function1;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalFloatPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalFloatPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalFloatQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalFloatQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalIntPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalIntPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalIntQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalIntQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalLongPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalLongPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalLongQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalLongQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalStringPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalStringPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun optionalStringQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun optionalStringQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun path (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;[Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun pathParameter (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/lang/String;Ljava/lang/Iterable;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun pathParameter (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/lang/String;[Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun pathParameters (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun popAllWithAnnotation (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;Lcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)V
+	public static final fun provideLazyPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun provideLazyQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun provideOptionalLazyPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun provideOptionalLazyQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun queryParameter (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/lang/String;Ljava/lang/Iterable;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun queryParameter (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/lang/String;[Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun queryParameters (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun renderCurrentDestination (Ljava/util/List;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;)V
+	public static final fun stringPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun stringPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun stringQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
+	public static synthetic fun stringQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/Tag : com/copperleaf/ballast/navigation/routing/RouteAnnotation {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Tag;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/Tag;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/Tag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/UnmatchedDestination {
+	public static final field Companion Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination$Companion;
+	public fun <init> (Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/util/Set;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/Map;
+	public final fun component4 ()Ljava/util/Set;
+	public final fun copy (Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/util/Set;)Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;Ljava/lang/String;Ljava/util/List;Ljava/util/Map;Ljava/util/Set;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExtraAnnotations ()Ljava/util/Set;
+	public final fun getMatchablePathSegments ()Ljava/util/List;
+	public final fun getMatchableQueryParameters ()Ljava/util/Map;
+	public final fun getOriginalDestinationUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/UnmatchedDestination$Companion {
+	public final fun parse (Ljava/lang/String;Ljava/util/Set;)Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;
+	public static synthetic fun parse$default (Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination$Companion;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/UnmatchedDestination;
+}
+
+public final class com/copperleaf/ballast/navigation/vm/BallastUtilsKt {
+	public static final fun withRouter (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+}
+
+public final class com/copperleaf/ballast/navigation/vm/RouterInputHandlerImpl : com/copperleaf/ballast/InputHandler {
+	public fun <init> ()V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/navigation/routing/RouterContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

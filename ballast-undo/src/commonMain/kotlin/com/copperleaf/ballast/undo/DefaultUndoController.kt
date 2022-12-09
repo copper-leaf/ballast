@@ -2,12 +2,12 @@ package com.copperleaf.ballast.undo
 
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.ExperimentalBallastApi
+import com.copperleaf.ballast.states
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -80,9 +80,7 @@ public class DefaultUndoController<Inputs : Any, Events : Any, State : Any>(
     ): Job {
         return launch(start = CoroutineStart.UNDISPATCHED) {
             notifications
-                .filterIsInstance<BallastNotification.StateChanged<Inputs, Events, State>>()
-                .map { it.state }
-                .let { bufferStates(it) }
+                .states(bufferStates)
                 .onEach { newFrame ->
                     undoState.updateAndGet { oldState ->
                         if (newFrame !in oldState.frames) {

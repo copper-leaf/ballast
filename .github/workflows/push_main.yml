@@ -10,6 +10,7 @@ on:
 jobs:
   testOnAll:
     strategy:
+      fail-fast: false
       matrix:
         java: [11, 16]
         os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
@@ -59,7 +60,7 @@ jobs:
       - name: 'Publish Artifacts'
         run: './gradlew publishAllPublicationsToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Build example Compose Web site'
-        run: './gradlew :examples:mpp:build --stacktrace -Prelease -PorchidEnvironment=prod'
+        run: './gradlew :examples:web:build --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Publish Documentation'
         run: './gradlew :docs:publish --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Close Sonatype Staging Repository'

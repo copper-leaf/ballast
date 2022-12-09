@@ -6,7 +6,6 @@ datetime = "0.4.0"
 ktor = "2.1.0"
 
 androidxLifecycle = "2.5.1"
-androidxNavigation = "2.4.1"
 
 multiplatformSettings = "0.9"
 uuid = "0.5.0"
@@ -36,17 +35,15 @@ ktor-client-websockets = { module = "io.ktor:ktor-client-websockets", version.re
 ktor-client-serialization = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
+ktor-http-utils = { module = "io.ktor:ktor-http", version.ref = "ktor" }
+
 androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
-androidx-core = { module = "androidx.core:core-ktx", version = "1.7.0" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.4.1" }
-androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.4.1" }
-androidx-material = { module = "com.google.android.material:material", version = "1.5.0" }
-androidx-compose-activity = { module = "androidx.activity:activity-compose", version = "1.4.0" }
-androidx-navigation = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "androidxNavigation" }
-androidx-navigation-ui = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "androidxNavigation" }
-androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
+androidx-core = { module = "androidx.core:core-ktx", version = "1.9.0" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.5.1" }
+androidx-fragment = { module = "androidx.fragment:fragment-ktx", version = "1.5.4" }
+androidx-material = { module = "com.google.android.material:material", version = "1.7.0" }
 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version = "29.0.0" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
@@ -58,3 +55,5 @@ multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-n
 benasher44-uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+kudzu-core = { module = "io.github.copper-leaf:kudzu-core", version = "4.0.0" }
+coil = { module = "io.coil-kt:coil", version = "1.1.1" }

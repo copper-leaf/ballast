@@ -10,6 +10,7 @@ on:
 jobs:
   testOnAll:
     strategy:
+      fail-fast: false
       matrix:
         java: [11, 16]
         os: ['ubuntu-latest', 'macos-latest', 'windows-latest']
@@ -55,4 +56,4 @@ jobs:
       - name: 'Build IDEA Plugin'
         run: './gradlew :ballast-idea-plugin:buildPlugin --stacktrace'
       - name: 'Build example Compose Web site'
-        run: './gradlew :examples:mpp:build --stacktrace'
+        run: './gradlew :examples:web:build --stacktrace'
