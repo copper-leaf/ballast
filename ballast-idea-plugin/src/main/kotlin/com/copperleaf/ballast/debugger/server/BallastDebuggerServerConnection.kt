@@ -1,15 +1,17 @@
+@file:Suppress("ExtractKtorModule")
 package com.copperleaf.ballast.debugger.server
 
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.BALLAST_VERSION_HEADER
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.CONNECTION_ID_HEADER
 import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.ui.debugger.DebuggerContract
+import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.plugins.callloging.*
-import io.ktor.server.request.*
+import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
@@ -28,7 +30,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.withContext
-import org.slf4j.event.*
+import org.slf4j.event.Level
 
 public class BallastDebuggerServerConnection(
     private val port: Int,
@@ -41,12 +43,15 @@ public class BallastDebuggerServerConnection(
             embeddedServer(CIO, port = port) {
                 install(WebSockets)
                 install(CallLogging) {
-                    level = Level.INFO
+                    level = Level.TRACE
+                }
+                install(CORS) {
+                    anyHost()
                 }
 
                 routing {
                     get("/") {
-                        call.respondText("Hello, world!")
+                        call.respondText("Ballast Debugger\nVersion: $BALLAST_VERSION")
                     }
 
                     webSocket("/ballast/debugger") {
@@ -57,10 +62,6 @@ public class BallastDebuggerServerConnection(
                             ?: call.parameters[BALLAST_VERSION_HEADER]
                             ?: ""
 
-                        val modelMapper = ClientModelMapper.getForVersion(
-                            connectionBallastVersion = connectionBallastVersion,
-                        )
-
                         // notify that a connection was started
                         postInput(
                             DebuggerContract.Inputs.ConnectionEstablished(
@@ -69,7 +70,10 @@ public class BallastDebuggerServerConnection(
                             )
                         )
 
-                        if (modelMapper != null) {
+                        val modelMapper = ClientModelMapper.getForVersion(
+                            connectionBallastVersion = connectionBallastVersion,
+                        )
+                        if (modelMapper.supported) {
                             // get the mapper for a particular version of the API, to allow clients with different '
                             // versions to connect to the same debugger server
                             joinAll(
@@ -112,11 +116,14 @@ public class BallastDebuggerServerConnection(
             .filterIsInstance<Frame.Text>()
             .onEach {
                 val text = it.readText()
-
-                clientModelMapper
-                    .mapIncoming(text)
-                    .let { DebuggerContract.Inputs.DebuggerEventReceived(it) }
-                    .let { postInput(it) }
+                try {
+                    clientModelMapper
+                        .mapIncoming(text)
+                        .let { DebuggerContract.Inputs.DebuggerEventReceived(it) }
+                        .let { postInput(it) }
+                } catch(e: Exception) {
+                    // ignore
+                }
             }
             .launchIn(this)
     }

@@ -10,6 +10,8 @@ class ClientModelMapperV1 : ClientModelMapper {
         isLenient = true
     }
 
+    override val supported: Boolean = true
+
 // Incoming
 // ---------------------------------------------------------------------------------------------------------------------
 

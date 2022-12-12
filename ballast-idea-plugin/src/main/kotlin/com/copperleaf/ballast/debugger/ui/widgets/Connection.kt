@@ -151,7 +151,7 @@ fun ConnectionSummary(
             },
             overlineText = {
                 val isSupported = remember(connectionState.connectionBallastVersion) {
-                    ClientModelMapper.isSupported(connectionState.connectionBallastVersion)
+                    ClientModelMapper.getForVersion(connectionState.connectionBallastVersion).supported
                 }
                 Text(
                     text = "${connectionState.connectionId} (${connectionState.connectionBallastVersion})",

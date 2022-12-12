@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger.server.v1
+package com.copperleaf.ballast.debugger.server.v2
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 private const val ACTION_MODEL_BASE_CLASS_NAME = "com.copperleaf.ballast.debugger.models.BallastDebuggerAction"
 
 @Serializable
-public sealed class BallastDebuggerActionV1 {
+public sealed class BallastDebuggerActionV2 {
 
     public abstract val connectionId: String
     public abstract val viewModelName: String
@@ -16,21 +16,21 @@ public sealed class BallastDebuggerActionV1 {
     public data class RequestViewModelRefresh(
         override val connectionId: String,
         override val viewModelName: String,
-    ) : BallastDebuggerActionV1()
+    ) : BallastDebuggerActionV2()
 
     @Serializable
-    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestViewModelRefresh")
+    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestRestoreState")
     public data class RequestRestoreState(
         override val connectionId: String,
         override val viewModelName: String,
         val stateUuid: String,
-    ) : BallastDebuggerActionV1()
+    ) : BallastDebuggerActionV2()
 
     @Serializable
-    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestViewModelRefresh")
+    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestResendInput")
     public data class RequestResendInput(
         override val connectionId: String,
         override val viewModelName: String,
         val inputUuid: String,
-    ) : BallastDebuggerActionV1()
+    ) : BallastDebuggerActionV2()
 }
