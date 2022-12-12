@@ -4,16 +4,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
-import com.copperleaf.ballast.debugger.di.BallastDebuggerInjector
-import com.copperleaf.ballast.debugger.di.LocalInjector
-import com.copperleaf.ballast.debugger.di.LocalProject
-import com.intellij.openapi.project.Project
 
 @Composable
 fun IdeaPluginTheme(
-    project: Project,
     darkTheme: Boolean = false,
     content: @Composable () -> Unit,
 ) {
@@ -37,12 +31,7 @@ fun IdeaPluginTheme(
         ),
         typography = typography,
         content = {
-            CompositionLocalProvider(
-                LocalProject provides project,
-                LocalInjector provides BallastDebuggerInjector.getInstance(project),
-            ) {
-                content()
-            }
+            content()
         }
     )
 }

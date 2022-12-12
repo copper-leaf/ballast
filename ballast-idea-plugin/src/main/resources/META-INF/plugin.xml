@@ -48,7 +48,7 @@ This IDEA plugin is built upon the best features of Kotlin:
             secondary="true"
             icon="AllIcons.Actions.Preview"
             anchor="bottom"
-            factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastDebuggerToolWindow"/>
+            factoryClass="com.copperleaf.ballast.debugger.idea.tool.BallastDebuggerToolWindow$Factory"/>
 
         <!-- File Templates -->
         <fileTemplateGroup
