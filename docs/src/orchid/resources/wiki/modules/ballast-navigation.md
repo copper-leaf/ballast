@@ -626,7 +626,6 @@ fun NotFoundScreen(mismatchedUrl: String) {
 ```kotlin
 repositories {
     mavenCentral()
-    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots")
 }
 
 // for plain JVM or Android projects
