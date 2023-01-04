@@ -27,7 +27,7 @@ public data class BallastConnectionState(
     public val lastSeen: LocalDateTime = LocalDateTime.now(),
 ) {
     public fun isActive(currentTime: LocalDateTime): Boolean {
-        return (currentTime - lastSeen) <= 5.seconds
+        return (currentTime - lastSeen) <= 10.seconds
     }
 }
 
@@ -47,6 +47,23 @@ public fun BallastApplicationState.updateConnection(
                 } else {
                     // this is the first time we're seeing this connection, create a new entry for it
                     this.add(0, BallastConnectionState(connectionId, firstSeen  = LocalDateTime.now()).block())
+                }
+            }
+            .toList(),
+    )
+}
+
+public fun BallastApplicationState.removeConnection(
+    connectionId: String,
+): BallastApplicationState {
+    val indexOfConnection = connections.indexOfFirst { it.connectionId == connectionId }
+
+    return this.copy(
+        connections = connections
+            .toMutableList()
+            .apply {
+                if (indexOfConnection != -1) {
+                    removeAt(indexOfConnection)
                 }
             }
             .toList(),
@@ -100,7 +117,10 @@ public fun BallastConnectionState.updateViewModel(
                         this[indexOfViewModel] = this[indexOfViewModel].block().copy(lastSeen = LocalDateTime.now())
                     } else {
                         // this is the first time we're seeing this connection, create a new entry for it
-                        this.add(0, BallastViewModelState(connectionId, viewModelName, firstSeen  = LocalDateTime.now()).block())
+                        this.add(
+                            0,
+                            BallastViewModelState(connectionId, viewModelName, firstSeen = LocalDateTime.now()).block()
+                        )
                     }
                 }
             }
@@ -353,6 +373,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 lastSeen = event.timestamp,
             )
         }
+
         is BallastDebuggerEvent.RefreshViewModelComplete -> {
             copy(refreshing = false)
         }
@@ -360,6 +381,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
         is BallastDebuggerEvent.ViewModelStarted -> {
             copy(viewModelActive = true, viewModelType = event.viewModelType)
         }
+
         is BallastDebuggerEvent.ViewModelCleared -> {
             copy(viewModelActive = false)
         }
@@ -374,6 +396,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.InputAccepted -> {
             updateInput(event.uuid, actualValue) {
                 copy(
@@ -384,6 +407,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.InputHandledSuccessfully -> {
             updateInput(event.uuid, actualValue) {
                 copy(
@@ -396,6 +420,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.InputCancelled -> {
             updateInput(event.uuid, actualValue) {
                 copy(
@@ -408,6 +433,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.InputHandlerError -> {
             updateInput(event.uuid, actualValue) {
                 copy(
@@ -421,6 +447,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.InputDropped -> {
             updateInput(event.uuid, actualValue) {
                 copy(
@@ -431,6 +458,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.InputRejected -> {
             updateInput(event.uuid, actualValue) {
                 copy(
@@ -452,6 +480,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.EventEmitted -> {
             updateEvent(event.uuid) {
                 copy(
@@ -462,6 +491,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.EventHandledSuccessfully -> {
             updateEvent(event.uuid) {
                 copy(
@@ -474,6 +504,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.EventHandlerError -> {
             updateEvent(event.uuid) {
                 copy(
@@ -487,9 +518,11 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.EventProcessingStarted -> {
             copy(eventProcessingActive = true)
         }
+
         is BallastDebuggerEvent.EventProcessingStopped -> {
             copy(eventProcessingActive = false)
         }
@@ -513,6 +546,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.SideJobStarted -> {
             updateSideJob(event.uuid) {
                 copy(
@@ -523,6 +557,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.SideJobCompleted -> {
             updateSideJob(event.uuid) {
                 copy(
@@ -535,6 +570,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.SideJobCancelled -> {
             updateSideJob(event.uuid) {
                 copy(
@@ -547,6 +583,7 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
                 )
             }
         }
+
         is BallastDebuggerEvent.SideJobError -> {
             updateSideJob(event.uuid) {
                 copy(

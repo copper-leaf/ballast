@@ -5,12 +5,10 @@ plugins {
     `copper-leaf-base`
     `copper-leaf-version`
     `copper-leaf-lint`
-    id("com.github.gmazzo.buildconfig")
 
     kotlin("jvm")
-    kotlin("plugin.serialization")
     id("org.jetbrains.compose")
-    id("org.jetbrains.intellij") version "1.5.2"
+    id("org.jetbrains.intellij") version "1.10.0"
     id("org.jetbrains.changelog") version "1.3.1"
 }
 
@@ -32,32 +30,25 @@ dependencies {
     implementation(compose.desktop.windows_x64)
     implementation(compose.desktop.components.splitPane)
     implementation(compose.materialIconsExtended)
-
-    // Ktor websocket server
     implementation(libs.kotlinx.coroutines.swing)
-    implementation(libs.kotlinx.serialization)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.cio)
-    implementation(libs.ktor.server.logging)
-    implementation(libs.ktor.server.cors)
-    implementation(libs.ktor.server.websockets)
-    implementation(libs.ktor.server.serialization)
-    implementation(libs.ktor.server.serialization.json)
-    implementation(libs.slf4j.simple)
 
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
-    implementation(project(":ballast-core"))
-    implementation(project(":ballast-saved-state"))
-    implementation(project(":ballast-debugger"))
+    api(libs.kotlinx.coroutines.swing)
+    api(libs.multiplatformSettings.core)
+    api(libs.multiplatformSettings.test)
+    api(project(":ballast-core"))
+    api(project(":ballast-saved-state"))
+    api(project(":ballast-navigation"))
+    api(project(":ballast-debugger"))
+    api(project(":ballast-debugger-server"))
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
     pluginName.set("Ballast")
     type.set("IC")
-    version.set("2022.1.4")
+    version.set("2022.3")
     downloadSources.set(true)
     plugins.set(listOf("org.jetbrains.kotlin"))
 }
@@ -79,12 +70,12 @@ tasks {
     }
 
     patchPluginXml {
-        sinceBuild.set("221")
+        sinceBuild.set("213")
         untilBuild.set("231.*")
     }
 
     runPluginVerifier {
-        ideVersions.set(listOf("2020.3.2", "2021.1", "2022.1", "2022.1.4", "2022.3"))
+        ideVersions.set(listOf("2021.3", "2022.1", "2022.1.4", "2022.3"))
     }
 }
 
@@ -99,13 +90,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs += "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
         freeCompilerArgs += "-opt-in=org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi"
     }
-}
-
-buildConfig {
-    useKotlinOutput {
-        internalVisibility = true
-        topLevelConstants = true
-    }
-
-    buildConfigField("String", "BALLAST_VERSION", "\"${project.version}\"")
 }

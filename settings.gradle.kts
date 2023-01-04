@@ -12,6 +12,8 @@ include(":ballast-firebase-crashlytics")
 include(":ballast-firebase-analytics")
 
 include(":ballast-idea-plugin")
+include(":ballast-debugger-server")
+
 include(":ballast-test")
 
 include(":examples:android")
