@@ -54,7 +54,7 @@
 //
 //tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 //    kotlinOptions {
-//        jvmTarget = "17"
+//        jvmTarget = "11"
 //        freeCompilerArgs += "-opt-in=kotlin.ExperimentalStdlibApi"
 //        freeCompilerArgs += "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
 //        freeCompilerArgs += "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"

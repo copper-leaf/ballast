@@ -7,7 +7,7 @@ ktor = "2.1.0"
 
 androidxLifecycle = "2.5.1"
 
-multiplatformSettings = "0.9"
+multiplatformSettings = "1.0.0-RC"
 uuid = "0.5.0"
 slf4j = "1.7.36"
 
@@ -52,9 +52,12 @@ firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx"
 
 multiplatformSettings-core = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformSettings" }
 multiplatformSettings-noArg = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
+multiplatformSettings-test = { module = "com.russhwolf:multiplatform-settings-test", version.ref = "multiplatformSettings" }
 
 benasher44-uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 slf4j-nop = { module = "org.slf4j:slf4j-nop", version.ref = "slf4j" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 kudzu-core = { module = "io.github.copper-leaf:kudzu-core", version = "4.0.0" }
 coil = { module = "io.coil-kt:coil", version = "1.1.1" }
+
+junit = { module = "junit:junit", version = "4.13.2" }
