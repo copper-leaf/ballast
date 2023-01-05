@@ -1,3 +1,11 @@
+## 3.0.0 - 2022-11-28
+
+- Updates to Kotlin 1.8
+- Adds `shouldTrackInput()` parameter to `FirebaseAnalyticsInterceptor`, so Inputs can be selected for tracking without 
+  requiring an Annotation. Use-cases would be dynamically tracking an Input based on its contents, or adding tracking to 
+  input classes you cannot annotate.
+- 
+
 ## 2.3.0 - 2022-11-28
 
 - Adds new experimental `ballast-navigation` module for handling URL-based routing
