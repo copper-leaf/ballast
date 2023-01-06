@@ -4,7 +4,8 @@ package com.copperleaf.ballast
  * Notifications sent to [BallastInterceptor] to inspect the internal state of the ViewModel.
  */
 public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>(
-    public val vm: BallastViewModel<Inputs, Events, State>,
+    public val viewModelType: String,
+    public val viewModelName: String,
 ) {
 
 // ViewModel
@@ -14,10 +15,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * The ViewModel was created and has started internal processing.
      */
     public class ViewModelStarted<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+        viewModelType: String,
+        viewModelName: String,
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
-            return "ViewModel started: $vm"
+            return "ViewModel started"
         }
     }
 
@@ -25,10 +27,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * The ViewModel was cleared.
      */
     public class ViewModelCleared<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+        viewModelType: String,
+        viewModelName: String,
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
-            return "ViewModel cleared: $vm"
+            return "ViewModel cleared"
         }
     }
 
@@ -40,9 +43,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * If the Input was queued, the input channel was not full.
      */
     public class InputQueued<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val input: Inputs,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Input Queued: $input"
         }
@@ -53,9 +57,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * and passed to the Handler for processing.
      */
     public class InputAccepted<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val input: Inputs,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Accepting input: $input"
         }
@@ -65,10 +70,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * An Input was successfully queued in the ViewModel's Inputs channel but failed to pass its Filter.
      */
     public class InputRejected<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val stateWhenRejected: State,
         public val input: Inputs,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Rejecting input: $input"
         }
@@ -79,9 +85,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * processed.
      */
     public class InputDropped<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val input: Inputs,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Dropping input: $input"
         }
@@ -92,9 +99,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * still processing, or because the ViewModel went out of scope.
      */
     public class InputHandledSuccessfully<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val input: Inputs,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Input handled successfully: $input"
         }
@@ -105,9 +113,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * still processing, or because the ViewModel went out of scope.
      */
     public class InputCancelled<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val input: Inputs,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Input cancelled: $input"
         }
@@ -119,10 +128,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * ViewModel.
      */
     public class InputHandlerError<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val input: Inputs,
         public val throwable: Throwable,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Error handling input: $input (${throwable.message})"
         }
@@ -135,9 +145,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * An Event was posted to the queue to eventually be delivered to the EventHandler.
      */
     public class EventQueued<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val event: Events,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Event Queued: $event"
         }
@@ -147,9 +158,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * An Event was posted to the EventHandler.
      */
     public class EventEmitted<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val event: Events,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Emitting event: $event"
         }
@@ -159,9 +171,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * An Event was posted to the EventHandler.
      */
     public class EventHandledSuccessfully<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val event: Events,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Event handled successfully: $event"
         }
@@ -173,10 +186,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * ViewModel.
      */
     public class EventHandlerError<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val event: Events,
         public val throwable: Throwable,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Error handling event: $event (${throwable.message})"
         }
@@ -186,8 +200,9 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * The UI EventHandler has become in a valid Lifecycle state and has started processing Events
      */
     public class EventProcessingStarted<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+        viewModelType: String,
+        viewModelName: String,
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Event processing started"
         }
@@ -197,8 +212,9 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * The UI EventHandler has become in an invalid Lifecycle state and has stopped processing Events
      */
     public class EventProcessingStopped<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+        viewModelType: String,
+        viewModelName: String,
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Event processing stopped"
         }
@@ -211,9 +227,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * A new State was emitted to the UI.
      */
     public class StateChanged<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val state: State,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "State changed: $state"
         }
@@ -226,9 +243,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * A sideJob was queued, but has not started yet
      */
     public class SideJobQueued<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val key: String,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "sideJob queued: $key"
         }
@@ -238,10 +256,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * A sideJob was started or restarted
      */
     public class SideJobStarted<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val key: String,
         public val restartState: SideJobScope.RestartState,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return when (restartState) {
                 SideJobScope.RestartState.Initial -> "sideJob started: $key"
@@ -254,10 +273,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * A sideJob ran to completion
      */
     public class SideJobCompleted<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val key: String,
         public val restartState: SideJobScope.RestartState,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "sideJob finished: $key"
         }
@@ -267,10 +287,11 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * A sideJob was cancelled
      */
     public class SideJobCancelled<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val key: String,
         public val restartState: SideJobScope.RestartState,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "sideJob cancelled: $key"
         }
@@ -280,11 +301,12 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * A exception was thrown inside a sideJob
      */
     public class SideJobError<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val key: String,
         public val restartState: SideJobScope.RestartState,
         public val throwable: Throwable,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Error in sideJob: $key (${throwable.message})"
         }
@@ -298,9 +320,10 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
      * serious concern, and likely a candidate to terminate the app (if it didn't terminate itself already).
      */
     public class UnhandledError<Inputs : Any, Events : Any, State : Any>(
-        vm: BallastViewModel<Inputs, Events, State>,
+        viewModelType: String,
+        viewModelName: String,
         public val throwable: Throwable,
-    ) : BallastNotification<Inputs, Events, State>(vm) {
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Uncaught error (${throwable.message})"
         }

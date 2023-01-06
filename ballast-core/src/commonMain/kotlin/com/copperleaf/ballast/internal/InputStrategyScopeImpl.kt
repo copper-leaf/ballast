@@ -21,13 +21,25 @@ import com.copperleaf.ballast.core.ParallelInputStrategy
  * @see [ParallelInputStrategy]
  */
 internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
-    private val sendQueuedToViewModel: suspend (Queued<Inputs, Events, State>, InputStrategy.Guardian) -> Unit
+    private val impl: BallastViewModelImpl<Inputs, Events, State>
 ) : InputStrategyScope<Inputs, Events, State> {
 
     override suspend fun acceptQueued(
         queued: Queued<Inputs, Events, State>,
         guardian: InputStrategy.Guardian,
     ) {
-        sendQueuedToViewModel(queued, guardian)
+        when (queued) {
+            is Queued.HandleInput -> {
+                impl.safelyHandleInput(queued.input, queued.deferred, guardian)
+            }
+
+            is Queued.RestoreState -> {
+                impl.safelySetState(queued.state, queued.deferred)
+            }
+
+            is Queued.CloseGracefully -> {
+                impl.gracefullyShutDown(queued.gracePeriod, queued.deferred)
+            }
+        }
     }
 }

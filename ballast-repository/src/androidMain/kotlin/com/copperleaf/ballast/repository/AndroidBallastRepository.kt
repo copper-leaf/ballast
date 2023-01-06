@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.build
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.repository.bus.EventBus
 import com.copperleaf.ballast.repository.bus.EventBusEventHandler
@@ -20,35 +19,16 @@ private constructor(
     private val eventBus: EventBus,
 ) : ViewModel(), BallastViewModel<Inputs, Any, State> by impl {
 
-    final override val type: String = "AndroidBallastRepository"
-
     public constructor(
         eventBus: EventBus,
         config: BallastViewModelConfiguration<Inputs, Any, State>,
     ) : this(
-        impl = BallastViewModelImpl(config),
-        eventBus = eventBus,
-    )
-
-    @Deprecated(
-        message = "Use configBuilder.withRepository().build() instead.",
-        replaceWith = ReplaceWith("AndroidBallastRepository<Inputs, State>(eventBus = eventBus, config = configBuilder.withRepository().build<Inputs, Any, State>())", "com.copperleaf.ballast.build")
-    )
-    // to remove in 3.0.0
-    public constructor(
-        eventBus: EventBus,
-        configBuilder: BallastViewModelConfiguration.Builder,
-    ) : this(
-        impl = BallastViewModelImpl(
-            config = configBuilder
-                .withRepository()
-                .build()
-        ),
+        impl = BallastViewModelImpl("AndroidBallastRepository", config),
         eventBus = eventBus,
     )
 
     init {
-        impl.start(viewModelScope) { this@AndroidBallastRepository }
+        impl.start(viewModelScope)
         viewModelScope.launch {
             impl.attachEventHandler(EventBusEventHandler(eventBus))
         }

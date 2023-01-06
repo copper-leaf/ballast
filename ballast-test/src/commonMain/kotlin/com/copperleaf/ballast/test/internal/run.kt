@@ -103,12 +103,12 @@ private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
     scenarioLogger.debug("Scenario '${scenario.name}'")
     scenarioLogger.debug("before runScenario")
     val testViewModel = TestViewModel(
-        impl = BallastViewModelImpl(realConfig),
+        impl = BallastViewModelImpl("TestViewModel", realConfig),
     )
 
     // start running the VM in the background
     val viewModelJob = launch(start = CoroutineStart.UNDISPATCHED) {
-        testViewModel.impl.start(this) { testViewModel }
+        testViewModel.impl.start(this)
     }
     val eventHandlerJob = launch(start = CoroutineStart.UNDISPATCHED) {
         testViewModel.impl.attachEventHandler(TestEventHandler(testSuite.eventHandler))

@@ -4,42 +4,37 @@ import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.SideJobScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 
 internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
-    override val logger: BallastLogger,
     private val guardian: InputStrategy.Guardian,
-    private val _state: MutableStateFlow<State>,
-    private val sendEventToViewModel: suspend (Events) -> Unit,
-    private val sendSideJobToViewModel: (SideJobRequest<Inputs, Events, State>) -> Unit,
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
 ) : InputHandlerScope<Inputs, Events, State> {
+
+    override val logger: BallastLogger get() = impl.logger
 
     override suspend fun getCurrentState(): State {
         guardian.checkStateAccess()
-        return _state.value
+        return impl.getCurrentState()
     }
 
     override suspend fun updateState(block: (State) -> State) {
         guardian.checkStateUpdate()
-        _state.update(block)
+        impl.safelyUpdateState(block)
     }
 
     override suspend fun updateStateAndGet(block: (State) -> State): State {
         guardian.checkStateUpdate()
-        return _state.updateAndGet(block)
+        return impl.safelyUpdateStateAndGet(block)
     }
 
     override suspend fun getAndUpdateState(block: (State) -> State): State {
         guardian.checkStateUpdate()
-        return _state.getAndUpdate(block)
+        return impl.safelyGetAndUpdateState(block)
     }
 
     override suspend fun postEvent(event: Events) {
         guardian.checkPostEvent()
-        sendEventToViewModel(event)
+        impl.enqueueEvent(event, null, false)
     }
 
     override fun sideJob(
@@ -47,7 +42,7 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         block: suspend SideJobScope<Inputs, Events, State>.() -> Unit
     ) {
         guardian.checkSideJob()
-        sendSideJobToViewModel(SideJobRequest(key, block))
+        impl.enqueueSideJob(key, block)
     }
 
     override fun noOp() {

@@ -20,20 +20,18 @@ public open class BasicViewModel<Inputs : Any, Events : Any, State : Any> privat
     coroutineScope: CoroutineScope
 ) : BallastViewModel<Inputs, Events, State> by impl {
 
-    final override val type: String = "BasicViewModel"
-
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,
         eventHandler: EventHandler<Inputs, Events, State>,
         coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
     ) : this(
-        BallastViewModelImpl(config),
+        BallastViewModelImpl("BasicViewModel", config),
         eventHandler,
         coroutineScope,
     )
 
     init {
-        impl.start(coroutineScope) { this@BasicViewModel }
+        impl.start(coroutineScope)
         impl.viewModelScope.launch {
             impl.attachEventHandler(eventHandler)
         }

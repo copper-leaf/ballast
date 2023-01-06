@@ -6,15 +6,20 @@ import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.CoroutineScope
 
 internal class BallastInterceptorScopeImpl<Inputs : Any, Events : Any, State : Any>(
-    override val logger: BallastLogger,
-    override val hostViewModelName: String,
-    private val viewModelScope: CoroutineScope,
-    private val sendQueuedToViewModel: suspend (Queued<Inputs, Events, State>) -> Unit
+    interceptorCoroutineScope: CoroutineScope,
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
 ) : BallastInterceptorScope<Inputs, Events, State>,
-    CoroutineScope by viewModelScope {
+    CoroutineScope by interceptorCoroutineScope {
+
+    override val logger: BallastLogger get() = impl.logger
+    override val hostViewModelType: String get() = impl.type
+    override val hostViewModelName: String get() = impl.name
 
     override suspend fun sendToQueue(queued: Queued<Inputs, Events, State>) {
-        sendQueuedToViewModel(queued)
+        impl.enqueueQueued(queued)
     }
 
+    override suspend fun postEvent(event: Events) {
+        impl.enqueueEvent(event, null, false)
+    }
 }
