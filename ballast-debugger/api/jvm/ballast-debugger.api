@@ -32,6 +32,7 @@ public final class com/copperleaf/ballast/debugger/models/BallastApplicationStat
 
 public final class com/copperleaf/ballast/debugger/models/BallastApplicationStateKt {
 	public static final fun appendStateSnapshot (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;
+	public static final fun removeConnection (Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;
 	public static final fun updateConnection (Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;
 	public static final fun updateEvent (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;
 	public static final fun updateInput (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;

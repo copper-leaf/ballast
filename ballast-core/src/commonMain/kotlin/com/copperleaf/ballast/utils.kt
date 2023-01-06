@@ -392,23 +392,23 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
         }
 
         is BallastNotification.EventProcessingStarted -> {
-            addValueToCache(this.vm)
+            addValueToCache(viewModelName)
         }
 
         is BallastNotification.EventProcessingStopped -> {
-            addValueToCache(this.vm)
+            addValueToCache(viewModelName)
         }
 
         is BallastNotification.UnhandledError -> {
-            addValueToCache(this.vm)
+            addValueToCache(viewModelName)
         }
 
         is BallastNotification.ViewModelStarted -> {
-            addValueToCache(this.vm)
+            addValueToCache(viewModelName)
         }
 
         is BallastNotification.ViewModelCleared -> {
-            removeValueFromCache(this.vm)
+            removeValueFromCache(viewModelName)
         }
     }
 }

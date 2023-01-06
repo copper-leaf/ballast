@@ -35,9 +35,9 @@ class FirebaseAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         if (notification is BallastNotification.InputAccepted) {
             if (notification.input.isAnnotatedWith(FirebaseAnalyticsTrackInput::class)) {
                 analytics.logEvent("action") {
-                    param(Keys.ViewModelName, notification.vm.name)
-                    param(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")
-                    param(Keys.InputValue, "${notification.vm.name}.${notification.input}")
+                    param(Keys.ViewModelName, notification.viewModelName)
+                    param(Keys.InputType, "${notification.viewModelName}.${notification.input::class.java.simpleName}")
+                    param(Keys.InputValue, "${notification.viewModelName}.${notification.input}")
                 }
             }
         }

@@ -17,6 +17,12 @@ public interface BallastInterceptorScope<Inputs : Any, Events : Any, State : Any
     public val logger: BallastLogger
 
     /**
+     * A reference to the host ViewModel's type, which may be used for differentiating between different types of
+     * ViewModels. This value is set by the base viewModel class in use, and is not configurable by end-users.
+     */
+    public val hostViewModelType: String
+
+    /**
      * A reference to the host ViewModel's name, which may be used for differentiating between different ViewModels.
      * This value comes from the host ViewModel's [BallastViewModelConfiguration] ([BallastViewModelConfiguration.name]).
      */
@@ -33,5 +39,10 @@ public interface BallastInterceptorScope<Inputs : Any, Events : Any, State : Any
      * ([BallastViewModelConfiguration.inputStrategy]).
      */
     public suspend fun sendToQueue(queued: Queued<Inputs, Events, State>)
+
+    /**
+     * Post an Event back to the ViewModel.
+     */
+    public suspend fun postEvent(event: Events)
 
 }

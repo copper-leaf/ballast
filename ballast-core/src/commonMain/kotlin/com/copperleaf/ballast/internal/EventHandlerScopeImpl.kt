@@ -4,11 +4,13 @@ import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.EventHandlerScope
 
 internal class EventHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
-    override val logger: BallastLogger,
-    private val sendInputToViewModel: suspend (Inputs)->Unit,
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
 ) : EventHandlerScope<Inputs, Events, State> {
+
+    override val logger: BallastLogger get() = impl.logger
+
     override suspend fun postInput(input: Inputs) {
-        sendInputToViewModel(input)
+        impl.enqueueInput(input, null, false)
     }
 
     fun ensureUsedCorrectly() {

@@ -110,6 +110,11 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
                 )
                 stateRestoredDeferred.await()
                 stateRestored = true
+
+                scope.eventsToPostAfterRestore.forEach { postEvent(it) }
+                scope.inputToPostAfterRestore.forEach { sendToQueue(Queued.HandleInput(null, it)) }
+
+                // TODO: remove this in 4.0.0
                 val postRestoreInput = adapter.onRestoreComplete(restoredState)
                 if (postRestoreInput != null) {
                     sendToQueue(

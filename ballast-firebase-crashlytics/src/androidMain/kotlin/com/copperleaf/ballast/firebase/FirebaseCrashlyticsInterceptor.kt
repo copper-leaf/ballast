@@ -26,26 +26,26 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
             is BallastNotification.InputAccepted -> {
                 if (!notification.input.isAnnotatedWith(FirebaseCrashlyticsIgnore::class)) {
                     crashlytics.setCustomKeys {
-                        key(Keys.ViewModelName, notification.vm.name)
-                        key(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")
+                        key(Keys.ViewModelName, notification.viewModelName)
+                        key(Keys.InputType, "${notification.viewModelName}.${notification.input::class.java.simpleName}")
                     }
-                    crashlytics.log("${notification.vm.name}.${notification.input}")
+                    crashlytics.log("${notification.viewModelName}.${notification.input}")
                 }
             }
 
             is BallastNotification.InputHandlerError -> {
                 onError(notification, "Input", notification.throwable, true) {
-                    key(Keys.InputType, "${notification.vm.name}.${notification.input::class.java.simpleName}")
+                    key(Keys.InputType, "${notification.viewModelName}.${notification.input::class.java.simpleName}")
                 }
             }
             is BallastNotification.EventHandlerError -> {
                 onError(notification, "Event", notification.throwable, true) {
-                    key(Keys.EventType, "${notification.vm.name}.${notification.event::class.java.simpleName}")
+                    key(Keys.EventType, "${notification.viewModelName}.${notification.event::class.java.simpleName}")
                 }
             }
             is BallastNotification.SideJobError -> {
                 onError(notification, "SideJob", notification.throwable, true) {
-                    key(Keys.SideJobKey, "${notification.vm.name}.${notification.key}")
+                    key(Keys.SideJobKey, "${notification.viewModelName}.${notification.key}")
                 }
             }
             is BallastNotification.UnhandledError -> {
@@ -64,7 +64,7 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         extraKeys: KeyValueBuilder.() -> Unit,
     ) {
         crashlytics.setCustomKeys {
-            key(Keys.ViewModelName, notification.vm.name)
+            key(Keys.ViewModelName, notification.viewModelName)
             key(Keys.ExceptionType, type)
             extraKeys()
         }

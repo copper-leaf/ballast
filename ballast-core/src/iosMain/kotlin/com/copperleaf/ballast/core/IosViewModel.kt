@@ -14,19 +14,18 @@ public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private 
     coroutineScope: CoroutineScope,
 ) : BallastViewModel<Inputs, Events, State> by impl {
 
-    final override val type: String = "IosViewModel"
     public val initialState: State = impl.initialState
 
     public constructor(
         config: BallastViewModelConfiguration<Inputs, Events, State>,
         coroutineScope: CoroutineScope = MainScope(),
     ) : this(
-        BallastViewModelImpl(config),
+        BallastViewModelImpl("IosViewModel", config),
         coroutineScope
     )
 
     init {
-        impl.start(coroutineScope) { this@IosViewModel }
+        impl.start(coroutineScope)
     }
 
     public val stateCallbacks: FlowAdapter<State> by lazy {

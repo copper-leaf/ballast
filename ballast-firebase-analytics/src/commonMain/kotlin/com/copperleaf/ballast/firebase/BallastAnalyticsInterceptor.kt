@@ -21,9 +21,9 @@ public class BallastAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any
                 tracker.trackAnalyticsEvent(
                     "action",
                     mapOf(
-                        Keys.ViewModelName to notification.vm.name,
-                        Keys.InputType to "${notification.vm.name}.${notification.input::class.simpleName}",
-                        Keys.InputValue to "${notification.vm.name}.${notification.input}",
+                        Keys.ViewModelName to notification.viewModelName,
+                        Keys.InputType to "${notification.viewModelName}.${notification.input::class.simpleName}",
+                        Keys.InputValue to "${notification.viewModelName}.${notification.input}",
                     )
                 )
             }

@@ -13,7 +13,8 @@ internal class TestInterceptorWrapper<Inputs : Any, Events : Any, State : Any>(
     private val delegate: BallastInterceptor<Inputs, Events, State>,
 ) : BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State> {
 
-    private var startedViewModel: BallastViewModel<TestViewModel.Inputs<Inputs>, Events, State>? = null
+    private var startedViewModelType: String? = null
+    private var startedViewModelName: String? = null
     private var startedViewModelWrapped: BallastViewModel<Inputs, Events, State>? = null
 
     private suspend inline fun TestViewModel.Inputs<Inputs>.unwrap(
@@ -39,45 +40,44 @@ internal class TestInterceptorWrapper<Inputs : Any, Events : Any, State : Any>(
     ) {
         when (notification) {
             is BallastNotification.ViewModelStarted -> {
-                startedViewModel = notification.vm
-                startedViewModelWrapped = ViewModelWrapper(startedViewModel!!)
-                delegate.onNotify(logger, BallastNotification.ViewModelStarted(startedViewModelWrapped!!))
+                startedViewModelType = notification.viewModelType
+                startedViewModelName = notification.viewModelName
+                delegate.onNotify(logger, BallastNotification.ViewModelStarted(notification.viewModelType, notification.viewModelName))
             }
             is BallastNotification.ViewModelCleared -> {
-                check(notification.vm === startedViewModel)
-                delegate.onNotify(logger, BallastNotification.ViewModelCleared(startedViewModelWrapped!!))
-                startedViewModel = null
-                startedViewModelWrapped = null
+                check(notification.viewModelType === startedViewModelType)
+                check(notification.viewModelName === startedViewModelName)
+                delegate.onNotify(logger, BallastNotification.ViewModelCleared(notification.viewModelType, notification.viewModelName))
             }
 
             is BallastNotification.InputAccepted -> {
                 notification.input.unwrap(logger) {
-                    BallastNotification.InputAccepted(startedViewModelWrapped!!, it)
+                    BallastNotification.InputAccepted(notification.viewModelType, notification.viewModelName, it)
                 }
             }
             is BallastNotification.InputRejected -> {
                 notification.input.unwrap(logger) {
-                    BallastNotification.InputRejected(startedViewModelWrapped!!, notification.stateWhenRejected, it)
+                    BallastNotification.InputRejected(notification.viewModelType, notification.viewModelName, notification.stateWhenRejected, it)
                 }
             }
             is BallastNotification.InputDropped -> {
                 notification.input.unwrap(logger) {
-                    BallastNotification.InputDropped(startedViewModelWrapped!!, it)
+                    BallastNotification.InputDropped(notification.viewModelType, notification.viewModelName, it)
                 }
             }
             is BallastNotification.InputHandledSuccessfully -> {
                 notification.input.unwrap(logger) {
-                    BallastNotification.InputHandledSuccessfully(startedViewModelWrapped!!, it)
+                    BallastNotification.InputHandledSuccessfully(notification.viewModelType, notification.viewModelName, it)
                 }
             }
             is BallastNotification.InputCancelled -> {
                 notification.input.unwrap(logger) {
-                    BallastNotification.InputCancelled(startedViewModelWrapped!!, it)
+                    BallastNotification.InputCancelled(notification.viewModelType, notification.viewModelName, it)
                 }
             }
             is BallastNotification.InputHandlerError -> {
                 notification.input.unwrap(logger) {
-                    BallastNotification.InputHandlerError(startedViewModelWrapped!!, it, notification.throwable)
+                    BallastNotification.InputHandlerError(notification.viewModelType, notification.viewModelName, it, notification.throwable)
                 }
             }
 

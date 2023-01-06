@@ -32,12 +32,16 @@ public final class com/copperleaf/ballast/savedstate/BuildConfig {
 public abstract interface class com/copperleaf/ballast/savedstate/RestoreStateScope {
 	public abstract fun getHostViewModelName ()Ljava/lang/String;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
+	public abstract fun postEventAfterRestore (Ljava/lang/Object;)V
+	public abstract fun postInputAfterRestore (Ljava/lang/Object;)V
 }
 
 public final class com/copperleaf/ballast/savedstate/RestoreStateScopeImpl : com/copperleaf/ballast/savedstate/RestoreStateScope {
 	public fun <init> (Lcom/copperleaf/ballast/BallastLogger;Ljava/lang/String;)V
 	public fun getHostViewModelName ()Ljava/lang/String;
 	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
+	public fun postEventAfterRestore (Ljava/lang/Object;)V
+	public fun postInputAfterRestore (Ljava/lang/Object;)V
 }
 
 public abstract interface class com/copperleaf/ballast/savedstate/SaveStateScope {

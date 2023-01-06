@@ -4,6 +4,7 @@ import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.SideJobScope
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlin.time.Duration
 
 internal class TestSideJobScope<Inputs : Any, Events : Any, State : Any>(
     private val sideJobScopeDelegate: SideJobScope<TestViewModel.Inputs<Inputs>, Events, State>,
@@ -25,4 +26,7 @@ internal class TestSideJobScope<Inputs : Any, Events : Any, State : Any>(
         sideJobScopeDelegate.postEvent(event)
     }
 
+    override suspend fun closeGracefully(gracePeriod: Duration) {
+        sideJobScopeDelegate.closeGracefully(gracePeriod)
+    }
 }

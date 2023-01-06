@@ -15,6 +15,7 @@ public interface SavedStateAdapter<Inputs : Any, Events : Any, State : Any> {
      * Optional. Called after the State has been restored, to give a chance to start some action only after the state
      * has been restored.
      */
+    @Deprecated("use RestoreStateScope.postInputAfterRestore() instead")
     public suspend fun onRestoreComplete(restoredState: State): Inputs? {
         return null
     }
