@@ -77,7 +77,7 @@ public interface SideJobScope<Inputs : Any, Events : Any, State : Any> : Corouti
      * related scope will no longer be usable. The parent coroutine scope should have a [SupervisorJob] to ensure the
      * parent scopes do not also get cancelled by this action.
      */
-    public suspend fun closeGracefully(gracePeriod: Duration = 100.milliseconds)
+    public suspend fun requestGracefulShutDown(gracePeriod: Duration = 100.milliseconds)
 
     public enum class RestartState {
         Initial, Restarted

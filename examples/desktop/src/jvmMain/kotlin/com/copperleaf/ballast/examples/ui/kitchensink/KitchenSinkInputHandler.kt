@@ -9,6 +9,7 @@ import com.copperleaf.ballast.navigation.routing.queryParameter
 import com.copperleaf.ballast.observeFlows
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlin.time.Duration.Companion.seconds
 
 class KitchenSinkInputHandler : InputHandler<
     KitchenSinkContract.Inputs,
@@ -85,6 +86,12 @@ class KitchenSinkInputHandler : InputHandler<
         is KitchenSinkContract.Inputs.ErrorRunningSideJob -> {
             sideJob("ErrorRunningSideJob") {
                 error("error running sideJob")
+            }
+        }
+
+        is KitchenSinkContract.Inputs.ShutDownGracefully -> {
+            sideJob("ShutDownGracefully") {
+                requestGracefulShutDown(5.seconds)
             }
         }
     }

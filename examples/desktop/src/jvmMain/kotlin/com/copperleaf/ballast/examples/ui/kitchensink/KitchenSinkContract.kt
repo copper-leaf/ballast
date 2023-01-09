@@ -24,6 +24,8 @@ object KitchenSinkContract {
         object ErrorRunningInput : Inputs()
         object ErrorRunningEvent : Inputs()
         object ErrorRunningSideJob : Inputs()
+
+        object ShutDownGracefully : Inputs()
     }
 
     sealed class Events {

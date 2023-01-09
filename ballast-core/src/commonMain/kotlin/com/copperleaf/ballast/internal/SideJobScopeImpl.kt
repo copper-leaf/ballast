@@ -23,7 +23,7 @@ internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
         impl.enqueueEvent(event, null, false)
     }
 
-    override suspend fun closeGracefully(gracePeriod: Duration) {
-        impl.gracefullyShutDown(gracePeriod, null)
+    override suspend fun requestGracefulShutDown(gracePeriod: Duration) {
+        impl.enqueueGracefulShutdown(gracePeriod, null)
     }
 }
