@@ -8,6 +8,7 @@ import kotlin.time.Duration
 internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
     sideJobCoroutineScope: CoroutineScope,
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
+    override val key: String,
     override val currentStateWhenStarted: State,
     override val restartState: SideJobScope.RestartState,
 ) : SideJobScope<Inputs, Events, State>, CoroutineScope by sideJobCoroutineScope {

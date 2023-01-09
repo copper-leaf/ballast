@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
@@ -182,17 +183,23 @@ object KitchenSinkUi {
                 ) {
                     Text("ErrorRunningSideJob")
                 }
-                Button(
-                    onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideJob) },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text("InfiniteSideJob")
-                }
-                Button(
-                    onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) },
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Text("CancelInfiniteSideJob")
+
+
+                if(uiState.infiniteSideJobRunning) {
+                    Button(
+                        onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.requiredSize(16.dp))
+                        Text("Cancel Infinite SideJob")
+                    }
+                } else {
+                    Button(
+                        onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideJob) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text("Start Infinite SideJob")
+                    }
                 }
             }
         }

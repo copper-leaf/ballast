@@ -18,6 +18,11 @@ import kotlin.time.Duration.Companion.milliseconds
 public interface SideJobScope<Inputs : Any, Events : Any, State : Any> : CoroutineScope {
 
     /**
+     * The key provided to the [InputHandlerScope.sideJob] call.
+     */
+    public val key: String
+
+    /**
      * A reference to the [BallastLogger] set in the host ViewModel's [BallastViewModelConfiguration]
      * ([BallastViewModelConfiguration.logger]).
      */
