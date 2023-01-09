@@ -12,7 +12,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.BufferOverflow
@@ -36,11 +35,9 @@ import kotlinx.coroutines.flow.transformWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.job
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.yield
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration
 
@@ -57,26 +54,29 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         Cleared,
     }
 
+    private data class InternalState<Inputs : Any, Events : Any, State : Any>(
+        val status: Status = Status.NotStarted,
+        val sideJobs: Map<String, RunningSideJob> = emptyMap(),
+    )
+
 // Internal properties
 // ---------------------------------------------------------------------------------------------------------------------
 
+    private val internalState: MutableStateFlow<InternalState<Inputs, Events, State>> =
+        MutableStateFlow(InternalState())
+
     internal lateinit var viewModelScope: CoroutineScope
-    private var status: Status = Status.NotStarted
 
     private val _inputQueue: Channel<Queued<Inputs, Events, State>> =
         config.inputStrategy.createQueue()
-
     private val _state: MutableStateFlow<State> =
         MutableStateFlow(initialState)
-
     private val _events: Channel<Events> =
         Channel(BUFFERED, BufferOverflow.SUSPEND)
     private val _sideJobs: Channel<SideJobRequest<Inputs, Events, State>> =
         Channel(BUFFERED, BufferOverflow.SUSPEND)
     private val _notifications: MutableSharedFlow<BallastNotification<Inputs, Events, State>> =
         MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE)
-
-    private var currentSideJobs = mutableMapOf<String, RunningSideJob<Inputs, Events, State>>()
 
     private val uncaughtExceptionHandler = CoroutineExceptionHandler { _, e ->
         _notifications.tryEmit(BallastNotification.UnhandledError(type, name, e))
@@ -120,48 +120,28 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    // TODO: rather than watching Jobs or anything else directly, re-implement the Test module to be an Interceptor and
-    //   track all its state by watching Notifications
-    @ExperimentalCoroutinesApi
-    public suspend fun awaitSideJobsCompletion() {
-        // run a busy loop until all side-jobs are started
-        while (true) {
-            if (_sideJobs.isEmpty) break
-            yield()
-        }
-
-        // wait for all the sideJob jobs to complete
-        currentSideJobs.values
-            .mapNotNull { it.job }
-            .let { joinAll(*it.toTypedArray()) }
-
-        // run a busy loop until all input channels are drained
-        while (true) {
-            if (_inputQueue.isEmpty) break
-            yield()
-        }
-    }
-
 // ViewModel Lifecycle
 // ---------------------------------------------------------------------------------------------------------------------
 
     public fun start(coroutineScope: CoroutineScope) {
-        // check the ViewModel is in a valid state to be started
-        when (status) {
-            Status.NotStarted -> {
-                status = Status.Running
-            }
+        internalState.update {
+            // check the ViewModel is in a valid state to be started
+            when (it.status) {
+                Status.NotStarted -> {
+                    it.copy(status = Status.Running)
+                }
 
-            Status.Running -> {
-                error("VM is already started")
-            }
+                Status.Running -> {
+                    error("VM is already started")
+                }
 
-            Status.ShuttingDown -> {
-                error("VM is already started and is shutting down, it cannot be restarted")
-            }
+                Status.ShuttingDown -> {
+                    error("VM is already started and is shutting down, it cannot be restarted")
+                }
 
-            Status.Cleared -> {
-                error("VM is cleared, it cannot be restarted")
+                Status.Cleared -> {
+                    error("VM is cleared, it cannot be restarted")
+                }
             }
         }
 
@@ -186,32 +166,29 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     private fun onCleared() {
-        when (status) {
-            Status.NotStarted -> {
-                error("VM is not started!")
+        internalState.getAndUpdate {
+            val newStatus = when (it.status) {
+                Status.NotStarted -> {
+                    error("VM is not started!")
+                }
+
+                Status.Running -> {
+                    Status.Cleared
+                }
+
+                Status.ShuttingDown -> {
+                    Status.Cleared
+                }
+
+                Status.Cleared -> {
+                    error("VM is already cleared")
+                }
             }
 
-            Status.Running -> {
-                status = Status.Cleared
-            }
-
-            Status.ShuttingDown -> {
-                status = Status.Cleared
-            }
-
-            Status.Cleared -> {
-                error("VM is already cleared")
-            }
+            // side-jobs are already bound by the viewModelScope, and will get cancelled
+            // automatically, but we still need to clear the registry
+            it.copy(status = newStatus, sideJobs = emptyMap())
         }
-
-        for (value in currentSideJobs.values) {
-            value.job?.cancel()
-            value.job = null
-        }
-
-        // side-jobs are already bound by the viewModelScope, and will get cancelled
-        // automatically, but we still need to clear the registry
-        currentSideJobs.clear()
 
         _notifications.tryEmit(BallastNotification.ViewModelCleared(type, name))
 
@@ -224,7 +201,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // ---------------------------------------------------------------------------------------------------------------------
 
     private fun checkValidState() {
-        when (status) {
+        when (internalState.value.status) {
             Status.NotStarted -> {
                 error("VM is not started!")
             }
@@ -440,7 +417,21 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         viewModelScope.launch {
             _sideJobs
                 .receiveAsFlow()
-                .onEach { safelyStartSideJob(it) }
+                .onEach { request ->
+                    when (request) {
+                        is SideJobRequest.StartOrRestartSideJob -> {
+                            safelyStartOrRestartSideJob(request)
+                        }
+
+                        is SideJobRequest.CancelSideJob -> {
+                            safelyCancelSideJob(request)
+                        }
+
+                        is SideJobRequest.RemoveCompletedSideJob -> {
+                            safelyRemoveCompletedSideJob(request)
+                        }
+                    }
+                }
                 .launchIn(this)
         }
     }
@@ -451,75 +442,207 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     ) {
         checkValidState()
         _notifications.tryEmit(BallastNotification.SideJobQueued(type, name, key))
-        _sideJobs.trySend(SideJobRequest(key, block))
+        _sideJobs.trySend(SideJobRequest.StartOrRestartSideJob(key, block))
     }
 
-    internal suspend fun safelyStartSideJob(
-        request: SideJobRequest<Inputs, Events, State>,
+    internal fun cancelSideJob(
+        key: String,
     ) {
-        val restartState = if (currentSideJobs.containsKey(request.key)) {
-            SideJobScope.RestartState.Restarted
-        } else {
-            SideJobScope.RestartState.Initial
+        checkValidState()
+        _sideJobs.trySend(SideJobRequest.CancelSideJob(key))
+    }
+
+    private fun safelyStartOrRestartSideJob(
+        request: SideJobRequest.StartOrRestartSideJob<Inputs, Events, State>,
+    ) {
+        val newState = internalState.updateAndGet {
+            when (it.status) {
+                Status.NotStarted -> {
+                    error("VM is not started!")
+                }
+
+                Status.Running -> {
+                    // allow the job to start
+                }
+
+                Status.ShuttingDown -> {
+                    error("VM is shutting down, new sideJobs cannot be started!")
+                }
+
+                Status.Cleared -> {
+                    error("VM is cleared!")
+                }
+            }
+
+            val restartState = if (it.sideJobs.containsKey(request.key)) {
+                SideJobScope.RestartState.Restarted
+            } else {
+                SideJobScope.RestartState.Initial
+            }
+
+            // if we have a side-job already running, cancel its coroutine scope and complete its Deferred
+            it.sideJobs[request.key]?.let { runningJob ->
+                runningJob.job.cancel()
+                runningJob.onCompletion.complete(Unit)
+            }
+
+            // launch a new side-job in its own isolated coroutine scope where:
+            //   1) it is cancelled when the viewModelScope is cancelled
+            //   2) errors are caught by the uncaughtExceptionHandler for crash reporting
+            //   3) has a supervisor job, so we can cancel the side-job without cancelling the whole viewModelScope
+            //
+            // Consumers of this side-job can launch many jobs, and all will be cancelled together when the
+            // side-job is restarted or the viewModelScope is cancelled.
+            val sideJobContainer = RunningSideJob(
+                key = request.key,
+                restartState = restartState,
+                onCompletion = CompletableDeferred(),
+                job = SupervisorJob(parent = viewModelScope.coroutineContext[Job]),
+            )
+            it.copy(sideJobs = it.sideJobs + (request.key to sideJobContainer))
         }
 
-        // if we have a side-job already running, cancel its coroutine scope
-        currentSideJobs[request.key]?.let {
-            it.job?.cancel()
-            it.job = null
-        }
-
-        // go through and remove any side-jobs that have completed (either by
-        // cancellation or because they finished on their own)
-        currentSideJobs.entries
-            .filterNot { it.value.job?.isActive == true }
-            .map { it.key }
-            .forEach { currentSideJobs.remove(it) }
-
-        // launch a new side-job in its own isolated coroutine scope where:
-        //   1) it is cancelled when the viewModelScope is cancelled
-        //   2) errors are caught by the uncaughtExceptionHandler for crash reporting
-        //   3) has a supervisor job, so we can cancel the side-job without cancelling the whole viewModelScope
-        //
-        // Consumers of this side-job can launch many jobs, and all will be cancelled together when the
-        // side-job is restarted or the viewModelScope is cancelled.
-        val sideJobContainer = RunningSideJob(
-            key = request.key,
-            block = request.block,
-        )
-        currentSideJobs[request.key] = sideJobContainer
+        val runningSideJob = newState.sideJobs[request.key]!!
 
         val sideJobCoroutineScope = viewModelScope +
-                SupervisorJob(parent = viewModelScope.coroutineContext[Job]) +
+                runningSideJob.job +
                 sideJobsDispatcher
 
-        sideJobContainer.job = sideJobCoroutineScope.launch {
+        sideJobCoroutineScope.launch {
             _notifications.emit(
                 BallastNotification.SideJobStarted(
                     type,
                     name,
-                    request.key,
-                    restartState,
+                    key = runningSideJob.key,
+                    restartState = runningSideJob.restartState,
                 )
             )
 
             try {
+                // run the sideJob, which may never complete
                 coroutineScope {
                     val sideJobScope = SideJobScopeImpl(
                         currentStateWhenStarted = getCurrentState(),
-                        restartState = restartState,
+                        key = runningSideJob.key,
+                        restartState = runningSideJob.restartState,
                         sideJobCoroutineScope = this,
                         impl = this@BallastViewModelImpl,
                     )
-                    sideJobContainer.block.invoke(sideJobScope)
+                    request.block.invoke(sideJobScope)
                 }
-                _notifications.emit(BallastNotification.SideJobCompleted(type, name, request.key, restartState))
+
+                // If it does complete normally...
+
+                // mark its deferred as completed, for anything suspending on the job until it completes
+                runningSideJob.onCompletion.complete(Unit)
+
+                // Request that the job be removed from the internal state
+                _sideJobs.send(SideJobRequest.RemoveCompletedSideJob(runningSideJob.key))
+
+                // send a notification that the side job has completed
+                _notifications.emit(
+                    BallastNotification.SideJobCompleted(
+                        type,
+                        name,
+                        key = runningSideJob.key,
+                        restartState = runningSideJob.restartState,
+                    )
+                )
             } catch (e: CancellationException) {
-                // ignore
-                _notifications.emit(BallastNotification.SideJobCancelled(type, name, request.key, restartState))
+                // The side job was cancelled, either by being restarted, manually cancelled, or because the whole
+                // ViewModel was cancelled.
+
+                // mark its deferred as completed, for anything suspending on the job until it completes
+                runningSideJob.onCompletion.complete(Unit)
+
+                // Request that the job be removed from the internal state
+                _sideJobs.send(SideJobRequest.RemoveCompletedSideJob(runningSideJob.key))
+
+                // send a notification that the side job was cancelled
+                _notifications.emit(
+                    BallastNotification.SideJobCancelled(
+                        type,
+                        name,
+                        key = runningSideJob.key,
+                        restartState = runningSideJob.restartState,
+                    )
+                )
             } catch (e: Throwable) {
-                _notifications.emit(BallastNotification.SideJobError(type, name, request.key, restartState, e))
+                // an exception was thrown when executing the sideJob.
+
+                // mark its deferred as completed, for anything suspending on the job until it completes
+                runningSideJob.onCompletion.complete(Unit)
+
+                // Request that the job be removed from the internal state
+                _sideJobs.send(SideJobRequest.RemoveCompletedSideJob(runningSideJob.key))
+
+                // send a notification that the side job was cancelled
+                _notifications.emit(
+                    BallastNotification.SideJobError(
+                        type,
+                        name,
+                        key = runningSideJob.key,
+                        restartState = runningSideJob.restartState,
+                        e,
+                    )
+                )
             }
+        }
+    }
+
+    private fun safelyCancelSideJob(
+        request: SideJobRequest.CancelSideJob<Inputs, Events, State>,
+    ) {
+        internalState.update {
+            when (it.status) {
+                Status.NotStarted -> {
+                    error("VM is not started!")
+                }
+
+                Status.Running -> {
+                    // allow the job to be cancelled
+                }
+
+                Status.ShuttingDown -> {
+                    // allow the job to be cancelled
+                }
+
+                Status.Cleared -> {
+                    error("VM is cleared!")
+                }
+            }
+
+            // if we have a side-job already running, cancel its coroutine scope and complete its Deferred
+            it.sideJobs[request.key]?.job?.cancel()
+
+            it
+        }
+    }
+
+    private fun safelyRemoveCompletedSideJob(
+        request: SideJobRequest.RemoveCompletedSideJob<Inputs, Events, State>,
+    ) {
+        internalState.update {
+            when (it.status) {
+                Status.NotStarted -> {
+                    error("VM is not started!")
+                }
+
+                Status.Running -> {
+                    // allow the job to be removed
+                }
+
+                Status.ShuttingDown -> {
+                    // allow the job to be removed
+                }
+
+                Status.Cleared -> {
+                    error("VM is cleared!")
+                }
+            }
+
+            // the sideJob should already be completed, just remote it from the map
+            it.copy(sideJobs = it.sideJobs - request.key)
         }
     }
 

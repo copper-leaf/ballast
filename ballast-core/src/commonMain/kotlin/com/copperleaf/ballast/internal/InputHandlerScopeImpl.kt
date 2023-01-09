@@ -45,6 +45,11 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         impl.enqueueSideJob(key, block)
     }
 
+    override fun cancelSideJob(key: String) {
+        guardian.checkSideJob()
+        impl.cancelSideJob(key)
+    }
+
     override fun noOp() {
         guardian.checkNoOp()
     }

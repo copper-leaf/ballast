@@ -1,11 +1,12 @@
 package com.copperleaf.ballast.internal
 
 import com.copperleaf.ballast.SideJobScope
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
 
-internal class RunningSideJob<Inputs : Any, Events : Any, State : Any>(
+internal class RunningSideJob(
     internal val key: String,
-    internal val block: suspend SideJobScope<Inputs, Events, State>.() -> Unit,
-) {
-    internal var job: Job? = null
-}
+    internal var restartState: SideJobScope.RestartState,
+    internal var job: Job,
+    internal val onCompletion: CompletableDeferred<Unit>,
+)

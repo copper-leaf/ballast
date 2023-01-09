@@ -53,6 +53,7 @@ class KitchenSinkInputHandler : InputHandler<
         }
 
         is KitchenSinkContract.Inputs.InfiniteSideJob -> {
+            updateState { it.copy(infiniteSideJobRunning = true) }
             observeFlows(
                 "InfiniteSideJob",
                 flow {
@@ -65,10 +66,8 @@ class KitchenSinkInputHandler : InputHandler<
         }
 
         is KitchenSinkContract.Inputs.CancelInfiniteSideJob -> {
-            sideJob("InfiniteSideJob") {
-                // run a side-job with the same key, so the infinite flow one gets cancelled, while this one runs
-                // to completion
-            }
+            updateState { it.copy(infiniteSideJobRunning = false) }
+            cancelSideJob("InfiniteSideJob")
         }
 
         is KitchenSinkContract.Inputs.IncrementInfiniteCounter -> {

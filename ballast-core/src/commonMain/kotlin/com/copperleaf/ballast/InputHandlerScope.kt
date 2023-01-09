@@ -75,6 +75,13 @@ public interface InputHandlerScope<Inputs : Any, Events : Any, State : Any> {
     )
 
     /**
+     * Cancel the sideJob at the given [key], if it is still running.
+     */
+    public fun cancelSideJob(
+        key: String,
+    )
+
+    /**
      * Explicitly mark a branch in the InputHandler as doing nothing, so that it is still considered
      * to have been handled properly even though nothing happened.
      */

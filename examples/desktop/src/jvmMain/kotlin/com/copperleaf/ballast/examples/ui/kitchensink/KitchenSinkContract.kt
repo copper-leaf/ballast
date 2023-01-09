@@ -6,6 +6,7 @@ object KitchenSinkContract {
         val loading: Boolean = false,
         val completedInputCounter: Int = 0,
         val infiniteCounter: Int = 0,
+        val infiniteSideJobRunning: Boolean = false,
     )
 
     sealed class Inputs {
