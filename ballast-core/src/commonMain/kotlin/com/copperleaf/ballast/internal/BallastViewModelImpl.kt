@@ -12,8 +12,11 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
@@ -35,9 +38,12 @@ import kotlinx.coroutines.flow.transformWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.job
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.yield
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration
 
@@ -47,14 +53,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 ) : BallastViewModel<Inputs, Events, State>,
     BallastViewModelConfiguration<Inputs, Events, State> by config {
 
-    private enum class Status {
-        NotStarted,
-        Running,
-        ShuttingDown,
-        Cleared,
-    }
-
-    private data class InternalState<Inputs : Any, Events : Any, State : Any>(
+    private data class InternalState(
         val status: Status = Status.NotStarted,
         val sideJobs: Map<String, RunningSideJob> = emptyMap(),
     )
@@ -62,8 +61,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Internal properties
 // ---------------------------------------------------------------------------------------------------------------------
 
-    private val internalState: MutableStateFlow<InternalState<Inputs, Events, State>> =
-        MutableStateFlow(InternalState())
+    private val internalState: MutableStateFlow<InternalState> = MutableStateFlow(InternalState())
 
     internal lateinit var viewModelScope: CoroutineScope
 
@@ -86,7 +84,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // ---------------------------------------------------------------------------------------------------------------------
 
     override fun observeStates(): StateFlow<State> {
-        checkValidState()
+        // TODO: include a check here?
         return _state.asStateFlow()
     }
 
@@ -126,23 +124,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     public fun start(coroutineScope: CoroutineScope) {
         internalState.update {
             // check the ViewModel is in a valid state to be started
-            when (it.status) {
-                Status.NotStarted -> {
-                    it.copy(status = Status.Running)
-                }
-
-                Status.Running -> {
-                    error("VM is already started")
-                }
-
-                Status.ShuttingDown -> {
-                    error("VM is already started and is shutting down, it cannot be restarted")
-                }
-
-                Status.Cleared -> {
-                    error("VM is cleared, it cannot be restarted")
-                }
-            }
+            it.status.checkCanStart()
+            it.copy(status = Status.Running)
         }
 
         // create the real viewModel's coroutineScope
@@ -167,27 +150,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     private fun onCleared() {
         internalState.getAndUpdate {
-            val newStatus = when (it.status) {
-                Status.NotStarted -> {
-                    error("VM is not started!")
-                }
-
-                Status.Running -> {
-                    Status.Cleared
-                }
-
-                Status.ShuttingDown -> {
-                    Status.Cleared
-                }
-
-                Status.Cleared -> {
-                    error("VM is already cleared")
-                }
-            }
+            it.status.checkCanClear()
 
             // side-jobs are already bound by the viewModelScope, and will get cancelled
             // automatically, but we still need to clear the registry
-            it.copy(status = newStatus, sideJobs = emptyMap())
+            it.copy(status = Status.Cleared, sideJobs = emptyMap())
         }
 
         _notifications.tryEmit(BallastNotification.ViewModelCleared(type, name))
@@ -200,28 +167,35 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Internals
 // ---------------------------------------------------------------------------------------------------------------------
 
-    private fun checkValidState() {
-        when (internalState.value.status) {
-            Status.NotStarted -> {
-                error("VM is not started!")
+    internal fun gracefullyShutDown(gracePeriod: Duration, deferred: CompletableDeferred<Unit>?) {
+        internalState.value.status.checkCanShutDown()
+        viewModelScope.launch {
+            internalState.update {
+                it.copy(
+                    status = Status.ShuttingDown(
+                        stateChangeOpen = true,
+                        mainQueueOpen = true,
+                        eventsOpen = true,
+                        sideJobsOpen = true,
+                        sideJobsCancellationOpen = true,
+                    )
+                )
             }
 
-            Status.Running -> {
-                // OK
-            }
+            // first shut down the sideJobs
+            gracefullyShutDownSideJobs(gracePeriod)
 
-            Status.ShuttingDown -> {
-                // OK
-            }
+            // then, shut down the main queue, preventing any more Inputs from being received
+            gracefullyShutDownMainQueue(gracePeriod)
 
-            Status.Cleared -> {
-                error("VM is cleared!")
-            }
+            // finally, drain the events channel,
+            gracefullyShutDownEvents(gracePeriod)
+
+            // cancel its own viewModelScope so nothing else can be processed
+            viewModelScope.cancel()
+
+            deferred?.complete(Unit)
         }
-    }
-
-    internal suspend fun gracefullyShutDown(gracePeriod: Duration, deferred: CompletableDeferred<Unit>?) {
-        TODO()
     }
 
 // Main Queue
@@ -270,18 +244,26 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     internal suspend fun enqueueQueued(queued: Queued<Inputs, Events, State>) {
+        internalState.value.status.checkMainQueueOpen()
         _inputQueue.send(queued)
     }
 
-    private suspend fun gracefullyShutDownMainQueue() {
-
+    internal suspend fun enqueueGracefulShutdown(gracePeriod: Duration, deferred: CompletableDeferred<Unit>?) {
+        internalState.value.status.checkMainQueueOpen()
+        _inputQueue.send(Queued.CloseGracefully(deferred, gracePeriod))
     }
 
-// Inputs
-// ---------------------------------------------------------------------------------------------------------------------
+    internal suspend fun enqueueInput(input: Inputs, deferred: CompletableDeferred<Unit>?, await: Boolean) {
+        internalState.value.status.checkMainQueueOpen()
+        _notifications.emit(BallastNotification.InputQueued(type, name, input))
+        _inputQueue.send(Queued.HandleInput(deferred, input))
+        if (await && deferred != null) {
+            deferred.await()
+        }
+    }
 
-    internal fun enqueueInputImmediate(input: Inputs, deferred: CompletableDeferred<Unit>?): ChannelResult<Unit> {
-        checkValidState()
+    private fun enqueueInputImmediate(input: Inputs, deferred: CompletableDeferred<Unit>?): ChannelResult<Unit> {
+        internalState.value.status.checkMainQueueOpen()
         _notifications.tryEmit(BallastNotification.InputQueued(type, name, input))
         val result = _inputQueue.trySend(Queued.HandleInput(deferred, input))
         if (result.isFailure || result.isClosed) {
@@ -290,12 +272,18 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         return result
     }
 
-    internal suspend fun enqueueInput(input: Inputs, deferred: CompletableDeferred<Unit>?, await: Boolean) {
-        checkValidState()
-        _notifications.emit(BallastNotification.InputQueued(type, name, input))
-        _inputQueue.send(Queued.HandleInput(deferred, input))
-        if (await && deferred != null) {
-            deferred.await()
+    private suspend fun gracefullyShutDownMainQueue(gracePeriod: Duration) {
+        println("gracefully shutting down main queue")
+        internalState.update {
+            it.copy(
+                status = Status.ShuttingDown(
+                    stateChangeOpen = true,
+                    mainQueueOpen = false,
+                    eventsOpen = true,
+                    sideJobsOpen = false,
+                    sideJobsCancellationOpen = true,
+                )
+            )
         }
     }
 
@@ -342,7 +330,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // ---------------------------------------------------------------------------------------------------------------------
 
     internal suspend fun enqueueEvent(event: Events, deferred: CompletableDeferred<Unit>?, await: Boolean) {
-        checkValidState()
+        internalState.value.status.checkEventsOpen()
         _notifications.emit(BallastNotification.EventQueued(type, name, event))
         _events.send(event)
         if (await && deferred != null) {
@@ -371,8 +359,19 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    private suspend fun gracefullyShutDownEvents() {
-
+    private suspend fun gracefullyShutDownEvents(gracePeriod: Duration) {
+        println("gracefully shutting down events")
+        internalState.update {
+            it.copy(
+                status = Status.ShuttingDown(
+                    stateChangeOpen = false,
+                    mainQueueOpen = false,
+                    eventsOpen = false,
+                    sideJobsOpen = false,
+                    sideJobsCancellationOpen = false,
+                )
+            )
+        }
     }
 
 // States
@@ -383,27 +382,27 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     internal suspend fun safelySetState(state: State, deferred: CompletableDeferred<Unit>?) {
-        checkValidState()
+        internalState.value.status.checkStateChangeOpen()
         _state.value = state
         _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
         deferred?.complete(Unit)
     }
 
     internal suspend fun safelyUpdateState(block: (State) -> State) {
-        checkValidState()
+        internalState.value.status.checkStateChangeOpen()
         _state.update(block)
         _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
     }
 
     internal suspend fun safelyUpdateStateAndGet(block: (State) -> State): State {
-        checkValidState()
+        internalState.value.status.checkStateChangeOpen()
         return _state.updateAndGet(block).also {
             _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
         }
     }
 
     internal suspend fun safelyGetAndUpdateState(block: (State) -> State): State {
-        checkValidState()
+        internalState.value.status.checkStateChangeOpen()
         return _state.getAndUpdate(block).also {
             _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
         }
@@ -427,6 +426,10 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                             safelyCancelSideJob(request)
                         }
 
+                        is SideJobRequest.CancelAllSideJobs -> {
+                            safelyCancelAllSideJobs(request)
+                        }
+
                         is SideJobRequest.RemoveCompletedSideJob -> {
                             safelyRemoveCompletedSideJob(request)
                         }
@@ -440,7 +443,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         key: String,
         block: suspend SideJobScope<Inputs, Events, State>.() -> Unit,
     ) {
-        checkValidState()
+        internalState.value.status.checkSideJobsOpen()
         _notifications.tryEmit(BallastNotification.SideJobQueued(type, name, key))
         _sideJobs.trySend(SideJobRequest.StartOrRestartSideJob(key, block))
     }
@@ -448,7 +451,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     internal fun cancelSideJob(
         key: String,
     ) {
-        checkValidState()
+        internalState.value.status.checkSideJobCancellationOpen()
         _sideJobs.trySend(SideJobRequest.CancelSideJob(key))
     }
 
@@ -456,27 +459,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         request: SideJobRequest.StartOrRestartSideJob<Inputs, Events, State>,
     ) {
         val newState = internalState.updateAndGet {
-            when (it.status) {
-                Status.NotStarted -> {
-                    error("VM is not started!")
-                }
-
-                Status.Running -> {
-                    // allow the job to start
-                }
-
-                Status.ShuttingDown -> {
-                    error("VM is shutting down, new sideJobs cannot be started!")
-                }
-
-                Status.Cleared -> {
-                    error("VM is cleared!")
-                }
-            }
-
             val restartState = if (it.sideJobs.containsKey(request.key)) {
+                println("restarting ${request.key}")
                 SideJobScope.RestartState.Restarted
             } else {
+                println("starting ${request.key}")
                 SideJobScope.RestartState.Initial
             }
 
@@ -593,25 +580,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     private fun safelyCancelSideJob(
         request: SideJobRequest.CancelSideJob<Inputs, Events, State>,
     ) {
+        println("manually cancelling ${request.key}")
         internalState.update {
-            when (it.status) {
-                Status.NotStarted -> {
-                    error("VM is not started!")
-                }
-
-                Status.Running -> {
-                    // allow the job to be cancelled
-                }
-
-                Status.ShuttingDown -> {
-                    // allow the job to be cancelled
-                }
-
-                Status.Cleared -> {
-                    error("VM is cleared!")
-                }
-            }
-
             // if we have a side-job already running, cancel its coroutine scope and complete its Deferred
             it.sideJobs[request.key]?.job?.cancel()
 
@@ -619,35 +589,81 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
+    private fun safelyCancelAllSideJobs(
+        request: SideJobRequest.CancelAllSideJobs<Inputs, Events, State>,
+    ) {
+        println("forcibly cancelling all sideJobs")
+        internalState.update {
+            // if we have a side-job already running, cancel its coroutine scope and complete its Deferred
+            it.sideJobs.forEach { it.value.job.cancel() }
+            it
+        }
+    }
+
     private fun safelyRemoveCompletedSideJob(
         request: SideJobRequest.RemoveCompletedSideJob<Inputs, Events, State>,
     ) {
+        println("removingh completed sideJob at ${request.key}")
         internalState.update {
-            when (it.status) {
-                Status.NotStarted -> {
-                    error("VM is not started!")
-                }
-
-                Status.Running -> {
-                    // allow the job to be removed
-                }
-
-                Status.ShuttingDown -> {
-                    // allow the job to be removed
-                }
-
-                Status.Cleared -> {
-                    error("VM is cleared!")
-                }
-            }
-
             // the sideJob should already be completed, just remote it from the map
             it.copy(sideJobs = it.sideJobs - request.key)
         }
     }
 
-    private suspend fun gracefullyShutDownSideJobs() {
+    private suspend fun gracefullyShutDownSideJobs(gracePeriod: Duration) {
+        println("gracefully shutting down sideJobs")
+        internalState.update {
+            it.copy(
+                status = Status.ShuttingDown(
+                    stateChangeOpen = true,
+                    mainQueueOpen = true,
+                    eventsOpen = true,
+                    sideJobsOpen = false,
+                    sideJobsCancellationOpen = true,
+                )
+            )
+        }
+        try {
+            withTimeout(gracePeriod) {
+                // without forcibly cancelling, wait for all sideJobs to complete
+                internalState.value
+                    .sideJobs
+                    .map { it.value.onCompletion }
+                    .awaitAll()
+                println("sideJobs completed on their own")
+            }
+        } catch (e: Exception) {
+            println("sideJobs still running after $gracePeriod, forcibly shut them down")
+            // the sideJobs did not complete during the grace period. Force them all to cancel, then wait for them to
+            // complete
+            _sideJobs.send(SideJobRequest.CancelAllSideJobs())
+            internalState.value
+                .sideJobs
+                .map { it.value.onCompletion }
+                .awaitAll()
+        }
+    }
 
+    // TODO: rather than watching Jobs or anything else directly, re-implement the Test module to be an Interceptor and
+    //   track all its state by watching Notifications
+    @ExperimentalCoroutinesApi
+    public suspend fun awaitSideJobsCompletion() {
+        // run a busy loop until all side-jobs are started
+        while (true) {
+            if (_sideJobs.isEmpty) break
+            yield()
+        }
+
+        // wait for all the sideJob jobs to complete
+        internalState.value.sideJobs.values
+            .mapNotNull { it.job }
+            .let { joinAll(*it.toTypedArray()) }
+
+        // run a busy loop until all input channels are drained
+        while (true) {
+            if (_inputQueue.isEmpty) break
+            yield()
+        }
     }
 
 // Interceptors

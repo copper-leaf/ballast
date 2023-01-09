@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlin.time.Duration
 
 internal class TestSideJobScope<Inputs : Any, Events : Any, State : Any>(
+    override val key: String,
     private val sideJobScopeDelegate: SideJobScope<TestViewModel.Inputs<Inputs>, Events, State>,
 ) : SideJobScope<Inputs, Events, State>, CoroutineScope by sideJobScopeDelegate {
 
@@ -26,7 +27,7 @@ internal class TestSideJobScope<Inputs : Any, Events : Any, State : Any>(
         sideJobScopeDelegate.postEvent(event)
     }
 
-    override suspend fun closeGracefully(gracePeriod: Duration) {
-        sideJobScopeDelegate.closeGracefully(gracePeriod)
+    override suspend fun requestGracefulShutDown(gracePeriod: Duration) {
+        sideJobScopeDelegate.requestGracefulShutDown(gracePeriod)
     }
 }

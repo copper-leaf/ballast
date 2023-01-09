@@ -37,8 +37,12 @@ internal class TestInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
     ) {
         inputHandlerScopeDelegate.sideJob(
             key = key,
-            block = { TestSideJobScope(this).block() }
+            block = { TestSideJobScope(key, this).block() }
         )
+    }
+
+    override fun cancelSideJob(key: String) {
+        inputHandlerScopeDelegate.cancelSideJob(key)
     }
 
     override fun noOp() {

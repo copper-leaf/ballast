@@ -13,6 +13,9 @@ internal sealed class SideJobRequest<Inputs : Any, Events : Any, State : Any> {
         val key: String,
     ) : SideJobRequest<Inputs, Events, State>()
 
+    internal class CancelAllSideJobs<Inputs : Any, Events : Any, State : Any>(
+    ) : SideJobRequest<Inputs, Events, State>()
+
     internal class RemoveCompletedSideJob<Inputs : Any, Events : Any, State : Any>(
         val key: String,
     ) : SideJobRequest<Inputs, Events, State>()

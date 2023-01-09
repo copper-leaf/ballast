@@ -184,13 +184,17 @@ object KitchenSinkUi {
                     Text("ErrorRunningSideJob")
                 }
 
-
-                if(uiState.infiniteSideJobRunning) {
+                if (uiState.infiniteSideJobRunning) {
                     Button(
                         onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        CircularProgressIndicator(modifier = Modifier.requiredSize(16.dp))
+                        CircularProgressIndicator(
+                            modifier = Modifier.requiredSize(20.dp),
+                            color = MaterialTheme.colors.onPrimary,
+                            strokeWidth = 2.dp,
+                        )
+                        Spacer(Modifier.padding(end = 16.dp))
                         Text("Cancel Infinite SideJob")
                     }
                 } else {
@@ -200,6 +204,13 @@ object KitchenSinkUi {
                     ) {
                         Text("Start Infinite SideJob")
                     }
+                }
+
+                Button(
+                    onClick = { postInput(KitchenSinkContract.Inputs.ShutDownGracefully) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text("Shut Down Gracefully")
                 }
             }
         }
