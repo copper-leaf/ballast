@@ -3,11 +3,9 @@ package com.copperleaf.ballast.impl
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.yield
 
 class TestInputHandler : InputHandler<
     TestContract.Inputs,
@@ -44,7 +42,6 @@ class TestInputHandler : InputHandler<
         }
         is TestContract.Inputs.MultipleStateUpdates -> {
             updateState { it.copy(intValue = it.intValue + 1) }
-            yield()
             updateState { it.copy(intValue = it.intValue + 1) }
             delay(1000)
         }
@@ -100,6 +97,10 @@ class TestInputHandler : InputHandler<
             }
             getCurrentState()
             Unit
+        }
+        is TestContract.Inputs.TestTimeout -> {
+            delay(10_000)
+            updateState { it.copy(stringValue = "State updated after 10 seconds") }
         }
     }
 }

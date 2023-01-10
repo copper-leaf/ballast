@@ -1,5 +1,7 @@
 package com.copperleaf.ballast
 
+import com.copperleaf.ballast.internal.Status
+
 /**
  * Notifications sent to [BallastInterceptor] to inspect the internal state of the ViewModel.
  */
@@ -14,24 +16,13 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
     /**
      * The ViewModel was created and has started internal processing.
      */
-    public class ViewModelStarted<Inputs : Any, Events : Any, State : Any>(
+    public class ViewModelStatusChanged<Inputs : Any, Events : Any, State : Any>(
         viewModelType: String,
         viewModelName: String,
+        public val status: Status,
     ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
-            return "ViewModel started"
-        }
-    }
-
-    /**
-     * The ViewModel was cleared.
-     */
-    public class ViewModelCleared<Inputs : Any, Events : Any, State : Any>(
-        viewModelType: String,
-        viewModelName: String,
-    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
-        override fun toString(): String {
-            return "ViewModel cleared"
+            return "ViewModel status moved to: $status"
         }
     }
 
@@ -309,6 +300,30 @@ public sealed class BallastNotification<Inputs : Any, Events : Any, State : Any>
     ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
         override fun toString(): String {
             return "Error in sideJob: $key (${throwable.message})"
+        }
+    }
+
+// Interceptors
+// ---------------------------------------------------------------------------------------------------------------------
+
+    public class InterceptorAttached<Inputs : Any, Events : Any, State : Any>(
+        viewModelType: String,
+        viewModelName: String,
+        public val interceptor: BallastInterceptor<Inputs, Events, State>,
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
+        override fun toString(): String {
+            return "Interceptor attached: $interceptor"
+        }
+    }
+
+    public class InterceptorFailed<Inputs : Any, Events : Any, State : Any>(
+        viewModelType: String,
+        viewModelName: String,
+        public val interceptor: BallastInterceptor<Inputs, Events, State>,
+        public val throwable: Throwable,
+    ) : BallastNotification<Inputs, Events, State>(viewModelType, viewModelName) {
+        override fun toString(): String {
+            return "Interceptor failed: $interceptor (${throwable.message})"
         }
     }
 

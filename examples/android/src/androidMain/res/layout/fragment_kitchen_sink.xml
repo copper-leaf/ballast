@@ -146,6 +146,12 @@
                 android:layout_height="wrap_content"
                 android:text="CancelInfiniteSideJob"
                 android:textAllCaps="false"/>
+            <Button
+                android:id="@+id/btn_ShutDownGracefully"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ShutDownGracefully"
+                android:textAllCaps="false"/>
 
         </LinearLayout>
     </ScrollView>

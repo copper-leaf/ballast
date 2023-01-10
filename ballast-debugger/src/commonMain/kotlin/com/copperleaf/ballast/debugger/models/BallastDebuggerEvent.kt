@@ -58,20 +58,13 @@ public sealed class BallastDebuggerEvent {
 // ---------------------------------------------------------------------------------------------------------------------
 
     @Serializable
-    public class ViewModelStarted(
+    public class ViewModelStatusChanged(
         override val connectionId: String,
         override val viewModelName: String,
         public val viewModelType: String,
         override val uuid: String,
         override val timestamp: LocalDateTime,
-    ) : BallastDebuggerEvent()
-
-    @Serializable
-    public class ViewModelCleared(
-        override val connectionId: String,
-        override val viewModelName: String,
-        override val uuid: String,
-        override val timestamp: LocalDateTime,
+        public val status: String,
     ) : BallastDebuggerEvent()
 
 // Inputs

@@ -6,10 +6,10 @@ object KitchenSinkContract {
         val loading: Boolean = false,
         val completedInputCounter: Int = 0,
         val infiniteCounter: Int = 0,
+        val infiniteSideJobRunning: Boolean = false,
     )
 
     sealed class Inputs {
-        object GoBack : Inputs()
         object CloseKitchenSinkWindow : Inputs()
         data class ChangeInputStrategy(val inputStrategy: InputStrategySelection) : Inputs()
 
@@ -24,10 +24,11 @@ object KitchenSinkContract {
         object ErrorRunningInput : Inputs()
         object ErrorRunningEvent : Inputs()
         object ErrorRunningSideJob : Inputs()
+
+        object ShutDownGracefully : Inputs()
     }
 
     sealed class Events {
-        object GoBack : Events()
         object CloseWindow : Events()
         data class NavigateTo(val directions: String) : Events()
 

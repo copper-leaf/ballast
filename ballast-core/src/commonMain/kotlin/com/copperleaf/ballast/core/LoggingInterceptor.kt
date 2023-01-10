@@ -59,8 +59,7 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any> : Balla
         }
 
         val loggerFn: (String) -> Unit = when (notification) {
-            is BallastNotification.ViewModelStarted -> logger::debug
-            is BallastNotification.ViewModelCleared -> logger::debug
+            is BallastNotification.ViewModelStatusChanged -> logger::debug
 
             is BallastNotification.InputQueued -> logger::debug
             is BallastNotification.InputAccepted -> logger::info
@@ -84,6 +83,9 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any> : Balla
             is BallastNotification.SideJobCompleted -> logger::debug
             is BallastNotification.SideJobCancelled -> logger::info
             is BallastNotification.SideJobError -> logger::info
+
+            is BallastNotification.InterceptorAttached -> logger::debug
+            is BallastNotification.InterceptorFailed -> logger::debug
 
             is BallastNotification.UnhandledError -> logger::info
         }

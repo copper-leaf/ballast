@@ -16,7 +16,7 @@ internal class BallastInterceptorScopeImpl<Inputs : Any, Events : Any, State : A
     override val hostViewModelName: String get() = impl.name
 
     override suspend fun sendToQueue(queued: Queued<Inputs, Events, State>) {
-        impl.enqueueQueued(queued)
+        impl.enqueueQueued(queued, await = false)
     }
 
     override suspend fun postEvent(event: Events) {

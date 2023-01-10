@@ -15,11 +15,8 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
     now: LocalDateTime,
 ): BallastDebuggerEvent {
     return when (this) {
-        is BallastNotification.ViewModelStarted -> {
-            BallastDebuggerEvent.ViewModelStarted(connectionId, viewModelName, viewModelType, uuid, firstSeen)
-        }
-        is BallastNotification.ViewModelCleared -> {
-            BallastDebuggerEvent.ViewModelCleared(connectionId, viewModelName, uuid, now)
+        is BallastNotification.ViewModelStatusChanged -> {
+            BallastDebuggerEvent.ViewModelStatusChanged(connectionId, viewModelName, viewModelType, uuid, firstSeen, status.toString())
         }
         is BallastNotification.InputQueued -> {
             BallastDebuggerEvent.InputQueued(connectionId, viewModelName, uuid, firstSeen, input.type, input.toString())
@@ -93,6 +90,12 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
                 connectionId, viewModelName, uuid, now,
                 throwable.stackTraceToString()
             )
+        }
+        is BallastNotification.InterceptorAttached -> {
+            TODO()
+        }
+        is BallastNotification.InterceptorFailed-> {
+            TODO()
         }
     }
 }

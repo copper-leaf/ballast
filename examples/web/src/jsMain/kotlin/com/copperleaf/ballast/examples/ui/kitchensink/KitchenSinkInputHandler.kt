@@ -9,16 +9,17 @@ import com.copperleaf.ballast.navigation.routing.queryParameter
 import com.copperleaf.ballast.observeFlows
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
+import kotlin.time.Duration.Companion.seconds
 
 class KitchenSinkInputHandler : InputHandler<
-    KitchenSinkContract.Inputs,
-    KitchenSinkContract.Events,
-    KitchenSinkContract.State> {
-
-    override suspend fun InputHandlerScope<
         KitchenSinkContract.Inputs,
         KitchenSinkContract.Events,
-        KitchenSinkContract.State>.handleInput(
+        KitchenSinkContract.State> {
+
+    override suspend fun InputHandlerScope<
+            KitchenSinkContract.Inputs,
+            KitchenSinkContract.Events,
+            KitchenSinkContract.State>.handleInput(
         input: KitchenSinkContract.Inputs
     ) = when (input) {
         is KitchenSinkContract.Inputs.CloseKitchenSinkWindow -> {
@@ -53,6 +54,7 @@ class KitchenSinkInputHandler : InputHandler<
         }
 
         is KitchenSinkContract.Inputs.InfiniteSideJob -> {
+            updateState { it.copy(infiniteSideJobRunning = true) }
             observeFlows(
                 "InfiniteSideJob",
                 flow {
@@ -65,10 +67,8 @@ class KitchenSinkInputHandler : InputHandler<
         }
 
         is KitchenSinkContract.Inputs.CancelInfiniteSideJob -> {
-            sideJob("InfiniteSideJob") {
-                // run a side-job with the same key, so the infinite flow one gets cancelled, while this one runs
-                // to completion
-            }
+            updateState { it.copy(infiniteSideJobRunning = false) }
+            cancelSideJob("InfiniteSideJob")
         }
 
         is KitchenSinkContract.Inputs.IncrementInfiniteCounter -> {
@@ -86,6 +86,12 @@ class KitchenSinkInputHandler : InputHandler<
         is KitchenSinkContract.Inputs.ErrorRunningSideJob -> {
             sideJob("ErrorRunningSideJob") {
                 error("error running sideJob")
+            }
+        }
+
+        is KitchenSinkContract.Inputs.ShutDownGracefully -> {
+            sideJob("ShutDownGracefully") {
+                requestGracefulShutDown(5.seconds)
             }
         }
     }

@@ -3,7 +3,6 @@ package com.copperleaf.ballast
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.SupervisorJob
 import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Represents an item in the ViewModel's main processing queue. Queued items will always be processed predicably
@@ -12,11 +11,13 @@ import kotlin.time.Duration.Companion.milliseconds
  */
 public sealed class Queued<Inputs : Any, Events : Any, State : Any> {
 
+    public abstract val deferred: CompletableDeferred<Unit>?
+
     /**
      * A request to forcibly set the State to a specific value.
      */
     public class RestoreState<Inputs : Any, Events : Any, State : Any>(
-        public val deferred: CompletableDeferred<Unit>?,
+        public override val deferred: CompletableDeferred<Unit>?,
         public val state: State,
     ) : Queued<Inputs, Events, State>()
 
@@ -24,7 +25,7 @@ public sealed class Queued<Inputs : Any, Events : Any, State : Any> {
      * A request to handle an Input by sending it to the [InputHandler].
      */
     public class HandleInput<Inputs : Any, Events : Any, State : Any>(
-        public val deferred: CompletableDeferred<Unit>?,
+        public override val deferred: CompletableDeferred<Unit>?,
         public val input: Inputs,
     ) : Queued<Inputs, Events, State>()
 
@@ -39,7 +40,7 @@ public sealed class Queued<Inputs : Any, Events : Any, State : Any> {
      * parent scopes do not also get cancelled by this action.
      */
     public class CloseGracefully<Inputs : Any, Events : Any, State : Any>(
-        public val deferred: CompletableDeferred<Unit>?,
-        public val gracePeriod: Duration = 100.milliseconds,
+        public override val deferred: CompletableDeferred<Unit>,
+        public val gracePeriod: Duration,
     ) : Queued<Inputs, Events, State>()
 }

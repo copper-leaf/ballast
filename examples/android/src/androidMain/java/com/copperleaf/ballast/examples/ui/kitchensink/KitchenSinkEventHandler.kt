@@ -20,11 +20,6 @@ class KitchenSinkEventHandler(
         KitchenSinkContract.State>.handleEvent(
         event: KitchenSinkContract.Events
     ) = when (event) {
-        is KitchenSinkContract.Events.GoBack -> {
-            router.trySend(RouterContract.Inputs.GoBack())
-            Unit
-        }
-
         is KitchenSinkContract.Events.CloseWindow -> {
             router.trySend(RouterContract.Inputs.GoBack())
             Unit

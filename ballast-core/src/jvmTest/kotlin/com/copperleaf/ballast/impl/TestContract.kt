@@ -20,6 +20,7 @@ object TestContract {
         object SideJobStartedWithInputOverride : Inputs()
         object MultipleSideJobs : Inputs()
         object SideJobsNotAtEnd : Inputs()
+        object TestTimeout : Inputs()
     }
 
     sealed class Events {

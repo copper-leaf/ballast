@@ -8,9 +8,12 @@ import com.copperleaf.ballast.impl.TestEventHandler
 import com.copperleaf.ballast.impl.TestInputFilter
 import com.copperleaf.ballast.impl.TestInputHandler
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -24,6 +27,8 @@ class BallastCoreTests {
         filter = TestInputFilter(),
     ) {
         defaultInitialState { TestContract.State() }
+//        logger { PrintlnLogger(it) }
+//        addInterceptor { LoggingInterceptor() }
 
         scenario("update string value only") {
             running {
@@ -312,9 +317,10 @@ class BallastCoreTests {
         }
 
         scenario("Multiple side-jobs can be started by 1 input") {
-            inputStrategy { ParallelInputStrategy.typed() }
+            inputStrategy { FifoInputStrategy.typed() }
             running {
                 +TestContract.Inputs.MultipleSideJobs
+                delay(1.seconds)
             }
             resultsIn {
                 assertEquals(
@@ -341,7 +347,7 @@ class BallastCoreTests {
         }
 
         scenario("Side-jobs can be restarted, with previous ones cancelled") {
-            inputStrategy { ParallelInputStrategy.typed() }
+            inputStrategy { FifoInputStrategy.typed() }
             running {
                 +TestContract.Inputs.MultipleSideJobs
                 +TestContract.Inputs.MultipleSideJobs
@@ -374,7 +380,6 @@ class BallastCoreTests {
         }
 
         scenario("Side-jobs called before other inputHandler methods throws an error") {
-            inputStrategy { ParallelInputStrategy.typed() }
             running {
                 +TestContract.Inputs.SideJobsNotAtEnd
             }
@@ -394,6 +399,28 @@ class BallastCoreTests {
                 +TestContract.Inputs.Increment
             }
             resultsIn {}
+        }
+
+        scenario("Test timeout") {
+            timeout { 1.seconds }
+            running {
+                +TestContract.Inputs.TestTimeout
+            }
+            resultsIn {
+                // because of the 1-second timeout, the Input will not get a chance to update the state. It should
+                // finish the test at the default State
+                assertEquals(
+                    listOf(TestContract.State()),
+                    states
+                )
+
+                // the rest results should also have the "timedOut" flag set to true (or rather, _not_ set to false)
+                assertTrue(timedOut)
+
+                // the delay is for 10 seconds but was not allowed to run to completion. A timeout should result in a
+                // test that ran for less than that, since a successful run would be guaranteed not-less-than 10 seconds
+                assertTrue { this.testDuration < 10.seconds }
+            }
         }
 
         isolatedScenario(TestContract.Inputs.Increment, "increment from 0") {

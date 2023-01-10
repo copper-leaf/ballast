@@ -14,6 +14,7 @@ fun <Inputs : Any, Events : Any, State : Any> runBlockingViewModelTest(
     filter: InputFilter<Inputs, Events, State>? = null,
     block: BallastTestSuiteScope<Inputs, Events, State>.() -> Unit
 ) = runBlocking<Unit> {
+//) = runTest(Dispatchers.Default) {
     viewModelTest(
         inputHandler = inputHandler,
         eventHandler = eventHandler,
