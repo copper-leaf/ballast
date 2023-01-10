@@ -10,8 +10,6 @@ import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.test.BallastIsolatedScenarioScope
 import com.copperleaf.ballast.test.BallastScenarioScope
 import com.copperleaf.ballast.test.BallastTestSuiteScope
-import com.copperleaf.ballast.test.internal.vm.TestInterceptorWrapper
-import com.copperleaf.ballast.test.internal.vm.TestViewModel
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
@@ -27,7 +25,7 @@ internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any
     internal var defaultTimeout: Duration = 30.seconds
     internal var inputStrategy: InputStrategy<Inputs, Events, State> = LifoInputStrategy.typed()
 
-    internal val interceptors: MutableList<() -> BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
+    internal val interceptors: MutableList<() -> BallastInterceptor<Inputs, Events, State>> =
         mutableListOf()
 
     internal var defaultInitialStateBlock: (() -> State)? = null
@@ -46,7 +44,7 @@ internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any
     }
 
     override fun addInterceptor(interceptor: () -> BallastInterceptor<Inputs, Events, State>) {
-        this.interceptors += { TestInterceptorWrapper(interceptor()) }
+        this.interceptors += interceptor
     }
 
     override fun defaultInputStrategy(inputStrategy: () -> InputStrategy<Inputs, Events, State>) {
@@ -66,7 +64,6 @@ internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any
         name: String,
         block: BallastIsolatedScenarioScope<Inputs, Events, State>.() -> Unit
     ) {
-
         scenarioBlocks += BallastIsolatedScenarioScopeImpl(
             delegate = BallastScenarioScopeImpl<Inputs, Events, State>(name).apply {
                 running {

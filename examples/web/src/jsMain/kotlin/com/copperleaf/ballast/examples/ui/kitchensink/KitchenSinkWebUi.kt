@@ -106,16 +106,24 @@ object KitchenSinkWebUi {
             Text("ErrorRunningSideJob")
         }
         Br { }
-        BulmaButton(
-            onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideJob) },
-        ) {
-            Text("InfiniteSideJob")
+        if (uiState.infiniteSideJobRunning) {
+            BulmaButton(
+                onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) },
+            ) {
+                Text("CancelInfiniteSideJob")
+            }
+        } else {
+            BulmaButton(
+                onClick = { postInput(KitchenSinkContract.Inputs.InfiniteSideJob) },
+            ) {
+                Text("InfiniteSideJob")
+            }
         }
         Br { }
         BulmaButton(
-            onClick = { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) },
+            onClick = { postInput(KitchenSinkContract.Inputs.ShutDownGracefully) },
         ) {
-            Text("CancelInfiniteSideJob")
+            Text("ShutDownGracefully")
         }
         Br { }
     }

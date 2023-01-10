@@ -2,8 +2,19 @@ package com.copperleaf.ballast.test
 
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.SideJobScope
+import kotlin.time.Duration
 
 public data class TestResults<Inputs : Any, Events : Any, State : Any>(
+
+    /**
+     * True if the test timed out before the input sequence and graceful shutdown was able to complete normally.
+     */
+    public val timedOut: Boolean,
+
+    /**
+     * How long the test took to run to completion.
+     */
+    public val testDuration: Duration,
 
     /**
      * All values intercepted by [BallastInterceptor.onInputAccepted] during the test.

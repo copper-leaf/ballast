@@ -116,6 +116,19 @@ public final class com/copperleaf/ballast/BallastNotification$InputRejected : co
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/copperleaf/ballast/BallastNotification$InterceptorAttached : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/copperleaf/ballast/BallastInterceptor;)V
+	public final fun getInterceptor ()Lcom/copperleaf/ballast/BallastInterceptor;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/BallastNotification$InterceptorFailed : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/copperleaf/ballast/BallastInterceptor;Ljava/lang/Throwable;)V
+	public final fun getInterceptor ()Lcom/copperleaf/ballast/BallastInterceptor;
+	public final fun getThrowable ()Ljava/lang/Throwable;
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/copperleaf/ballast/BallastNotification$SideJobCancelled : com/copperleaf/ballast/BallastNotification {
 	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)V
 	public final fun getKey ()Ljava/lang/String;
@@ -163,13 +176,9 @@ public final class com/copperleaf/ballast/BallastNotification$UnhandledError : c
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/BallastNotification$ViewModelCleared : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class com/copperleaf/ballast/BallastNotification$ViewModelStarted : com/copperleaf/ballast/BallastNotification {
-	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+public final class com/copperleaf/ballast/BallastNotification$ViewModelStatusChanged : com/copperleaf/ballast/BallastNotification {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lcom/copperleaf/ballast/internal/Status;)V
+	public final fun getStatus ()Lcom/copperleaf/ballast/internal/Status;
 	public fun toString ()Ljava/lang/String;
 }
 
@@ -308,24 +317,24 @@ public abstract interface class com/copperleaf/ballast/InputStrategyScope {
 }
 
 public abstract class com/copperleaf/ballast/Queued {
+	public abstract fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 }
 
 public final class com/copperleaf/ballast/Queued$CloseGracefully : com/copperleaf/ballast/Queued {
-	public synthetic fun <init> (Lkotlinx/coroutines/CompletableDeferred;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (Lkotlinx/coroutines/CompletableDeferred;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
+	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 	public final fun getGracePeriod-UwyO8pc ()J
 }
 
 public final class com/copperleaf/ballast/Queued$HandleInput : com/copperleaf/ballast/Queued {
 	public fun <init> (Lkotlinx/coroutines/CompletableDeferred;Ljava/lang/Object;)V
-	public final fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
+	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 	public final fun getInput ()Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/Queued$RestoreState : com/copperleaf/ballast/Queued {
 	public fun <init> (Lkotlinx/coroutines/CompletableDeferred;Ljava/lang/Object;)V
-	public final fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
+	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 	public final fun getState ()Ljava/lang/Object;
 }
 
@@ -368,7 +377,7 @@ public final class com/copperleaf/ballast/UtilsKt {
 	public static final fun plusAssign (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/BallastInterceptor;)V
 	public static final fun plusAssign (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Iterable;)V
 	public static final fun postEventWithState (Lcom/copperleaf/ballast/InputHandlerScope;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final fun postInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;)V
+	public static final fun postInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static final fun queuedInputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun states (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun withViewModel (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
@@ -539,7 +548,6 @@ public final class com/copperleaf/ballast/core/PrintlnLogger : com/copperleaf/ba
 public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/copperleaf/ballast/BallastViewModel, com/copperleaf/ballast/BallastViewModelConfiguration {
 	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 	public final fun attachEventHandler (Lcom/copperleaf/ballast/EventHandler;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun awaitSideJobsCompletion (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getFilter ()Lcom/copperleaf/ballast/InputFilter;
 	public fun getInitialState ()Ljava/lang/Object;
@@ -556,5 +564,82 @@ public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/co
 	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun start (Lkotlinx/coroutines/CoroutineScope;)V
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface class com/copperleaf/ballast/internal/Status {
+	public abstract fun checkCanClear ()V
+	public abstract fun checkCanShutDown ()V
+	public abstract fun checkCanStart ()V
+	public abstract fun checkEventsOpen ()V
+	public abstract fun checkMainQueueOpen ()V
+	public abstract fun checkSideJobCancellationOpen ()V
+	public abstract fun checkSideJobsOpen ()V
+	public abstract fun checkStateChangeOpen ()V
+}
+
+public final class com/copperleaf/ballast/internal/Status$Cleared : com/copperleaf/ballast/internal/Status {
+	public static final field INSTANCE Lcom/copperleaf/ballast/internal/Status$Cleared;
+	public fun checkCanClear ()V
+	public fun checkCanShutDown ()V
+	public fun checkCanStart ()V
+	public fun checkEventsOpen ()V
+	public fun checkMainQueueOpen ()V
+	public fun checkSideJobCancellationOpen ()V
+	public fun checkSideJobsOpen ()V
+	public fun checkStateChangeOpen ()V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/internal/Status$NotStarted : com/copperleaf/ballast/internal/Status {
+	public static final field INSTANCE Lcom/copperleaf/ballast/internal/Status$NotStarted;
+	public fun checkCanClear ()V
+	public fun checkCanShutDown ()V
+	public fun checkCanStart ()V
+	public fun checkEventsOpen ()V
+	public fun checkMainQueueOpen ()V
+	public fun checkSideJobCancellationOpen ()V
+	public fun checkSideJobsOpen ()V
+	public fun checkStateChangeOpen ()V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/internal/Status$Running : com/copperleaf/ballast/internal/Status {
+	public static final field INSTANCE Lcom/copperleaf/ballast/internal/Status$Running;
+	public fun checkCanClear ()V
+	public fun checkCanShutDown ()V
+	public fun checkCanStart ()V
+	public fun checkEventsOpen ()V
+	public fun checkMainQueueOpen ()V
+	public fun checkSideJobCancellationOpen ()V
+	public fun checkSideJobsOpen ()V
+	public fun checkStateChangeOpen ()V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/internal/Status$ShuttingDown : com/copperleaf/ballast/internal/Status {
+	public fun <init> (ZZZZZ)V
+	public fun checkCanClear ()V
+	public fun checkCanShutDown ()V
+	public fun checkCanStart ()V
+	public fun checkEventsOpen ()V
+	public fun checkMainQueueOpen ()V
+	public fun checkSideJobCancellationOpen ()V
+	public fun checkSideJobsOpen ()V
+	public fun checkStateChangeOpen ()V
+	public final fun component1 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()Z
+	public final fun component4 ()Z
+	public final fun component5 ()Z
+	public final fun copy (ZZZZZ)Lcom/copperleaf/ballast/internal/Status$ShuttingDown;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/internal/Status$ShuttingDown;ZZZZZILjava/lang/Object;)Lcom/copperleaf/ballast/internal/Status$ShuttingDown;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getEventsOpen ()Z
+	public final fun getMainQueueOpen ()Z
+	public final fun getSideJobsCancellationOpen ()Z
+	public final fun getSideJobsOpen ()Z
+	public final fun getStateChangeOpen ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 

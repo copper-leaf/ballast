@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.initializer
@@ -45,7 +46,7 @@ class KitchenSinkFragment : Fragment(), Destination.ParametersProvider {
         // handle back-button presses to perform navigation
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                vm.trySend(KitchenSinkContract.Inputs.GoBack)
+                vm.trySend(KitchenSinkContract.Inputs.CloseKitchenSinkWindow)
             }
         })
 
@@ -81,10 +82,14 @@ class KitchenSinkFragment : Fragment(), Destination.ParametersProvider {
         btnErrorRunningSideJob.setOnClickListener { postInput(KitchenSinkContract.Inputs.ErrorRunningSideJob) }
         btnInfiniteSideJob.setOnClickListener { postInput(KitchenSinkContract.Inputs.InfiniteSideJob) }
         btnCancelInfiniteSideJob.setOnClickListener { postInput(KitchenSinkContract.Inputs.CancelInfiniteSideJob) }
+        btnShutDownGracefully.setOnClickListener { postInput(KitchenSinkContract.Inputs.ShutDownGracefully) }
+
+        btnInfiniteSideJob.isVisible = !state.infiniteSideJobRunning
+        btnCancelInfiniteSideJob.isVisible = state.infiniteSideJobRunning
 
         toolbar.title = "Kitchen Sink (${state.inputStrategy.name})"
         toolbar.setNavigationOnClickListener {
-            postInput(KitchenSinkContract.Inputs.GoBack)
+            postInput(KitchenSinkContract.Inputs.CloseKitchenSinkWindow)
         }
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {

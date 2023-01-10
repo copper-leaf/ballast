@@ -6,8 +6,6 @@ import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.test.BallastScenarioInputSequenceScope
 import com.copperleaf.ballast.test.BallastScenarioScope
 import com.copperleaf.ballast.test.TestResults
-import com.copperleaf.ballast.test.internal.vm.TestInterceptorWrapper
-import com.copperleaf.ballast.test.internal.vm.TestViewModel
 import kotlin.time.Duration
 
 internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>(
@@ -25,7 +23,7 @@ internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>
     internal var timeout: Duration? = null
     internal var inputStrategy: InputStrategy<Inputs, Events, State>? = null
 
-    internal val interceptors: MutableList<() -> BallastInterceptor<TestViewModel.Inputs<Inputs>, Events, State>> =
+    internal val interceptors: MutableList<() -> BallastInterceptor<Inputs, Events, State>> =
         mutableListOf()
 
     override fun solo() {
@@ -49,7 +47,7 @@ internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>
     }
 
     override fun addInterceptor(interceptor: () -> BallastInterceptor<Inputs, Events, State>) {
-        this.interceptors += { TestInterceptorWrapper(interceptor()) }
+        this.interceptors += interceptor
     }
 
     override fun given(block: () -> State) {

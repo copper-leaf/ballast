@@ -378,12 +378,9 @@ public fun BallastViewModelState.updateWithDebuggerEvent(
             copy(refreshing = false)
         }
 
-        is BallastDebuggerEvent.ViewModelStarted -> {
+        is BallastDebuggerEvent.ViewModelStatusChanged -> {
             copy(viewModelActive = true, viewModelType = event.viewModelType)
-        }
-
-        is BallastDebuggerEvent.ViewModelCleared -> {
-            copy(viewModelActive = false)
+//            copy(viewModelActive = false) // TODO
         }
 
         is BallastDebuggerEvent.InputQueued -> {

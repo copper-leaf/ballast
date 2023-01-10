@@ -12,5 +12,7 @@ public class SimpleTestLogger : BallastLogger {
     }
 
     // ignore errors
-    override fun error(throwable: Throwable) {}
+    override fun error(throwable: Throwable) {
+        throwable.printStackTrace()
+    }
 }

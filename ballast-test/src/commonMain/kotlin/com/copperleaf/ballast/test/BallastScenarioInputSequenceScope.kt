@@ -7,7 +7,7 @@ public interface BallastScenarioInputSequenceScope<Inputs : Any, Events : Any, S
      * advancing to the next input. Because this method will suspend until the input is completely finished, it will
      * never be cancelled by a new Input being sent too quickly.
      */
-    public suspend fun sendAndAwait(input: Inputs): State
+    public suspend fun sendAndAwait(input: Inputs)
 
     /**
      * Send an input to the ViewModel for processing, but do not wait for it to finish processing. It will wait only

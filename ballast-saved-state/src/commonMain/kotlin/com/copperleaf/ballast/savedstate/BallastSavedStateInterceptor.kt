@@ -4,6 +4,7 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
+import com.copperleaf.ballast.internal.Status
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
@@ -37,8 +38,16 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
             notifications
                 .collect {
                     when (it) {
-                        is BallastNotification.ViewModelStarted -> {
-                            requestStateRestoration()
+                        is BallastNotification.ViewModelStatusChanged -> {
+                            when (it.status) {
+                                is Status.Running -> {
+                                    requestStateRestoration()
+                                }
+
+                                else -> {
+                                    // these other statuses are fine to be sent any time, we can ignore them
+                                }
+                            }
                         }
 
                         is BallastNotification.StateChanged<Inputs, Events, State> -> {
@@ -48,8 +57,7 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
 
                         is BallastNotification.EventProcessingStarted,
                         is BallastNotification.EventProcessingStopped,
-                        is BallastNotification.UnhandledError,
-                        is BallastNotification.ViewModelCleared -> {
+                        is BallastNotification.UnhandledError -> {
                             // these notifications are fine to be sent any time, we can ignore them
                         }
 

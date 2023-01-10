@@ -35,18 +35,21 @@ class ClientModelMapperV1 : ClientModelMapper {
                 connectionId = connectionId,
                 viewModelName = viewModelName,
             )
-            is BallastDebuggerEventV1.ViewModelStarted -> BallastDebuggerEvent.ViewModelStarted(
+            is BallastDebuggerEventV1.ViewModelStarted -> BallastDebuggerEvent.ViewModelStatusChanged(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 viewModelType = viewModelType,
                 uuid = uuid,
                 timestamp = timestamp,
+                status = "Running",
             )
-            is BallastDebuggerEventV1.ViewModelCleared -> BallastDebuggerEvent.ViewModelCleared(
+            is BallastDebuggerEventV1.ViewModelCleared -> BallastDebuggerEvent.ViewModelStatusChanged(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
+                viewModelType = "", // uh-oh, missing this field on the clients...
                 uuid = uuid,
                 timestamp = timestamp,
+                status = "Cleared",
             )
             is BallastDebuggerEventV1.InputQueued -> BallastDebuggerEvent.InputQueued(
                 connectionId = connectionId,

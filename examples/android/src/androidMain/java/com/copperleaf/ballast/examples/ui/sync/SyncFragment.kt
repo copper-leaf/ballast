@@ -18,10 +18,6 @@ import com.copperleaf.ballast.sync.InMemorySyncAdapter
 @OptIn(ExperimentalBallastApi::class)
 class SyncFragment : Fragment() {
 
-    init {
-        println("new SyncFragment")
-    }
-
     private val injector: AndroidInjector = MainApplication.getInstance().injector
     private var binding: FragmentSyncBinding? = null
     private val syncAdapter = InMemorySyncAdapter<

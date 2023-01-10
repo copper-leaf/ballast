@@ -2,6 +2,7 @@ package com.copperleaf.ballast.internal
 
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.EventHandlerScope
+import com.copperleaf.ballast.Queued
 
 internal class EventHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
@@ -10,7 +11,7 @@ internal class EventHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override val logger: BallastLogger get() = impl.logger
 
     override suspend fun postInput(input: Inputs) {
-        impl.enqueueInput(input, null, false)
+        impl.enqueueQueued(Queued.HandleInput(null, input), await = false)
     }
 
     fun ensureUsedCorrectly() {

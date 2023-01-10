@@ -19,6 +19,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(project(":ballast-test"))
+                api(libs.kotlinx.coroutines.test)
             }
         }
         val jvmMain by getting {

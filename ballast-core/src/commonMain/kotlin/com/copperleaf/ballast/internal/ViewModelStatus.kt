@@ -1,17 +1,17 @@
 package com.copperleaf.ballast.internal
 
-internal sealed interface Status {
-    fun checkCanStart()
-    fun checkCanShutDown()
-    fun checkCanClear()
+public sealed interface Status {
+    public fun checkCanStart()
+    public fun checkCanShutDown()
+    public fun checkCanClear()
 
-    fun checkStateChangeOpen()
-    fun checkMainQueueOpen()
-    fun checkEventsOpen()
-    fun checkSideJobsOpen()
-    fun checkSideJobCancellationOpen()
+    public fun checkStateChangeOpen()
+    public fun checkMainQueueOpen()
+    public fun checkEventsOpen()
+    public fun checkSideJobsOpen()
+    public fun checkSideJobCancellationOpen()
 
-    object NotStarted : Status {
+    public object NotStarted : Status {
         override fun checkCanStart() {}
 
         override fun checkCanShutDown() {
@@ -41,9 +41,13 @@ internal sealed interface Status {
         override fun checkSideJobCancellationOpen() {
             error("VM is not started!")
         }
+
+        override fun toString(): String {
+            return "NotStarted"
+        }
     }
 
-    object Running : Status {
+    public object Running : Status {
         override fun checkCanStart() {
             error("VM is already started")
         }
@@ -59,9 +63,13 @@ internal sealed interface Status {
         override fun checkEventsOpen() {}
         override fun checkSideJobsOpen() {}
         override fun checkSideJobCancellationOpen() {}
+
+        override fun toString(): String {
+            return "Running"
+        }
     }
 
-    data class ShuttingDown(
+    public data class ShuttingDown(
         val stateChangeOpen: Boolean,
         val mainQueueOpen: Boolean,
         val eventsOpen: Boolean,
@@ -100,9 +108,19 @@ internal sealed interface Status {
         override fun checkSideJobCancellationOpen() {
             if (!sideJobsCancellationOpen) error("VM is shutting down and SideJobs can no longer be manually cancelled!")
         }
+
+        override fun toString(): String {
+            return "ShuttingDown(" +
+                    "sideJobsOpen=$sideJobsOpen, " +
+                    "mainQueueOpen=$mainQueueOpen, " +
+                    "stateChangeOpen=$stateChangeOpen, " +
+                    "sideJobsCancellationOpen=$sideJobsCancellationOpen, " +
+                    "eventsOpen=$eventsOpen, " +
+                    ")"
+        }
     }
 
-    object Cleared : Status {
+    public object Cleared : Status {
         override fun checkCanStart() {
             error("VM is cleared, it cannot be restarted")
         }
@@ -133,6 +151,10 @@ internal sealed interface Status {
 
         override fun checkSideJobCancellationOpen() {
             error("VM is cleared!")
+        }
+
+        override fun toString(): String {
+            return "Cleared"
         }
     }
 }

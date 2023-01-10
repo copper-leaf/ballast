@@ -1,14 +1,16 @@
 package com.copperleaf.ballast
 
 import com.copperleaf.ballast.core.DefaultViewModelConfiguration
+import com.copperleaf.ballast.internal.Status
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 
 /**
  * Observe a Flow of Inputs that will run asynchronously in its own [SideJobScope]. This will
@@ -21,10 +23,10 @@ import kotlinx.coroutines.flow.onEach
  * The side-job started from the Flow uses the resulting Input's simple class name as
  * its key.
  */
-public inline fun <
-    reified Inputs : Any,
-    Events : Any,
-    State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
+public suspend inline fun <
+        reified Inputs : Any,
+        Events : Any,
+        State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
     key: String,
     vararg inputs: Flow<Inputs>,
 ) {
@@ -48,10 +50,10 @@ public inline fun <
  * The side-job started from the Flow uses the resulting Input's simple class name as
  * its key.
  */
-public inline fun <
-    reified Inputs : Any,
-    Events : Any,
-    State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
+public suspend inline fun <
+        reified Inputs : Any,
+        Events : Any,
+        State : Any> InputHandlerScope<Inputs, Events, State>.observeFlows(
     key: String,
     crossinline getInputs: SideJobScope<Inputs, Events, State>.() -> List<Flow<Inputs>>,
 ) {
@@ -73,7 +75,7 @@ public inline fun <
  * any already-running side-jobs.
  */
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <Inputs : Any, Events : Any, State : Any> InputHandlerScope<Inputs, Events, State>.postInput(
+public suspend inline fun <Inputs : Any, Events : Any, State : Any> InputHandlerScope<Inputs, Events, State>.postInput(
     input: Inputs
 ) {
     sideJob(key = input.toString()) {
@@ -86,9 +88,9 @@ public inline fun <Inputs : Any, Events : Any, State : Any> InputHandlerScope<In
  * both the given Input and the current State. If the State is not needed, use [InputHandlerScope.postEvent] instead.
  */
 public suspend inline fun <
-    Inputs : Any,
-    Events : Any,
-    State : Any> InputHandlerScope<Inputs, Events, State>.postEventWithState(
+        Inputs : Any,
+        Events : Any,
+        State : Any> InputHandlerScope<Inputs, Events, State>.postEventWithState(
     block: (State) -> Events
 ) {
     val currentState = getCurrentState()
@@ -403,12 +405,20 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
             addValueToCache(viewModelName)
         }
 
-        is BallastNotification.ViewModelStarted -> {
-            addValueToCache(viewModelName)
+        is BallastNotification.ViewModelStatusChanged -> {
+            if (this.status == Status.Cleared) {
+                removeValueFromCache(viewModelName)
+            } else {
+                addValueToCache(viewModelName)
+            }
         }
 
-        is BallastNotification.ViewModelCleared -> {
-            removeValueFromCache(viewModelName)
+        is BallastNotification.InterceptorAttached -> {
+            addValueToCache(interceptor)
+        }
+
+        is BallastNotification.InterceptorFailed -> {
+            removeValueFromCache(interceptor)
         }
     }
 }
@@ -420,8 +430,9 @@ public fun <Inputs : Any, Events : Any, State : Any, T : Any> BallastNotificatio
  * Suspend until the ViewModel has started
  */
 public suspend inline fun <Inputs : Any, Events : Any, State : Any> Flow<BallastNotification<Inputs, Events, State>>.awaitViewModelStart() {
-    filterIsInstance<BallastNotification.ViewModelStarted<Inputs, Events, State>>()
-        .first()
+    filter {
+        it is BallastNotification.ViewModelStatusChanged<Inputs, Events, State> && it.status == Status.Running
+    }.take(1)
 }
 
 /**

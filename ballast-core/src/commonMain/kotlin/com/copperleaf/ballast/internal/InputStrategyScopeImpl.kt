@@ -28,18 +28,6 @@ internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
         queued: Queued<Inputs, Events, State>,
         guardian: InputStrategy.Guardian,
     ) {
-        when (queued) {
-            is Queued.HandleInput -> {
-                impl.safelyHandleInput(queued.input, queued.deferred, guardian)
-            }
-
-            is Queued.RestoreState -> {
-                impl.safelySetState(queued.state, queued.deferred)
-            }
-
-            is Queued.CloseGracefully -> {
-                impl.gracefullyShutDown(queued.gracePeriod, queued.deferred)
-            }
-        }
+        impl.safelyHandleQueued(queued, guardian)
     }
 }

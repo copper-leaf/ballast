@@ -12,10 +12,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
@@ -32,6 +30,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.transformWhile
@@ -43,7 +42,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import kotlinx.coroutines.yield
 import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration
 
@@ -55,122 +53,113 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
     private data class InternalState(
         val status: Status = Status.NotStarted,
-        val sideJobs: Map<String, RunningSideJob> = emptyMap(),
+        val sideJobs: Map<String, SideJobList> = emptyMap(),
     )
 
 // Internal properties
 // ---------------------------------------------------------------------------------------------------------------------
 
-    private val internalState: MutableStateFlow<InternalState> = MutableStateFlow(InternalState())
+    private val _internalState: MutableStateFlow<InternalState> = MutableStateFlow(InternalState())
+    private val _state: MutableStateFlow<State> = MutableStateFlow(initialState)
 
     internal lateinit var viewModelScope: CoroutineScope
 
-    private val _inputQueue: Channel<Queued<Inputs, Events, State>> =
-        config.inputStrategy.createQueue()
-    private val _state: MutableStateFlow<State> =
-        MutableStateFlow(initialState)
-    private val _events: Channel<Events> =
-        Channel(BUFFERED, BufferOverflow.SUSPEND)
-    private val _sideJobs: Channel<SideJobRequest<Inputs, Events, State>> =
-        Channel(BUFFERED, BufferOverflow.SUSPEND)
-    private val _notifications: MutableSharedFlow<BallastNotification<Inputs, Events, State>> =
-        MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE)
-
     private val uncaughtExceptionHandler = CoroutineExceptionHandler { _, e ->
-        _notifications.tryEmit(BallastNotification.UnhandledError(type, name, e))
+        notifyImmediate(BallastNotification.UnhandledError(type, name, e))
     }
 
 // Core MVI pattern API
 // ---------------------------------------------------------------------------------------------------------------------
 
     override fun observeStates(): StateFlow<State> {
-        // TODO: include a check here?
         return _state.asStateFlow()
     }
 
     override suspend fun send(element: Inputs) {
-        enqueueInput(input = element, deferred = null, await = false)
+        enqueueQueued(Queued.HandleInput(null, element), await = false)
     }
 
     override suspend fun sendAndAwaitCompletion(element: Inputs) {
-        enqueueInput(input = element, deferred = CompletableDeferred(), await = true)
+        enqueueQueued(Queued.HandleInput(CompletableDeferred(), element), await = true)
     }
 
     override fun trySend(element: Inputs): ChannelResult<Unit> {
-        return enqueueInputImmediate(input = element, deferred = null)
-    }
-
-    public suspend fun attachEventHandler(
-        handler: EventHandler<Inputs, Events, State>
-    ) {
-        _notifications.emit(BallastNotification.EventProcessingStarted(type, name))
-
-        coroutineContext.job.invokeOnCompletion {
-            _notifications.tryEmit(BallastNotification.EventProcessingStopped(type, name))
-        }
-
-        withContext(uncaughtExceptionHandler) {
-            _events
-                .receiveAsFlow()
-                .onEach { safelyHandleEvent(it, handler) }
-                .flowOn(eventsDispatcher)
-                .launchIn(this)
-        }
+        return enqueueQueuedImmediate(Queued.HandleInput(null, element))
     }
 
 // ViewModel Lifecycle
 // ---------------------------------------------------------------------------------------------------------------------
 
     public fun start(coroutineScope: CoroutineScope) {
-        internalState.update {
-            // check the ViewModel is in a valid state to be started
-            it.status.checkCanStart()
-            it.copy(status = Status.Running)
-        }
+        // check the ViewModel is in a valid state to be started
+        _internalState.value.status.checkCanStart()
 
         // create the real viewModel's coroutineScope
         viewModelScope = coroutineScope + uncaughtExceptionHandler
-
-        // start processing everything within the ViewModel
-        startMainQueueInternal()
-        startSideJobsInternal()
-        startInterceptorsInternal()
-
-        // notify interceptors that the VM is officially started
-        _notifications.tryEmit(BallastNotification.ViewModelStarted(type, name))
-
-        // emit the initial state
-        _notifications.tryEmit(BallastNotification.StateChanged(type, name, initialState))
 
         // set the VM to clear itself upon the cancellation of its coroutine scope
         viewModelScope.coroutineContext.job.invokeOnCompletion {
             onCleared()
         }
+
+        // launch a job to initiate the startup sequence for this VM
+        viewModelScope.launch(start = CoroutineStart.UNDISPATCHED) {
+            // mark the VM as being in the Running state. This is only checked internally, not sent to Interceptors yet
+            _internalState.update {
+                it.copy(status = Status.Running)
+            }
+
+            // start processing the main queue, accepting Inputs for processing through the InputStrategy
+            startMainQueueInternal()
+
+            // start processing the sideJobs queue, so requests for sideJobs from Inputs will be started
+            startSideJobsInternal()
+
+            // let the interceptors start running, each on their own isolated coroutineScopes that are a child of the
+            // main viewModelScope
+            startInterceptorsInternal()
+
+            // now that the Interceptors are running, we can start processing any Notifications that should be sent to
+            // them. Any Notifications emitted before this line will just be buffered so that Interceptors do not miss
+            // any notifications that were sent before they launched
+            startProcessingNotificationsInternal()
+
+            // notify interceptors that the VM is officially in the Running state. Many Interceptors will wait for this
+            // explicit signal before doing any further processing.
+            notify(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
+
+            // emit the initial state to all Interceptors
+            notify(BallastNotification.StateChanged(type, name, initialState))
+        }
     }
 
     private fun onCleared() {
-        internalState.getAndUpdate {
-            it.status.checkCanClear()
+        _internalState.value.status.checkCanClear()
 
-            // side-jobs are already bound by the viewModelScope, and will get cancelled
-            // automatically, but we still need to clear the registry
+        // side-jobs are already bound by the viewModelScope and will get cancelled automatically, but we still need
+        // to clear the internal state
+        _internalState.getAndUpdate {
             it.copy(status = Status.Cleared, sideJobs = emptyMap())
         }
 
-        _notifications.tryEmit(BallastNotification.ViewModelCleared(type, name))
+        // send the final notification to Interceptors that the status has changed to Cleared
+        notifyImmediate(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
 
-        _inputQueue.close()
-        _events.close()
-        _sideJobs.close()
+        // ensure all queues are closed. In a graceful shutdown they will be closed already, but if the VM was closed by
+        // the cancellation of its coroutineScope, then they will not be closed until this point.
+        _mainQueue.close()
+        _eventsQueue.close()
+        _sideJobsRequestQueue.close()
+        _notificationsQueue.close()
     }
 
 // Internals
 // ---------------------------------------------------------------------------------------------------------------------
 
-    internal fun gracefullyShutDown(gracePeriod: Duration, deferred: CompletableDeferred<Unit>?) {
-        internalState.value.status.checkCanShutDown()
+    private fun gracefullyShutDown(gracePeriod: Duration, deferred: CompletableDeferred<Unit>?) {
+        _internalState.value.status.checkCanShutDown()
         viewModelScope.launch {
-            internalState.update {
+            _internalState.update {
                 it.copy(
                     status = Status.ShuttingDown(
                         stateChangeOpen = true,
@@ -182,32 +171,43 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 )
             }
 
+            // notify Interceptors that we are now starting to shut down the VM. This process may take some time
+            notify(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
+
             // first shut down the sideJobs
             gracefullyShutDownSideJobs(gracePeriod)
 
             // then, shut down the main queue, preventing any more Inputs from being received
-            gracefullyShutDownMainQueue(gracePeriod)
+            gracefullyShutDownMainQueue()
 
-            // finally, drain the events channel,
-            gracefullyShutDownEvents(gracePeriod)
+            // then, drain the events channel
+            gracefullyShutDownEvents()
 
-            // cancel its own viewModelScope so nothing else can be processed
-            viewModelScope.cancel()
+            // finally, drain the notifications channel
+            gracefullyShutDownNotifications()
 
             deferred?.complete(Unit)
+
+            // There should be no data left flowing throughout the VM at this point. Cancel its own viewModelScope to
+            // make sure nothing else will start processing
+            viewModelScope.cancel()
         }
     }
 
 // Main Queue
 // ---------------------------------------------------------------------------------------------------------------------
 
+    private val _mainQueue: Channel<Queued<Inputs, Events, State>> = config.inputStrategy.createQueue()
+    private val _mainQueueDrained = CompletableDeferred<Unit>()
+
     private fun startMainQueueInternal() {
         // observe and process Inputs
         viewModelScope.launch {
-            val filteredInputsFlow = _inputQueue
+            val filteredInputsFlow = _mainQueue
                 .receiveAsFlow()
                 .filter { queued -> filterQueued(queued) }
                 .flowOn(inputsDispatcher)
+                .onCompletion { _mainQueueDrained.complete(Unit) }
 
             with(config.inputStrategy) {
                 InputStrategyScopeImpl(this@BallastViewModelImpl).processInputs(
@@ -230,7 +230,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 val shouldAcceptInput = filter?.filterInput(currentState, queued.input) ?: InputFilter.Result.Accept
 
                 if (shouldAcceptInput == InputFilter.Result.Reject) {
-                    _notifications.emit(BallastNotification.InputRejected(type, name, currentState, queued.input))
+                    notify(BallastNotification.InputRejected(type, name, currentState, queued.input))
                     queued.deferred?.complete(Unit)
                 }
 
@@ -243,56 +243,92 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    internal suspend fun enqueueQueued(queued: Queued<Inputs, Events, State>) {
-        internalState.value.status.checkMainQueueOpen()
-        _inputQueue.send(queued)
-    }
+    internal suspend fun enqueueQueued(queued: Queued<Inputs, Events, State>, await: Boolean) {
+        _internalState.value.status.checkMainQueueOpen()
 
-    internal suspend fun enqueueGracefulShutdown(gracePeriod: Duration, deferred: CompletableDeferred<Unit>?) {
-        internalState.value.status.checkMainQueueOpen()
-        _inputQueue.send(Queued.CloseGracefully(deferred, gracePeriod))
-    }
+        when (queued) {
+            is Queued.HandleInput -> {
+                notify(BallastNotification.InputQueued(type, name, queued.input))
+            }
 
-    internal suspend fun enqueueInput(input: Inputs, deferred: CompletableDeferred<Unit>?, await: Boolean) {
-        internalState.value.status.checkMainQueueOpen()
-        _notifications.emit(BallastNotification.InputQueued(type, name, input))
-        _inputQueue.send(Queued.HandleInput(deferred, input))
-        if (await && deferred != null) {
-            deferred.await()
+            is Queued.RestoreState -> {
+
+            }
+
+            is Queued.CloseGracefully -> {
+
+            }
+        }
+
+        _mainQueue.send(queued)
+
+        if (await) {
+            queued.deferred?.await()
         }
     }
 
-    private fun enqueueInputImmediate(input: Inputs, deferred: CompletableDeferred<Unit>?): ChannelResult<Unit> {
-        internalState.value.status.checkMainQueueOpen()
-        _notifications.tryEmit(BallastNotification.InputQueued(type, name, input))
-        val result = _inputQueue.trySend(Queued.HandleInput(deferred, input))
+    private fun enqueueQueuedImmediate(queued: Queued<Inputs, Events, State>): ChannelResult<Unit> {
+        _internalState.value.status.checkMainQueueOpen()
+
+        when (queued) {
+            is Queued.HandleInput -> {
+                notifyImmediate(BallastNotification.InputQueued(type, name, queued.input))
+            }
+
+            is Queued.RestoreState -> {
+
+            }
+
+            is Queued.CloseGracefully -> {
+
+            }
+        }
+
+        val result = _mainQueue.trySend(queued)
+
         if (result.isFailure || result.isClosed) {
-            _notifications.tryEmit(BallastNotification.InputDropped(type, name, input))
+            when (queued) {
+                is Queued.HandleInput -> {
+                    notifyImmediate(BallastNotification.InputDropped(type, name, queued.input))
+                }
+
+                is Queued.RestoreState -> {
+
+                }
+
+                is Queued.CloseGracefully -> {
+
+                }
+            }
         }
         return result
     }
 
-    private suspend fun gracefullyShutDownMainQueue(gracePeriod: Duration) {
-        println("gracefully shutting down main queue")
-        internalState.update {
-            it.copy(
-                status = Status.ShuttingDown(
-                    stateChangeOpen = true,
-                    mainQueueOpen = false,
-                    eventsOpen = true,
-                    sideJobsOpen = false,
-                    sideJobsCancellationOpen = true,
-                )
-            )
+    internal suspend fun safelyHandleQueued(
+        queued: Queued<Inputs, Events, State>,
+        guardian: InputStrategy.Guardian,
+    ) {
+        when (queued) {
+            is Queued.HandleInput -> {
+                safelyHandleInput(queued.input, queued.deferred, guardian)
+            }
+
+            is Queued.RestoreState -> {
+                safelySetState(queued.state, queued.deferred)
+            }
+
+            is Queued.CloseGracefully -> {
+                gracefullyShutDown(queued.gracePeriod, queued.deferred)
+            }
         }
     }
 
-    internal suspend fun safelyHandleInput(
+    private suspend fun safelyHandleInput(
         input: Inputs,
         deferred: CompletableDeferred<Unit>?,
         guardian: InputStrategy.Guardian,
     ) {
-        _notifications.emit(BallastNotification.InputAccepted(type, name, input))
+        notify(BallastNotification.InputAccepted(type, name, input))
 
         val stateBeforeCancellation = getCurrentState()
         try {
@@ -305,9 +341,9 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 handlerScope.close()
 
                 try {
-                    _notifications.emit(BallastNotification.InputHandledSuccessfully(type, name, input))
+                    notify(BallastNotification.InputHandledSuccessfully(type, name, input))
                 } catch (t: Throwable) {
-                    _notifications.emit(BallastNotification.InputHandlerError(type, name, input, t))
+                    notify(BallastNotification.InputHandlerError(type, name, input, t))
                 }
                 deferred?.complete(Unit)
             }
@@ -315,24 +351,65 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             // when the coroutine is cancelled for any reason, we must assume the input did not
             // complete and may have left the State in a bad, erm..., state. We should reset it and
             // try to forget that we ever tried to process it in the first place
-            _notifications.emit(BallastNotification.InputCancelled(type, name, input))
+            notify(BallastNotification.InputCancelled(type, name, input))
             if (config.inputStrategy.rollbackOnCancellation) {
                 safelySetState(stateBeforeCancellation, null)
             }
             deferred?.complete(Unit)
         } catch (e: Throwable) {
-            _notifications.emit(BallastNotification.InputHandlerError(type, name, input, e))
+            notify(BallastNotification.InputHandlerError(type, name, input, e))
             deferred?.complete(Unit)
         }
+    }
+
+    private suspend fun gracefullyShutDownMainQueue() {
+        _internalState.update {
+            it.copy(
+                status = Status.ShuttingDown(
+                    stateChangeOpen = true,
+                    mainQueueOpen = false,
+                    eventsOpen = true,
+                    sideJobsOpen = false,
+                    sideJobsCancellationOpen = true,
+                )
+            )
+        }
+        notify(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
+
+        // close the main queue and wait for all Inputs to be handled
+        _mainQueue.close()
+        _mainQueueDrained.await()
     }
 
 // Events
 // ---------------------------------------------------------------------------------------------------------------------
 
+    private val _eventsQueue: Channel<Events> = Channel(BUFFERED, BufferOverflow.SUSPEND)
+    private val _eventsQueueDrained: CompletableDeferred<Unit> = CompletableDeferred()
+
+    public suspend fun attachEventHandler(
+        handler: EventHandler<Inputs, Events, State>
+    ) {
+        notify(BallastNotification.EventProcessingStarted(type, name))
+
+        coroutineContext.job.invokeOnCompletion {
+            notifyImmediate(BallastNotification.EventProcessingStopped(type, name))
+        }
+
+        withContext(uncaughtExceptionHandler) {
+            _eventsQueue
+                .receiveAsFlow()
+                .onEach { safelyHandleEvent(it, handler) }
+                .flowOn(eventsDispatcher)
+                .onCompletion { _eventsQueueDrained.complete(Unit) }
+                .launchIn(this)
+        }
+    }
+
     internal suspend fun enqueueEvent(event: Events, deferred: CompletableDeferred<Unit>?, await: Boolean) {
-        internalState.value.status.checkEventsOpen()
-        _notifications.emit(BallastNotification.EventQueued(type, name, event))
-        _events.send(event)
+        _internalState.value.status.checkEventsOpen()
+        notify(BallastNotification.EventQueued(type, name, event))
+        _eventsQueue.send(event)
         if (await && deferred != null) {
             deferred.await()
         }
@@ -342,7 +419,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         event: Events,
         handler: EventHandler<Inputs, Events, State>
     ) {
-        _notifications.emit(BallastNotification.EventEmitted(type, name, event))
+        notify(BallastNotification.EventEmitted(type, name, event))
         try {
             coroutineScope {
                 val handlerScope = EventHandlerScopeImpl(this@BallastViewModelImpl)
@@ -350,18 +427,17 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     handlerScope.handleEvent(event)
                 }
                 handlerScope.ensureUsedCorrectly()
-                _notifications.emit(BallastNotification.EventHandledSuccessfully(type, name, event))
+                notify(BallastNotification.EventHandledSuccessfully(type, name, event))
             }
         } catch (e: CancellationException) {
             // ignore
         } catch (e: Throwable) {
-            _notifications.emit(BallastNotification.EventHandlerError(type, name, event, e))
+            notify(BallastNotification.EventHandlerError(type, name, event, e))
         }
     }
 
-    private suspend fun gracefullyShutDownEvents(gracePeriod: Duration) {
-        println("gracefully shutting down events")
-        internalState.update {
+    private suspend fun gracefullyShutDownEvents() {
+        _internalState.update {
             it.copy(
                 status = Status.ShuttingDown(
                     stateChangeOpen = false,
@@ -372,6 +448,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 )
             )
         }
+        notify(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
+
+        // close the Events queue and wait for all Events to be handled
+        _eventsQueue.close()
+        _eventsQueueDrained.await()
     }
 
 // States
@@ -381,40 +462,44 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         return _state.value
     }
 
-    internal suspend fun safelySetState(state: State, deferred: CompletableDeferred<Unit>?) {
-        internalState.value.status.checkStateChangeOpen()
+    private suspend fun safelySetState(state: State, deferred: CompletableDeferred<Unit>?) {
+        _internalState.value.status.checkStateChangeOpen()
         _state.value = state
-        _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
+        notify(BallastNotification.StateChanged(type, name, getCurrentState()))
         deferred?.complete(Unit)
     }
 
     internal suspend fun safelyUpdateState(block: (State) -> State) {
-        internalState.value.status.checkStateChangeOpen()
+        _internalState.value.status.checkStateChangeOpen()
         _state.update(block)
-        _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
+        notify(BallastNotification.StateChanged(type, name, getCurrentState()))
     }
 
     internal suspend fun safelyUpdateStateAndGet(block: (State) -> State): State {
-        internalState.value.status.checkStateChangeOpen()
+        _internalState.value.status.checkStateChangeOpen()
         return _state.updateAndGet(block).also {
-            _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
+            notify(BallastNotification.StateChanged(type, name, getCurrentState()))
         }
     }
 
     internal suspend fun safelyGetAndUpdateState(block: (State) -> State): State {
-        internalState.value.status.checkStateChangeOpen()
+        _internalState.value.status.checkStateChangeOpen()
         return _state.getAndUpdate(block).also {
-            _notifications.emit(BallastNotification.StateChanged(type, name, getCurrentState()))
+            notify(BallastNotification.StateChanged(type, name, getCurrentState()))
         }
     }
 
 // Side Jobs
 // ---------------------------------------------------------------------------------------------------------------------
 
+    private val _sideJobsRequestQueue: Channel<SideJobRequest<Inputs, Events, State>> =
+        Channel(BUFFERED, BufferOverflow.SUSPEND)
+    private val _sideJobsRequestQueueDrained = CompletableDeferred<Unit>()
+
     private fun startSideJobsInternal() {
         // start sideJobs posted by Inputs
         viewModelScope.launch {
-            _sideJobs
+            _sideJobsRequestQueue
                 .receiveAsFlow()
                 .onEach { request ->
                     when (request) {
@@ -425,16 +510,9 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                         is SideJobRequest.CancelSideJob -> {
                             safelyCancelSideJob(request)
                         }
-
-                        is SideJobRequest.CancelAllSideJobs -> {
-                            safelyCancelAllSideJobs(request)
-                        }
-
-                        is SideJobRequest.RemoveCompletedSideJob -> {
-                            safelyRemoveCompletedSideJob(request)
-                        }
                     }
                 }
+                .onCompletion { _sideJobsRequestQueueDrained.complete(Unit) }
                 .launchIn(this)
         }
     }
@@ -443,65 +521,45 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         key: String,
         block: suspend SideJobScope<Inputs, Events, State>.() -> Unit,
     ) {
-        internalState.value.status.checkSideJobsOpen()
-        _notifications.tryEmit(BallastNotification.SideJobQueued(type, name, key))
-        _sideJobs.trySend(SideJobRequest.StartOrRestartSideJob(key, block))
+        _internalState.value.status.checkSideJobsOpen()
+        notifyImmediate(BallastNotification.SideJobQueued(type, name, key))
+        _sideJobsRequestQueue.trySend(SideJobRequest.StartOrRestartSideJob(key, block))
     }
 
     internal fun cancelSideJob(
         key: String,
     ) {
-        internalState.value.status.checkSideJobCancellationOpen()
-        _sideJobs.trySend(SideJobRequest.CancelSideJob(key))
+        _internalState.value.status.checkSideJobCancellationOpen()
+        _sideJobsRequestQueue.trySend(SideJobRequest.CancelSideJob(key))
     }
 
     private fun safelyStartOrRestartSideJob(
         request: SideJobRequest.StartOrRestartSideJob<Inputs, Events, State>,
     ) {
-        val newState = internalState.updateAndGet {
-            val restartState = if (it.sideJobs.containsKey(request.key)) {
-                println("restarting ${request.key}")
-                SideJobScope.RestartState.Restarted
-            } else {
-                println("starting ${request.key}")
-                SideJobScope.RestartState.Initial
-            }
+        val newState = _internalState.updateAndGet {
+            val sideJobMap = it.sideJobs.toMutableMap()
 
-            // if we have a side-job already running, cancel its coroutine scope and complete its Deferred
-            it.sideJobs[request.key]?.let { runningJob ->
-                runningJob.job.cancel()
-                runningJob.onCompletion.complete(Unit)
-            }
+            val sideJobListForKey = sideJobMap.getOrPut(request.key) { SideJobList(request.key) }
+            val updatedList = sideJobListForKey.addNewRunningJob(viewModelScope.coroutineContext.job)
+            sideJobMap[request.key] = updatedList
 
-            // launch a new side-job in its own isolated coroutine scope where:
-            //   1) it is cancelled when the viewModelScope is cancelled
-            //   2) errors are caught by the uncaughtExceptionHandler for crash reporting
-            //   3) has a supervisor job, so we can cancel the side-job without cancelling the whole viewModelScope
-            //
-            // Consumers of this side-job can launch many jobs, and all will be cancelled together when the
-            // side-job is restarted or the viewModelScope is cancelled.
-            val sideJobContainer = RunningSideJob(
-                key = request.key,
-                restartState = restartState,
-                onCompletion = CompletableDeferred(),
-                job = SupervisorJob(parent = viewModelScope.coroutineContext[Job]),
-            )
-            it.copy(sideJobs = it.sideJobs + (request.key to sideJobContainer))
+            it.copy(sideJobs = sideJobMap.toMap())
         }
 
-        val runningSideJob = newState.sideJobs[request.key]!!
+        val sideJobListForKey = newState.sideJobs[request.key]!!
+        val latestSideJobForKey = sideJobListForKey.currentSideJob!!
 
         val sideJobCoroutineScope = viewModelScope +
-                runningSideJob.job +
+                latestSideJobForKey.job +
                 sideJobsDispatcher
 
         sideJobCoroutineScope.launch {
-            _notifications.emit(
+            notify(
                 BallastNotification.SideJobStarted(
                     type,
                     name,
-                    key = runningSideJob.key,
-                    restartState = runningSideJob.restartState,
+                    key = latestSideJobForKey.key,
+                    restartState = latestSideJobForKey.restartState,
                 )
             )
 
@@ -510,8 +568,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 coroutineScope {
                     val sideJobScope = SideJobScopeImpl(
                         currentStateWhenStarted = getCurrentState(),
-                        key = runningSideJob.key,
-                        restartState = runningSideJob.restartState,
+                        key = latestSideJobForKey.key,
+                        restartState = latestSideJobForKey.restartState,
                         sideJobCoroutineScope = this,
                         impl = this@BallastViewModelImpl,
                     )
@@ -520,56 +578,47 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
                 // If it does complete normally...
 
-                // mark its deferred as completed, for anything suspending on the job until it completes
-                runningSideJob.onCompletion.complete(Unit)
-
-                // Request that the job be removed from the internal state
-                _sideJobs.send(SideJobRequest.RemoveCompletedSideJob(runningSideJob.key))
+                // mark the sideJob as complete
+                completeSideJob(latestSideJobForKey.key, latestSideJobForKey.sideJobId)
 
                 // send a notification that the side job has completed
-                _notifications.emit(
+                notify(
                     BallastNotification.SideJobCompleted(
                         type,
                         name,
-                        key = runningSideJob.key,
-                        restartState = runningSideJob.restartState,
+                        key = latestSideJobForKey.key,
+                        restartState = latestSideJobForKey.restartState,
                     )
                 )
             } catch (e: CancellationException) {
                 // The side job was cancelled, either by being restarted, manually cancelled, or because the whole
                 // ViewModel was cancelled.
 
-                // mark its deferred as completed, for anything suspending on the job until it completes
-                runningSideJob.onCompletion.complete(Unit)
-
-                // Request that the job be removed from the internal state
-                _sideJobs.send(SideJobRequest.RemoveCompletedSideJob(runningSideJob.key))
+                // mark the sideJob as complete
+                completeSideJob(latestSideJobForKey.key, latestSideJobForKey.sideJobId)
 
                 // send a notification that the side job was cancelled
-                _notifications.emit(
+                notify(
                     BallastNotification.SideJobCancelled(
                         type,
                         name,
-                        key = runningSideJob.key,
-                        restartState = runningSideJob.restartState,
+                        key = latestSideJobForKey.key,
+                        restartState = latestSideJobForKey.restartState,
                     )
                 )
             } catch (e: Throwable) {
                 // an exception was thrown when executing the sideJob.
 
-                // mark its deferred as completed, for anything suspending on the job until it completes
-                runningSideJob.onCompletion.complete(Unit)
-
-                // Request that the job be removed from the internal state
-                _sideJobs.send(SideJobRequest.RemoveCompletedSideJob(runningSideJob.key))
+                // mark the sideJob as complete
+                completeSideJob(latestSideJobForKey.key, latestSideJobForKey.sideJobId)
 
                 // send a notification that the side job was cancelled
-                _notifications.emit(
+                notify(
                     BallastNotification.SideJobError(
                         type,
                         name,
-                        key = runningSideJob.key,
-                        restartState = runningSideJob.restartState,
+                        key = latestSideJobForKey.key,
+                        restartState = latestSideJobForKey.restartState,
                         e,
                     )
                 )
@@ -580,39 +629,30 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     private fun safelyCancelSideJob(
         request: SideJobRequest.CancelSideJob<Inputs, Events, State>,
     ) {
-        println("manually cancelling ${request.key}")
-        internalState.update {
-            // if we have a side-job already running, cancel its coroutine scope and complete its Deferred
-            it.sideJobs[request.key]?.job?.cancel()
-
-            it
-        }
+        _internalState.value.sideJobs[request.key]?.cancelSideJobs()
     }
 
-    private fun safelyCancelAllSideJobs(
-        request: SideJobRequest.CancelAllSideJobs<Inputs, Events, State>,
-    ) {
-        println("forcibly cancelling all sideJobs")
-        internalState.update {
-            // if we have a side-job already running, cancel its coroutine scope and complete its Deferred
-            it.sideJobs.forEach { it.value.job.cancel() }
-            it
-        }
+    private fun safelyCancelAllSideJobs() {
+        _internalState.value.sideJobs.forEach { it.value.cancelSideJobs() }
     }
 
-    private fun safelyRemoveCompletedSideJob(
-        request: SideJobRequest.RemoveCompletedSideJob<Inputs, Events, State>,
+    private fun completeSideJob(
+        key: String,
+        id: Int,
     ) {
-        println("removingh completed sideJob at ${request.key}")
-        internalState.update {
-            // the sideJob should already be completed, just remote it from the map
-            it.copy(sideJobs = it.sideJobs - request.key)
+        _internalState.updateAndGet {
+            val sideJobMap = it.sideJobs.toMutableMap()
+
+            val sideJobListForKey = sideJobMap.getOrPut(key) { SideJobList(key) }
+            val updatedList = sideJobListForKey.removeCompletedJob(id)
+            sideJobMap[key] = updatedList
+
+            it.copy(sideJobs = sideJobMap.toMap())
         }
     }
 
     private suspend fun gracefullyShutDownSideJobs(gracePeriod: Duration) {
-        println("gracefully shutting down sideJobs")
-        internalState.update {
+        _internalState.update {
             it.copy(
                 status = Status.ShuttingDown(
                     stateChangeOpen = true,
@@ -623,51 +663,39 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 )
             )
         }
+        notify(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
+
         try {
             withTimeout(gracePeriod) {
+                // close the sideJobs request queue and wait for all requests to be handled
+                _sideJobsRequestQueue.close()
+                _sideJobsRequestQueueDrained.await()
+
                 // without forcibly cancelling, wait for all sideJobs to complete
-                internalState.value
+                _internalState.value
                     .sideJobs
-                    .map { it.value.onCompletion }
-                    .awaitAll()
-                println("sideJobs completed on their own")
+                    .flatMap { it.value.runningJobs.map { it.job } }
+                    .joinAll()
             }
         } catch (e: Exception) {
-            println("sideJobs still running after $gracePeriod, forcibly shut them down")
             // the sideJobs did not complete during the grace period. Force them all to cancel, then wait for them to
             // complete
-            _sideJobs.send(SideJobRequest.CancelAllSideJobs())
-            internalState.value
+            safelyCancelAllSideJobs()
+            _internalState.value
                 .sideJobs
-                .map { it.value.onCompletion }
-                .awaitAll()
+                .flatMap { it.value.runningJobs.map { it.job } }
+                .joinAll()
         }
     }
 
-    // TODO: rather than watching Jobs or anything else directly, re-implement the Test module to be an Interceptor and
-    //   track all its state by watching Notifications
-    @ExperimentalCoroutinesApi
-    public suspend fun awaitSideJobsCompletion() {
-        // run a busy loop until all side-jobs are started
-        while (true) {
-            if (_sideJobs.isEmpty) break
-            yield()
-        }
-
-        // wait for all the sideJob jobs to complete
-        internalState.value.sideJobs.values
-            .mapNotNull { it.job }
-            .let { joinAll(*it.toTypedArray()) }
-
-        // run a busy loop until all input channels are drained
-        while (true) {
-            if (_inputQueue.isEmpty) break
-            yield()
-        }
-    }
-
-// Interceptors
+// Interceptors and Notifications
 // ---------------------------------------------------------------------------------------------------------------------
+
+    private val _notificationsQueue: Channel<BallastNotification<Inputs, Events, State>> =
+        Channel(BUFFERED, BufferOverflow.SUSPEND)
+    private val _notificationsQueueDrained: CompletableDeferred<Unit> = CompletableDeferred()
+
+    private val _notifications: MutableSharedFlow<BallastNotification<Inputs, Events, State>> = MutableSharedFlow()
 
     private fun startInterceptorsInternal() {
         // send notifications to Interceptors
@@ -678,7 +706,15 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                     .transformWhile {
                         emit(it)
 
-                        it !is BallastNotification.ViewModelCleared
+                        val shouldStopProcessingNotifications = when (it) {
+                            is BallastNotification.ViewModelStatusChanged -> {
+                                it.status != Status.Cleared
+                            }
+
+                            else -> true
+                        }
+
+                        shouldStopProcessingNotifications
                     }
 
                 with(interceptor) {
@@ -691,9 +727,40 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                             this@BallastViewModelImpl,
                         ).start(notificationFlow)
                     } catch (e: Exception) {
-                        _notifications.tryEmit(BallastNotification.UnhandledError(type, name, e))
+                        notifyImmediate(BallastNotification.InterceptorFailed(type, name, interceptor, e))
                     }
                 }
             }
+
+        interceptors
+            .forEach { interceptor ->
+                notifyImmediate(BallastNotification.InterceptorAttached(type, name, interceptor))
+            }
+    }
+
+    private fun startProcessingNotificationsInternal() {
+        // observe and process Inputs
+        viewModelScope.launch {
+            _notificationsQueue
+                .receiveAsFlow()
+                .onEach { _notifications.emit(it) }
+                .flowOn(sideJobsDispatcher)
+                .onCompletion { _notificationsQueueDrained.complete(Unit) }
+                .launchIn(this)
+        }
+    }
+
+    private suspend fun notify(value: BallastNotification<Inputs, Events, State>) {
+        _notificationsQueue.send(value)
+    }
+
+    private fun notifyImmediate(value: BallastNotification<Inputs, Events, State>) {
+        _notificationsQueue.trySend(value)
+    }
+
+    private suspend fun gracefullyShutDownNotifications() {
+        // close the Notifications queue and wait for all Notifications to be handled
+        _notificationsQueue.close()
+        _notificationsQueueDrained.await()
     }
 }
