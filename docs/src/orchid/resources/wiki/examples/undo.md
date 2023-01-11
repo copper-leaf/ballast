@@ -10,7 +10,13 @@ State will be captured once every 5 seconds. After multiple changes have been ma
 undo/redo buttons to navigate back through the previous edits.
 
 <div id="example_undo"></div>
-<br><br>
+<br>
+
+#### Sources:
+
+- [Android](https://github.com/copper-leaf/ballast/tree/main/examples/android/src/androidMain/java/com/copperleaf/ballast/examples/ui/undo)
+- [Compose Desktop](https://github.com/copper-leaf/ballast/tree/main/examples/desktop/src/jvmMain/kotlin/com/copperleaf/ballast/examples/ui/undo)
+- [Compose Web](https://github.com/copper-leaf/ballast/tree/main/examples/web/src/jsMain/kotlin/com/copperleaf/ballast/examples/ui/undo)
 
 {% snippet 'debuggerProTip' %}
 

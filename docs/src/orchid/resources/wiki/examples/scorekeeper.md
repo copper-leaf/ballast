@@ -21,7 +21,13 @@ How to use:
   using the [Saved State module][1]
 
 <div id="example_scorekeeper"></div>
-<br><br>
+<br>
+
+#### Sources:
+
+- [Android](https://github.com/copper-leaf/ballast/tree/main/examples/android/src/androidMain/java/com/copperleaf/ballast/examples/ui/scorekeeper)
+- [Compose Desktop](https://github.com/copper-leaf/ballast/tree/main/examples/desktop/src/jvmMain/kotlin/com/copperleaf/ballast/examples/ui/scorekeeper)
+- [Compose Web](https://github.com/copper-leaf/ballast/tree/main/examples/web/src/jsMain/kotlin/com/copperleaf/ballast/examples/ui/scorekeeper)
 
 {% snippet 'debuggerProTip' %}
 

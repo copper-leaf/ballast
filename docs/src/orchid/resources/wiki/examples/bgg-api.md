@@ -20,7 +20,13 @@ How to use:
   list will also be refreshed, even if "Force Refresh" is not checked.
 
 <div id="example_bgg"></div>
-<br><br>
+<br>
+
+#### Sources:
+
+- [Android](https://github.com/copper-leaf/ballast/tree/main/examples/android/src/androidMain/java/com/copperleaf/ballast/examples/ui/bgg)
+- [Compose Desktop](https://github.com/copper-leaf/ballast/tree/main/examples/desktop/src/jvmMain/kotlin/com/copperleaf/ballast/examples/ui/bgg)
+- [Compose Web](https://github.com/copper-leaf/ballast/tree/main/examples/web/src/jsMain/kotlin/com/copperleaf/ballast/examples/ui/bgg)
 
 {% snippet 'debuggerProTip' %}
 

@@ -83,6 +83,11 @@ class ComposeWebInjectorImpl(
             } else {
                 commonBuilder()
                     .withRouter(RoutingTable.fromEnum(BallastExamples.values()), initialRoute)
+                    .apply {
+                        if (useBrowserHashes) {
+                            interceptors += BrowserHashNavigationInterceptor<BallastExamples>(initialRoute)
+                        }
+                    }
                     .build()
             },
         )
