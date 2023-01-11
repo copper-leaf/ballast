@@ -75,14 +75,16 @@ class ComposeWebInjectorImpl(
     private val router by lazy {
         BallastExamplesRouter(
             viewModelCoroutineScope = applicationScope,
-            config = commonBuilder()
-                .withRouter(RoutingTable.fromEnum(BallastExamples.values()), null)
-                .apply {
-                    if (useBrowserHashes) {
-                        interceptors += BrowserHashNavigationInterceptor<BallastExamples>(initialRoute)
-                    }
-                }
-                .build(),
+            config = if (useBrowserHashes) {
+                commonBuilder()
+                    .withRouter(RoutingTable.fromEnum(BallastExamples.values()), null)
+                    .apply { interceptors += BrowserHashNavigationInterceptor(initialRoute) }
+                    .build()
+            } else {
+                commonBuilder()
+                    .withRouter(RoutingTable.fromEnum(BallastExamples.values()), initialRoute)
+                    .build()
+            },
         )
     }
 
