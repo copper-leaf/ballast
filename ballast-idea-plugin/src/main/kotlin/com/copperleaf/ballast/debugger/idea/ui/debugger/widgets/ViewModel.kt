@@ -1,7 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.ContextMenuArea
 import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.background
@@ -9,19 +8,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
 import androidx.compose.material.ListItem
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.ScrollableTabRow
-import androidx.compose.material.Surface
-import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -31,7 +24,6 @@ import androidx.compose.material.icons.filled.NotificationsPaused
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Wifi
 import androidx.compose.material.icons.filled.WifiOff
-import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -254,66 +246,66 @@ fun ViewModelDetails(
     viewModelState: BallastViewModelState,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            Surface(Modifier.fillMaxWidth(), color = MaterialTheme.colors.primarySurface, elevation = 4.dp) {
-                Column(Modifier.fillMaxWidth()) {
-                    TopAppBar(
-                        title = { Text(viewModelState.viewModelName, overflow = TextOverflow.Ellipsis, maxLines = 1) },
-                    )
-                    ScrollableTabRow(
-                        selectedTabIndex = uiState.selectedViewModelContentTab!!.ordinal,
-                        backgroundColor = MaterialTheme.colors.primarySurface,
-                    ) {
-                        ViewModelContentTab.values().forEach {
-                            val selectedContentColor = when (it) {
-                                ViewModelContentTab.States -> LocalContentColor.current
-                                ViewModelContentTab.Inputs -> if (viewModelState.inputInProgress) {
-                                    MaterialTheme.colors.secondary
-                                } else {
-                                    LocalContentColor.current
-                                }
-                                ViewModelContentTab.Events -> if (viewModelState.eventInProgress) {
-                                    MaterialTheme.colors.secondary
-                                } else {
-                                    LocalContentColor.current
-                                }
-                                ViewModelContentTab.SideJobs -> if (viewModelState.sideJobsInProgress) {
-                                    MaterialTheme.colors.secondary
-                                } else {
-                                    LocalContentColor.current
-                                }
-                            }
-
-                            Tab(
-                                selected = it == uiState.selectedViewModelContentTab,
-                                onClick = { postInput(DebuggerUiContract.Inputs.UpdateSelectedViewModelContentTab(it)) },
-                                icon = { Icon(it.icon, it.text) },
-                                text = { Text(it.text) },
-                                selectedContentColor = selectedContentColor,
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    ) {
-        AnimatedContent(uiState.selectedViewModelContentTab) {
-            when (it) {
-                ViewModelContentTab.Inputs -> {
-                    InputList(uiState, viewModelState, postInput)
-                }
-                ViewModelContentTab.Events -> {
-                    EventList(uiState, viewModelState, postInput)
-                }
-                ViewModelContentTab.States -> {
-                    StateSnapshotList(uiState, viewModelState, postInput)
-                }
-                ViewModelContentTab.SideJobs -> {
-                    SideJobList(uiState, viewModelState, postInput)
-                }
-                else -> { }
-            }
-        }
-    }
+//    Scaffold(
+//        topBar = {
+//            Surface(Modifier.fillMaxWidth(), color = MaterialTheme.colors.primarySurface, elevation = 4.dp) {
+//                Column(Modifier.fillMaxWidth()) {
+//                    TopAppBar(
+//                        title = { Text(viewModelState.viewModelName, overflow = TextOverflow.Ellipsis, maxLines = 1) },
+//                    )
+//                    ScrollableTabRow(
+//                        selectedTabIndex = uiState.selectedViewModelContentTab!!.ordinal,
+//                        backgroundColor = MaterialTheme.colors.primarySurface,
+//                    ) {
+//                        ViewModelContentTab.values().forEach {
+//                            val selectedContentColor = when (it) {
+//                                ViewModelContentTab.States -> LocalContentColor.current
+//                                ViewModelContentTab.Inputs -> if (viewModelState.inputInProgress) {
+//                                    MaterialTheme.colors.secondary
+//                                } else {
+//                                    LocalContentColor.current
+//                                }
+//                                ViewModelContentTab.Events -> if (viewModelState.eventInProgress) {
+//                                    MaterialTheme.colors.secondary
+//                                } else {
+//                                    LocalContentColor.current
+//                                }
+//                                ViewModelContentTab.SideJobs -> if (viewModelState.sideJobsInProgress) {
+//                                    MaterialTheme.colors.secondary
+//                                } else {
+//                                    LocalContentColor.current
+//                                }
+//                            }
+//
+//                            Tab(
+//                                selected = it == uiState.selectedViewModelContentTab,
+//                                onClick = { postInput(DebuggerUiContract.Inputs.UpdateSelectedViewModelContentTab(it)) },
+//                                icon = { Icon(it.icon, it.text) },
+//                                text = { Text(it.text) },
+//                                selectedContentColor = selectedContentColor,
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    ) {
+//        AnimatedContent(uiState.selectedViewModelContentTab) {
+//            when (it) {
+//                ViewModelContentTab.Inputs -> {
+//                    InputList(uiState, viewModelState, postInput)
+//                }
+//                ViewModelContentTab.Events -> {
+//                    EventList(uiState, viewModelState, postInput)
+//                }
+//                ViewModelContentTab.States -> {
+//                    StateSnapshotList(uiState, viewModelState, postInput)
+//                }
+//                ViewModelContentTab.SideJobs -> {
+//                    SideJobList(uiState, viewModelState, postInput)
+//                }
+//                else -> { }
+//            }
+//        }
+//    }
 }

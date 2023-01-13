@@ -14,6 +14,7 @@ import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 import com.copperleaf.ballast.navigation.routing.Backstack
 import com.copperleaf.ballast.navigation.routing.RouterContract
+import com.copperleaf.ballast.navigation.routing.currentRouteOrNull
 import org.jetbrains.compose.splitpane.SplitPaneState
 
 object DebuggerUiContract {
@@ -42,7 +43,22 @@ object DebuggerUiContract {
         val focusedViewModelStateSnapshot: BallastStateSnapshot? = null
         val focusedViewModelSideJob: BallastSideJobState? = null
 
-        val selectedViewModelContentTab: ViewModelContentTab? = null
+        val selectedViewModelContentTab: ViewModelContentTab? = when(backstack.currentRouteOrNull) {
+            DebuggerRoute.Connection -> null
+            DebuggerRoute.ViewModelStates -> ViewModelContentTab.States
+            DebuggerRoute.ViewModelStateDetails -> ViewModelContentTab.States
+            DebuggerRoute.ViewModelInputs -> ViewModelContentTab.Inputs
+            DebuggerRoute.ViewModelInputDetails -> ViewModelContentTab.Inputs
+            DebuggerRoute.ViewModelEvents -> ViewModelContentTab.Events
+            DebuggerRoute.ViewModelEventDetails -> ViewModelContentTab.Events
+            DebuggerRoute.ViewModelSideJobs -> ViewModelContentTab.SideJobs
+            DebuggerRoute.ViewModelSideJobDetails -> ViewModelContentTab.SideJobs
+            DebuggerRoute.ViewModelInterceptors -> ViewModelContentTab.Interceptors
+            DebuggerRoute.ViewModelInterceptorDetails -> ViewModelContentTab.Interceptors
+            DebuggerRoute.ViewModelLogs -> null
+            DebuggerRoute.ViewModelTimeline -> null
+            null -> null
+        }
     }
 
     sealed class Inputs {
