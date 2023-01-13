@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_PARAMETER")
+
 package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
 
 import androidx.compose.foundation.ContextMenuArea

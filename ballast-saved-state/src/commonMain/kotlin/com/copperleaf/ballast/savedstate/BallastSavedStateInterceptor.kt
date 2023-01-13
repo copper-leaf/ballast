@@ -96,6 +96,7 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
         }
     }
 
+    @Suppress("DEPRECATION")
     public fun requestStateRestoration() {
         val notNullScope = requireNotNull(interceptorScope) {
             "ViewModel with BallastSavedStateInterceptor is not started or has completed"
