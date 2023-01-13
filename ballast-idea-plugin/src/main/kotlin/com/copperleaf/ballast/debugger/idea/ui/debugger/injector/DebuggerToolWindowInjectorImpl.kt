@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.debugger.idea.ui.debugger.injector
 
+import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.BootstrapInterceptor
@@ -18,15 +19,14 @@ import com.copperleaf.ballast.debugger.server.vm.DebuggerServerViewModel
 import com.copperleaf.ballast.eventHandler
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.RoutingTable
-import com.copperleaf.ballast.navigation.routing.currentDestinationOrNull
 import com.copperleaf.ballast.navigation.routing.fromEnum
-import com.copperleaf.ballast.navigation.routing.optionalStringPath
 import com.copperleaf.ballast.navigation.vm.BasicRouter
 import com.copperleaf.ballast.navigation.vm.withRouter
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CoroutineScope
 
+@OptIn(ExperimentalBallastApi::class)
 class DebuggerToolWindowInjectorImpl(
     private val pluginInjector: BallastIntellijPluginInjector,
     private val toolWindowCoroutineScope: CoroutineScope,
@@ -48,11 +48,11 @@ class DebuggerToolWindowInjectorImpl(
         eventHandler = eventHandler { event ->
             when (event) {
                 is RouterContract.Events.BackstackChanged -> {
-                    val currentDestination = event.backstack.currentDestinationOrNull
+//                    val currentDestination = event.backstack.currentDestinationOrNull
 
-                    if (currentDestination != null) {
-                        val route = currentDestination.originalRoute
-                        val viewModelName by currentDestination.optionalStringPath()
+//                    if (currentDestination != null) {
+//                        val route = currentDestination.originalRoute
+//                        val viewModelName by currentDestination.optionalStringPath()
 
 //                        pluginInjector
 //                            .settings
@@ -64,7 +64,7 @@ class DebuggerToolWindowInjectorImpl(
 //                                }
 //                            }
 //                            .save()
-                    }
+//                    }
                 }
 
                 is RouterContract.Events.BackstackEmptied -> {}

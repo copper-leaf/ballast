@@ -55,12 +55,9 @@ internal data class SideJobList(
         if (sideJobAtKey != null) {
             // cancel the sideJob's coroutine, if needed
             sideJobAtKey.job.cancel()
-            return copy(
-                runningJobs = this.runningJobs - sideJobAtKey
-            )
+            return copy()
         } else {
             return copy()
         }
-
     }
 }

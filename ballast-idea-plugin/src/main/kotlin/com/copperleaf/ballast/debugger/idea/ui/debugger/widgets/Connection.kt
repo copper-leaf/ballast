@@ -1,3 +1,4 @@
+@file:Suppress("UNUSED_PARAMETER")
 package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
 
 import androidx.compose.foundation.ContextMenuArea
@@ -76,7 +77,7 @@ fun ConnectionsList(
             // the list of ViewModels in the connection, and other state of this Connection
 
             if (uiState.focusedConnection != null) {
-                ViewModelList(uiState, uiState.focusedConnection!!, postInput)
+                ViewModelList(uiState, uiState.focusedConnection, postInput)
             }
         }
     )

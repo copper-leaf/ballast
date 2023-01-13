@@ -1,3 +1,4 @@
+@file:Suppress("UNUSED_PARAMETER")
 package com.copperleaf.ballast.debugger.idea.base
 
 import androidx.compose.foundation.background
