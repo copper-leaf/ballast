@@ -6,6 +6,7 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.AndroidBallastLogger
+import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.PrintlnLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
@@ -52,7 +53,6 @@ import com.copperleaf.ballast.repository.withRepository
 import com.copperleaf.ballast.savedstate.BallastSavedStateInterceptor
 import com.copperleaf.ballast.sync.BallastSyncInterceptor
 import com.copperleaf.ballast.sync.DefaultSyncConnection
-import com.copperleaf.ballast.sync.InMemorySyncAdapter
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
 import com.copperleaf.ballast.undo.BallastUndoInterceptor
 import com.copperleaf.ballast.undo.UndoController
@@ -68,6 +68,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalBallastApi::class)
 class AndroidInjectorImpl(
@@ -249,14 +250,19 @@ class AndroidInjectorImpl(
     override fun kitchenSinkViewModel(
         inputStrategy: InputStrategySelection,
     ): KitchenSinkViewModel {
+        val killSwitch = KillSwitch<
+                KitchenSinkContract.Inputs,
+                KitchenSinkContract.Events,
+                KitchenSinkContract.State>(5.seconds)
         return KitchenSinkViewModel(
             config = commonBuilder()
                 .apply {
                     this.inputStrategy = inputStrategy.get()
+                    this += killSwitch
                 }
                 .withViewModel(
                     initialState = KitchenSinkContract.State(inputStrategy = inputStrategy),
-                    inputHandler = KitchenSinkInputHandler(),
+                    inputHandler = KitchenSinkInputHandler(killSwitch),
                     name = "KitchenSink",
                 )
                 .build(),

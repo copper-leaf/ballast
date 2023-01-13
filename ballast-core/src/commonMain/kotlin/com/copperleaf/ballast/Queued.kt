@@ -39,8 +39,8 @@ public sealed class Queued<Inputs : Any, Events : Any, State : Any> {
      * related scope will no longer be usable. The parent coroutine scope should have a [SupervisorJob] to ensure the
      * parent scopes do not also get cancelled by this action.
      */
-    public class CloseGracefully<Inputs : Any, Events : Any, State : Any>(
-        public override val deferred: CompletableDeferred<Unit>,
+    public class ShutDownGracefully<Inputs : Any, Events : Any, State : Any>(
+        public override val deferred: CompletableDeferred<Unit>?,
         public val gracePeriod: Duration,
     ) : Queued<Inputs, Events, State>()
 }

@@ -1,9 +1,6 @@
 package com.copperleaf.ballast
 
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * A scope to perform side-jobs in. This scope is itself a coroutine scope, which is the same scope as that of the
@@ -66,18 +63,6 @@ public interface SideJobScope<Inputs : Any, Events : Any, State : Any> : Corouti
      * the result of the transaction.
      */
     public suspend fun postEvent(event: Events)
-
-    /**
-     * A request to gracefully shut down the ViewModel. This will attempt to let it finish processing any Inputs
-     * currently in the Queue, as well as any Events in the output Channel. Additionally, sideJobs will be given a
-     * [gracePeriod] during which they will be allowed to continue processing and sending Inputs, which will also be
-     * processed before fully shutting down.
-     *
-     * Once the VM has been shut down gracefully, its coroutineScope will be cancelled, and the ViewModel and its
-     * related scope will no longer be usable. The parent coroutine scope should have a [SupervisorJob] to ensure the
-     * parent scopes do not also get cancelled by this action.
-     */
-    public suspend fun requestGracefulShutDown(gracePeriod: Duration = 100.milliseconds)
 
     public enum class RestartState {
         Initial, Restarted

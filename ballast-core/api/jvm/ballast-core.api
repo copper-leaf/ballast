@@ -320,12 +320,6 @@ public abstract class com/copperleaf/ballast/Queued {
 	public abstract fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 }
 
-public final class com/copperleaf/ballast/Queued$CloseGracefully : com/copperleaf/ballast/Queued {
-	public synthetic fun <init> (Lkotlinx/coroutines/CompletableDeferred;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
-	public final fun getGracePeriod-UwyO8pc ()J
-}
-
 public final class com/copperleaf/ballast/Queued$HandleInput : com/copperleaf/ballast/Queued {
 	public fun <init> (Lkotlinx/coroutines/CompletableDeferred;Ljava/lang/Object;)V
 	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
@@ -338,6 +332,12 @@ public final class com/copperleaf/ballast/Queued$RestoreState : com/copperleaf/b
 	public final fun getState ()Ljava/lang/Object;
 }
 
+public final class com/copperleaf/ballast/Queued$ShutDownGracefully : com/copperleaf/ballast/Queued {
+	public synthetic fun <init> (Lkotlinx/coroutines/CompletableDeferred;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
+	public final fun getGracePeriod-UwyO8pc ()J
+}
+
 public abstract interface class com/copperleaf/ballast/SideJobScope : kotlinx/coroutines/CoroutineScope {
 	public abstract fun getCurrentStateWhenStarted ()Ljava/lang/Object;
 	public abstract fun getKey ()Ljava/lang/String;
@@ -345,11 +345,6 @@ public abstract interface class com/copperleaf/ballast/SideJobScope : kotlinx/co
 	public abstract fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
 	public abstract fun postEvent (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun postInput (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun requestGracefulShutDown-VtjQ1oo (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/copperleaf/ballast/SideJobScope$DefaultImpls {
-	public static synthetic fun requestGracefulShutDown-VtjQ1oo$default (Lcom/copperleaf/ballast/SideJobScope;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/SideJobScope$RestartState : java/lang/Enum {
@@ -368,10 +363,6 @@ public final class com/copperleaf/ballast/UtilsKt {
 	public static synthetic fun dispatchers$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;Lkotlinx/coroutines/CoroutineDispatcher;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
 	public static final fun eventHandler (Lkotlin/jvm/functions/Function3;)Lcom/copperleaf/ballast/EventHandler;
 	public static final fun events (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
-	public static final fun forViewModel (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
-	public static final fun forViewModel (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
-	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
-	public static synthetic fun forViewModel$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration;
 	public static final fun inputHandler (Lkotlin/jvm/functions/Function3;)Lcom/copperleaf/ballast/InputHandler;
 	public static final fun inputs (Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/flow/Flow;
 	public static final fun plusAssign (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/BallastInterceptor;)V
@@ -461,6 +452,14 @@ public final class com/copperleaf/ballast/core/FifoInputStrategy : com/copperlea
 public final class com/copperleaf/ballast/core/FifoInputStrategy$Companion {
 	public final fun invoke ()Lcom/copperleaf/ballast/core/FifoInputStrategy;
 	public final fun typed ()Lcom/copperleaf/ballast/core/FifoInputStrategy;
+}
+
+public final class com/copperleaf/ballast/core/KillSwitch : com/copperleaf/ballast/BallastInterceptor {
+	public synthetic fun <init> (JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun requestGracefulShutdown ()V
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
 public final class com/copperleaf/ballast/core/LifoInputStrategy : com/copperleaf/ballast/InputStrategy {

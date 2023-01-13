@@ -207,31 +207,6 @@ public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelCo
  * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
  * [BallastViewModelConfiguration].
  */
-@Deprecated(
-    message = "BallastViewModelConfiguration.Builder extensions should not call `.build()` on themselves. Replace with .withViewModel().build()",
-    replaceWith = ReplaceWith("this.withViewModel(initialState = initialState, inputHandler = inputHandler, filter = filter, name = name,).build()")
-)
-// to remove in 3.0.0
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
-    initialState: State,
-    inputHandler: InputHandler<Inputs, Events, State>,
-    filter: InputFilter<Inputs, Events, State>? = null,
-    name: String? = this.name,
-): BallastViewModelConfiguration<Inputs, Events, State> =
-    this
-        .withViewModel(
-            initialState = initialState,
-            inputHandler = inputHandler,
-            filter = filter,
-            name = name,
-        )
-        .build()
-
-/**
- * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
- * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
- * [BallastViewModelConfiguration].
- */
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
     initialState: State,
     inputHandler: InputHandler<Inputs, Events, State>,
@@ -245,30 +220,6 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
             this.filter = filter
             this.name = name
         }
-
-/**
- * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
- * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
- * [BallastViewModelConfiguration].
- */
-@Deprecated(
-    message = "BallastViewModelConfiguration.Builder extensions should not call `.build()` on themselves. Replace with .withViewModel().build()",
-    replaceWith = ReplaceWith("this.withViewModel(initialState = initialState, inputHandler = inputHandler, name = name,).build()")
-)
-// to remove in 3.0.0
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.forViewModel(
-    initialState: State,
-    inputHandler: FilteredInputHandler<Inputs, Events, State>,
-    name: String? = this.name,
-): BallastViewModelConfiguration<Inputs, Events, State> =
-    this
-        .withViewModel(
-            initialState = initialState,
-            inputHandler = inputHandler,
-            filter = inputHandler,
-            name = name,
-        )
-        .build()
 
 /**
  * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all

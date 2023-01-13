@@ -3,7 +3,6 @@ package com.copperleaf.ballast.repository
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.repository.bus.EventBus
@@ -49,21 +48,4 @@ public abstract class BallastRepository<Inputs : Any, State : Any>(
     coroutineScope = coroutineScope,
     config = config,
     eventHandler = EventBusEventHandler(eventBus),
-) {
-    @Deprecated(
-        message = "Use configBuilder.withRepository().build() instead.",
-        replaceWith = ReplaceWith("BallastRepository<Inputs, State>(coroutineScope = coroutineScope, eventBus = eventBus, config = configBuilder.withRepository().build<Inputs, Any, State>())", "com.copperleaf.ballast.build")
-    )
-    // to remove in 3.0.0
-    public constructor(
-        coroutineScope: CoroutineScope,
-        eventBus: EventBus,
-        configBuilder: BallastViewModelConfiguration.Builder,
-    ) : this(
-        coroutineScope = coroutineScope,
-        config = configBuilder
-            .withRepository()
-            .build(),
-        eventBus = eventBus,
-    )
-}
+)
