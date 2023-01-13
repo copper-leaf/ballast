@@ -15,7 +15,7 @@ interface ClientModelMapper {
     fun mapOutgoing(outgoing: BallastDebuggerAction): String
 
     @Suppress("NOTHING_TO_INLINE")
-    public data class Version(val major: Int, val minor: Int?, val patch: Int?) {
+    public data class Version(val major: Int, val minor: Int?, val patch: Int?): Comparable<Version> {
         private inline fun matchesMajor(other: Version): Boolean {
             return this.major == other.major
         }
@@ -38,6 +38,16 @@ interface ClientModelMapper {
 
         fun matches(other: Version): Boolean {
             return matchesMajor(other) && matchesMinor(other) && matchesPatch(other)
+        }
+
+        override fun compareTo(other: Version): Int {
+            val comparator = compareBy<Version>(
+                { it.major },
+                { it.minor },
+                { it.patch },
+            )
+
+            return comparator.compare(this, other)
         }
 
         companion object {

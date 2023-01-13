@@ -18,9 +18,11 @@ public final class com/copperleaf/ballast/debugger/server/ClientModelMapper$Comp
 	public final fun getForVersion (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/server/ClientModelMapper;
 }
 
-public final class com/copperleaf/ballast/debugger/server/ClientModelMapper$Version {
+public final class com/copperleaf/ballast/debugger/server/ClientModelMapper$Version : java/lang/Comparable {
 	public static final field Companion Lcom/copperleaf/ballast/debugger/server/ClientModelMapper$Version$Companion;
 	public fun <init> (ILjava/lang/Integer;Ljava/lang/Integer;)V
+	public fun compareTo (Lcom/copperleaf/ballast/debugger/server/ClientModelMapper$Version;)I
+	public synthetic fun compareTo (Ljava/lang/Object;)I
 	public final fun component1 ()I
 	public final fun component2 ()Ljava/lang/Integer;
 	public final fun component3 ()Ljava/lang/Integer;

@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 
 @Composable
 fun IdeaPluginTheme(
-    darkTheme: Boolean = false,
+    darkTheme: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     val primaryColor = Color(0xff_9e9e9e)
