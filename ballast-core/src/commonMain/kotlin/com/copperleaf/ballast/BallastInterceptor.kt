@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.copperleaf.ballast
 
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +34,21 @@ public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
      *
      * When running, the Interceptor may post [Queued] objects back to the VM's main queue. This would be useful for
      * sending Inputs back to be processed, or forcibly updating the state without going through an Input.
+     *
+     * Use this snippet to get started:
+     *
+     * ```
+     * override fun BallastInterceptorScope<Inputs, Events, State>.start(
+     *     notifications: Flow<BallastNotification<Inputs, Events, State>>,
+     * ) {
+     *     launch(start = CoroutineStart.UNDISPATCHED) {
+     *         notifications.awaitViewModelStart()
+     *         notifications
+     *             .onEach { handleInput(it) }
+     *             .collect()
+     *     }
+     * }
+     * ```
      */
     public fun BallastInterceptorScope<Inputs, Events, State>.start(
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
@@ -49,5 +66,6 @@ public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
      * you only need to process individual Notifications, and don't need any additional functionality like launching
      * additional coroutines, or sending data back to the ViewModel.
      */
+    @Deprecated("Implement `BallastInterceptor.start` and launch the job yourself, instead. Deprecated since v3, to be removed in v4.")
     public suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {}
 }

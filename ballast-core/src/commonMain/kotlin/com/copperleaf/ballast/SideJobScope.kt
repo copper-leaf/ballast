@@ -29,7 +29,11 @@ public interface SideJobScope<Inputs : Any, Events : Any, State : Any> : Corouti
      * A snapshot of the ViewModel State at the point when this sideJob was started. There is no guarantee that this is
      * the same state as when [InputHandlerScope.sideJob] was called. If you need the state at that specific point in
      * time, you can capture a reference to the result of [InputHandlerScope.getCurrentState] in the sideJob's lambda.
+     *
+     * This property was deprecated in v3, to be removed in v4. Pass a snapshot of the state you need into the lambda to
+     * avoid potential issues from the state not being what you expect it should be.
      */
+    @Deprecated("Pass a snapshot of the state directly to the sideJob rather than using this property. Deprecated since v3, to be removed in v4.")
     public val currentStateWhenStarted: State
 
     /**
