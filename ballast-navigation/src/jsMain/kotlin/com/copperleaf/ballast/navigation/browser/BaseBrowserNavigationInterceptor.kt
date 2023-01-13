@@ -1,7 +1,5 @@
 package com.copperleaf.ballast.navigation.browser
 
-import com.copperleaf.ballast.BallastLogger
-import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.awaitViewModelStart
 import com.copperleaf.ballast.events
@@ -35,7 +33,9 @@ public abstract class BaseBrowserNavigationInterceptor<T : Route>(
     internal abstract fun watchForUrlChanges(): Flow<Url>
     internal abstract fun setDestinationUrl(url: Url)
 
-    final override fun RouterInterceptorScope<T>.start(notifications: Flow<RouterNotification<T>>) {
+    final override fun RouterInterceptorScope<T>.start(
+        notifications: Flow<RouterNotification<T>>
+    ) {
         launch(start = CoroutineStart.UNDISPATCHED) {
             // start by setting the initial route from the browser hash, if provided when the webpage first loads
             onViewModelInitSetStateFromBrowser(notifications)
@@ -46,13 +46,6 @@ public abstract class BaseBrowserNavigationInterceptor<T : Route>(
                 updateStateOnBrowserChange(notifications)
             )
         }
-    }
-
-    final override suspend fun onNotify(
-        logger: BallastLogger,
-        notification: BallastNotification<RouterContract.Inputs<T>, RouterContract.Events<T>, RouterContract.State<T>>
-    ) {
-        throw NotImplementedError()
     }
 
     private suspend fun RouterInterceptorScope<T>.onViewModelInitSetStateFromBrowser(

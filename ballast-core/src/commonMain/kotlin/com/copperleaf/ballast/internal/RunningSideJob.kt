@@ -21,7 +21,7 @@ internal data class SideJobList(
     fun addNewRunningJob(
         parentJob: Job
     ): SideJobList {
-        val restartState = if (runningJobs.isNotEmpty()) {
+        val restartState = if (autoIncrement > 1) {
             // if there are any active jobs at this key, we are restarting this sideJob
             SideJobScope.RestartState.Restarted
         } else {
@@ -55,9 +55,12 @@ internal data class SideJobList(
         if (sideJobAtKey != null) {
             // cancel the sideJob's coroutine, if needed
             sideJobAtKey.job.cancel()
-            return copy()
+            return copy(
+                runningJobs = this.runningJobs - sideJobAtKey
+            )
         } else {
             return copy()
         }
+
     }
 }

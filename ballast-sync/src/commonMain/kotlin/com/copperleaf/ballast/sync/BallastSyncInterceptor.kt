@@ -2,7 +2,6 @@ package com.copperleaf.ballast.sync
 
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
-import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.ExperimentalBallastApi
 import kotlinx.coroutines.flow.Flow
@@ -27,6 +26,4 @@ public class BallastSyncInterceptor<
             )
         }
     }
-
-    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {}
 }

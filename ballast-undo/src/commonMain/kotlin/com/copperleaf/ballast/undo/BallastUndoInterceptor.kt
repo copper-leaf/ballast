@@ -2,7 +2,6 @@ package com.copperleaf.ballast.undo
 
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
-import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.ExperimentalBallastApi
 import kotlinx.coroutines.flow.Flow
@@ -28,6 +27,4 @@ public class BallastUndoInterceptor<Inputs : Any, Events : Any, State : Any>(
             }
         }
     }
-
-    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {}
 }

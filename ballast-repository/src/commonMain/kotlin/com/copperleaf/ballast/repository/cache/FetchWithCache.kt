@@ -35,8 +35,10 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
     // continue executing.
     if (getValue(currentState) is Cached.Fetching && !forceRefresh) return
 
+    val currentStateWhenStartingSideJob = getCurrentState()
+
     sideJob(input::class.simpleName!!) {
-        val initialValue = getValue(currentStateWhenStarted)
+        val initialValue = getValue(currentStateWhenStartingSideJob)
         val currentValueUnboxed = initialValue.getCachedOrNull()
         val currentValue = if (forceRefresh) {
             // if forcing a refresh, first mark it as not loaded (but keep the previous value for a better UI experience
@@ -53,7 +55,7 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
             postInput(updateState(Cached.Fetching(currentValueUnboxed)))
 
             val result = try {
-                coroutineScope { Cached.Value(doFetch(currentStateWhenStarted)) }
+                coroutineScope { Cached.Value(doFetch(currentStateWhenStartingSideJob)) }
             } catch (t: Throwable) {
                 Cached.FetchingFailed(t, currentValueUnboxed)
             }
@@ -93,8 +95,10 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
     // continue executing.
     if (getValue(currentState) is Cached.Fetching && !forceRefresh) return
 
+    val currentStateWhenStartingSideJob = getCurrentState()
+
     sideJob(input::class.simpleName!!) {
-        val initialValue = getValue(currentStateWhenStarted)
+        val initialValue = getValue(currentStateWhenStartingSideJob)
         val currentValueUnboxed = initialValue.getCachedOrNull()
         val currentValue = if (forceRefresh) {
             // if forcing a refresh, first mark it as not loaded (but keep the previous value for a better UI experience
@@ -112,7 +116,7 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
 
             try {
                 coroutineScope {
-                    doFetch(currentStateWhenStarted)
+                    doFetch(currentStateWhenStartingSideJob)
                 }
             } catch (t: Throwable) {
                 postInput(updateState(Cached.FetchingFailed(t, currentValueUnboxed)))

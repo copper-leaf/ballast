@@ -1,12 +1,18 @@
 package com.copperleaf.ballast.firebase
 
 import com.copperleaf.ballast.BallastInterceptor
-import com.copperleaf.ballast.BallastLogger
+import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.awaitViewModelStart
 import com.copperleaf.ballast.core.BallastException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.crashlytics.ktx.KeyValueBuilder
 import com.google.firebase.crashlytics.ktx.setCustomKeys
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
@@ -21,38 +27,54 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         const val ExceptionType = "ExceptionType"
     }
 
-    override suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {
-        when (notification) {
-            is BallastNotification.InputAccepted -> {
-                if (!notification.input.isAnnotatedWith(FirebaseCrashlyticsIgnore::class)) {
-                    crashlytics.setCustomKeys {
-                        key(Keys.ViewModelName, notification.viewModelName)
-                        key(Keys.InputType, "${notification.viewModelName}.${notification.input::class.java.simpleName}")
-                    }
-                    crashlytics.log("${notification.viewModelName}.${notification.input}")
-                }
-            }
+    override fun BallastInterceptorScope<Inputs, Events, State>.start(
+        notifications: Flow<BallastNotification<Inputs, Events, State>>,
+    ) {
+        launch(start = CoroutineStart.UNDISPATCHED) {
+            notifications.awaitViewModelStart()
+            notifications
+                .onEach { notification ->
+                    when (notification) {
+                        is BallastNotification.InputAccepted -> {
+                            if (!notification.input.isAnnotatedWith(FirebaseCrashlyticsIgnore::class)) {
+                                crashlytics.setCustomKeys {
+                                    key(Keys.ViewModelName, notification.viewModelName)
+                                    key(
+                                        Keys.InputType,
+                                        "${notification.viewModelName}.${notification.input::class.java.simpleName}"
+                                    )
+                                }
+                                crashlytics.log("${notification.viewModelName}.${notification.input}")
+                            }
+                        }
 
-            is BallastNotification.InputHandlerError -> {
-                onError(notification, "Input", notification.throwable, true) {
-                    key(Keys.InputType, "${notification.viewModelName}.${notification.input::class.java.simpleName}")
+                        is BallastNotification.InputHandlerError -> {
+                            onError(notification, "Input", notification.throwable, true) {
+                                key(Keys.InputType, "${notification.viewModelName}.${notification.input::class.java.simpleName}")
+                            }
+                        }
+
+                        is BallastNotification.EventHandlerError -> {
+                            onError(notification, "Event", notification.throwable, true) {
+                                key(Keys.EventType, "${notification.viewModelName}.${notification.event::class.java.simpleName}")
+                            }
+                        }
+
+                        is BallastNotification.SideJobError -> {
+                            onError(notification, "SideJob", notification.throwable, true) {
+                                key(Keys.SideJobKey, "${notification.viewModelName}.${notification.key}")
+                            }
+                        }
+
+                        is BallastNotification.UnhandledError -> {
+                            onError(notification, "Unknown", notification.throwable, false) {
+                            }
+                        }
+
+                        else -> {}
+                    }
                 }
-            }
-            is BallastNotification.EventHandlerError -> {
-                onError(notification, "Event", notification.throwable, true) {
-                    key(Keys.EventType, "${notification.viewModelName}.${notification.event::class.java.simpleName}")
-                }
-            }
-            is BallastNotification.SideJobError -> {
-                onError(notification, "SideJob", notification.throwable, true) {
-                    key(Keys.SideJobKey, "${notification.viewModelName}.${notification.key}")
-                }
-            }
-            is BallastNotification.UnhandledError -> {
-                onError(notification, "Unknown", notification.throwable, false) {
-                }
-            }
-            else -> {}
+                .collect()
         }
     }
 

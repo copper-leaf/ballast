@@ -22,10 +22,11 @@ class BggInputHandler(
             updateState { it.copy(bggHotListType = input.hotListType) }
         }
         is BggContract.Inputs.FetchHotList -> {
+            val currentState = getCurrentState()
             observeFlows("FetchHotList") {
                 listOf(
                     repository
-                        .getBggHotList(currentStateWhenStarted.bggHotListType, refreshCache = input.forceRefresh)
+                        .getBggHotList(currentState.bggHotListType, refreshCache = input.forceRefresh)
                         .map { BggContract.Inputs.HotListUpdated(it) }
                 )
             }
