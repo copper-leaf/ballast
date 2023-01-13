@@ -7,7 +7,6 @@ public class com/copperleaf/ballast/repository/AndroidBallastRepository : androi
 }
 
 public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BasicViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)V
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 }
 

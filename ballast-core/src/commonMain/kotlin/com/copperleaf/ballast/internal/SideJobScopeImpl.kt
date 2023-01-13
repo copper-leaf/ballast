@@ -3,9 +3,7 @@ package com.copperleaf.ballast.internal
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.SideJobScope
-import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
-import kotlin.time.Duration
 
 internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
     sideJobCoroutineScope: CoroutineScope,
@@ -23,9 +21,5 @@ internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override suspend fun postEvent(event: Events) {
         impl.enqueueEvent(event, null, false)
-    }
-
-    override suspend fun requestGracefulShutDown(gracePeriod: Duration) {
-        impl.enqueueQueued(Queued.CloseGracefully(CompletableDeferred(), gracePeriod), await = false)
     }
 }

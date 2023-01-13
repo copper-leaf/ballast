@@ -10,7 +10,7 @@ import com.google.firebase.ktx.Firebase
 import kotlin.reflect.KClass
 
 @Deprecated(
-    "Use BallastAnalyticsInterceptor with FirebaseAnalyticsTracker instead",
+    "Use BallastAnalyticsInterceptor with FirebaseAnalyticsTracker instead. Deprecated since v3, to be removed in v4.",
     replaceWith = ReplaceWith(
         "BallastAnalyticsInterceptor(FirebaseAnalyticsTracker(Firebase.analytics)) { it.isAnnotatedWith(FirebaseAnalyticsTrackInput::class) }",
 

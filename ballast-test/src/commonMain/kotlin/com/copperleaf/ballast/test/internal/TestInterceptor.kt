@@ -154,7 +154,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any>(
                 scenario.onInputSequenceBlock(BallastScenarioInputSequenceScopeImpl(this@runTest))
                 delay(250.milliseconds)
                 val deferred = CompletableDeferred<Unit>()
-                sendToQueue(Queued.CloseGracefully(deferred, gracePeriod = testSequenceTimeout))
+                sendToQueue(Queued.ShutDownGracefully(deferred, gracePeriod = testSequenceTimeout))
                 deferred.await()
             }
             timedOut = false

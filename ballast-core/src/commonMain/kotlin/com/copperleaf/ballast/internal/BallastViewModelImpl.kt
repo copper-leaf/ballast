@@ -237,7 +237,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 return shouldAcceptInput == InputFilter.Result.Accept
             }
 
-            is Queued.CloseGracefully -> {
+            is Queued.ShutDownGracefully -> {
                 return true
             }
         }
@@ -255,7 +255,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
             }
 
-            is Queued.CloseGracefully -> {
+            is Queued.ShutDownGracefully -> {
 
             }
         }
@@ -279,7 +279,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
             }
 
-            is Queued.CloseGracefully -> {
+            is Queued.ShutDownGracefully -> {
 
             }
         }
@@ -296,7 +296,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
                 }
 
-                is Queued.CloseGracefully -> {
+                is Queued.ShutDownGracefully -> {
 
                 }
             }
@@ -317,7 +317,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 safelySetState(queued.state, queued.deferred)
             }
 
-            is Queued.CloseGracefully -> {
+            is Queued.ShutDownGracefully -> {
                 gracefullyShutDown(queued.gracePeriod, queued.deferred)
             }
         }
