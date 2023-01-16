@@ -1,17 +1,19 @@
 package com.copperleaf.ballast.examples.ui.counter
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.core.AndroidViewModel
+import kotlinx.coroutines.CoroutineScope
 
 class CounterViewModel(
     config: BallastViewModelConfiguration<
         CounterContract.Inputs,
         CounterContract.Events,
-        CounterContract.State>
+        CounterContract.State>,
+    coroutineScope: CoroutineScope,
 ) : AndroidViewModel<
     CounterContract.Inputs,
     CounterContract.Events,
     CounterContract.State>(
-    config = config
+    config = config,
+    coroutineScope = coroutineScope,
 )

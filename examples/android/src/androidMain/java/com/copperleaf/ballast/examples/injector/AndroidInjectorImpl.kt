@@ -65,6 +65,7 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.milliseconds
@@ -78,11 +79,16 @@ class AndroidInjectorImpl(
 // Router
 // ---------------------------------------------------------------------------------------------------------------------
 
+    private fun newViewModelScope() : CoroutineScope {
+        return CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    }
+
     private val router by lazy {
         BallastExamplesRouter(
             config = commonBuilder()
                 .withRouter(RoutingTable.fromEnum(BallastExamples.values()), BallastExamples.Home)
                 .build(),
+            coroutineScope = newViewModelScope(),
         )
     }
 
@@ -128,6 +134,7 @@ class AndroidInjectorImpl(
                     name = "Counter",
                 )
                 .build(),
+            coroutineScope = newViewModelScope(),
         )
     }
 
@@ -154,6 +161,7 @@ class AndroidInjectorImpl(
                     name = "Scorekeeper",
                 )
                 .build(),
+            coroutineScope = newViewModelScope(),
         )
     }
 
@@ -181,6 +189,7 @@ class AndroidInjectorImpl(
                     name = "Undo",
                 )
                 .build(),
+            coroutineScope = newViewModelScope(),
         )
     }
 
@@ -237,6 +246,7 @@ class AndroidInjectorImpl(
                     name = "BGG",
                 )
                 .build(),
+            coroutineScope = newViewModelScope(),
         )
     }
 
@@ -266,6 +276,7 @@ class AndroidInjectorImpl(
                     name = "KitchenSink",
                 )
                 .build(),
+            coroutineScope = newViewModelScope(),
         )
     }
 
