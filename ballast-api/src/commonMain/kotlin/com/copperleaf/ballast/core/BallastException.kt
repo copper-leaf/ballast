@@ -16,6 +16,8 @@ public open class BallastException(
     public val latestState: Any?,
     public val inputSequence: List<Any>
 ) : RuntimeException(_cause) {
+
+    @Suppress("DEPRECATION")
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is BallastException) return false
