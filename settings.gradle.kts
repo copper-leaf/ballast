@@ -1,6 +1,11 @@
 rootProject.name = "ballast"
 
+include(":ballast-api")
+include(":ballast-viewmodel")
+include(":ballast-logging")
+include(":ballast-utils")
 include(":ballast-core")
+
 include(":ballast-repository")
 include(":ballast-saved-state")
 include(":ballast-debugger")

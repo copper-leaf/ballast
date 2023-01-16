@@ -13,7 +13,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(libs.kotlinx.coroutines.core)
+                api(project(":ballast-api"))
+                api(project(":ballast-viewmodel"))
+                api(project(":ballast-logging"))
+                api(project(":ballast-utils"))
             }
         }
         val commonTest by getting {
@@ -23,15 +26,10 @@ kotlin {
             }
         }
         val jvmMain by getting {
-            dependencies {
-            }
+            dependencies { }
         }
         val androidMain by getting {
-            dependencies {
-                api(libs.androidx.lifecycle.common)
-                api(libs.androidx.lifecycle.runtime)
-                api(libs.androidx.lifecycle.viewmodel)
-            }
+            dependencies { }
         }
         val jsMain by getting {
             dependencies { }

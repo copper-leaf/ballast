@@ -4,7 +4,6 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.awaitViewModelStart
-import com.copperleaf.ballast.core.BallastException
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.crashlytics.ktx.KeyValueBuilder
 import com.google.firebase.crashlytics.ktx.setCustomKeys
@@ -90,7 +89,7 @@ class FirebaseCrashlyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
             key(Keys.ExceptionType, type)
             extraKeys()
         }
-        crashlytics.recordException(BallastException(throwable, handled, "[redacted]", emptyList()))
+        crashlytics.recordException(BallastCrashlyticsException(throwable, handled))
     }
 
     private fun <T : Any, Ann : Annotation> T.isAnnotatedWith(annotationClass: KClass<Ann>): Boolean {

@@ -1,0 +1,37 @@
+public class com/copperleaf/ballast/core/AndroidViewModel : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
+	public static final field Companion Lcom/copperleaf/ballast/core/AndroidViewModel$Companion;
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/CoroutineScope;)V
+	public final fun attachEventHandler (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/EventHandler;)Lkotlinx/coroutines/Job;
+	public static synthetic fun attachEventHandler$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/EventHandler;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public final fun attachEventHandlerOnLifecycle (Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;Landroidx/lifecycle/Lifecycle$State;)Lkotlinx/coroutines/Job;
+	public static synthetic fun attachEventHandlerOnLifecycle$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;Landroidx/lifecycle/Lifecycle$State;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun observeStatesOnLifecycle (Landroidx/lifecycle/LifecycleOwner;Landroidx/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/Job;
+	public static synthetic fun observeStatesOnLifecycle$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Landroidx/lifecycle/LifecycleOwner;Landroidx/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public final fun runOnLifecycle (Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;Landroidx/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function1;)Lkotlinx/coroutines/Job;
+	public static synthetic fun runOnLifecycle$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;Landroidx/lifecycle/Lifecycle$State;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/core/AndroidViewModel$Companion {
+}
+
+public class com/copperleaf/ballast/core/BasicViewModel : com/copperleaf/ballast/BallastViewModel {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/EventHandler;Lkotlinx/coroutines/CoroutineScope;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/EventHandler;Lkotlinx/coroutines/CoroutineScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/viewmodel/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+
