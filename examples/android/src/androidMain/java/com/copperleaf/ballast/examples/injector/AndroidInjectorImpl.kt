@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.build
-import com.copperleaf.ballast.core.AndroidBallastLogger
+import com.copperleaf.ballast.core.AndroidLogger
 import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.PrintlnLogger
@@ -302,7 +302,7 @@ class AndroidInjectorImpl(
             .apply {
                 this += LoggingInterceptor()
                 this += BallastDebuggerInterceptor(debuggerConnection)
-                logger = ::AndroidBallastLogger
+                logger = ::AndroidLogger
             }
             .dispatchers(
                 inputsDispatcher = Dispatchers.Main,

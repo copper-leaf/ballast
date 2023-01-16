@@ -1,5 +1,16 @@
 public final class com/copperleaf/ballast/core/AndroidBallastLogger : com/copperleaf/ballast/BallastLogger {
+	public fun <init> ()V
 	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun debug (Ljava/lang/String;)V
+	public fun error (Ljava/lang/Throwable;)V
+	public fun info (Ljava/lang/String;)V
+}
+
+public final class com/copperleaf/ballast/core/AndroidLogger : com/copperleaf/ballast/BallastLogger {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun debug (Ljava/lang/String;)V
 	public fun error (Ljava/lang/Throwable;)V
 	public fun info (Ljava/lang/String;)V
@@ -13,6 +24,10 @@ public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperle
 	public fun <init> ()V
 	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public final class com/copperleaf/ballast/core/LoggingUtilsKt {
+	public static final fun formatMessage (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/core/PrintlnLogger : com/copperleaf/ballast/BallastLogger {

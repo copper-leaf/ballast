@@ -2,7 +2,7 @@ package com.copperleaf.ballast.examples.injector
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
-import com.copperleaf.ballast.core.JsConsoleBallastLogger
+import com.copperleaf.ballast.core.JsConsoleLogger
 import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
@@ -188,7 +188,7 @@ class ComposeWebInjectorImpl(
             level = LogLevel.BODY
             logger = object : Logger {
                 override fun log(message: String) {
-                    JsConsoleBallastLogger("Ktor").info(message)
+                    JsConsoleLogger("Ktor").info(message)
                 }
             }
         }
@@ -272,7 +272,7 @@ class ComposeWebInjectorImpl(
             .apply {
                 this += LoggingInterceptor()
                 this += BallastDebuggerInterceptor(debuggerConnection)
-                logger = ::JsConsoleBallastLogger
+                logger = ::JsConsoleLogger
             }
     }
 }

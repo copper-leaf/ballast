@@ -1,9 +1,9 @@
+@file:Suppress("DEPRECATION")
 package com.copperleaf.ballast.core
 
 /**
  * A wrapper around an Exception thrown by something in a Ballast ViewModel.
  */
-@Suppress("DEPRECATION")
 public class BallastLoggingException(
     _cause: Throwable,
     handled: Boolean,

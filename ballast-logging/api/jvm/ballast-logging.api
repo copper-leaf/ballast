@@ -8,6 +8,10 @@ public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperle
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
+public final class com/copperleaf/ballast/core/LoggingUtilsKt {
+	public static final fun formatMessage (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+}
+
 public final class com/copperleaf/ballast/core/PrintlnLogger : com/copperleaf/ballast/BallastLogger {
 	public fun <init> ()V
 	public fun <init> (Ljava/lang/String;)V
