@@ -385,7 +385,9 @@ public final class com/copperleaf/ballast/core/AndroidBallastLogger : com/copper
 }
 
 public class com/copperleaf/ballast/core/AndroidViewModel : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
+	public static final field Companion Lcom/copperleaf/ballast/core/AndroidViewModel$Companion;
 	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/CoroutineScope;)V
 	public final fun attachEventHandler (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/EventHandler;)Lkotlinx/coroutines/Job;
 	public static synthetic fun attachEventHandler$default (Lcom/copperleaf/ballast/core/AndroidViewModel;Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/EventHandler;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
 	public final fun attachEventHandlerOnLifecycle (Landroidx/lifecycle/LifecycleOwner;Lcom/copperleaf/ballast/EventHandler;Landroidx/lifecycle/Lifecycle$State;)Lkotlinx/coroutines/Job;
@@ -398,6 +400,9 @@ public class com/copperleaf/ballast/core/AndroidViewModel : androidx/lifecycle/V
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/core/AndroidViewModel$Companion {
 }
 
 public final class com/copperleaf/ballast/core/BallastException : java/lang/RuntimeException {

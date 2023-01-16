@@ -1,9 +1,14 @@
 public class com/copperleaf/ballast/repository/AndroidBallastRepository : androidx/lifecycle/ViewModel, com/copperleaf/ballast/BallastViewModel {
+	public static final field Companion Lcom/copperleaf/ballast/repository/AndroidBallastRepository$Companion;
 	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
+	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/CoroutineScope;)V
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/repository/AndroidBallastRepository$Companion {
 }
 
 public abstract class com/copperleaf/ballast/repository/BallastRepository : com/copperleaf/ballast/core/BasicViewModel {
