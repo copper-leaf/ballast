@@ -1,0 +1,19 @@
+public final class com/copperleaf/ballast/core/BallastLoggingException : com/copperleaf/ballast/core/BallastException {
+	public fun <init> (Ljava/lang/Throwable;ZLjava/lang/Object;Ljava/util/List;)V
+}
+
+public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperleaf/ballast/BallastInterceptor {
+	public fun <init> ()V
+	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public final class com/copperleaf/ballast/core/PrintlnLogger : com/copperleaf/ballast/BallastLogger {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun debug (Ljava/lang/String;)V
+	public fun error (Ljava/lang/Throwable;)V
+	public fun info (Ljava/lang/String;)V
+}
+

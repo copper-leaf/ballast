@@ -1,0 +1,9 @@
+public class com/copperleaf/ballast/core/BasicViewModel : com/copperleaf/ballast/BallastViewModel {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/EventHandler;Lkotlinx/coroutines/CoroutineScope;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/EventHandler;Lkotlinx/coroutines/CoroutineScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+

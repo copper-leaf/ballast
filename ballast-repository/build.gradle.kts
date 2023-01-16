@@ -13,7 +13,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":ballast-core"))
+                implementation(project(":ballast-api"))
+                implementation(project(":ballast-viewmodel"))
             }
         }
         val jvmMain by getting {

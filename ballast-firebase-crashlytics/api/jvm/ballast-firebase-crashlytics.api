@@ -1,3 +1,7 @@
+public final class com/copperleaf/ballast/firebase/BallastCrashlyticsException : com/copperleaf/ballast/core/BallastException {
+	public fun <init> (Ljava/lang/Throwable;Z)V
+}
+
 public abstract interface annotation class com/copperleaf/ballast/firebase/FirebaseCrashlyticsIgnore : java/lang/annotation/Annotation {
 }
 

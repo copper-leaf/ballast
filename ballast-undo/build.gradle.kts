@@ -19,7 +19,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(project(":ballast-core"))
+                implementation(project(":ballast-api"))
             }
         }
         val commonTest by getting {
