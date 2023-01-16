@@ -127,7 +127,7 @@ further back in the stack, such as for showing a stack of floating windows.
 @Composable
 fun MainContent() {
     val applicationScope = rememberCoroutineScope()
-    val router: Router<AppScreen> = remember(applicationScope) { RouterViewModel(applicationScoe) }
+    val router: Router<AppScreen> = remember(applicationScope) { RouterViewModel(applicationScope) }
 
     val routerState: Backstack<AppScreen> by router.observeStates().collectAsState()
 
