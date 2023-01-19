@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.examples.MainApplication
 import com.copperleaf.ballast.examples.databinding.FragmentSyncBinding
 import com.copperleaf.ballast.examples.databinding.IncludeCounterBinding
@@ -15,7 +14,6 @@ import com.copperleaf.ballast.examples.ui.counter.CounterContract
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.InMemorySyncAdapter
 
-@OptIn(ExperimentalBallastApi::class)
 class SyncFragment : Fragment() {
 
     private val injector: AndroidInjector = MainApplication.getInstance().injector

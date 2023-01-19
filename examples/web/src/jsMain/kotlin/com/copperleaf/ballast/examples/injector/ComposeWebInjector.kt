@@ -12,7 +12,7 @@ import com.copperleaf.ballast.examples.ui.undo.UndoViewModel
 import com.copperleaf.ballast.navigation.vm.Router
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
-import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import kotlinx.coroutines.CoroutineScope
 
 interface ComposeWebInjector {
@@ -46,7 +46,7 @@ interface ComposeWebInjector {
 
     fun undoViewModel(
         coroutineScope: CoroutineScope,
-        undoController: UndoController<
+        undoController: StateBasedUndoController<
             UndoContract.Inputs,
             UndoContract.Events,
             UndoContract.State>

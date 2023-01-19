@@ -3,7 +3,6 @@ package com.copperleaf.ballast.undo
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.ExperimentalBallastApi
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
  * [UndoController] should be created and managed separately from the ViewModel it is associated with, and should only
  * be associated with a single ViewModel.
  */
-@ExperimentalBallastApi
 public class BallastUndoInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val controller: UndoController<Inputs, Events, State>
 ) : BallastInterceptor<Inputs, Events, State> {

@@ -14,6 +14,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Redo
+import androidx.compose.material.icons.filled.SaveAlt
 import androidx.compose.material.icons.filled.Undo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,18 +24,17 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.copperleaf.ballast.examples.injector.ComposeDesktopInjector
-import com.copperleaf.ballast.undo.DefaultUndoController
-import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 
 object UndoUi {
 
     @Composable
     fun Content(injector: ComposeDesktopInjector) {
         val viewModelCoroutineScope = rememberCoroutineScope()
-        val undoController: UndoController<
-            UndoContract.Inputs,
-            UndoContract.Events,
-            UndoContract.State> = remember(injector) { DefaultUndoController() }
+        val undoController: StateBasedUndoController<
+                UndoContract.Inputs,
+                UndoContract.Events,
+                UndoContract.State> = remember(injector) { StateBasedUndoController() }
         val vm = remember(viewModelCoroutineScope, undoController) {
             injector.undoViewModel(
                 viewModelCoroutineScope,
@@ -100,6 +100,18 @@ object UndoUi {
                             postInput(UndoContract.Inputs.UpdateText(it))
                         }
                     )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Button(
+                        onClick = { postInput(UndoContract.Inputs.CaptureStateNow) },
+                    ) {
+                        Icon(Icons.Default.SaveAlt, "Capture State")
+                        Text("Capture State")
+                    }
                 }
             }
         }

@@ -10,12 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.examples.MainApplication
 import com.copperleaf.ballast.examples.databinding.FragmentCounterBinding
 import com.copperleaf.ballast.examples.injector.AndroidInjector
 
-@OptIn(ExperimentalBallastApi::class)
 class CounterFragment : Fragment() {
 
     private val injector: AndroidInjector = MainApplication.getInstance().injector

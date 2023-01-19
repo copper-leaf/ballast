@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.undo
 
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.ExperimentalBallastApi
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -9,9 +9,8 @@ import kotlinx.coroutines.flow.Flow
  * either States or Inputs, but ultimately must handle "undo" by restoring the State to a particular point in time. It
  * also must be able to report whether the undo/redo actions are available as a [Flow].
  *
- * For a default, in-memory implementation that works by capturing States over time, see [DefaultUndoController]
+ * For a default, in-memory implementation that works by capturing States over time, see [StateBasedUndoController]
  */
-@ExperimentalBallastApi
 public interface UndoController<Inputs : Any, Events : Any, State : Any> {
     public val isUndoAvailable: Flow<Boolean>
     public val isRedoAvailable: Flow<Boolean>

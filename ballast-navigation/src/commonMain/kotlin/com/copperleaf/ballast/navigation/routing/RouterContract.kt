@@ -134,3 +134,33 @@ public object RouterContract {
         }
     }
 }
+
+
+/*
+
+I'm glad to hear the migration has been going well for you! Ballast was very intentionally created to be easier to use
+than those other options, so that you spend less time fighting the framework and more time building out your app logic.
+So I'm glad to hear you're finding that to be true in your application, too!
+
+> Do you handle multiple nav args in any of your samples?
+
+Multiple nav args works just the same as having a single one. All the dynamic parameters in the route format can be used
+together as-needed, and those values will all be available with the delegate functions (`val sort: String? by optionalStringQuery()` for example).
+
+> Is there any way of accessing the router further the back stack we get
+
+The `Backstack<T>` is just a typealias to `List<Destination<T>>`, which is the entire list of entries in the backstack.
+The functions like `Backstack<T>.renderCurrentDestination()` are just extension functions which generally operate on the
+last entry in the list (the top of the stack), but you're free to inspect the other entries in the backstack from within
+your routes or anywhere else.
+
+> Or the only way is passing for example `onGoBack: () -> Unit`
+
+This is more a question of how Ballast should be used, more generally. You certainly could pass the entire Router object
+into your UI, but that couples your UI to the Ballast library, which should generally be avoided.
+
+Passing callback lambdas like `onGoBack: () -> Unit` is the most future-proof way to go, but you can also pass the
+RouterContract.Inputs up through those lambdas as well, to make it a bit easier to see the specific navigation happening
+within your components: `postInput: (RouterContract.Inputs<T>) -> Unit`
+
+ */

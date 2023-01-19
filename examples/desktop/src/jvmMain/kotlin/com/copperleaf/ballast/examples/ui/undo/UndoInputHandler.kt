@@ -2,6 +2,7 @@ package com.copperleaf.ballast.examples.ui.undo
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
+import com.copperleaf.ballast.undo.state.StateBasedUndoControllerContract
 
 class UndoInputHandler : InputHandler<
     UndoContract.Inputs,
@@ -14,11 +15,27 @@ class UndoInputHandler : InputHandler<
         input: UndoContract.Inputs
     ) = when (input) {
         is UndoContract.Inputs.Undo -> {
-            postEvent(UndoContract.Events.HandleUndo)
+            postEvent(
+                UndoContract.Events.HandleUndoAction(
+                    StateBasedUndoControllerContract.Inputs.Undo()
+                )
+            )
         }
 
         is UndoContract.Inputs.Redo -> {
-            postEvent(UndoContract.Events.HandleRedo)
+            postEvent(
+                UndoContract.Events.HandleUndoAction(
+                    StateBasedUndoControllerContract.Inputs.Redo()
+                )
+            )
+        }
+
+        is UndoContract.Inputs.CaptureStateNow -> {
+            postEvent(
+                UndoContract.Events.HandleUndoAction(
+                    StateBasedUndoControllerContract.Inputs.CaptureStateNow()
+                )
+            )
         }
 
         is UndoContract.Inputs.UpdateText -> {

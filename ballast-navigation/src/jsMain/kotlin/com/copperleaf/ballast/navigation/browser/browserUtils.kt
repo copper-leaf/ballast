@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.navigation.browser
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.core.BootstrapInterceptor
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.RoutingTable
@@ -18,7 +17,6 @@ import com.copperleaf.ballast.plusAssign
  * initial route using a [BootstrapInterceptor]. You may wish to keep this value as `null` to load the initial route
  * from some other means.
  */
-@ExperimentalBallastApi
 public fun <T : Route> BallastViewModelConfiguration.Builder.withBrowserHistoryRouter(
     routingTable: RoutingTable<T>,
     basePath: String? = null,
@@ -36,7 +34,6 @@ public fun <T : Route> BallastViewModelConfiguration.Builder.withBrowserHistoryR
  * synchronizing its state with the browser's address bar using the hash-based routing. [initialRoute] should be
  * provided as a fallback for when a page is requested without an initial destination set in the URL.
  */
-@ExperimentalBallastApi
 public fun <T : Route> BallastViewModelConfiguration.Builder.withBrowserHashRouter(
     routingTable: RoutingTable<T>,
     initialRoute: T,

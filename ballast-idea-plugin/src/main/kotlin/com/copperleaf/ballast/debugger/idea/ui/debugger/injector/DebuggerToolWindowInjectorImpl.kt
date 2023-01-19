@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.debugger.idea.ui.debugger.injector
 
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.BootstrapInterceptor
@@ -26,7 +25,6 @@ import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CoroutineScope
 
-@OptIn(ExperimentalBallastApi::class)
 class DebuggerToolWindowInjectorImpl(
     private val pluginInjector: BallastIntellijPluginInjector,
     private val toolWindowCoroutineScope: CoroutineScope,

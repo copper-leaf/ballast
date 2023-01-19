@@ -7,7 +7,6 @@ import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.core.BasicViewModel
@@ -30,7 +29,6 @@ import com.copperleaf.ballast.withViewModel
  * initial route using a [BootstrapInterceptor]. You may wish to keep this value as `null` to load the initial route
  * from some other means.
  */
-@ExperimentalBallastApi
 public fun <T : Route> BallastViewModelConfiguration.Builder.withRouter(
     routingTable: RoutingTable<T>,
     initialRoute: T?,

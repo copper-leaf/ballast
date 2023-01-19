@@ -3,7 +3,6 @@ package com.copperleaf.ballast.sync
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.ExperimentalBallastApi
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.Flow
  * method by which the ViewModels are synchronized with each other, and [clientType] defines the role that this
  * ViewModel instance plays in that process.
  */
-@ExperimentalBallastApi
 public class BallastSyncInterceptor<
     Inputs : Any,
     Events : Any,

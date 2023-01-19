@@ -2,7 +2,6 @@ package com.copperleaf.ballast.sync
 
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.queuedInputs
 import com.copperleaf.ballast.states
@@ -21,7 +20,6 @@ import kotlinx.coroutines.launch
  * serialization required, or you can create a custom adapter to serialize these values and share in some other way,
  * such as over a network.
  */
-@ExperimentalBallastApi
 public class DefaultSyncConnection<Inputs : Any, Events : Any, State : Any>(
     private val clientType: ClientType,
     private val adapter: SyncConnectionAdapter<Inputs, Events, State>,

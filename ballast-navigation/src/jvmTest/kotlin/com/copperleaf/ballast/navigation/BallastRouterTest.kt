@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.navigation
 
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.eventHandler
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.RouterContract
@@ -19,7 +18,6 @@ import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-@ExperimentalBallastApi
 class BallastRouterTest {
 
     @Test
