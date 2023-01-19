@@ -58,3 +58,83 @@ public final class com/copperleaf/ballast/undo/UndoScopeImpl : com/copperleaf/ba
 	public fun restoreState (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoController : com/copperleaf/ballast/BallastViewModel, com/copperleaf/ballast/undo/UndoController {
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun captureNow ()V
+	public fun connectViewModel (Lcom/copperleaf/ballast/undo/UndoScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun isRedoAvailable ()Lkotlinx/coroutines/flow/Flow;
+	public fun isUndoAvailable ()Lkotlinx/coroutines/flow/Flow;
+	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun redo ()V
+	public fun send (Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendAndAwaitCompletion (Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun trySend-JP2dKIU (Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs;)Ljava/lang/Object;
+	public synthetic fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun undo ()V
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract {
+	public static final field INSTANCE Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract;
+}
+
+public abstract class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Events {
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Events$RestoreState : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Events {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun getStateToRestore ()Ljava/lang/Object;
+}
+
+public abstract class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs$CaptureStateNow : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
+	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs$ConnectViewModel : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
+	public fun <init> (Lkotlinx/coroutines/flow/Flow;)V
+	public final fun getNotifications ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs$ConnectedStateChanged : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun getNewState ()Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs$Redo : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
+	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs$Undo : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
+	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$State {
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/Object;Ljava/util/List;I)V
+	public synthetic fun <init> (Ljava/lang/Object;Ljava/util/List;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()I
+	public final fun copy (Ljava/lang/Object;Ljava/util/List;I)Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$State;Ljava/lang/Object;Ljava/util/List;IILjava/lang/Object;)Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCurrentFrame ()I
+	public final fun getCurrentState ()Ljava/lang/Object;
+	public final fun getFrames ()Ljava/util/List;
+	public final fun getLatestState ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public final fun isRedoAvailable ()Z
+	public final fun isUndoAvailable ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/undo/state/StateBasedUtilsKt {
+	public static final fun withStateBasedUndoController (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function1;I)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+	public static synthetic fun withStateBasedUndoController$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function1;IILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+}
+

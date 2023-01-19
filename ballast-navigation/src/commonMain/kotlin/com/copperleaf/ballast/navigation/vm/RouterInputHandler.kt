@@ -1,11 +1,9 @@
 package com.copperleaf.ballast.navigation.vm
 
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.navigation.internal.BackstackNavigatorImpl
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.RouterContract
 
-@ExperimentalBallastApi
 public class RouterInputHandlerImpl<T : Route> : RouterInputHandler<T> {
 
     override suspend fun RouterInputHandlerScope<T>.handleInput(

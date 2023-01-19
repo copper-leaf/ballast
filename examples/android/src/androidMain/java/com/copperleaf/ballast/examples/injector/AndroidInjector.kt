@@ -2,7 +2,6 @@ package com.copperleaf.ballast.examples.injector
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.SavedStateHandle
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.examples.router.BallastExamplesRouter
 import com.copperleaf.ballast.examples.router.BallastExamplesRouterEventHandler
 import com.copperleaf.ballast.examples.ui.MainActivity
@@ -21,9 +20,8 @@ import com.copperleaf.ballast.examples.ui.undo.UndoEventHandler
 import com.copperleaf.ballast.examples.ui.undo.UndoViewModel
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
-import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 
-@OptIn(ExperimentalBallastApi::class)
 interface AndroidInjector {
 
 // Router
@@ -58,15 +56,15 @@ interface AndroidInjector {
 // ---------------------------------------------------------------------------------------------------------------------
 
     fun undoViewModel(
-        undoController: UndoController<
-            UndoContract.Inputs,
-            UndoContract.Events,
-            UndoContract.State>,
+        undoController: StateBasedUndoController<
+                UndoContract.Inputs,
+                UndoContract.Events,
+                UndoContract.State>,
     ): UndoViewModel
 
     fun undoEventHandler(
         fragment: Fragment,
-        undoController: UndoController<
+        undoController: StateBasedUndoController<
             UndoContract.Inputs,
             UndoContract.Events,
             UndoContract.State>,

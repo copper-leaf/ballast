@@ -13,24 +13,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.examples.MainApplication
 import com.copperleaf.ballast.examples.databinding.FragmentUndoBinding
 import com.copperleaf.ballast.examples.injector.AndroidInjector
-import com.copperleaf.ballast.undo.DefaultUndoController
-import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalBallastApi::class)
 class UndoFragment : Fragment() {
 
-    private val undoController: UndoController<
-        UndoContract.Inputs,
-        UndoContract.Events,
-        UndoContract.State> = DefaultUndoController()
+    private val undoController: StateBasedUndoController<
+            UndoContract.Inputs,
+            UndoContract.Events,
+            UndoContract.State> = StateBasedUndoController()
     private val injector: AndroidInjector = MainApplication.getInstance().injector
     private val vm: UndoViewModel by viewModels {
         viewModelFactory {
@@ -101,5 +98,7 @@ class UndoFragment : Fragment() {
         btnUndo.setOnClickListener { postInput(UndoContract.Inputs.Undo) }
         btnRedo.isEnabled = isRedoAvailable
         btnRedo.setOnClickListener { postInput(UndoContract.Inputs.Redo) }
+
+        btnCaptureStateNow.setOnClickListener { postInput(UndoContract.Inputs.CaptureStateNow) }
     }
 }

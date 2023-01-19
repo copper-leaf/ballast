@@ -9,8 +9,7 @@ import com.copperleaf.ballast.examples.injector.ComposeWebInjector
 import com.copperleaf.ballast.examples.ui.util.bulma.BulmaButton
 import com.copperleaf.ballast.examples.ui.util.bulma.BulmaButtonGroup
 import com.copperleaf.ballast.examples.ui.util.bulma.BulmaInput
-import com.copperleaf.ballast.undo.DefaultUndoController
-import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import org.jetbrains.compose.web.dom.Text
 
 object UndoWebUi {
@@ -18,10 +17,10 @@ object UndoWebUi {
     @Composable
     fun Content(injector: ComposeWebInjector) {
         val viewModelCoroutineScope = rememberCoroutineScope()
-        val undoController: UndoController<
+        val undoController: StateBasedUndoController<
             UndoContract.Inputs,
             UndoContract.Events,
-            UndoContract.State> = remember(injector) { DefaultUndoController() }
+            UndoContract.State> = remember(injector) { StateBasedUndoController() }
         val vm = remember(viewModelCoroutineScope, undoController) {
             injector.undoViewModel(
                 viewModelCoroutineScope,
@@ -70,5 +69,14 @@ object UndoWebUi {
             value = uiState.text,
             onValueChange = { postInput(UndoContract.Inputs.UpdateText(it)) }
         )
+        BulmaButtonGroup {
+            Control {
+                BulmaButton(
+                    onClick = { postInput(UndoContract.Inputs.CaptureStateNow) },
+                ) {
+                    Text("Capture State")
+                }
+            }
+        }
     }
 }

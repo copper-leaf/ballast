@@ -3,7 +3,6 @@ package com.copperleaf.ballast.examples.injector
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.SavedStateHandle
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.AndroidLogger
 import com.copperleaf.ballast.core.KillSwitch
@@ -55,7 +54,7 @@ import com.copperleaf.ballast.sync.BallastSyncInterceptor
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
 import com.copperleaf.ballast.undo.BallastUndoInterceptor
-import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -71,7 +70,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalBallastApi::class)
 class AndroidInjectorImpl(
     private val applicationScope: CoroutineScope,
 ) : AndroidInjector {
@@ -173,7 +171,7 @@ class AndroidInjectorImpl(
 // ---------------------------------------------------------------------------------------------------------------------
 
     override fun undoViewModel(
-        undoController: UndoController<
+        undoController: StateBasedUndoController<
             UndoContract.Inputs,
             UndoContract.Events,
             UndoContract.State>
@@ -195,10 +193,10 @@ class AndroidInjectorImpl(
 
     override fun undoEventHandler(
         fragment: Fragment,
-        undoController: UndoController<
-            UndoContract.Inputs,
-            UndoContract.Events,
-            UndoContract.State>
+        undoController: StateBasedUndoController<
+                UndoContract.Inputs,
+                UndoContract.Events,
+                UndoContract.State>
     ): UndoEventHandler {
         return UndoEventHandler(fragment, router, undoController)
     }

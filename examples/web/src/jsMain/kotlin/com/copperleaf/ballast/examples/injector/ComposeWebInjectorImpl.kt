@@ -49,7 +49,7 @@ import com.copperleaf.ballast.sync.BallastSyncInterceptor
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
 import com.copperleaf.ballast.undo.BallastUndoInterceptor
-import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -157,7 +157,7 @@ class ComposeWebInjectorImpl(
 
     override fun undoViewModel(
         coroutineScope: CoroutineScope,
-        undoController: UndoController<
+        undoController: StateBasedUndoController<
                 UndoContract.Inputs,
                 UndoContract.Events,
                 UndoContract.State>

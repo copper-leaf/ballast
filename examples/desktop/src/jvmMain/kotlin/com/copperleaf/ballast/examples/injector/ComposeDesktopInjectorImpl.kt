@@ -50,8 +50,9 @@ import com.copperleaf.ballast.sync.BallastSyncInterceptor
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
 import com.copperleaf.ballast.undo.BallastUndoInterceptor
-import com.copperleaf.ballast.undo.DefaultUndoController
 import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
+import com.copperleaf.ballast.undo.state.withStateBasedUndoController
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.ExperimentalSettingsImplementation
 import com.russhwolf.settings.Settings
@@ -66,7 +67,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalSettingsImplementation::class)
 class ComposeDesktopInjectorImpl(
     private val applicationScope: CoroutineScope,
 ) : ComposeDesktopInjector {
@@ -75,13 +75,21 @@ class ComposeDesktopInjectorImpl(
 // ---------------------------------------------------------------------------------------------------------------------
 
     private val routerUndoController by lazy {
-        DefaultUndoController<
+        StateBasedUndoController<
                 RouterContract.Inputs<BallastExamples>,
                 RouterContract.Events<BallastExamples>,
                 RouterContract.State<BallastExamples>,
                 >(
-            bufferStates = { it }, // do not buffer states, each Routing change should be captured in the Undo state
-            historyDepth = 25
+            BallastViewModelConfiguration.Builder()
+                .withStateBasedUndoController<
+                        RouterContract.Inputs<BallastExamples>,
+                        RouterContract.Events<BallastExamples>,
+                        RouterContract.State<BallastExamples>,
+                        >(
+                    bufferStates = { it }, // do not buffer states, each Routing change should be captured in the Undo state
+                    historyDepth = 25,
+                )
+                .build()
         )
     }
 
@@ -176,7 +184,7 @@ class ComposeDesktopInjectorImpl(
 
     override fun undoViewModel(
         coroutineScope: CoroutineScope,
-        undoController: UndoController<
+        undoController: StateBasedUndoController<
                 UndoContract.Inputs,
                 UndoContract.Events,
                 UndoContract.State>

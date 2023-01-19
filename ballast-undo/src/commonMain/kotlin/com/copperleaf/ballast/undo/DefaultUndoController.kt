@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.undo
 
 import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.states
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
@@ -27,7 +26,10 @@ import kotlin.time.Duration.Companion.seconds
  * at most [historyDepth] states will be stored in memory. Once the max length is hit, the oldest States will be purged
  * when new States are captured. The default history length is 10.
  */
-@ExperimentalBallastApi
+@Deprecated(
+    message = "Use StateBasedUndoController instead",
+    replaceWith = ReplaceWith("StateBasedUndoController", "com.copperleaf.ballast.undo.state.StateBasedUndoController"),
+)
 public class DefaultUndoController<Inputs : Any, Events : Any, State : Any>(
     private val bufferStates: (Flow<State>) -> Flow<State> = { it.sample(5.seconds) },
     private val historyDepth: Int = 10,

@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.sync
 
-import com.copperleaf.ballast.ExperimentalBallastApi
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -8,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
  * [DefaultSyncConnection], and any custom [SyncConnection] should use the adapters rather than manually serializing
  * States/Inputs to maximize flexibility.
  */
-@ExperimentalBallastApi
 public interface SyncConnectionAdapter<
     Inputs : Any,
     Events : Any,

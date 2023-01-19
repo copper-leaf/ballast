@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.sync
 
-import com.copperleaf.ballast.ExperimentalBallastApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.UNLIMITED
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 /**
  * A [SyncConnectionAdapter] that shares States/Inputs values directly in memory with no serialization required.
  */
-@ExperimentalBallastApi
 public class InMemorySyncAdapter<
     Inputs : Any,
     Events : Any,

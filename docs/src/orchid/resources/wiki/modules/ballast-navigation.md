@@ -520,7 +520,6 @@ enum class AppScreen(
     override val matcher: RouteMatcher = RouteMatcher.create(routeFormat)
 }
 
-@OptIn(ExperimentalBallastApi::class)
 @Composable
 fun MainContent() {
     val applicationScope = rememberCoroutineScope()

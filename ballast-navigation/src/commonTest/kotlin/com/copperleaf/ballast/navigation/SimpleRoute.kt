@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.navigation
 
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.RouteAnnotation
@@ -22,7 +21,6 @@ public data class SimpleRoute(
     }
 }
 
-@OptIn(ExperimentalBallastApi::class)
 public class SimpleRoutingTable(
     vararg routes: SimpleRoute,
 ) : RoutingTable<SimpleRoute> {

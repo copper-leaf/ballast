@@ -15,6 +15,7 @@ import com.copperleaf.ballast.navigation.vm.Router
 import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
 import com.copperleaf.ballast.undo.UndoController
+import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import kotlinx.coroutines.CoroutineScope
 
 interface ComposeDesktopInjector {
@@ -54,10 +55,10 @@ interface ComposeDesktopInjector {
 
     fun undoViewModel(
         coroutineScope: CoroutineScope,
-        undoController: UndoController<
-            UndoContract.Inputs,
-            UndoContract.Events,
-            UndoContract.State>
+        undoController: StateBasedUndoController<
+                UndoContract.Inputs,
+                UndoContract.Events,
+                UndoContract.State>
     ): UndoViewModel
 
 // BGG API Call/Cache
