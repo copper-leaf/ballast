@@ -57,7 +57,6 @@
 //        jvmTarget = "11"
 //        freeCompilerArgs += "-opt-in=kotlin.ExperimentalStdlibApi"
 //        freeCompilerArgs += "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-//        freeCompilerArgs += "-opt-in=androidx.compose.foundation.ExperimentalFoundationApi"
 //        freeCompilerArgs += "-opt-in=androidx.compose.animation.ExperimentalAnimationApi"
 //        freeCompilerArgs += "-opt-in=androidx.compose.ui.ExperimentalComposeUiApi"
 //        freeCompilerArgs += "-opt-in=androidx.compose.material.ExperimentalMaterialApi"

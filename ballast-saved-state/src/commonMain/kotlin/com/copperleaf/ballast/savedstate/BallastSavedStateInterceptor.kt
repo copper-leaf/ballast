@@ -80,8 +80,7 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
                 .onEach { nextState ->
                     if (stateRestored) {
                         val scope = SaveStateScopeImpl<Inputs, Events, State>(
-                            logger = logger,
-                            hostViewModelName = hostViewModelName,
+                            interceptorScope = this@processStateChanges,
                             previousState = previousState,
                             nextState = nextState,
                         )
@@ -97,7 +96,7 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
     }
 
     @Suppress("DEPRECATION")
-    public fun requestStateRestoration() {
+    private fun BallastInterceptorScope<Inputs, Events, State>.requestStateRestoration() {
         val notNullScope = requireNotNull(interceptorScope) {
             "ViewModel with BallastSavedStateInterceptor is not started or has completed"
         }
@@ -107,8 +106,7 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
                 val stateRestoredDeferred = CompletableDeferred<Unit>()
 
                 val scope = RestoreStateScopeImpl<Inputs, Events, State>(
-                    logger = logger,
-                    hostViewModelName = hostViewModelName,
+                    interceptorScope = this@requestStateRestoration,
                 )
                 val restoredState = with(adapter) {
                     scope.restore()
