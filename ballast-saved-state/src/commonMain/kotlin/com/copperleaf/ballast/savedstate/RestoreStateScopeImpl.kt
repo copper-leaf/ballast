@@ -1,20 +1,23 @@
 package com.copperleaf.ballast.savedstate
 
+import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastLogger
 
 public class RestoreStateScopeImpl<Inputs : Any, Events : Any, State : Any>(
-    override val logger: BallastLogger,
-    override val hostViewModelName: String,
+    private val interceptorScope: BallastInterceptorScope<Inputs, Events, State>
 ) : RestoreStateScope<Inputs, Events, State> {
+
+    override val logger: BallastLogger = interceptorScope.logger
+    override val hostViewModelName: String = interceptorScope.hostViewModelName
 
     internal val inputToPostAfterRestore = mutableListOf<Inputs>()
     internal val eventsToPostAfterRestore = mutableListOf<Events>()
 
-    override fun postInputAfterRestore(input: Inputs) {
+    override fun postInput(input: Inputs) {
         inputToPostAfterRestore += input
     }
 
-    override fun postEventAfterRestore(event: Events) {
+    override fun postEvent(event: Events) {
         eventsToPostAfterRestore += event
     }
 }
