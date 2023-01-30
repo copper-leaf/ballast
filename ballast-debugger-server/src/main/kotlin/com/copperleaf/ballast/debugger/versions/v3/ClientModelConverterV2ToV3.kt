@@ -1,65 +1,52 @@
-package com.copperleaf.ballast.debugger.server.versions.v2
+package com.copperleaf.ballast.debugger.versions.v3
 
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
-import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
-import com.copperleaf.ballast.debugger.server.ClientModelMapper
-import kotlinx.serialization.json.Json
+import com.copperleaf.ballast.debugger.versions.ClientModelConverter
+import com.copperleaf.ballast.debugger.versions.v2.BallastDebuggerActionV2
+import com.copperleaf.ballast.debugger.versions.v2.BallastDebuggerEventV2
 
-class ClientModelMapperV2 : ClientModelMapper {
-    private val debuggerEventJson: Json = Json {
-        isLenient = true
-    }
+class ClientModelConverterV2ToV3 : ClientModelConverter<
+        BallastDebuggerEventV2,
+        BallastDebuggerEventV3,
+        BallastDebuggerActionV2,
+        BallastDebuggerActionV3
+        > {
 
-    override val supported: Boolean = true
-
-// Incoming
-// ---------------------------------------------------------------------------------------------------------------------
-
-    override fun mapIncoming(incoming: String): BallastDebuggerEvent {
-        return debuggerEventJson
-            .decodeFromString(BallastDebuggerEventV2.serializer(), incoming)
-            .toLatestVersionEvent()
-    }
-
-    private fun BallastDebuggerEventV2.toLatestVersionEvent(): BallastDebuggerEvent {
-        return when(this) {
-            is BallastDebuggerEventV2.Heartbeat -> BallastDebuggerEvent.Heartbeat(
+    override fun mapEvent(event: BallastDebuggerEventV2): BallastDebuggerEventV3 = with(event) {
+        return when (this) {
+            is BallastDebuggerEventV2.Heartbeat -> BallastDebuggerEventV3.Heartbeat(
                 connectionId = connectionId,
                 connectionBallastVersion = connectionBallastVersion,
             )
-            is BallastDebuggerEventV2.RefreshViewModelStart -> BallastDebuggerEvent.RefreshViewModelStart(
+
+            is BallastDebuggerEventV2.RefreshViewModelStart -> BallastDebuggerEventV3.RefreshViewModelStart(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
             )
-            is BallastDebuggerEventV2.RefreshViewModelComplete -> BallastDebuggerEvent.RefreshViewModelComplete(
+
+            is BallastDebuggerEventV2.RefreshViewModelComplete -> BallastDebuggerEventV3.RefreshViewModelComplete(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
             )
-            is BallastDebuggerEventV2.ViewModelStarted -> BallastDebuggerEvent.ViewModelStatusChanged(
+
+            is BallastDebuggerEventV2.ViewModelStarted -> BallastDebuggerEventV3.ViewModelStatusChanged(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 viewModelType = viewModelType,
                 uuid = uuid,
                 timestamp = timestamp,
-                status = "Running",
+                status = BallastDebuggerEventV3.StatusV3.Running,
             )
-            is BallastDebuggerEventV2.ViewModelCleared -> BallastDebuggerEvent.ViewModelStatusChanged(
+
+            is BallastDebuggerEventV2.ViewModelCleared -> BallastDebuggerEventV3.ViewModelStatusChanged(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
-                viewModelType = "", // uh-oh, missing this field on the clients...
+                viewModelType = "", // uh oh, versions < 3 don't include this value
                 uuid = uuid,
                 timestamp = timestamp,
-                status = "Cleared",
+                status = BallastDebuggerEventV3.StatusV3.Cleared,
             )
-            is BallastDebuggerEventV2.InputQueued -> BallastDebuggerEvent.InputQueued(
-                connectionId = connectionId,
-                viewModelName = viewModelName,
-                uuid = uuid,
-                timestamp = timestamp,
-                inputType = inputType,
-                inputToStringValue = inputToStringValue,
-            )
-            is BallastDebuggerEventV2.InputAccepted -> BallastDebuggerEvent.InputAccepted(
+
+            is BallastDebuggerEventV2.InputQueued -> BallastDebuggerEventV3.InputQueued(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -67,7 +54,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 inputType = inputType,
                 inputToStringValue = inputToStringValue,
             )
-            is BallastDebuggerEventV2.InputRejected -> BallastDebuggerEvent.InputRejected(
+
+            is BallastDebuggerEventV2.InputAccepted -> BallastDebuggerEventV3.InputAccepted(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -75,7 +63,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 inputType = inputType,
                 inputToStringValue = inputToStringValue,
             )
-            is BallastDebuggerEventV2.InputDropped -> BallastDebuggerEvent.InputDropped(
+
+            is BallastDebuggerEventV2.InputRejected -> BallastDebuggerEventV3.InputRejected(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -83,7 +72,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 inputType = inputType,
                 inputToStringValue = inputToStringValue,
             )
-            is BallastDebuggerEventV2.InputHandledSuccessfully -> BallastDebuggerEvent.InputHandledSuccessfully(
+
+            is BallastDebuggerEventV2.InputDropped -> BallastDebuggerEventV3.InputDropped(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -91,7 +81,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 inputType = inputType,
                 inputToStringValue = inputToStringValue,
             )
-            is BallastDebuggerEventV2.InputCancelled -> BallastDebuggerEvent.InputCancelled(
+
+            is BallastDebuggerEventV2.InputHandledSuccessfully -> BallastDebuggerEventV3.InputHandledSuccessfully(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -99,7 +90,17 @@ class ClientModelMapperV2 : ClientModelMapper {
                 inputType = inputType,
                 inputToStringValue = inputToStringValue,
             )
-            is BallastDebuggerEventV2.InputHandlerError -> BallastDebuggerEvent.InputHandlerError(
+
+            is BallastDebuggerEventV2.InputCancelled -> BallastDebuggerEventV3.InputCancelled(
+                connectionId = connectionId,
+                viewModelName = viewModelName,
+                uuid = uuid,
+                timestamp = timestamp,
+                inputType = inputType,
+                inputToStringValue = inputToStringValue,
+            )
+
+            is BallastDebuggerEventV2.InputHandlerError -> BallastDebuggerEventV3.InputHandlerError(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -108,7 +109,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 inputToStringValue = inputToStringValue,
                 stacktrace = stacktrace,
             )
-            is BallastDebuggerEventV2.EventQueued -> BallastDebuggerEvent.EventQueued(
+
+            is BallastDebuggerEventV2.EventQueued -> BallastDebuggerEventV3.EventQueued(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -116,7 +118,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 eventType = eventType,
                 eventToStringValue = eventToStringValue,
             )
-            is BallastDebuggerEventV2.EventEmitted -> BallastDebuggerEvent.EventEmitted(
+
+            is BallastDebuggerEventV2.EventEmitted -> BallastDebuggerEventV3.EventEmitted(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -124,7 +127,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 eventType = eventType,
                 eventToStringValue = eventToStringValue,
             )
-            is BallastDebuggerEventV2.EventHandledSuccessfully -> BallastDebuggerEvent.EventHandledSuccessfully(
+
+            is BallastDebuggerEventV2.EventHandledSuccessfully -> BallastDebuggerEventV3.EventHandledSuccessfully(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -132,7 +136,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 eventType = eventType,
                 eventToStringValue = eventToStringValue,
             )
-            is BallastDebuggerEventV2.EventHandlerError -> BallastDebuggerEvent.EventHandlerError(
+
+            is BallastDebuggerEventV2.EventHandlerError -> BallastDebuggerEventV3.EventHandlerError(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -141,19 +146,22 @@ class ClientModelMapperV2 : ClientModelMapper {
                 eventToStringValue = eventToStringValue,
                 stacktrace = stacktrace,
             )
-            is BallastDebuggerEventV2.EventProcessingStarted -> BallastDebuggerEvent.EventProcessingStarted(
+
+            is BallastDebuggerEventV2.EventProcessingStarted -> BallastDebuggerEventV3.EventProcessingStarted(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
                 timestamp = timestamp,
             )
-            is BallastDebuggerEventV2.EventProcessingStopped -> BallastDebuggerEvent.EventProcessingStopped(
+
+            is BallastDebuggerEventV2.EventProcessingStopped -> BallastDebuggerEventV3.EventProcessingStopped(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
                 timestamp = timestamp,
             )
-            is BallastDebuggerEventV2.StateChanged -> BallastDebuggerEvent.StateChanged(
+
+            is BallastDebuggerEventV2.StateChanged -> BallastDebuggerEventV3.StateChanged(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -161,22 +169,16 @@ class ClientModelMapperV2 : ClientModelMapper {
                 stateType = stateType,
                 stateToStringValue = stateToStringValue,
             )
-            is BallastDebuggerEventV2.SideJobQueued -> BallastDebuggerEvent.SideJobQueued(
+
+            is BallastDebuggerEventV2.SideJobQueued -> BallastDebuggerEventV3.SideJobQueued(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
                 timestamp = timestamp,
                 key = key,
             )
-            is BallastDebuggerEventV2.SideJobStarted -> BallastDebuggerEvent.SideJobStarted(
-                connectionId = connectionId,
-                viewModelName = viewModelName,
-                uuid = uuid,
-                timestamp = timestamp,
-                key = key,
-                restartState = restartState,
-            )
-            is BallastDebuggerEventV2.SideJobCompleted -> BallastDebuggerEvent.SideJobCompleted(
+
+            is BallastDebuggerEventV2.SideJobStarted -> BallastDebuggerEventV3.SideJobStarted(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -184,7 +186,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 key = key,
                 restartState = restartState,
             )
-            is BallastDebuggerEventV2.SideJobCancelled -> BallastDebuggerEvent.SideJobCancelled(
+
+            is BallastDebuggerEventV2.SideJobCompleted -> BallastDebuggerEventV3.SideJobCompleted(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -192,7 +195,17 @@ class ClientModelMapperV2 : ClientModelMapper {
                 key = key,
                 restartState = restartState,
             )
-            is BallastDebuggerEventV2.SideJobError -> BallastDebuggerEvent.SideJobError(
+
+            is BallastDebuggerEventV2.SideJobCancelled -> BallastDebuggerEventV3.SideJobCancelled(
+                connectionId = connectionId,
+                viewModelName = viewModelName,
+                uuid = uuid,
+                timestamp = timestamp,
+                key = key,
+                restartState = restartState,
+            )
+
+            is BallastDebuggerEventV2.SideJobError -> BallastDebuggerEventV3.SideJobError(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -201,7 +214,8 @@ class ClientModelMapperV2 : ClientModelMapper {
                 restartState = restartState,
                 stacktrace = stacktrace,
             )
-            is BallastDebuggerEventV2.UnhandledError -> BallastDebuggerEvent.UnhandledError(
+
+            is BallastDebuggerEventV2.UnhandledError -> BallastDebuggerEventV3.UnhandledError(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 uuid = uuid,
@@ -211,26 +225,20 @@ class ClientModelMapperV2 : ClientModelMapper {
         }
     }
 
-// Outgoing
-// ---------------------------------------------------------------------------------------------------------------------
-
-    override fun mapOutgoing(outgoing: BallastDebuggerAction): String {
-        return debuggerEventJson
-            .encodeToString(BallastDebuggerActionV2.serializer(), outgoing.toV2Action())
-    }
-
-    private fun BallastDebuggerAction.toV2Action(): BallastDebuggerActionV2 {
-        return when(this) {
-            is BallastDebuggerAction.RequestViewModelRefresh -> BallastDebuggerActionV2.RequestViewModelRefresh(
+    override fun mapAction(action: BallastDebuggerActionV3): BallastDebuggerActionV2 = with(action) {
+        return when (this) {
+            is BallastDebuggerActionV3.RequestViewModelRefresh -> BallastDebuggerActionV2.RequestViewModelRefresh(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
             )
-            is BallastDebuggerAction.RequestRestoreState -> BallastDebuggerActionV2.RequestRestoreState(
+
+            is BallastDebuggerActionV3.RequestRestoreState -> BallastDebuggerActionV2.RequestRestoreState(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 stateUuid = stateUuid,
             )
-            is BallastDebuggerAction.RequestResendInput -> BallastDebuggerActionV2.RequestResendInput(
+
+            is BallastDebuggerActionV3.RequestResendInput -> BallastDebuggerActionV2.RequestResendInput(
                 connectionId = connectionId,
                 viewModelName = viewModelName,
                 inputUuid = inputUuid,

@@ -15,7 +15,7 @@ class DebuggerToolWindow {
             toolWindow.setContent(null) {
                 val toolWindowCoroutineScope = rememberCoroutineScope()
                 val injector = remember { DebuggerToolWindowInjector.getInstance(project, toolWindowCoroutineScope) }
-                DebuggerToolWindowUi.Content(injector)
+                DebuggerUi.Content(injector)
             }
         }
     }

@@ -2,12 +2,12 @@ package com.copperleaf.ballast.debugger.idea.ui.settings
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.debugger.idea.settings.BallastIntellijPluginPersistentSettings
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginPersistentSettings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 
 class SettingsUiInputHandler(
-    private val settings: BallastIntellijPluginPersistentSettings,
+    private val settings: IntellijPluginPersistentSettings,
     private val settingsPanelCoroutineScope: CoroutineScope,
 ) : InputHandler<
         SettingsUiContract.Inputs,

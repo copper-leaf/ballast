@@ -1,18 +1,18 @@
 package com.copperleaf.ballast.debugger.idea.ui.settings
 
-import com.copperleaf.ballast.debugger.idea.settings.BallastIntellijPluginSettingsSnapshot
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 
 object SettingsUiContract {
     data class State(
-        val defaultValues: BallastIntellijPluginSettingsSnapshot,
-        val originalSettings: BallastIntellijPluginSettingsSnapshot,
-        val modifiedSettings: BallastIntellijPluginSettingsSnapshot = originalSettings,
+        val defaultValues: IntellijPluginSettingsSnapshot,
+        val originalSettings: IntellijPluginSettingsSnapshot,
+        val modifiedSettings: IntellijPluginSettingsSnapshot = originalSettings,
     ) {
         val isModified: Boolean = modifiedSettings != originalSettings
     }
 
     sealed class Inputs {
-        data class UpdateSettings(val value: BallastIntellijPluginSettingsSnapshot.()->BallastIntellijPluginSettingsSnapshot) : Inputs()
+        data class UpdateSettings(val value: IntellijPluginSettingsSnapshot.()->IntellijPluginSettingsSnapshot) : Inputs()
         object DiscardChanges : Inputs()
         object RestoreDefaultSettings : Inputs()
         object ApplySettings : Inputs()

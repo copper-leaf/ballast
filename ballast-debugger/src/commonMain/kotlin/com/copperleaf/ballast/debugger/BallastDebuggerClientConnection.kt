@@ -7,16 +7,13 @@ import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.associate
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
-import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.models.debuggerEventJson
 import com.copperleaf.ballast.debugger.models.getActualValue
 import com.copperleaf.ballast.debugger.models.serialize
-import com.copperleaf.ballast.debugger.models.updateConnection
-import com.copperleaf.ballast.debugger.models.updateViewModel
-import com.copperleaf.ballast.debugger.models.updateWithDebuggerEvent
 import com.copperleaf.ballast.debugger.utils.now
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
 import io.github.copper_leaf.ballast_debugger.BALLAST_VERSION
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -44,6 +41,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
@@ -85,12 +83,12 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
     private class BallastDebuggerEventWrapper(
         val notification: BallastNotification<*, *, *>?,
-        val debuggerEvent: BallastDebuggerEvent?,
+        val debuggerEvent: BallastDebuggerEventV3?,
         val updateConnectionState: Boolean,
     )
 
     private val outgoingMessages = Channel<BallastDebuggerEventWrapper>(Channel.UNLIMITED, BufferOverflow.SUSPEND)
-    private val incomingActions = MutableSharedFlow<BallastDebuggerAction>()
+    private val incomingActions = MutableSharedFlow<BallastDebuggerActionV3>()
     private var waitForEvent = CompletableDeferred<Unit>()
 
     private var applicationState: BallastApplicationState = BallastApplicationState()
@@ -131,7 +129,11 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         return job
     }
 
-    private suspend fun attemptConnection(logger: BallastLogger?, currentTimeoutValue: Duration, onSuccessfulConnection: () -> Unit) {
+    private suspend fun attemptConnection(
+        logger: BallastLogger?,
+        currentTimeoutValue: Duration,
+        onSuccessfulConnection: () -> Unit
+    ) {
         // either wait for a given timeout to reconnect, or if a new event comes in connect immediately
         withTimeoutOrNull(currentTimeoutValue) {
             waitForEvent.await()
@@ -151,9 +153,9 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         ) {
             onSuccessfulConnection()
             joinAll(
-                heartbeat(),
-                processOutgoing(),
-                processIncoming(),
+                heartbeat(logger),
+                processOutgoing(logger),
+                processIncoming(logger),
             )
         }
     }
@@ -211,7 +213,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     /**
      * send a heartbeat from this connection every 5 seconds, so the UI can show when each connection is still alive
      */
-    private fun DefaultClientWebSocketSession.heartbeat(): Job {
+    private fun DefaultClientWebSocketSession.heartbeat(logger: BallastLogger?): Job {
         val session = this
 
         return flow<Unit> {
@@ -224,8 +226,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 session.send(
                     debuggerEventJson
                         .encodeToString(
-                            BallastDebuggerEvent.serializer(),
-                            BallastDebuggerEvent.Heartbeat(
+                            BallastDebuggerEventV3.serializer(),
+                            BallastDebuggerEventV3.Heartbeat(
                                 connectionId = connectionId,
                                 connectionBallastVersion = ballastVersion,
                             )
@@ -233,13 +235,17 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                         .let { Frame.Text(it) }
                 )
             }
+            .catch {
+                logger?.debug("error processing heartbeat: ")
+                logger?.error(it)
+            }
             .launchIn(this)
     }
 
     /**
      * send messages from the channel to the websocket
      */
-    private fun DefaultClientWebSocketSession.processOutgoing(): Job {
+    private fun DefaultClientWebSocketSession.processOutgoing(logger: BallastLogger?): Job {
         val session = this
         return outgoingMessages
             .receiveAsFlow()
@@ -271,9 +277,13 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 // send the message through the websocket to the client UI, where it will be processed in the same way
                 session.send(
                     debuggerEventJson
-                        .encodeToString(BallastDebuggerEvent.serializer(), event)
+                        .encodeToString(BallastDebuggerEventV3.serializer(), event)
                         .let { Frame.Text(it) }
                 )
+            }
+            .catch {
+                logger?.debug("error processing outgoing: ")
+                logger?.error(it)
             }
             .launchIn(this)
     }
@@ -281,7 +291,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     /**
      * read messages sent from the debugger UI to the app
      */
-    private fun DefaultClientWebSocketSession.processIncoming(): Job {
+    private fun DefaultClientWebSocketSession.processIncoming(logger: BallastLogger?): Job {
         return incoming
             .receiveAsFlow()
             .filterIsInstance<Frame.Text>()
@@ -289,25 +299,29 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 val text = frame.readText()
 
                 debuggerEventJson
-                    .decodeFromString(BallastDebuggerAction.serializer(), text)
+                    .decodeFromString(BallastDebuggerActionV3.serializer(), text)
                     .let { incomingActions.emit(it) }
+            }
+            .catch {
+                logger?.debug("error processing incoming: ")
+                logger?.error(it)
             }
             .launchIn(this)
     }
 
     @Suppress("UNCHECKED_CAST")
     private suspend fun <Inputs : Any, Events : Any, State : Any> BallastInterceptorScope<Inputs, Events, State>.handleAction(
-        action: BallastDebuggerAction,
+        action: BallastDebuggerActionV3,
         thisViewModel: BallastViewModelState,
     ) {
         return when (action) {
-            is BallastDebuggerAction.RequestViewModelRefresh -> {
+            is BallastDebuggerActionV3.RequestViewModelRefresh -> {
                 val currentViewModelHistory = thisViewModel.fullHistory.reversed()
 
                 outgoingMessages.send(
                     BallastDebuggerEventWrapper(
                         notification = null,
-                        debuggerEvent = BallastDebuggerEvent.RefreshViewModelStart(
+                        debuggerEvent = BallastDebuggerEventV3.RefreshViewModelStart(
                             connectionId,
                             action.viewModelName,
                         ),
@@ -328,7 +342,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 outgoingMessages.send(
                     BallastDebuggerEventWrapper(
                         notification = null,
-                        debuggerEvent = BallastDebuggerEvent.RefreshViewModelComplete(
+                        debuggerEvent = BallastDebuggerEventV3.RefreshViewModelComplete(
                             connectionId,
                             action.viewModelName,
                         ),
@@ -341,7 +355,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 Unit
             }
 
-            is BallastDebuggerAction.RequestResendInput -> {
+            is BallastDebuggerActionV3.RequestResendInput -> {
                 val inputToResend = thisViewModel
                     .inputs
                     .firstOrNull { it.uuid == action.inputUuid }
@@ -353,7 +367,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 }
             }
 
-            is BallastDebuggerAction.RequestRestoreState -> {
+            is BallastDebuggerActionV3.RequestRestoreState -> {
                 val stateToRestore = thisViewModel
                     .states
                     .firstOrNull { it.uuid == action.stateUuid }

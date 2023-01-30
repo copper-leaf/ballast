@@ -49,6 +49,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -69,13 +70,14 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import com.copperleaf.ballast.debugger.idea.ui.debugger.BallastDebuggerUiSettings
+import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiSettings
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastEventState
 import com.copperleaf.ballast.debugger.models.BallastInputState
+import com.copperleaf.ballast.debugger.models.BallastInterceptorState
 import com.copperleaf.ballast.debugger.models.BallastSideJobState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
@@ -326,8 +328,8 @@ fun IntellijEditor(
 @Composable
 fun rememberConnectionsList(
     serverState: BallastApplicationState,
-): List<BallastConnectionState> {
-    return remember(serverState) {
+): State<List<BallastConnectionState>> {
+    return viewModelValue {
         serverState.connections
     }
 }
@@ -335,9 +337,9 @@ fun rememberConnectionsList(
 @Composable
 fun Destination.ParametersProvider.rememberSelectedConnection(
     connectionsList: List<BallastConnectionState>,
-): BallastConnectionState? {
-    val connectionId: String? by optionalStringPath()
-    return remember(connectionsList, connectionId) {
+): State<BallastConnectionState?> {
+    return viewModelValue {
+        val connectionId: String? by optionalStringPath()
         connectionsList.find { connection -> connection.connectionId == connectionId }
     }
 }
@@ -345,8 +347,8 @@ fun Destination.ParametersProvider.rememberSelectedConnection(
 @Composable
 fun rememberViewModelList(
     connection: BallastConnectionState?,
-): List<BallastViewModelState?> {
-    return remember(connection) {
+): State<List<BallastViewModelState?>> {
+    return viewModelValue {
         if (connection == null) {
             emptyList()
         } else {
@@ -358,9 +360,9 @@ fun rememberViewModelList(
 @Composable
 fun Destination.ParametersProvider.rememberSelectedViewModel(
     connection: BallastConnectionState?,
-): BallastViewModelState? {
-    val viewModelName: String by stringPath()
-    return remember(viewModelName) {
+): State<BallastViewModelState?> {
+    return viewModelValue {
+        val viewModelName: String by stringPath()
         connection?.viewModels?.find { vm -> vm.viewModelName == viewModelName }
     }
 }
@@ -369,8 +371,8 @@ fun Destination.ParametersProvider.rememberSelectedViewModel(
 fun rememberViewModelStatesList(
     viewModel: BallastViewModelState?,
     searchText: String,
-): List<BallastStateSnapshot> {
-    return remember(viewModel, searchText) {
+): State<List<BallastStateSnapshot>> {
+    return viewModelValue {
         viewModel?.states?.maybeFilter(searchText) {
             listOf(it.toStringValue)
         } ?: emptyList()
@@ -380,9 +382,9 @@ fun rememberViewModelStatesList(
 @Composable
 fun Destination.ParametersProvider.rememberSelectedViewModelStateSnapshot(
     viewModel: BallastViewModelState?,
-): BallastStateSnapshot? {
-    val stateUuid: String by stringPath()
-    return remember(stateUuid) {
+): State<BallastStateSnapshot?> {
+    return viewModelValue {
+        val stateUuid: String by stringPath()
         viewModel?.states?.find { state -> state.uuid == stateUuid }
     }
 }
@@ -391,8 +393,8 @@ fun Destination.ParametersProvider.rememberSelectedViewModelStateSnapshot(
 fun rememberViewModelInputsList(
     viewModel: BallastViewModelState?,
     searchText: String,
-): List<BallastInputState> {
-    return remember(viewModel, searchText) {
+): State<List<BallastInputState>> {
+    return viewModelValue {
         viewModel?.inputs?.maybeFilter(searchText) {
             listOf(it.type, it.toStringValue)
         } ?: emptyList()
@@ -402,9 +404,9 @@ fun rememberViewModelInputsList(
 @Composable
 fun Destination.ParametersProvider.rememberSelectedViewModelInput(
     viewModel: BallastViewModelState?,
-): BallastInputState? {
-    val inputUuid: String by stringPath()
-    return remember(inputUuid) {
+): State<BallastInputState?> {
+    return viewModelValue {
+        val inputUuid: String by stringPath()
         viewModel?.inputs?.find { it.uuid == inputUuid }
     }
 }
@@ -413,8 +415,8 @@ fun Destination.ParametersProvider.rememberSelectedViewModelInput(
 fun rememberViewModelEventsList(
     viewModel: BallastViewModelState?,
     searchText: String,
-): List<BallastEventState> {
-    return remember(viewModel, searchText) {
+): State<List<BallastEventState>> {
+    return viewModelValue {
         viewModel?.events?.maybeFilter(searchText) {
             listOf(it.type, it.toStringValue)
         } ?: emptyList()
@@ -424,9 +426,9 @@ fun rememberViewModelEventsList(
 @Composable
 fun Destination.ParametersProvider.rememberSelectedViewModelEvent(
     viewModel: BallastViewModelState?,
-): BallastEventState? {
-    val eventUuid: String by stringPath()
-    return remember(eventUuid) {
+): State<BallastEventState?> {
+    return viewModelValue {
+        val eventUuid: String by stringPath()
         viewModel?.events?.find { it.uuid == eventUuid }
     }
 }
@@ -435,8 +437,8 @@ fun Destination.ParametersProvider.rememberSelectedViewModelEvent(
 fun rememberViewModelSideJobsList(
     viewModel: BallastViewModelState?,
     searchText: String,
-): List<BallastSideJobState> {
-    return remember(viewModel, searchText) {
+): State<List<BallastSideJobState>> {
+    return viewModelValue {
         viewModel?.sideJobs?.maybeFilter(searchText) {
             listOf(it.key)
         } ?: emptyList()
@@ -446,19 +448,41 @@ fun rememberViewModelSideJobsList(
 @Composable
 fun Destination.ParametersProvider.rememberSelectedViewModelSideJob(
     viewModel: BallastViewModelState?,
-): BallastSideJobState? {
-    val sideJobUuid: String by stringPath()
-    return remember(sideJobUuid) {
+): State<BallastSideJobState?> {
+    return viewModelValue {
+        val sideJobUuid: String by stringPath()
         viewModel?.sideJobs?.find { it.uuid == sideJobUuid }
+    }
+}
+
+@Composable
+fun rememberViewModelInterceptorList(
+    viewModel: BallastViewModelState?,
+    searchText: String,
+): State<List<BallastInterceptorState>> {
+    return viewModelValue {
+        viewModel?.interceptors?.maybeFilter(searchText) {
+            listOf(it.type, it.toStringValue)
+        } ?: emptyList()
+    }
+}
+
+@Composable
+fun Destination.ParametersProvider.rememberSelectedViewModelInterceptor(
+    viewModel: BallastViewModelState?,
+): State<BallastInterceptorState?> {
+    return viewModelValue {
+        val interceptorUuid: String by stringPath()
+        viewModel?.interceptors?.find { it.uuid == interceptorUuid }
     }
 }
 
 @Composable
 fun rememberConnectionCurrentDestination(
     connection: BallastConnectionState?,
-    uiSettings: BallastDebuggerUiSettings,
-): String? {
-    return remember(connection, uiSettings) {
+    uiSettings: DebuggerUiSettings,
+): State<String?> {
+    return viewModelValue {
         if (!uiSettings.showCurrentRoute) {
             null
         } else {
@@ -517,7 +541,6 @@ fun getRouteForSelectedViewModel(
             .build()
     }
 }
-
 
 @Composable
 fun Section(
@@ -638,3 +661,9 @@ fun <T> DropdownSelector(
         }
     }
 }
+
+@Composable
+private fun <T> viewModelValue(calculation: () -> T): State<T> {
+    return derivedStateOf { calculation() }
+//    return remember { derivedStateOf { calculation() } }
+} 

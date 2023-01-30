@@ -6,7 +6,7 @@ import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
  * A read-only snapshot of settings, as captured at a specific point in time. Changes to the underlying preferences
  * will not update this object, the screen reading from these settings must be re-created to receive updates.
  */
-data class BallastIntellijPluginSettingsSnapshot(
+data class IntellijPluginSettingsSnapshot(
     override val darkTheme: Boolean,
     override val debuggerServerPort: Int,
     override val lastRoute: DebuggerRoute,
@@ -16,4 +16,4 @@ data class BallastIntellijPluginSettingsSnapshot(
     override val showCurrentRoute: Boolean,
     override val routerViewModelName: String,
     override val detailsPanePercentage: Float,
-) : BallastIntellijPluginSettings
+) : IntellijPluginSettings

@@ -1,10 +1,14 @@
 @file:Suppress("ExtractKtorModule")
+
 package com.copperleaf.ballast.debugger.server
 
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.BALLAST_VERSION_HEADER
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.CONNECTION_ID_HEADER
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
+import com.copperleaf.ballast.debugger.versions.ClientModelSerializer
+import com.copperleaf.ballast.debugger.versions.ClientVersion
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
 import io.github.copper_leaf.ballast_debugger_server.BALLAST_VERSION
 import io.ktor.server.application.call
 import io.ktor.server.application.install
@@ -34,7 +38,7 @@ import org.slf4j.event.Level
 
 public class BallastDebuggerServerConnection(
     private val settings: BallastDebuggerServerSettings,
-    private val outgoingActions: SharedFlow<BallastDebuggerAction>,
+    private val outgoingActions: SharedFlow<BallastDebuggerActionV3>,
     private val postInput: suspend (DebuggerServerContract.Inputs) -> Unit,
 ) {
     public suspend fun runServer() {
@@ -69,9 +73,10 @@ public class BallastDebuggerServerConnection(
                             )
                         )
 
-                        val modelMapper = ClientModelMapper.getForVersion(
-                            connectionBallastVersion = connectionBallastVersion,
-                        )
+                        val parsedVersion = ClientVersion.parse(connectionBallastVersion)
+                        println("Incoming connection. Client version: $parsedVersion")
+
+                        val modelMapper = ClientVersion.getSerializer(parsedVersion)
                         if (modelMapper.supported) {
                             // get the mapper for a particular version of the API, to allow clients with different '
                             // versions to connect to the same debugger server
@@ -79,8 +84,10 @@ public class BallastDebuggerServerConnection(
                                 processOutgoing(modelMapper, connectionId),
                                 processIncoming(modelMapper),
                             )
+                            println("Client version at $parsedVersion is finished")
                         } else {
                             // otherwise, drop the connection immediately, the client's version in incompatible
+                            println("Client version $parsedVersion is not supported")
                         }
                     }
                 }
@@ -89,7 +96,7 @@ public class BallastDebuggerServerConnection(
     }
 
     private fun WebSocketServerSession.processOutgoing(
-        clientModelMapper: ClientModelMapper,
+        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV3, BallastDebuggerActionV3>,
         connectionId: String
     ): Job {
         val session = this
@@ -108,7 +115,7 @@ public class BallastDebuggerServerConnection(
     }
 
     private fun WebSocketServerSession.processIncoming(
-        clientModelMapper: ClientModelMapper,
+        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV3, BallastDebuggerActionV3>,
     ): Job {
         return incoming
             .receiveAsFlow()
@@ -120,7 +127,7 @@ public class BallastDebuggerServerConnection(
                         .mapIncoming(text)
                         .let { DebuggerServerContract.Inputs.DebuggerEventReceived(it) }
                         .let { postInput(it) }
-                } catch(e: Exception) {
+                } catch (e: Exception) {
                     // ignore
                 }
             }

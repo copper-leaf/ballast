@@ -22,7 +22,6 @@ internal class ThemeChangeListener(
 
 interface SwingColor {
     val background: Color
-    val onBackground: Color
 }
 
 @Composable
@@ -51,17 +50,13 @@ fun SwingColor(): SwingColor {
 
 private class SwingColorImpl : SwingColor {
     private val _backgroundState: MutableState<Color> = mutableStateOf(getBackgroundColor)
-    private val _onBackgroundState: MutableState<Color> = mutableStateOf(getOnBackgroundColor)
 
     override val background: Color get() = _backgroundState.value
-    override val onBackground: Color get() = _onBackgroundState.value
 
     private val getBackgroundColor get() = getColor(BACKGROUND_KEY)
-    private val getOnBackgroundColor get() = getColor(ON_BACKGROUND_KEY)
 
     fun updateCurrentColors() {
         _backgroundState.value = getBackgroundColor
-        _onBackgroundState.value = getOnBackgroundColor
     }
 
     private val AWTColor.asComposeColor: Color get() = Color(red, green, blue, alpha)
@@ -69,6 +64,5 @@ private class SwingColorImpl : SwingColor {
 
     companion object {
         private const val BACKGROUND_KEY = "Panel.background"
-        private const val ON_BACKGROUND_KEY = "Panel.foreground"
     }
 }

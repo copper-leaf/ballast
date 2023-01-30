@@ -13,7 +13,7 @@ import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
-import com.copperleaf.ballast.debugger.server.ClientModelMapper
+import com.copperleaf.ballast.debugger.versions.ClientVersion
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.pathParameter
@@ -33,15 +33,15 @@ enum class ViewModelContentTab(
     fun isEnabled(
         connection: BallastConnectionState
     ): Boolean {
-        val version = ClientModelMapper.Version.parse(connection.connectionBallastVersion)
+        val version = ClientVersion.parse(connection.connectionBallastVersion)
         return when (this) {
             States -> true
             Inputs -> true
             Events -> true
             SideJobs -> true
-            Interceptors -> version >= ClientModelMapper.Version(3, null, null)
-            Logs -> version >= ClientModelMapper.Version(3, null, null)
-            Timeline -> version >= ClientModelMapper.Version(3, null, null)
+            Interceptors -> version >= ClientVersion(3, null, null)
+            Logs -> version >= ClientVersion(3, null, null)
+            Timeline -> version >= ClientVersion(3, null, null)
         }
     }
 

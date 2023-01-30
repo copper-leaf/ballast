@@ -38,17 +38,19 @@ import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberSelected
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberSelectedViewModel
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberSelectedViewModelEvent
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberSelectedViewModelInput
+import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberSelectedViewModelInterceptor
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberSelectedViewModelSideJob
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberSelectedViewModelStateSnapshot
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberViewModelEventsList
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberViewModelInputsList
+import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberViewModelInterceptorList
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberViewModelList
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberViewModelSideJobsList
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.rememberViewModelStatesList
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.renderCurrentDestination
 
-object DebuggerToolWindowUi {
+object DebuggerUi {
 
     @Composable
     fun Content(injector: DebuggerToolWindowInjector) {
@@ -86,10 +88,10 @@ object DebuggerToolWindowUi {
     ) {
         when (currentRoute) {
             DebuggerRoute.Connection -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -108,12 +110,12 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelStates -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val statesList = rememberViewModelStatesList(viewModel, uiState.searchText)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val statesList by rememberViewModelStatesList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -135,13 +137,13 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelStateDetails -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val statesList = rememberViewModelStatesList(viewModel, uiState.searchText)
-                val selectedState = rememberSelectedViewModelStateSnapshot(viewModel)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val statesList by rememberViewModelStatesList(viewModel, uiState.searchText)
+                val selectedState by rememberSelectedViewModelStateSnapshot(viewModel)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -165,12 +167,12 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelInputs -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val inputsList = rememberViewModelInputsList(viewModel, uiState.searchText)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val inputsList by rememberViewModelInputsList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -192,13 +194,13 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelInputDetails -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val inputsList = rememberViewModelInputsList(viewModel, uiState.searchText)
-                val selectedInput = rememberSelectedViewModelInput(viewModel)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val inputsList by rememberViewModelInputsList(viewModel, uiState.searchText)
+                val selectedInput by rememberSelectedViewModelInput(viewModel)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -222,12 +224,12 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelEvents -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val eventsList = rememberViewModelEventsList(viewModel, uiState.searchText)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val eventsList by rememberViewModelEventsList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -249,13 +251,13 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelEventDetails -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val eventsList = rememberViewModelEventsList(viewModel, uiState.searchText)
-                val selectedEvent = rememberSelectedViewModelEvent(viewModel)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val eventsList by rememberViewModelEventsList(viewModel, uiState.searchText)
+                val selectedEvent by rememberSelectedViewModelEvent(viewModel)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -279,12 +281,12 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelSideJobs -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val sideJobsList = rememberViewModelSideJobsList(viewModel, uiState.searchText)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val sideJobsList by rememberViewModelSideJobsList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -306,13 +308,13 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelSideJobDetails -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val sideJobsList = rememberViewModelSideJobsList(viewModel, uiState.searchText)
-                val selectedSideJob = rememberSelectedViewModelSideJob(viewModel)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val sideJobsList by rememberViewModelSideJobsList(viewModel, uiState.searchText)
+                val selectedSideJob by rememberSelectedViewModelSideJob(viewModel)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -336,12 +338,12 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelInterceptors -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val eventsList = rememberViewModelEventsList(viewModel, uiState.searchText)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val interceptorList by rememberViewModelInterceptorList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -356,20 +358,20 @@ object DebuggerToolWindowUi {
                         )
                     },
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
-                    mainContentLeft = { InterceptorsList(connection, viewModel, eventsList, null, postInput) },
-                    contentLeftToolbar = { InterceptorsListToolbar(connection, viewModel, eventsList, postInput) },
+                    mainContentLeft = { InterceptorsList(connection, viewModel, interceptorList, null, postInput) },
+                    contentLeftToolbar = { InterceptorsListToolbar(connection, viewModel, interceptorList, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, postInput) },
                 )
             }
 
             DebuggerRoute.ViewModelInterceptorDetails -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
-                val eventsList = rememberViewModelEventsList(viewModel, uiState.searchText)
-                val selectedEvent = rememberSelectedViewModelEvent(viewModel)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val interceptorList by rememberViewModelInterceptorList(viewModel, uiState.searchText)
+                val selectedInterceptor by rememberSelectedViewModelInterceptor(viewModel)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -384,14 +386,14 @@ object DebuggerToolWindowUi {
                         )
                     },
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
-                    mainContentLeft = { InterceptorsList(connection, viewModel, eventsList, selectedEvent, postInput) },
-                    contentLeftToolbar = { InterceptorsListToolbar(connection, viewModel, eventsList, postInput) },
-                    mainContentRight = { InterceptorDetails(selectedEvent, postInput) },
+                    mainContentLeft = { InterceptorsList(connection, viewModel, interceptorList, selectedInterceptor, postInput) },
+                    contentLeftToolbar = { InterceptorsListToolbar(connection, viewModel, interceptorList, postInput) },
+                    mainContentRight = { InterceptorDetails(selectedInterceptor, postInput) },
                     contentRightToolbar = {
                         InterceptorDetailsToolbar(
                             connection,
                             viewModel,
-                            selectedEvent,
+                            selectedInterceptor,
                             postInput
                         )
                     },
@@ -400,11 +402,11 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelLogs -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -424,11 +426,11 @@ object DebuggerToolWindowUi {
             }
 
             DebuggerRoute.ViewModelTimeline -> {
-                val connectionsList = rememberConnectionsList(uiState.serverState)
-                val connection = rememberSelectedConnection(connectionsList)
-                val viewModelList = rememberViewModelList(connection)
-                val viewModel = rememberSelectedViewModel(connection)
-                val currentAppDestination = rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val connectionsList by rememberConnectionsList(uiState.serverState)
+                val connection by rememberSelectedConnection(connectionsList)
+                val viewModelList by rememberViewModelList(connection)
+                val viewModel by rememberSelectedViewModel(connection)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
 
                 DebuggerScaffold(
                     primaryToolbar = {

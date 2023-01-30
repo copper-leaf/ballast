@@ -14,13 +14,13 @@ import com.russhwolf.settings.string
  * The global settings store for the entire Ballast plugin. It is backed by IntelliJ's PropertiesComponent.
  *
  * Do not reference this class directly, either for reading or updating preferences. Instead, use
- * [BallastIntellijPluginPersistentSettings.edit] and [BallastIntellijPluginInMemorySettings.save] to modify settings,
- * or [BallastIntellijPluginPersistentSettings.snapshot] to get a version of settings that can be read in the UI which
+ * [IntellijPluginPersistentSettings.edit] and [BallastIntellijPluginInMemorySettings.save] to modify settings,
+ * or [IntellijPluginPersistentSettings.snapshot] to get a version of settings that can be read in the UI which
  * will not be changed unexpectedly.
  *
  * See https://plugins.jetbrains.com/docs/intellij/persisting-state-of-components.html#implementing-the-persistentstatecomponent-interface
  */
-object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSettings,
+object IntellijPluginPersistentSettings : IntellijPluginMutableSettings,
     Settings by PropertiesComponentSettings("BALLAST", PropertiesComponent.getInstance()) {
 
     private const val darkThemeDefault: Boolean = true
@@ -43,8 +43,8 @@ object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSet
     override var routerViewModelName: String by string(null, routerViewModelNameDefault)
     override var detailsPanePercentage: Float by float(null, detailsPanePercentageDefault)
 
-    fun snapshot(): BallastIntellijPluginSettingsSnapshot {
-        return BallastIntellijPluginSettingsSnapshot(
+    fun snapshot(): IntellijPluginSettingsSnapshot {
+        return IntellijPluginSettingsSnapshot(
             darkTheme = this.darkTheme,
             debuggerServerPort = this.debuggerServerPort,
             lastRoute = this.lastRoute,
@@ -57,8 +57,8 @@ object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSet
         )
     }
 
-    fun defaults(): BallastIntellijPluginSettingsSnapshot {
-        return BallastIntellijPluginSettingsSnapshot(
+    fun defaults(): IntellijPluginSettingsSnapshot {
+        return IntellijPluginSettingsSnapshot(
             darkTheme = darkThemeDefault,
             debuggerServerPort = debuggerServerPortDefault,
             lastRoute = lastRouteDefault,
@@ -71,7 +71,7 @@ object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSet
         )
     }
 
-    fun updateFromSnapshot(snapshot: BallastIntellijPluginSettingsSnapshot) {
+    fun updateFromSnapshot(snapshot: IntellijPluginSettingsSnapshot) {
         this.darkTheme = snapshot.darkTheme
 
         this.lastRoute = snapshot.lastRoute
