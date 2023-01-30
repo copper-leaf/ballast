@@ -8,11 +8,13 @@ import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiEventHandler
 import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiInputHandler
 import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiViewModel
 import com.copperleaf.ballast.withViewModel
+import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineScope
 
 class SettingsPanelInjectorImpl(
     private val pluginInjector: BallastIntellijPluginInjector,
 ) : SettingsPanelInjector {
+    override val project: Project = pluginInjector.project
     override val settingsPanelCoroutineScope: CoroutineScope = pluginInjector.newMainCoroutineScope()
 
     override val settingsPanelViewModel: SettingsUiViewModel = BasicViewModel(

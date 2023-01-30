@@ -7,6 +7,7 @@ import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
  * will not update this object, the screen reading from these settings must be re-created to receive updates.
  */
 data class BallastIntellijPluginSettingsSnapshot(
+    override val darkTheme: Boolean,
     override val debuggerServerPort: Int,
     override val lastRoute: DebuggerRoute,
     override val lastViewModelName: String,

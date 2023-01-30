@@ -23,6 +23,7 @@ import com.russhwolf.settings.string
 object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSettings,
     Settings by PropertiesComponentSettings("BALLAST", PropertiesComponent.getInstance()) {
 
+    private const val darkThemeDefault: Boolean = true
     private const val debuggerServerPortDefault: Int = 9684
     private val lastRouteDefault: DebuggerRoute = DebuggerRoute.Connection
     private const val lastViewModelNameDefault: String = ""
@@ -32,6 +33,7 @@ object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSet
     private const val routerViewModelNameDefault: String = "Router"
     private const val detailsPanePercentageDefault: Float = 0.35f
 
+    override var darkTheme: Boolean by boolean(null, darkThemeDefault)
     override var debuggerServerPort: Int by int(null, debuggerServerPortDefault)
     override var lastRoute: DebuggerRoute by enum(null, lastRouteDefault, DebuggerRoute::valueOf)
     override var lastViewModelName: String by string(null, lastViewModelNameDefault)
@@ -43,6 +45,7 @@ object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSet
 
     fun snapshot(): BallastIntellijPluginSettingsSnapshot {
         return BallastIntellijPluginSettingsSnapshot(
+            darkTheme = this.darkTheme,
             debuggerServerPort = this.debuggerServerPort,
             lastRoute = this.lastRoute,
             lastViewModelName = this.lastViewModelName,
@@ -56,6 +59,7 @@ object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSet
 
     fun defaults(): BallastIntellijPluginSettingsSnapshot {
         return BallastIntellijPluginSettingsSnapshot(
+            darkTheme = darkThemeDefault,
             debuggerServerPort = debuggerServerPortDefault,
             lastRoute = lastRouteDefault,
             lastViewModelName = lastViewModelNameDefault,
@@ -68,6 +72,8 @@ object BallastIntellijPluginPersistentSettings : BallastIntellijPluginMutableSet
     }
 
     fun updateFromSnapshot(snapshot: BallastIntellijPluginSettingsSnapshot) {
+        this.darkTheme = snapshot.darkTheme
+
         this.lastRoute = snapshot.lastRoute
         this.lastViewModelName = snapshot.lastViewModelName
 

@@ -23,7 +23,7 @@ class SettingsUiInputHandler(
             updateState { it.copy(modifiedSettings = input.value(it.modifiedSettings)) }
         }
 
-        is SettingsUiContract.Inputs.ResetSettings -> {
+        is SettingsUiContract.Inputs.DiscardChanges -> {
             updateState { it.copy(modifiedSettings = it.originalSettings) }
         }
 

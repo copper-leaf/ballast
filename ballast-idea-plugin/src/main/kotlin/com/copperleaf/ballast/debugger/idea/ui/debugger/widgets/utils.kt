@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
 
 import androidx.compose.animation.AnimatedVisibility
@@ -6,10 +7,14 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.TooltipArea
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -26,6 +32,7 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.Badge
 import androidx.compose.material.Card
 import androidx.compose.material.Checkbox
+import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
@@ -34,10 +41,12 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.ProvideTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -116,6 +125,15 @@ fun currentTimeAsState(): State<LocalDateTime> {
             delay(1000)
             value = LocalDateTime.now()
         }
+    }
+}
+
+@Composable
+fun ProvideTime(content: @Composable () -> Unit) {
+    val time by currentTimeAsState()
+
+    CompositionLocalProvider(LocalTimer provides time) {
+        content()
     }
 }
 
@@ -500,6 +518,29 @@ fun getRouteForSelectedViewModel(
     }
 }
 
+
+@Composable
+fun Section(
+    title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
+) {
+    Column(modifier = modifier) {
+        Box(Modifier.padding(top = 4.dp, bottom = 8.dp, start = 0.dp, end = 0.dp)) {
+            ProvideTextStyle(MaterialTheme.typography.subtitle1) {
+                title()
+            }
+        }
+        Divider()
+        Column(
+            Modifier.padding(top = 8.dp, bottom = 8.dp, start = 0.dp, end = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            content()
+        }
+    }
+}
+
 @Composable
 fun CheckboxArea(
     checked: Boolean,
@@ -512,14 +553,17 @@ fun CheckboxArea(
             .toggleable(
                 value = checked,
                 onValueChange = onCheckedChange,
-            ),
+            )
+            .padding(top = 2.dp, bottom = 2.dp, start = 2.dp, end = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(
             checked = checked,
             onCheckedChange = null,
         )
-        content()
+        Row(Modifier.padding(start = 8.dp)) {
+            content()
+        }
     }
 }
 
@@ -538,6 +582,12 @@ fun ToolBarActionIconButton(
         content = {
             IconButton(
                 onClick = onClick,
+                modifier = Modifier
+                    .size(56.dp)
+                    .border(
+                        width = 1.dp,
+                        MaterialTheme.colors.onSurface.copy(alpha = 0.38f),
+                    )
             ) { Icon(imageVector, contentDescription) }
         },
     )

@@ -6,6 +6,7 @@ import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineScope
 
 interface SettingsPanelInjector {
+    val project: Project
     val settingsPanelCoroutineScope: CoroutineScope
     val settingsPanelViewModel: SettingsUiViewModel
 

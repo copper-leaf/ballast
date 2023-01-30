@@ -3,7 +3,7 @@ package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
-import androidx.compose.material.TextField
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ClearAll
@@ -50,7 +50,7 @@ fun RowScope.DebuggerPrimaryToolbar(
         )
     }
 
-    TextField(
+    OutlinedTextField(
         value = searchText,
         onValueChange = { postInput(DebuggerUiContract.Inputs.UpdateSearchText(it)) },
         modifier = Modifier.weight(1f),
