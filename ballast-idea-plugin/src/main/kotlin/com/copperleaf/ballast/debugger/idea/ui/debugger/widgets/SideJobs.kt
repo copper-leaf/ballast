@@ -1,17 +1,23 @@
 @file:Suppress("UNUSED_PARAMETER")
 package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
 
+import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
@@ -24,31 +30,77 @@ import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
 @Composable
-fun SideJobList(
-    uiState: DebuggerUiContract.State,
-    viewModelState: BallastViewModelState,
+fun ColumnScope.SideJobsListToolbar(
+    connection: BallastConnectionState?,
+    viewModel: BallastViewModelState?,
+    sideJobs: List<BallastSideJobState>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
-    SplitPane(
-        splitPaneState = uiState.eventsPanePercentage,
-        navigation = {
-            items(viewModelState.sideJobs) {
-                SideJobSummary(uiState, it, postInput)
-            }
-        },
-        content = {
-            if (uiState.focusedViewModelSideJob != null) {
-                SideJobDetails(uiState, uiState.focusedViewModelSideJob, postInput)
+}
+
+@Composable
+fun ColumnScope.SideJobsList(
+    connection: BallastConnectionState?,
+    viewModel: BallastViewModelState?,
+    sideJobs: List<BallastSideJobState>,
+    focusedSideJob: BallastSideJobState?,
+    postInput: (DebuggerUiContract.Inputs) -> Unit,
+) {
+    Box(Modifier.fillMaxSize()) {
+        val scrollState = rememberLazyListState()
+
+        // the list of all Connections
+        LazyColumn(Modifier.fillMaxSize(), state = scrollState) {
+            items(sideJobs) {
+                SideJobSummary(it, focusedSideJob, postInput)
             }
         }
-    )
+
+        VerticalScrollbar(
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .fillMaxHeight(),
+            adapter = rememberScrollbarAdapter(scrollState),
+        )
+    }
+}
+
+@Composable
+fun ColumnScope.SideJobDetailsToolbar(
+    connection: BallastConnectionState?,
+    viewModel: BallastViewModelState?,
+    sideJob: BallastSideJobState?,
+    postInput: (DebuggerUiContract.Inputs) -> Unit,
+) {
+}
+
+@Composable
+fun ColumnScope.SideJobDetails(
+    sideJob: BallastSideJobState?,
+    postInput: (DebuggerUiContract.Inputs) -> Unit,
+) {
+    if(sideJob != null) {
+        val errorStatus = sideJob.status as? BallastSideJobState.Status.Error
+
+        if(errorStatus == null) {
+            Box(Modifier.fillMaxSize()) {
+                IntellijEditor(sideJob.key)
+            }
+        } else {
+            VSplitPane(
+                rememberSplitPaneState(initialPositionPercentage = 0.5f),
+                topContent = { IntellijEditor(sideJob.key, Modifier.fillMaxSize()) },
+                bottomContent = { IntellijEditor(errorStatus.stacktrace, Modifier.fillMaxSize()) },
+            )
+        }
+    }
 }
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
 fun SideJobSummary(
-    uiState: DebuggerUiContract.State,
     sideJobState: BallastSideJobState,
+    focusedSideJob: BallastSideJobState?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
     val timeSinceLastSeen: Duration = (LocalTimer.current - sideJobState.firstSeen)
@@ -58,7 +110,7 @@ fun SideJobSummary(
         modifier = Modifier
             .onHoverState { Modifier.highlight() }
             .then(
-                if (uiState.focusedDebuggerEventUuid == sideJobState.uuid) {
+                if (focusedSideJob?.uuid == sideJobState.uuid) {
                     Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
                 } else {
                     Modifier
@@ -84,72 +136,4 @@ fun SideJobSummary(
             }
         },
     )
-}
-
-@Suppress("UNUSED_PARAMETER")
-@Composable
-fun SideJobDetails(
-    uiState: DebuggerUiContract.State,
-    sideJobState: BallastSideJobState,
-    postInput: (DebuggerUiContract.Inputs) -> Unit,
-) {
-    val errorStatus = sideJobState.status as? BallastSideJobState.Status.Error
-
-    if(errorStatus == null) {
-        Box(Modifier.fillMaxSize()) {
-            IntellijEditor(sideJobState.key)
-        }
-    } else {
-        VSplitPane(
-            rememberSplitPaneState(initialPositionPercentage = 0.5f),
-            topContent = { IntellijEditor(sideJobState.key, Modifier.fillMaxSize()) },
-            bottomContent = { IntellijEditor(errorStatus.stacktrace, Modifier.fillMaxSize()) },
-        )
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-@Composable
-fun ColumnScope.SideJobsListToolbar(
-    connection: BallastConnectionState?,
-    viewModel: BallastViewModelState?,
-    sideJobs: List<BallastSideJobState>,
-    postInput: (DebuggerUiContract.Inputs) -> Unit,
-) {
-}
-
-@Composable
-fun ColumnScope.SideJobsList(
-    connection: BallastConnectionState?,
-    viewModel: BallastViewModelState?,
-    sideJobs: List<BallastSideJobState>,
-    selectedSideJob: BallastSideJobState?,
-    postInput: (DebuggerUiContract.Inputs) -> Unit,
-) {
-}
-
-@Composable
-fun ColumnScope.SideJobDetailsToolbar(
-    connection: BallastConnectionState?,
-    viewModel: BallastViewModelState?,
-    sideJob: BallastSideJobState?,
-    postInput: (DebuggerUiContract.Inputs) -> Unit,
-) {
-}
-
-@Composable
-fun ColumnScope.SideJobDetails(
-    sideJob: BallastSideJobState?,
-    postInput: (DebuggerUiContract.Inputs) -> Unit,
-) {
 }
