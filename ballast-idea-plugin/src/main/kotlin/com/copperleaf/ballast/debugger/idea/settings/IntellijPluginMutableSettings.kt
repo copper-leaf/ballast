@@ -3,9 +3,9 @@ package com.copperleaf.ballast.debugger.idea.settings
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 
 /**
- * A mutable version of [BallastIntellijPluginSettings].
+ * A mutable version of [IntellijPluginSettings].
  */
-interface BallastIntellijPluginMutableSettings : BallastIntellijPluginSettings {
+interface IntellijPluginMutableSettings : IntellijPluginSettings {
     override var darkTheme: Boolean
 
     override var debuggerServerPort: Int

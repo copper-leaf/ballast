@@ -22,9 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
-import com.copperleaf.ballast.debugger.server.ClientModelMapper
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
+import com.copperleaf.ballast.debugger.versions.ClientVersion
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
@@ -152,7 +152,8 @@ fun ConnectionSummary(
             },
             overlineText = {
                 val isSupported = remember(connectionState.connectionBallastVersion) {
-                    ClientModelMapper.getForVersion(connectionState.connectionBallastVersion).supported
+                    val parsedVersion = ClientVersion.parse(connectionState.connectionBallastVersion)
+                    ClientVersion.getSerializer(parsedVersion).supported
                 }
                 Text(
                     text = "${connectionState.connectionId} (${connectionState.connectionBallastVersion})",

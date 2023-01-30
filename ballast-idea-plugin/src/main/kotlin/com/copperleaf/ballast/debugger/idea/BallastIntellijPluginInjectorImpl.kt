@@ -2,11 +2,9 @@ package com.copperleaf.ballast.debugger.idea
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.core.FifoInputStrategy
-import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.idea.base.IntellijPluginBallastLogger
-import com.copperleaf.ballast.debugger.idea.settings.BallastIntellijPluginPersistentSettings
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginPersistentSettings
 import com.copperleaf.ballast.dispatchers
-import com.copperleaf.ballast.plusAssign
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,7 +16,7 @@ import kotlinx.coroutines.swing.Swing
 class BallastIntellijPluginInjectorImpl(
     override val project: Project,
 ) : BallastIntellijPluginInjector {
-    override val settings get() = BallastIntellijPluginPersistentSettings
+    override val settings get() = IntellijPluginPersistentSettings
 
     override val mainCoroutineDispatcher: CoroutineDispatcher = Dispatchers.Swing
     override val defaultCoroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
@@ -31,7 +29,7 @@ class BallastIntellijPluginInjectorImpl(
     override fun commonViewModelBuilder(): BallastViewModelConfiguration.Builder {
         return BallastViewModelConfiguration.Builder()
             .apply {
-                this += LoggingInterceptor()
+//                this += LoggingInterceptor()
                 logger = { tag -> IntellijPluginBallastLogger(Logger.getInstance(tag)) }
                 inputStrategy = FifoInputStrategy()
             }

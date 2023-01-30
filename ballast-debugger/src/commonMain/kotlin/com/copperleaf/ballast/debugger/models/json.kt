@@ -1,6 +1,8 @@
 package com.copperleaf.ballast.debugger.models
 
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
+import com.copperleaf.ballast.internal.Status
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.json.Json
 
@@ -13,89 +15,89 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
     uuid: String,
     firstSeen: LocalDateTime,
     now: LocalDateTime,
-): BallastDebuggerEvent {
+): BallastDebuggerEventV3 {
     return when (this) {
         is BallastNotification.ViewModelStatusChanged -> {
-            BallastDebuggerEvent.ViewModelStatusChanged(connectionId, viewModelName, viewModelType, uuid, firstSeen, status.toString())
+            BallastDebuggerEventV3.ViewModelStatusChanged(connectionId, viewModelName, viewModelType, uuid, firstSeen, status.serialize())
         }
         is BallastNotification.InputQueued -> {
-            BallastDebuggerEvent.InputQueued(connectionId, viewModelName, uuid, firstSeen, input.type, input.toString())
+            BallastDebuggerEventV3.InputQueued(connectionId, viewModelName, uuid, firstSeen, input.type, input.toString())
         }
         is BallastNotification.InputAccepted -> {
-            BallastDebuggerEvent.InputAccepted(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            BallastDebuggerEventV3.InputAccepted(connectionId, viewModelName, uuid, now, input.type, input.toString())
         }
         is BallastNotification.InputRejected -> {
-            BallastDebuggerEvent.InputRejected(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            BallastDebuggerEventV3.InputRejected(connectionId, viewModelName, uuid, now, input.type, input.toString())
         }
         is BallastNotification.InputDropped -> {
-            BallastDebuggerEvent.InputDropped(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            BallastDebuggerEventV3.InputDropped(connectionId, viewModelName, uuid, now, input.type, input.toString())
         }
         is BallastNotification.InputHandledSuccessfully -> {
-            BallastDebuggerEvent.InputHandledSuccessfully(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            BallastDebuggerEventV3.InputHandledSuccessfully(connectionId, viewModelName, uuid, now, input.type, input.toString())
         }
         is BallastNotification.InputCancelled -> {
-            BallastDebuggerEvent.InputCancelled(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            BallastDebuggerEventV3.InputCancelled(connectionId, viewModelName, uuid, now, input.type, input.toString())
         }
         is BallastNotification.InputHandlerError -> {
-            BallastDebuggerEvent.InputHandlerError(
+            BallastDebuggerEventV3.InputHandlerError(
                 connectionId, viewModelName, uuid, now, input.type, input.toString(),
                 throwable.stackTraceToString()
             )
         }
         is BallastNotification.EventQueued -> {
-            BallastDebuggerEvent.EventQueued(connectionId, viewModelName, uuid, firstSeen, event.type, event.toString())
+            BallastDebuggerEventV3.EventQueued(connectionId, viewModelName, uuid, firstSeen, event.type, event.toString())
         }
         is BallastNotification.EventEmitted -> {
-            BallastDebuggerEvent.EventEmitted(connectionId, viewModelName, uuid, now, event.type, event.toString())
+            BallastDebuggerEventV3.EventEmitted(connectionId, viewModelName, uuid, now, event.type, event.toString())
         }
         is BallastNotification.EventHandledSuccessfully -> {
-            BallastDebuggerEvent.EventHandledSuccessfully(connectionId, viewModelName, uuid, now, event.type, event.toString())
+            BallastDebuggerEventV3.EventHandledSuccessfully(connectionId, viewModelName, uuid, now, event.type, event.toString())
         }
         is BallastNotification.EventHandlerError -> {
-            BallastDebuggerEvent.EventHandlerError(
+            BallastDebuggerEventV3.EventHandlerError(
                 connectionId, viewModelName, uuid, now, event.type, event.toString(),
                 throwable.stackTraceToString()
             )
         }
         is BallastNotification.EventProcessingStarted -> {
-            BallastDebuggerEvent.EventProcessingStarted(connectionId, viewModelName, uuid, now)
+            BallastDebuggerEventV3.EventProcessingStarted(connectionId, viewModelName, uuid, now)
         }
         is BallastNotification.EventProcessingStopped -> {
-            BallastDebuggerEvent.EventProcessingStopped(connectionId, viewModelName, uuid, now)
+            BallastDebuggerEventV3.EventProcessingStopped(connectionId, viewModelName, uuid, now)
         }
         is BallastNotification.StateChanged -> {
-            BallastDebuggerEvent.StateChanged(connectionId, viewModelName, uuid, firstSeen, state.type, state.toString())
+            BallastDebuggerEventV3.StateChanged(connectionId, viewModelName, uuid, firstSeen, state.type, state.toString())
         }
 
         is BallastNotification.SideJobQueued -> {
-            BallastDebuggerEvent.SideJobQueued(connectionId, viewModelName, uuid, firstSeen, key)
+            BallastDebuggerEventV3.SideJobQueued(connectionId, viewModelName, uuid, firstSeen, key)
         }
         is BallastNotification.SideJobStarted -> {
-            BallastDebuggerEvent.SideJobStarted(connectionId, viewModelName, uuid, now, key, restartState)
+            BallastDebuggerEventV3.SideJobStarted(connectionId, viewModelName, uuid, now, key, restartState)
         }
         is BallastNotification.SideJobCompleted -> {
-            BallastDebuggerEvent.SideJobCompleted(connectionId, viewModelName, uuid, now, key, restartState)
+            BallastDebuggerEventV3.SideJobCompleted(connectionId, viewModelName, uuid, now, key, restartState)
         }
         is BallastNotification.SideJobCancelled -> {
-            BallastDebuggerEvent.SideJobCancelled(connectionId, viewModelName, uuid, now, key, restartState)
+            BallastDebuggerEventV3.SideJobCancelled(connectionId, viewModelName, uuid, now, key, restartState)
         }
         is BallastNotification.SideJobError -> {
-            BallastDebuggerEvent.SideJobError(
+            BallastDebuggerEventV3.SideJobError(
                 connectionId, viewModelName, uuid, now, key, restartState,
                 throwable.stackTraceToString()
             )
         }
         is BallastNotification.UnhandledError -> {
-            BallastDebuggerEvent.UnhandledError(
+            BallastDebuggerEventV3.UnhandledError(
                 connectionId, viewModelName, uuid, now,
                 throwable.stackTraceToString()
             )
         }
         is BallastNotification.InterceptorAttached -> {
-            TODO()
+            BallastDebuggerEventV3.InterceptorAttached(connectionId, viewModelName, uuid, now, interceptor.type, interceptor.toString())
         }
         is BallastNotification.InterceptorFailed-> {
-            TODO()
+            BallastDebuggerEventV3.InterceptorFailed(connectionId, viewModelName, uuid, now, interceptor.type, interceptor.toString(), throwable.stackTraceToString())
         }
     }
 }
@@ -119,3 +121,12 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
 }
 
 private val Any.type: String get() = this::class.simpleName ?: ""
+
+public fun Status.serialize(): BallastDebuggerEventV3.StatusV3 {
+    return when(this) {
+        is Status.NotStarted -> BallastDebuggerEventV3.StatusV3.NotStarted
+        is Status.Running -> BallastDebuggerEventV3.StatusV3.Running
+        is Status.ShuttingDown -> BallastDebuggerEventV3.StatusV3.ShuttingDown
+        is Status.Cleared -> BallastDebuggerEventV3.StatusV3.Cleared
+    }
+}

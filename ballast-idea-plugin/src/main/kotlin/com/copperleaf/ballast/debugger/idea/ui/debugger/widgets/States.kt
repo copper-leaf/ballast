@@ -23,19 +23,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
-
-
-
-
-
-
-
-
-
-
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
 
 @Composable
 fun ColumnScope.StatesListToolbar(
@@ -107,7 +97,7 @@ fun StateSnapshotSummary(
                 this += ContextMenuItem("Rollback to this State") {
                     postInput(
                         DebuggerUiContract.Inputs.SendDebuggerAction(
-                            BallastDebuggerAction.RequestRestoreState(
+                            BallastDebuggerActionV3.RequestRestoreState(
                                 connectionId = stateSnapshot.connectionId,
                                 viewModelName = stateSnapshot.viewModelName,
                                 stateUuid = stateSnapshot.uuid,

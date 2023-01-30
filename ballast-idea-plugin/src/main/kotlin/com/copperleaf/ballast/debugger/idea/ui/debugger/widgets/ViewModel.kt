@@ -30,10 +30,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
@@ -105,7 +105,7 @@ fun ViewModelSummary(
                 this += ContextMenuItem("Refresh") {
                     postInput(
                         DebuggerUiContract.Inputs.SendDebuggerAction(
-                            BallastDebuggerAction.RequestViewModelRefresh(
+                            BallastDebuggerActionV3.RequestViewModelRefresh(
                                 connectionId = viewModelState.connectionId,
                                 viewModelName = viewModelState.viewModelName,
                             )

@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger.server.versions.v2
+package com.copperleaf.ballast.debugger.versions.v2
 
 import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.debugger.utils.now

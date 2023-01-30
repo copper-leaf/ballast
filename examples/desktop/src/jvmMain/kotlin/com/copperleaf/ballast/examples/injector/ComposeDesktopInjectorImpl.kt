@@ -54,7 +54,6 @@ import com.copperleaf.ballast.undo.UndoController
 import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import com.copperleaf.ballast.undo.state.withStateBasedUndoController
 import com.copperleaf.ballast.withViewModel
-import com.russhwolf.settings.ExperimentalSettingsImplementation
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -80,7 +79,7 @@ class ComposeDesktopInjectorImpl(
                 RouterContract.Events<BallastExamples>,
                 RouterContract.State<BallastExamples>,
                 >(
-            BallastViewModelConfiguration.Builder()
+            config = commonBuilder()
                 .withStateBasedUndoController<
                         RouterContract.Inputs<BallastExamples>,
                         RouterContract.Events<BallastExamples>,
@@ -291,7 +290,7 @@ class ComposeDesktopInjectorImpl(
             applicationCoroutineScope = applicationScope,
             host = "127.0.0.1",
         ).also {
-            it.connect()
+            it.connect(PrintlnLogger("Debugger"))
         }
     }
 

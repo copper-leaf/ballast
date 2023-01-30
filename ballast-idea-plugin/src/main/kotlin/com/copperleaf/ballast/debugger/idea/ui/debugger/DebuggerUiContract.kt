@@ -1,17 +1,17 @@
 package com.copperleaf.ballast.debugger.idea.ui.debugger
 
-import com.copperleaf.ballast.debugger.idea.settings.BallastIntellijPluginSettingsSnapshot
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.ViewModelContentTab
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastEventState
 import com.copperleaf.ballast.debugger.models.BallastInputState
 import com.copperleaf.ballast.debugger.models.BallastSideJobState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
 import com.copperleaf.ballast.navigation.routing.Backstack
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.currentRouteOrNull
@@ -19,7 +19,7 @@ import org.jetbrains.compose.splitpane.SplitPaneState
 
 object DebuggerUiContract {
     data class State(
-        val uiSettings: BallastIntellijPluginSettingsSnapshot,
+        val uiSettings: IntellijPluginSettingsSnapshot,
         val serverState: BallastApplicationState = BallastApplicationState(),
         val backstack: Backstack<DebuggerRoute> = emptyList(),
         val searchText: String = "",
@@ -75,7 +75,7 @@ object DebuggerUiContract {
         data class ClearViewModel(val connectionId: String, val viewModelName: String) : Inputs()
 
         data class FocusEvent(val connectionId: String, val viewModelName: String, val eventUuid: String) : Inputs()
-        data class SendDebuggerAction(val action: BallastDebuggerAction) : Inputs()
+        data class SendDebuggerAction(val action: BallastDebuggerActionV3) : Inputs()
         data class UpdateSelectedViewModelContentTab(val tab: ViewModelContentTab) : Inputs()
 
         data class Navigate(val destinationUrl: String) : Inputs()

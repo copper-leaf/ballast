@@ -24,11 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
 import com.copperleaf.ballast.debugger.models.BallastInputState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -113,7 +113,7 @@ fun InputSummary(
                 this += ContextMenuItem("Resend Input") {
                     postInput(
                         DebuggerUiContract.Inputs.SendDebuggerAction(
-                            BallastDebuggerAction.RequestResendInput(
+                            BallastDebuggerActionV3.RequestResendInput(
                                 connectionId = inputState.connectionId,
                                 viewModelName = inputState.viewModelName,
                                 inputUuid = inputState.uuid,

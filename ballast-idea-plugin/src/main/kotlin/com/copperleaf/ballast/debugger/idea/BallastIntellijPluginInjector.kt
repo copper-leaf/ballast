@@ -1,14 +1,14 @@
 package com.copperleaf.ballast.debugger.idea
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.debugger.idea.settings.BallastIntellijPluginPersistentSettings
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginPersistentSettings
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 
 interface BallastIntellijPluginInjector {
     val project: Project
-    val settings: BallastIntellijPluginPersistentSettings
+    val settings: IntellijPluginPersistentSettings
 
     val mainCoroutineDispatcher: CoroutineDispatcher
     val defaultCoroutineDispatcher: CoroutineDispatcher

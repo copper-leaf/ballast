@@ -1,18 +1,18 @@
 package com.copperleaf.ballast.debugger.server.vm
 
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
-import com.copperleaf.ballast.debugger.models.BallastDebuggerAction
-import com.copperleaf.ballast.debugger.models.BallastDebuggerEvent
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerSettings
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
 import io.github.copper_leaf.ballast_debugger_server.BALLAST_VERSION
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 object DebuggerServerContract {
     data class State(
         val port: Int = 0,
-        val actions: MutableSharedFlow<BallastDebuggerAction> = MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE),
+        val actions: MutableSharedFlow<BallastDebuggerActionV3> = MutableSharedFlow(extraBufferCapacity = Int.MAX_VALUE),
 
-        val allMessages: List<BallastDebuggerEvent> = emptyList(),
+        val allMessages: List<BallastDebuggerEventV3> = emptyList(),
         val ballastVersion: String = BALLAST_VERSION,
         val applicationState: BallastApplicationState = BallastApplicationState(),
     ) {
@@ -33,8 +33,8 @@ object DebuggerServerContract {
 
         data class ClearViewModel(val connectionId: String, val viewModelName: String) : Inputs()
 
-        data class DebuggerEventReceived(val message: BallastDebuggerEvent) : Inputs()
-        data class SendDebuggerAction(val action: BallastDebuggerAction) : Inputs()
+        data class DebuggerEventReceived(val message: BallastDebuggerEventV3) : Inputs()
+        data class SendDebuggerAction(val action: BallastDebuggerActionV3) : Inputs()
     }
 
     sealed class Events {
