@@ -29,6 +29,7 @@ class DebuggerToolWindowInjectorImpl(
     private val pluginInjector: BallastIntellijPluginInjector,
     private val toolWindowCoroutineScope: CoroutineScope,
 ) : DebuggerToolWindowInjector {
+    override val project = pluginInjector.project
     private val settingsSnapshot = pluginInjector.settings.snapshot()
 
     override val debuggerRouter: DebuggerRouter = BasicRouter(

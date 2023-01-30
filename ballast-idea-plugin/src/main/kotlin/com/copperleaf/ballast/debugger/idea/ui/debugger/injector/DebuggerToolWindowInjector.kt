@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 
 interface DebuggerToolWindowInjector {
 
+    val project: Project
     val debuggerRouter: DebuggerRouter
     val debuggerServerViewModel: DebuggerServerViewModel
     val debuggerUiViewModel: DebuggerUiViewModel

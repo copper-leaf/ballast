@@ -13,7 +13,7 @@ object SettingsUiContract {
 
     sealed class Inputs {
         data class UpdateSettings(val value: BallastIntellijPluginSettingsSnapshot.()->BallastIntellijPluginSettingsSnapshot) : Inputs()
-        object ResetSettings : Inputs()
+        object DiscardChanges : Inputs()
         object RestoreDefaultSettings : Inputs()
         object ApplySettings : Inputs()
         object CloseGracefully : Inputs()

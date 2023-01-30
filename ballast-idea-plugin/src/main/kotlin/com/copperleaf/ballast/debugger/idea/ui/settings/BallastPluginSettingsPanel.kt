@@ -18,7 +18,7 @@ class BallastPluginSettingsPanel(
     override fun getDisplayName(): String = "Ballast"
 
     override fun createComponent(): JComponent {
-        return BallastComposePanel(project) {
+        return BallastComposePanel {
             SettingsUi.Content(injector)
         }
     }
@@ -32,7 +32,7 @@ class BallastPluginSettingsPanel(
     }
 
     override fun reset() {
-        injector.settingsPanelViewModel.trySend(SettingsUiContract.Inputs.ResetSettings)
+        injector.settingsPanelViewModel.trySend(SettingsUiContract.Inputs.DiscardChanges)
     }
 
     override fun apply() {

@@ -22,10 +22,11 @@ class DebuggerServerInputHandler : InputHandler<
         input: DebuggerServerContract.Inputs
     ) = when (input) {
         is DebuggerServerContract.Inputs.StartServer -> {
+            val currentState = getCurrentState()
             sideJob("Websocket Server") {
                 val server = BallastDebuggerServerConnection(
                     settings = input.settings,
-                    outgoingActions = currentStateWhenStarted.actions,
+                    outgoingActions = currentState.actions,
                     postInput = { postInput(it) }
                 )
 

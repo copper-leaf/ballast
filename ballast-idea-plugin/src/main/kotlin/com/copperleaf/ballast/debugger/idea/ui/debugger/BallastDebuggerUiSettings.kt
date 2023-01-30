@@ -10,6 +10,8 @@ import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
  * See https://plugins.jetbrains.com/docs/intellij/persisting-state-of-components.html#implementing-the-persistentstatecomponent-interface
  */
 interface BallastDebuggerUiSettings {
+    val darkTheme: Boolean
+
     val lastRoute: DebuggerRoute
     val lastViewModelName: String
 
