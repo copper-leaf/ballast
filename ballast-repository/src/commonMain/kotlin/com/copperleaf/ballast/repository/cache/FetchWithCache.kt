@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
  *
  * TODO: maybe add retry logic in here, to help deal with potentially flaky APIs?
  */
-public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope<Inputs, Any, State>.fetchWithCache(
+public suspend fun <Inputs : Any, Events: Any, State : Any, Property : Any> InputHandlerScope<Inputs, Events, State>.fetchWithCache(
     input: Inputs,
     forceRefresh: Boolean,
     matchesPrerequisites: (State) -> Boolean = { true },
@@ -77,7 +77,7 @@ public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope
  *
  * TODO: maybe add retry logic in here, to help deal with potentially flaky APIs?
  */
-public suspend fun <Inputs : Any, State : Any, Property : Any> InputHandlerScope<Inputs, Any, State>.fetchWithCache(
+public suspend fun <Inputs : Any, Events: Any, State : Any, Property : Any> InputHandlerScope<Inputs, Events, State>.fetchWithCache(
     input: Inputs,
     forceRefresh: Boolean,
     matchesPrerequisites: (State) -> Boolean = { true },
