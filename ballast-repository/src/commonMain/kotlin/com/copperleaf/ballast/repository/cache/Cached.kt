@@ -12,7 +12,7 @@ package com.copperleaf.ballast.repository.cache
  * loaders or success/error states of that value. When a UI ViewModel observes a Cached value, it should not need any
  * additional bookkeeping.
  */
-public sealed class Cached<T : Any> {
+public sealed class Cached<T> {
 
     /**
      * The default state of a cached value. Cached values in a ViewModel or Repository State should never be null, but
@@ -21,7 +21,7 @@ public sealed class Cached<T : Any> {
      * Forcing a refresh will reset the property's state back to NotLoaded, which will then call to the remote data
      * source again.
      */
-    public class NotLoaded<T : Any>(public val previousCachedValue: T? = null) : Cached<T>() {
+    public class NotLoaded<T>(public val previousCachedValue: T? = null) : Cached<T>() {
         override fun toString(): String {
             return "NotLoaded(previousCachedValue=$previousCachedValue)"
         }
@@ -31,7 +31,7 @@ public sealed class Cached<T : Any> {
      * Indicates that we have started the call to the remote data source, but it has not responded or failed yet. The
      * "fetcher" coroutine is still active.
      */
-    public class Fetching<T : Any>(public val cachedValue: T?) : Cached<T>() {
+    public class Fetching<T>(public val cachedValue: T?) : Cached<T>() {
         override fun toString(): String {
             return "Fetching(cachedValue=$cachedValue)"
         }
@@ -41,7 +41,7 @@ public sealed class Cached<T : Any> {
      * Indicates that the remote "fetcher" has sucessfully returned data and that the Repository successfully performed
      * any follow-up computation on that data.
      */
-    public class Value<T : Any>(public val value: T) : Cached<T>() {
+    public class Value<T>(public val value: T) : Cached<T>() {
         override fun toString(): String {
             return "Value(value=$value)"
         }
@@ -51,7 +51,7 @@ public sealed class Cached<T : Any> {
      * Indicates that either the remote "fetcher" function itself failed, or that it succeeded but returned bad data
      * that caused the Repository to throw an exception when processing it.
      */
-    public class FetchingFailed<T : Any>(public val error: Throwable, public val cachedValue: T?) : Cached<T>() {
+    public class FetchingFailed<T>(public val error: Throwable, public val cachedValue: T?) : Cached<T>() {
         override fun toString(): String {
             return "FetchingFailed(error=${error.message}, cachedValue=$cachedValue)"
         }
