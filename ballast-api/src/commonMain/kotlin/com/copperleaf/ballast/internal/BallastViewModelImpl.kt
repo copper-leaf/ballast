@@ -95,7 +95,9 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         _internalState.value.status.checkCanStart()
 
         // create the real viewModel's coroutineScope
-        viewModelScope = coroutineScope + uncaughtExceptionHandler
+        viewModelScope = coroutineScope +
+                uncaughtExceptionHandler +
+                SupervisorJob(parent = coroutineScope.coroutineContext.job)
 
         // set the VM to clear itself upon the cancellation of its coroutine scope
         viewModelScope.coroutineContext.job.invokeOnCompletion {
