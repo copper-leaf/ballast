@@ -1,7 +1,17 @@
-public final class com/copperleaf/ballast/undo/BallastUndoInterceptor : com/copperleaf/ballast/BallastInterceptor {
+public final class com/copperleaf/ballast/undo/BallastUndoInterceptor : com/copperleaf/ballast/BallastInterceptor, com/copperleaf/ballast/undo/UndoController {
 	public fun <init> (Lcom/copperleaf/ballast/undo/UndoController;)V
+	public fun connectViewModel (Lcom/copperleaf/ballast/undo/UndoScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
+	public fun isRedoAvailable ()Lkotlinx/coroutines/flow/Flow;
+	public fun isUndoAvailable ()Lkotlinx/coroutines/flow/Flow;
 	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun redo ()V
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun undo ()V
+}
+
+public final class com/copperleaf/ballast/undo/BallastUndoInterceptor$Key : com/copperleaf/ballast/BallastInterceptor$Key {
+	public static final field INSTANCE Lcom/copperleaf/ballast/undo/BallastUndoInterceptor$Key;
 }
 
 public final class com/copperleaf/ballast/undo/DefaultUndoController : com/copperleaf/ballast/undo/UndoController {

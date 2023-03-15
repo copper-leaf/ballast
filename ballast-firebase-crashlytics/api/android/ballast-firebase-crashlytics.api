@@ -14,6 +14,7 @@ public abstract interface annotation class com/copperleaf/ballast/firebase/Fireb
 
 public final class com/copperleaf/ballast/firebase/FirebaseCrashlyticsInterceptor : com/copperleaf/ballast/BallastInterceptor {
 	public fun <init> (Lcom/google/firebase/crashlytics/FirebaseCrashlytics;)V
+	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
