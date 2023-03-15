@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.internal
 
+import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.SideJobScope
@@ -22,5 +23,9 @@ internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override suspend fun postEvent(event: Events) {
         impl.enqueueEvent(event, null, false)
+    }
+
+    override suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I {
+        return impl.getInterceptor(key)
     }
 }

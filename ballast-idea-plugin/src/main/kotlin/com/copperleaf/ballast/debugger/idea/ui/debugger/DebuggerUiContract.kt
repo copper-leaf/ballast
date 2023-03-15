@@ -15,20 +15,25 @@ import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
 import com.copperleaf.ballast.navigation.routing.Backstack
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.currentRouteOrNull
+import com.copperleaf.ballast.repository.cache.Cached
+import com.copperleaf.ballast.repository.cache.isLoading
 import org.jetbrains.compose.splitpane.SplitPaneState
 
 object DebuggerUiContract {
     data class State(
-        val uiSettings: IntellijPluginSettingsSnapshot,
+        val settings: Cached<IntellijPluginSettingsSnapshot> = Cached.NotLoaded(),
         val serverState: BallastApplicationState = BallastApplicationState(),
         val backstack: Backstack<DebuggerRoute> = emptyList(),
         val searchText: String = "",
+
         val connectionsPanePercentage: SplitPaneState = SplitPaneState(0.35f, true),
         val viewModelsPanePercentage: SplitPaneState = SplitPaneState(0.35f, true),
         val eventsPanePercentage: SplitPaneState = SplitPaneState(0.35f, true),
     ) {
+        val isReady = !settings.isLoading()
+
         val ballastVersion: String = "2.3.1-SNAPSHOT"
-        val port: Int = uiSettings.debuggerServerPort
+//        val port: Int = settings.debuggerServerPort
         val applicationState: BallastApplicationState = serverState
 
         val focusedConnectionId: String? = null
@@ -64,8 +69,11 @@ object DebuggerUiContract {
     sealed class Inputs {
         object Initialize : Inputs()
 
+        data class OnConnectionEstablished(val connectionId: String) : Inputs()
+
         data class ServerStateChanged(val serverState: BallastApplicationState) : Inputs()
         data class BackstackChanged(val backstack: Backstack<DebuggerRoute>) : Inputs()
+        data class SettingsChanged(val settings: Cached<IntellijPluginSettingsSnapshot>) : Inputs()
 
         data class FocusConnection(val connectionId: String) : Inputs()
         data class ClearConnection(val connectionId: String) : Inputs()

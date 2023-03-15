@@ -16,6 +16,9 @@ public class KillSwitch<Inputs : Any, Events : Any, State : Any>(
     private val gracePeriod: Duration = 100.milliseconds,
 ) : BallastInterceptor<Inputs, Events, State> {
 
+    public object Key : BallastInterceptor.Key<KillSwitch<*, *, *>>
+    override val key: BallastInterceptor.Key<KillSwitch<*, *, *>> = KillSwitch.Key
+
     private val signal = CompletableDeferred<Unit>()
 
     override fun BallastInterceptorScope<Inputs, Events, State>.start(
@@ -28,6 +31,7 @@ public class KillSwitch<Inputs : Any, Events : Any, State : Any>(
             // wait for something to request shutting down the VM
             signal.await()
 
+            // send the request to gracefully shut down into the main queue
             sendToQueue(
                 Queued.ShutDownGracefully(null, gracePeriod)
             )

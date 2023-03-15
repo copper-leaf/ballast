@@ -38,6 +38,7 @@ dependencies {
     api(libs.multiplatformSettings.core)
     api(libs.multiplatformSettings.test)
     api(project(":ballast-core"))
+    api(project(":ballast-repository"))
     api(project(":ballast-saved-state"))
     api(project(":ballast-navigation"))
     api(project(":ballast-debugger"))

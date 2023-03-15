@@ -16,4 +16,24 @@ data class IntellijPluginSettingsSnapshot(
     override val showCurrentRoute: Boolean,
     override val routerViewModelName: String,
     override val detailsPanePercentage: Float,
-) : IntellijPluginSettings
+) : IntellijPluginSettings {
+
+    companion object {
+        fun defaults(): IntellijPluginSettingsSnapshot {
+            return fromSettings(IntellijPluginSettingsDefaults())
+        }
+        fun fromSettings(settings: IntellijPluginSettings): IntellijPluginSettingsSnapshot {
+            return IntellijPluginSettingsSnapshot(
+                darkTheme = settings.darkTheme,
+                debuggerServerPort = settings.debuggerServerPort,
+                lastRoute = settings.lastRoute,
+                lastViewModelName = settings.lastViewModelName,
+                autoselectDebuggerConnections = settings.autoselectDebuggerConnections,
+                alwaysShowCurrentState = settings.alwaysShowCurrentState,
+                showCurrentRoute = settings.showCurrentRoute,
+                routerViewModelName = settings.routerViewModelName,
+                detailsPanePercentage = settings.detailsPanePercentage,
+            )
+        }
+    }
+}

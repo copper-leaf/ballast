@@ -68,4 +68,23 @@ public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
      */
     @Deprecated("Implement `BallastInterceptor.start` and launch the job yourself, instead. Deprecated since v3, to be removed in v4.")
     public suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {}
+
+
+    public val key: Key<BallastInterceptor<*, *, *>>? get() = null
+
+    /**
+     * A key for accessing this Interceptor directly from a SideJob. Interceptors do not need to define a Key, but it it
+     * does, the Key must be unique among all Interceptors registered to a ViewModel.
+     *
+     * An Interceptor's Key should conventionally be defined as an `object` on the Interceptor class names `Key`, as
+     * shown in the following example:
+     *
+     * ```
+     * public class ExampleInterceptor<Inputs : Any, Events : Any, State : Any> : BallastInterceptor<Inputs, Events, State> {
+     *     public object Key : BallastInterceptor.Key<ExampleInterceptor<*, *, *>>
+     *     override val key: BallastInterceptor.Key<ExampleInterceptor<*, *, *>> = ExampleInterceptor.Key
+     * }
+     * ```
+     */
+    public interface Key<out Interceptor: BallastInterceptor<*, *, *>>
 }
