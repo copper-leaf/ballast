@@ -70,6 +70,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiSettings
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
@@ -89,6 +90,8 @@ import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.optionalStringPath
 import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.navigation.routing.stringPath
+import com.copperleaf.ballast.repository.cache.Cached
+import com.copperleaf.ballast.repository.cache.getCachedOrNull
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.fileTypes.FileTypes
 import com.intellij.openapi.project.Project
@@ -480,10 +483,13 @@ fun Destination.ParametersProvider.rememberSelectedViewModelInterceptor(
 @Composable
 fun rememberConnectionCurrentDestination(
     connection: BallastConnectionState?,
-    uiSettings: DebuggerUiSettings,
+    settings: Cached<IntellijPluginSettingsSnapshot>,
 ): State<String?> {
     return viewModelValue {
-        if (!uiSettings.showCurrentRoute) {
+        val uiSettings = settings.getCachedOrNull()
+        if (uiSettings == null) {
+            null
+        } else if (!uiSettings.showCurrentRoute) {
             null
         } else {
             connection

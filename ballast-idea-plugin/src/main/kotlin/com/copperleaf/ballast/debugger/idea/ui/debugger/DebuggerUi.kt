@@ -57,7 +57,7 @@ object DebuggerUi {
         val debuggerUiViewModel = remember(injector) { injector.debuggerUiViewModel }
         val debuggerUiState by debuggerUiViewModel.observeStates().collectAsState()
 
-        IdeaPluginTheme(injector.project, debuggerUiState.uiSettings) {
+        IdeaPluginTheme(injector.project, debuggerUiState.settings) {
             ProvideTime {
                 Content(
                     debuggerUiState,
@@ -91,7 +91,7 @@ object DebuggerUi {
                 val connectionsList by rememberConnectionsList(uiState.serverState)
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -114,7 +114,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val statesList by rememberViewModelStatesList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
@@ -141,7 +141,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val statesList by rememberViewModelStatesList(viewModel, uiState.searchText)
                 val selectedState by rememberSelectedViewModelStateSnapshot(viewModel)
 
@@ -171,7 +171,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val inputsList by rememberViewModelInputsList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
@@ -198,7 +198,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val inputsList by rememberViewModelInputsList(viewModel, uiState.searchText)
                 val selectedInput by rememberSelectedViewModelInput(viewModel)
 
@@ -228,7 +228,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val eventsList by rememberViewModelEventsList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
@@ -255,7 +255,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val eventsList by rememberViewModelEventsList(viewModel, uiState.searchText)
                 val selectedEvent by rememberSelectedViewModelEvent(viewModel)
 
@@ -285,7 +285,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val sideJobsList by rememberViewModelSideJobsList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
@@ -312,7 +312,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val sideJobsList by rememberViewModelSideJobsList(viewModel, uiState.searchText)
                 val selectedSideJob by rememberSelectedViewModelSideJob(viewModel)
 
@@ -342,7 +342,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val interceptorList by rememberViewModelInterceptorList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
@@ -369,7 +369,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
                 val interceptorList by rememberViewModelInterceptorList(viewModel, uiState.searchText)
                 val selectedInterceptor by rememberSelectedViewModelInterceptor(viewModel)
 
@@ -406,7 +406,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -430,7 +430,7 @@ object DebuggerUi {
                 val connection by rememberSelectedConnection(connectionsList)
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.uiSettings)
+                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.settings)
 
                 DebuggerScaffold(
                     primaryToolbar = {

@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.internal
 
+import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
@@ -750,6 +751,29 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 .onCompletion { _notificationsQueueDrained.complete(Unit) }
                 .launchIn(this)
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    internal suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I {
+        val interceptorsWithKey = interceptors
+            .filter {
+                if (it.key == null) {
+                    false
+                } else {
+                    it.key === key
+                }
+            }
+
+        if (interceptorsWithKey.isEmpty()) {
+            error("Interceptor with key '$key' is not registered to ViewModel '$name'")
+        }
+
+        if (interceptorsWithKey.size > 1) {
+            error("Multiple interceptors with key '$key' are registered to ViewModel '$name'")
+        }
+
+        return interceptorsWithKey.single() as? I
+            ?: error("Interceptor with key '$key' does not match the type of it key")
     }
 
     private suspend fun notify(value: BallastNotification<Inputs, Events, State>) {

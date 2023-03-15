@@ -10,16 +10,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettings
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.LocalProject
+import com.copperleaf.ballast.repository.cache.Cached
+import com.copperleaf.ballast.repository.cache.getCachedOrNull
 import com.intellij.openapi.project.Project
 
 @Composable
 fun IdeaPluginTheme(
     project: Project,
-    settings: IntellijPluginSettings,
+    settings: Cached<IntellijPluginSettingsSnapshot>,
     content: @Composable () -> Unit,
 ) {
+    settings.getCachedOrNull()?.let {
+        IdeaPluginTheme(project, it, content)
+    }
+}
+
+@Composable
+private fun IdeaPluginTheme(
+    project: Project,
+    settings: IntellijPluginSettingsSnapshot,
+    content: @Composable () -> Unit,
+) {
+
+
     val primaryColor = Color(0xff_ffab00)
     val secondaryColor = Color(0xff_ffab00)
     val swingColors = SwingColor()
@@ -58,17 +73,17 @@ fun IdeaPluginTheme(
         shapes = shapes,
         content = {
 //            DesktopTheme {
-                CompositionLocalProvider(
-                    LocalProject provides project,
-                    LocalContentColor provides materialColors.onBackground,
+            CompositionLocalProvider(
+                LocalProject provides project,
+                LocalContentColor provides materialColors.onBackground,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .background(MaterialTheme.colors.background),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .background(MaterialTheme.colors.background),
-                    ) {
-                        content()
-                    }
+                    content()
                 }
+            }
 //            }
         }
     )

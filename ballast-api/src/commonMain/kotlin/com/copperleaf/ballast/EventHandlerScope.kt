@@ -16,4 +16,9 @@ public interface EventHandlerScope<Inputs : Any, Events : Any, State : Any> {
      * As the response to handling an Event, post another Input back to the VM.
      */
     public suspend fun postInput(input: Inputs)
+
+    /**
+     * Get an Interceptor registered to this ViewModel by its key.
+     */
+    public suspend fun <I: BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I
 }

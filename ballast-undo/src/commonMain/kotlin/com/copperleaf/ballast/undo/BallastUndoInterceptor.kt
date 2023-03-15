@@ -13,7 +13,10 @@ import kotlinx.coroutines.flow.Flow
  */
 public class BallastUndoInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val controller: UndoController<Inputs, Events, State>
-) : BallastInterceptor<Inputs, Events, State> {
+) : BallastInterceptor<Inputs, Events, State>, UndoController<Inputs, Events, State> by controller {
+
+    public object Key : BallastInterceptor.Key<BallastUndoInterceptor<*, *, *>>
+    override val key: BallastInterceptor.Key<BallastUndoInterceptor<*, *, *>> = BallastUndoInterceptor.Key
 
     override fun BallastInterceptorScope<Inputs, Events, State>.start(notifications: Flow<BallastNotification<Inputs, Events, State>>) {
         val scope = UndoScopeImpl(this)

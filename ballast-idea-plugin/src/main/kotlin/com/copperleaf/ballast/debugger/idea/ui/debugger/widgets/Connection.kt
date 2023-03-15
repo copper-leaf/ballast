@@ -25,6 +25,7 @@ import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
 import com.copperleaf.ballast.debugger.versions.ClientVersion
+import com.copperleaf.ballast.repository.cache.getCachedOrNull
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
@@ -58,7 +59,7 @@ fun ConnectionsList(
                                     )
                                     Text("Connections", overflow = TextOverflow.Ellipsis, maxLines = 1)
                                     Text(
-                                        text = "Port: ${uiState.port}",
+                                        text = "Port: ${uiState.settings.getCachedOrNull()?.debuggerServerPort}",
                                         style = MaterialTheme.typography.subtitle2,
                                         color = LocalContentColor.current,
                                     )

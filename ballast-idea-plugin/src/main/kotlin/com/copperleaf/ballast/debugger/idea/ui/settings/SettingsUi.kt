@@ -36,7 +36,7 @@ object SettingsUi {
         val debuggerUiViewModel = remember(injector) { injector.settingsPanelViewModel }
         val debuggerUiState by debuggerUiViewModel.observeStates().collectAsState()
 
-        IdeaPluginTheme(injector.project, debuggerUiState.modifiedSettings) {
+        IdeaPluginTheme(injector.project, debuggerUiState.cachedSettings) {
             ProvideTime {
                 Content(
                     debuggerUiState,
