@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.debugger.idea.ui.settings.injector
 
 import com.copperleaf.ballast.debugger.idea.BallastIntellijPluginInjector
-import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiViewModel
+import com.copperleaf.ballast.debugger.idea.ui.settings.vm.SettingsUiViewModel
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineScope
 

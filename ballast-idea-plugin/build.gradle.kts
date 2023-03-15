@@ -10,6 +10,8 @@ plugins {
     id("org.jetbrains.compose")
     id("org.jetbrains.intellij") version "1.10.0"
     id("org.jetbrains.changelog") version "1.3.1"
+
+    id("com.github.gmazzo.buildconfig")
 }
 
 description = "Debugger UI application for Ballast MVI"
@@ -91,4 +93,13 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs += "-opt-in=androidx.compose.material.ExperimentalMaterialApi"
         freeCompilerArgs += "-opt-in=org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi"
     }
+}
+
+buildConfig {
+    useKotlinOutput {
+        internalVisibility = true
+        topLevelConstants = true
+    }
+
+    buildConfigField("String", "BALLAST_VERSION", "\"${project.version}\"")
 }

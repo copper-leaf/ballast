@@ -1,12 +1,14 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 
 /**
  * A read-only snapshot of settings, as captured at a specific point in time. Changes to the underlying preferences
  * will not update this object, the screen reading from these settings must be re-created to receive updates.
  */
 data class IntellijPluginSettingsDefaults(
+    override val ballastVersion: String = BALLAST_VERSION,
     override val darkTheme: Boolean = true,
     override val debuggerServerPort: Int = 9684,
     override val lastRoute: DebuggerRoute = DebuggerRoute.Connection,

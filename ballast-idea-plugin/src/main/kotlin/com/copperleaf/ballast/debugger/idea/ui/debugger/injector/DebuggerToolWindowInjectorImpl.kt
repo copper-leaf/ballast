@@ -3,14 +3,14 @@ package com.copperleaf.ballast.debugger.idea.ui.debugger.injector
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.debugger.idea.BallastIntellijPluginInjector
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiEventHandler
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiInputHandler
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiViewModel
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRouter
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.RouterEventHandler
 import com.copperleaf.ballast.debugger.idea.ui.debugger.server.DebuggerServerEventHandler
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiEventHandler
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiInputHandler
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiViewModel
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerInputHandler
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerViewModel
@@ -46,7 +46,7 @@ class DebuggerToolWindowInjectorImpl(
             .withViewModel(
                 initialState = DebuggerServerContract.State(),
                 inputHandler = DebuggerServerInputHandler(),
-                name = "Debugger",
+                name = "Debugger Server",
             )
             .build(),
         eventHandler = DebuggerServerEventHandler(
@@ -67,12 +67,9 @@ class DebuggerToolWindowInjectorImpl(
                     debuggerServerViewModel,
                     pluginInjector.repository,
                 ),
-                name = "DebuggerUi",
+                name = "Debugger Ui",
             )
             .build(),
-        eventHandler = DebuggerUiEventHandler(
-            getDebuggerRouterLazy = { debuggerRouter },
-            getDebuggerServerViewModelLazy = { debuggerServerViewModel },
-        ),
+        eventHandler = DebuggerUiEventHandler(),
     )
 }

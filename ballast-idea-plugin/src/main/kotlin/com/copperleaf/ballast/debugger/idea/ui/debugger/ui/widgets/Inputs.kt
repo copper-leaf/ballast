@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets
 
 import androidx.compose.foundation.ContextMenuArea
 import androidx.compose.foundation.ContextMenuItem
@@ -22,13 +22,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastInputState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.navigation.routing.build
+import com.copperleaf.ballast.navigation.routing.directions
+import com.copperleaf.ballast.navigation.routing.pathParameter
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -136,10 +140,13 @@ fun InputSummary(
                 )
                 .clickable {
                     postInput(
-                        DebuggerUiContract.Inputs.FocusEvent(
-                            connectionId = inputState.connectionId,
-                            viewModelName = inputState.viewModelName,
-                            eventUuid = inputState.uuid,
+                        DebuggerUiContract.Inputs.Navigate(
+                            DebuggerRoute.ViewModelInputDetails
+                                .directions()
+                                .pathParameter("connectionId", inputState.connectionId)
+                                .pathParameter("viewModelName", inputState.viewModelName)
+                                .pathParameter("inputUuid", inputState.uuid)
+                                .build()
                         )
                     )
                 },

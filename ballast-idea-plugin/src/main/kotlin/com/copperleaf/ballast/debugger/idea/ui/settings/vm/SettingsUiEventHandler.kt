@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger.idea.ui.settings
+package com.copperleaf.ballast.debugger.idea.ui.settings.vm
 
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope

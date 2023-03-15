@@ -25,6 +25,7 @@ class IntellijPluginPersistentSettings : IntellijPluginMutableSettings,
 
     private val defaults = IntellijPluginSettingsDefaults()
 
+    override val ballastVersion: String get() = defaults.ballastVersion
     override var darkTheme: Boolean by boolean(null, defaults.darkTheme)
     override var debuggerServerPort: Int by int(null, defaults.debuggerServerPort)
     override var lastRoute: DebuggerRoute by enum(null, defaults.lastRoute, DebuggerRoute::valueOf)

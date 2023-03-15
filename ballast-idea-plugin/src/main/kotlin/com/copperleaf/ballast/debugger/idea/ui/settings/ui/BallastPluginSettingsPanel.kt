@@ -1,7 +1,8 @@
-package com.copperleaf.ballast.debugger.idea.ui.settings
+package com.copperleaf.ballast.debugger.idea.ui.settings.ui
 
 import com.copperleaf.ballast.debugger.idea.base.BallastComposePanel
 import com.copperleaf.ballast.debugger.idea.ui.settings.injector.SettingsPanelInjector
+import com.copperleaf.ballast.debugger.idea.ui.settings.vm.SettingsUiContract
 import com.intellij.openapi.options.Configurable
 import com.intellij.openapi.project.Project
 import javax.swing.JComponent

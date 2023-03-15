@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger.idea.ui.settings
+package com.copperleaf.ballast.debugger.idea.ui.settings.vm
 
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.repository.cache.Cached

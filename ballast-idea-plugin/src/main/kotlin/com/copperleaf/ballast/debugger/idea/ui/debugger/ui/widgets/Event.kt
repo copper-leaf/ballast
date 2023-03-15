@@ -1,5 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
-package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
+
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
@@ -19,31 +20,35 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
-import com.copperleaf.ballast.debugger.models.BallastSideJobState
+import com.copperleaf.ballast.debugger.models.BallastEventState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
+import com.copperleaf.ballast.navigation.routing.build
+import com.copperleaf.ballast.navigation.routing.directions
+import com.copperleaf.ballast.navigation.routing.pathParameter
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
 
 @Composable
-fun ColumnScope.SideJobsListToolbar(
+fun ColumnScope.EventsListToolbar(
     connection: BallastConnectionState?,
     viewModel: BallastViewModelState?,
-    sideJobs: List<BallastSideJobState>,
+    events: List<BallastEventState>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
 }
 
 @Composable
-fun ColumnScope.SideJobsList(
+fun ColumnScope.EventsList(
     connection: BallastConnectionState?,
     viewModel: BallastViewModelState?,
-    sideJobs: List<BallastSideJobState>,
-    focusedSideJob: BallastSideJobState?,
+    events: List<BallastEventState>,
+    focusedEvent: BallastEventState?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
     Box(Modifier.fillMaxSize()) {
@@ -51,8 +56,8 @@ fun ColumnScope.SideJobsList(
 
         // the list of all Connections
         LazyColumn(Modifier.fillMaxSize(), state = scrollState) {
-            items(sideJobs) {
-                SideJobSummary(it, focusedSideJob, postInput)
+            items(events) {
+                EventSummary(it, focusedEvent, postInput)
             }
         }
 
@@ -66,30 +71,30 @@ fun ColumnScope.SideJobsList(
 }
 
 @Composable
-fun ColumnScope.SideJobDetailsToolbar(
+fun ColumnScope.EventDetailsToolbar(
     connection: BallastConnectionState?,
     viewModel: BallastViewModelState?,
-    sideJob: BallastSideJobState?,
+    event: BallastEventState?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
 }
 
 @Composable
-fun ColumnScope.SideJobDetails(
-    sideJob: BallastSideJobState?,
+fun ColumnScope.EventDetails(
+    event: BallastEventState?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
-    if(sideJob != null) {
-        val errorStatus = sideJob.status as? BallastSideJobState.Status.Error
+    if (event != null) {
+        val errorStatus = event.status as? BallastEventState.Status.Error
 
-        if(errorStatus == null) {
+        if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(sideJob.key)
+                IntellijEditor(event.toStringValue)
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
-                topContent = { IntellijEditor(sideJob.key, Modifier.fillMaxSize()) },
+                topContent = { IntellijEditor(event.toStringValue, Modifier.fillMaxSize()) },
                 bottomContent = { IntellijEditor(errorStatus.stacktrace, Modifier.fillMaxSize()) },
             )
         }
@@ -98,19 +103,18 @@ fun ColumnScope.SideJobDetails(
 
 @Suppress("UNUSED_PARAMETER")
 @Composable
-fun SideJobSummary(
-    sideJobState: BallastSideJobState,
-    focusedSideJob: BallastSideJobState?,
+fun EventSummary(
+    eventState: BallastEventState,
+    focusedEvent: BallastEventState?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
-    val timeSinceLastSeen: Duration = (LocalTimer.current - sideJobState.firstSeen)
-        .removeFraction(DurationUnit.SECONDS)
+    val timeSinceLastSeen: Duration = (LocalTimer.current - eventState.firstSeen).removeFraction(DurationUnit.SECONDS)
 
     ListItem(
         modifier = Modifier
             .onHoverState { Modifier.highlight() }
             .then(
-                if (focusedSideJob?.uuid == sideJobState.uuid) {
+                if (focusedEvent?.uuid == eventState.uuid) {
                     Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
                 } else {
                     Modifier
@@ -118,22 +122,25 @@ fun SideJobSummary(
             )
             .clickable {
                 postInput(
-                    DebuggerUiContract.Inputs.FocusEvent(
-                        connectionId = sideJobState.connectionId,
-                        viewModelName = sideJobState.viewModelName,
-                        eventUuid = sideJobState.uuid,
+                    DebuggerUiContract.Inputs.Navigate(
+                        DebuggerRoute.ViewModelEventDetails
+                            .directions()
+                            .pathParameter("connectionId", eventState.connectionId)
+                            .pathParameter("viewModelName", eventState.viewModelName)
+                            .pathParameter("eventUuid", eventState.uuid)
+                            .build()
                     )
                 )
             },
-        text = { Text(sideJobState.key) },
-        overlineText = { Text(sideJobState.status.toString()) },
-        secondaryText = { Text("${sideJobState.restartState} - Sent $timeSinceLastSeen ago") },
+        text = { Text(eventState.type) },
+        overlineText = { Text(eventState.status.toString()) },
+        secondaryText = { Text("Sent $timeSinceLastSeen ago") },
         trailing = {
             Box {
-                if (sideJobState.status == BallastSideJobState.Status.Running) {
+                if (eventState.status == BallastEventState.Status.Running) {
                     CircularProgressIndicator()
                 }
             }
-        },
+        }
     )
 }

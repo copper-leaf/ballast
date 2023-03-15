@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger.idea.ui.settings
+package com.copperleaf.ballast.debugger.idea.ui.settings.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,11 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.copperleaf.ballast.debugger.idea.theme.IdeaPluginTheme
-import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.CheckboxArea
-import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.ProvideTime
-import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.Section
-import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.ToolBarActionIconButton
+import com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets.CheckboxArea
+import com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets.ProvideTime
+import com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets.Section
+import com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets.ToolBarActionIconButton
 import com.copperleaf.ballast.debugger.idea.ui.settings.injector.SettingsPanelInjector
+import com.copperleaf.ballast.debugger.idea.ui.settings.vm.SettingsUiContract
 
 object SettingsUi {
 
