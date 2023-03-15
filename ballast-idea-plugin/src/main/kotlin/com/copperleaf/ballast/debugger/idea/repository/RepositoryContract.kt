@@ -13,8 +13,6 @@ object RepositoryContract {
     sealed class Inputs {
         object Initialize : Inputs()
 
-        data class SavedSettingsUpdated(val settings: Cached<IntellijPluginSettingsSnapshot>) : Inputs()
-
         data class SaveUpdatedSettings(val settings: IntellijPluginSettingsSnapshot) : Inputs()
     }
 

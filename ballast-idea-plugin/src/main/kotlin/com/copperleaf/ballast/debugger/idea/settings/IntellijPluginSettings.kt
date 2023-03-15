@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiSettings
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerSettings
 
 /**

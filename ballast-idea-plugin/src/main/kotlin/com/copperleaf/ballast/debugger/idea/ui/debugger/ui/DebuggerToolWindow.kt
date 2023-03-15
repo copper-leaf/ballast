@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger.idea.ui.debugger
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui
 
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope

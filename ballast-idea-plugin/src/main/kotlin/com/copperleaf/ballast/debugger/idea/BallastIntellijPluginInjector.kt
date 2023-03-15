@@ -23,8 +23,12 @@ interface BallastIntellijPluginInjector {
     val repository: RepositoryViewModel
 
     companion object {
+        private val projectMap = mutableMapOf<Project, BallastIntellijPluginInjector>()
         fun getInstance(project: Project): BallastIntellijPluginInjector {
-            return BallastIntellijPluginInjectorImpl(project)
+            return projectMap.computeIfAbsent(project) {
+                println("Creating injector for project: $project")
+                BallastIntellijPluginInjectorImpl(it)
+            }
         }
     }
 }

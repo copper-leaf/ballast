@@ -2,8 +2,8 @@ package com.copperleaf.ballast.debugger.idea.ui.debugger.server
 
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiViewModel
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiViewModel
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 
 class DebuggerServerEventHandler(
@@ -19,8 +19,8 @@ class DebuggerServerEventHandler(
         event: DebuggerServerContract.Events
     ) = when (event) {
         is DebuggerServerContract.Events.ConnectionEstablished -> {
-            val debuggerUi = getDebuggerUiViewModelLazy()
-            debuggerUi.send(DebuggerUiContract.Inputs.OnConnectionEstablished(event.connectionId))
+            getDebuggerUiViewModelLazy()
+                .send(DebuggerUiContract.Inputs.OnConnectionEstablished(event.connectionId))
         }
     }
 }

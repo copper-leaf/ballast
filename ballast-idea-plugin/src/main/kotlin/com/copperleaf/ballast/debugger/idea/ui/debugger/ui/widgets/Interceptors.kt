@@ -1,5 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
-package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
@@ -18,10 +18,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastInterceptorState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
+import com.copperleaf.ballast.navigation.routing.build
+import com.copperleaf.ballast.navigation.routing.directions
+import com.copperleaf.ballast.navigation.routing.pathParameter
 
 @Composable
 fun ColumnScope.InterceptorsListToolbar(
@@ -78,7 +82,7 @@ fun ColumnScope.InterceptorDetails(
 @Suppress("UNUSED_PARAMETER")
 @Composable
 fun InterceptorSummary(
-    inputState: BallastInterceptorState,
+    interceptorState: BallastInterceptorState,
     focusedInterceptor: BallastInterceptorState?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
@@ -86,7 +90,7 @@ fun InterceptorSummary(
         modifier = Modifier
             .onHoverState { Modifier.highlight() }
             .then(
-                if (focusedInterceptor?.uuid == inputState.uuid) {
+                if (focusedInterceptor?.uuid == interceptorState.uuid) {
                     Modifier.background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
                 } else {
                     Modifier
@@ -94,14 +98,17 @@ fun InterceptorSummary(
             )
             .clickable {
                 postInput(
-                    DebuggerUiContract.Inputs.FocusEvent(
-                        connectionId = inputState.connectionId,
-                        viewModelName = inputState.viewModelName,
-                        eventUuid = inputState.uuid,
+                    DebuggerUiContract.Inputs.Navigate(
+                        DebuggerRoute.ViewModelInterceptorDetails
+                            .directions()
+                            .pathParameter("connectionId", interceptorState.connectionId)
+                            .pathParameter("viewModelName", interceptorState.viewModelName)
+                            .pathParameter("interceptorUuid", interceptorState.uuid)
+                            .build()
                     )
                 )
             },
-        text = { Text(inputState.type) },
-        overlineText = { Text(inputState.status.toString()) },
+        text = { Text(interceptorState.type) },
+        overlineText = { Text(interceptorState.status.toString()) },
     )
 }

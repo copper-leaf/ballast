@@ -48,7 +48,7 @@ This IDEA plugin is built upon the best features of Kotlin:
             secondary="true"
             icon="AllIcons.Toolwindows.Documentation"
             anchor="bottom"
-            factoryClass="com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerToolWindow$Factory"/>
+            factoryClass="com.copperleaf.ballast.debugger.idea.ui.debugger.ui.DebuggerToolWindow$Factory"/>
 
         <!-- File Templates -->
         <fileTemplateGroup
@@ -57,8 +57,8 @@ This IDEA plugin is built upon the best features of Kotlin:
         <!-- Settings UI -->
         <projectConfigurable
             parentId="tools"
-            id="com.copperleaf.ballast.debugger.idea.ui.settings.BallastPluginSettingsPanel"
-            instance="com.copperleaf.ballast.debugger.idea.ui.settings.BallastPluginSettingsPanel"
+            id="com.copperleaf.ballast.debugger.idea.ui.settings.ui.BallastPluginSettingsPanel"
+            instance="com.copperleaf.ballast.debugger.idea.ui.settings.ui.BallastPluginSettingsPanel"
             displayName="Ballast"
             nonDefaultProject="true"/>
     </extensions>

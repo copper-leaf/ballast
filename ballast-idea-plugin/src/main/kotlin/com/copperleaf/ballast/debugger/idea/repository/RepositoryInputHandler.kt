@@ -3,7 +3,6 @@ package com.copperleaf.ballast.debugger.idea.repository
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
-import com.copperleaf.ballast.postInput
 import com.copperleaf.ballast.repository.cache.Cached
 
 class RepositoryInputHandler : InputHandler<
@@ -18,10 +17,6 @@ class RepositoryInputHandler : InputHandler<
     ) = when (input) {
         is RepositoryContract.Inputs.Initialize -> {
             updateSavedSettingsInState()
-        }
-
-        is RepositoryContract.Inputs.SavedSettingsUpdated -> {
-            updateState { it.copy(settings = input.settings) }
         }
 
         is RepositoryContract.Inputs.SaveUpdatedSettings -> {
@@ -52,11 +47,14 @@ class RepositoryInputHandler : InputHandler<
             RepositoryContract.Inputs,
             RepositoryContract.Events,
             RepositoryContract.State>.updateSavedSettingsInState() {
-        postInput(
-            RepositoryContract.Inputs.SavedSettingsUpdated(
-                Cached.Value(
-                    with(getCurrentState().persistentSettings) {
+        val persistentSettings = getCurrentState().persistentSettings
+
+        updateState {
+            it.copy(
+                settings = Cached.Value(
+                    with(persistentSettings) {
                         IntellijPluginSettingsSnapshot(
+                            ballastVersion = this.ballastVersion,
                             darkTheme = this.darkTheme,
                             debuggerServerPort = this.debuggerServerPort,
                             lastRoute = this.lastRoute,
@@ -70,6 +68,6 @@ class RepositoryInputHandler : InputHandler<
                     }
                 )
             )
-        )
+        }
     }
 }

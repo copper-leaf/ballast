@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets
 
 import androidx.compose.foundation.ContextMenuArea
 import androidx.compose.foundation.ContextMenuItem
@@ -21,11 +21,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.navigation.routing.build
+import com.copperleaf.ballast.navigation.routing.directions
+import com.copperleaf.ballast.navigation.routing.pathParameter
 
 @Composable
 fun ColumnScope.StatesListToolbar(
@@ -120,10 +124,13 @@ fun StateSnapshotSummary(
                 )
                 .clickable {
                     postInput(
-                        DebuggerUiContract.Inputs.FocusEvent(
-                            connectionId = stateSnapshot.connectionId,
-                            viewModelName = stateSnapshot.viewModelName,
-                            eventUuid = stateSnapshot.uuid,
+                        DebuggerUiContract.Inputs.Navigate(
+                            DebuggerRoute.ViewModelStateDetails
+                                .directions()
+                                .pathParameter("connectionId", stateSnapshot.connectionId)
+                                .pathParameter("viewModelName", stateSnapshot.viewModelName)
+                                .pathParameter("stateUuid", stateSnapshot.uuid)
+                                .build()
                         )
                     )
                 }

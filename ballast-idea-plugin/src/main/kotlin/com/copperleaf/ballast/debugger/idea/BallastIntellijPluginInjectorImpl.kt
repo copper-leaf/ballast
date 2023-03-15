@@ -14,7 +14,6 @@ import com.copperleaf.ballast.debugger.idea.repository.RepositoryViewModel
 import com.copperleaf.ballast.dispatchers
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.withViewModel
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +38,7 @@ class BallastIntellijPluginInjectorImpl(
     ): BallastViewModelConfiguration.Builder {
         return BallastViewModelConfiguration.Builder()
             .apply {
-                logger = { tag -> IntellijPluginBallastLogger(Logger.getInstance(tag)) }
+                logger = { tag -> IntellijPluginBallastLogger(tag) }
                 inputStrategy = FifoInputStrategy()
 
                 if (loggingEnabled) {

@@ -11,7 +11,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
-import com.copperleaf.ballast.debugger.idea.ui.debugger.widgets.LocalProject
+import com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets.LocalProject
 import com.copperleaf.ballast.repository.cache.Cached
 import com.copperleaf.ballast.repository.cache.getCachedOrNull
 import com.intellij.openapi.project.Project

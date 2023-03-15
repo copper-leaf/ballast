@@ -1,5 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
-package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.Icon
@@ -10,7 +10,7 @@ import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState

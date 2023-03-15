@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.debugger.idea.ui.debugger
+package com.copperleaf.ballast.debugger.idea.ui.debugger.vm
 
 import com.copperleaf.ballast.core.BasicViewModel
 

@@ -4,10 +4,10 @@ import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.debugger.idea.BallastIntellijPluginInjector
-import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiContract
-import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiEventHandler
-import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiInputHandler
-import com.copperleaf.ballast.debugger.idea.ui.settings.SettingsUiViewModel
+import com.copperleaf.ballast.debugger.idea.ui.settings.vm.SettingsUiContract
+import com.copperleaf.ballast.debugger.idea.ui.settings.vm.SettingsUiEventHandler
+import com.copperleaf.ballast.debugger.idea.ui.settings.vm.SettingsUiInputHandler
+import com.copperleaf.ballast.debugger.idea.ui.settings.vm.SettingsUiViewModel
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.withViewModel
 import com.intellij.openapi.project.Project

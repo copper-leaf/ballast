@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets
 
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
@@ -9,7 +9,7 @@ import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState

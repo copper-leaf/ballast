@@ -1,9 +1,9 @@
 @file:Suppress("UNUSED_PARAMETER")
-package com.copperleaf.ballast.debugger.idea.ui.debugger.widgets
+package com.copperleaf.ballast.debugger.idea.ui.debugger.ui.widgets
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.runtime.Composable
-import com.copperleaf.ballast.debugger.idea.ui.debugger.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.ui.debugger.vm.DebuggerUiContract
 
 @Composable
 fun ColumnScope.SpecialRouterToolbar(
