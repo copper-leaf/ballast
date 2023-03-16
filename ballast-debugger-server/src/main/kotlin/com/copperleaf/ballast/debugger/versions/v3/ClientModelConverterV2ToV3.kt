@@ -52,7 +52,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 inputType = inputType,
-                inputToStringValue = inputToStringValue,
+                serializedInput = inputToStringValue,
+                inputContentType = "text/*"
             )
 
             is BallastDebuggerEventV2.InputAccepted -> BallastDebuggerEventV3.InputAccepted(
@@ -61,7 +62,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 inputType = inputType,
-                inputToStringValue = inputToStringValue,
+                serializedInput = inputToStringValue,
+                inputContentType = "text/*"
             )
 
             is BallastDebuggerEventV2.InputRejected -> BallastDebuggerEventV3.InputRejected(
@@ -70,7 +72,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 inputType = inputType,
-                inputToStringValue = inputToStringValue,
+                serializedInput = inputToStringValue,
+                inputContentType = "text/*"
             )
 
             is BallastDebuggerEventV2.InputDropped -> BallastDebuggerEventV3.InputDropped(
@@ -79,7 +82,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 inputType = inputType,
-                inputToStringValue = inputToStringValue,
+                serializedInput = inputToStringValue,
+                inputContentType = "text/*"
             )
 
             is BallastDebuggerEventV2.InputHandledSuccessfully -> BallastDebuggerEventV3.InputHandledSuccessfully(
@@ -88,7 +92,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 inputType = inputType,
-                inputToStringValue = inputToStringValue,
+                serializedInput = inputToStringValue,
+                inputContentType = "text/*"
             )
 
             is BallastDebuggerEventV2.InputCancelled -> BallastDebuggerEventV3.InputCancelled(
@@ -97,7 +102,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 inputType = inputType,
-                inputToStringValue = inputToStringValue,
+                serializedInput = inputToStringValue,
+                inputContentType = "text/*"
             )
 
             is BallastDebuggerEventV2.InputHandlerError -> BallastDebuggerEventV3.InputHandlerError(
@@ -106,7 +112,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 inputType = inputType,
-                inputToStringValue = inputToStringValue,
+                serializedInput = inputToStringValue,
+                inputContentType = "text/*",
                 stacktrace = stacktrace,
             )
 
@@ -116,7 +123,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 eventType = eventType,
-                eventToStringValue = eventToStringValue,
+                serializedEvent = eventToStringValue,
+                eventContentType = "text/*",
             )
 
             is BallastDebuggerEventV2.EventEmitted -> BallastDebuggerEventV3.EventEmitted(
@@ -125,7 +133,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 eventType = eventType,
-                eventToStringValue = eventToStringValue,
+                serializedEvent = eventToStringValue,
+                eventContentType = "text/*",
             )
 
             is BallastDebuggerEventV2.EventHandledSuccessfully -> BallastDebuggerEventV3.EventHandledSuccessfully(
@@ -134,7 +143,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 eventType = eventType,
-                eventToStringValue = eventToStringValue,
+                serializedEvent = eventToStringValue,
+                eventContentType = "text/*",
             )
 
             is BallastDebuggerEventV2.EventHandlerError -> BallastDebuggerEventV3.EventHandlerError(
@@ -143,7 +153,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 eventType = eventType,
-                eventToStringValue = eventToStringValue,
+                serializedEvent = eventToStringValue,
+                eventContentType = "text/*",
                 stacktrace = stacktrace,
             )
 
@@ -167,7 +178,8 @@ class ClientModelConverterV2ToV3 : ClientModelConverter<
                 uuid = uuid,
                 timestamp = timestamp,
                 stateType = stateType,
-                stateToStringValue = stateToStringValue,
+                serializedState = stateToStringValue,
+                stateContentType = "text/*",
             )
 
             is BallastDebuggerEventV2.SideJobQueued -> BallastDebuggerEventV3.SideJobQueued(

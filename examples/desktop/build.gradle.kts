@@ -9,6 +9,7 @@ plugins {
     `copper-leaf-lint`
     id("com.github.gmazzo.buildconfig")
     id("org.jetbrains.compose")
+    kotlin("plugin.serialization")
 }
 
 var projectVersion: ProjectVersion by project.extra

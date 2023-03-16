@@ -10,7 +10,8 @@ public data class BallastEventState(
     public val uuid: String,
 
     public val type: String = "",
-    public val toStringValue: String = "",
+    public val serializedValue: String = "",
+    public val contentType: String = "",
 
     public val status: Status = Status.Queued,
 

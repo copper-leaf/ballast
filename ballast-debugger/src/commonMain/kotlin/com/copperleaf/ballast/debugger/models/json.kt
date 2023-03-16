@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.models
 
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.debugger.BallastDebuggerViewModelConnection
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
 import com.copperleaf.ballast.internal.Status
 import kotlinx.datetime.LocalDateTime
@@ -10,8 +11,9 @@ public val debuggerEventJson: Json = Json {
     isLenient = true
 }
 
-public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs, Events, State>.serialize(
+internal fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs, Events, State>.serialize(
     connectionId: String,
+    viewModelConnection: BallastDebuggerViewModelConnection<Inputs, Events, State>,
     uuid: String,
     firstSeen: LocalDateTime,
     now: LocalDateTime,
@@ -21,41 +23,52 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
             BallastDebuggerEventV3.ViewModelStatusChanged(connectionId, viewModelName, viewModelType, uuid, firstSeen, status.serialize())
         }
         is BallastNotification.InputQueued -> {
-            BallastDebuggerEventV3.InputQueued(connectionId, viewModelName, uuid, firstSeen, input.type, input.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeInput(input)
+            BallastDebuggerEventV3.InputQueued(connectionId, viewModelName, uuid, firstSeen, input.type, serializedContent, contentType.toString())
         }
         is BallastNotification.InputAccepted -> {
-            BallastDebuggerEventV3.InputAccepted(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeInput(input)
+            BallastDebuggerEventV3.InputAccepted(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.toString())
         }
         is BallastNotification.InputRejected -> {
-            BallastDebuggerEventV3.InputRejected(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeInput(input)
+            BallastDebuggerEventV3.InputRejected(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.toString())
         }
         is BallastNotification.InputDropped -> {
-            BallastDebuggerEventV3.InputDropped(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeInput(input)
+            BallastDebuggerEventV3.InputDropped(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.toString())
         }
         is BallastNotification.InputHandledSuccessfully -> {
-            BallastDebuggerEventV3.InputHandledSuccessfully(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeInput(input)
+            BallastDebuggerEventV3.InputHandledSuccessfully(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.toString())
         }
         is BallastNotification.InputCancelled -> {
-            BallastDebuggerEventV3.InputCancelled(connectionId, viewModelName, uuid, now, input.type, input.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeInput(input)
+            BallastDebuggerEventV3.InputCancelled(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.toString())
         }
         is BallastNotification.InputHandlerError -> {
+            val (contentType, serializedContent) = viewModelConnection.serializeInput(input)
             BallastDebuggerEventV3.InputHandlerError(
-                connectionId, viewModelName, uuid, now, input.type, input.toString(),
+                connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.toString(),
                 throwable.stackTraceToString()
             )
         }
         is BallastNotification.EventQueued -> {
-            BallastDebuggerEventV3.EventQueued(connectionId, viewModelName, uuid, firstSeen, event.type, event.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeEvent(event)
+            BallastDebuggerEventV3.EventQueued(connectionId, viewModelName, uuid, firstSeen, event.type, serializedContent, contentType.toString())
         }
         is BallastNotification.EventEmitted -> {
-            BallastDebuggerEventV3.EventEmitted(connectionId, viewModelName, uuid, now, event.type, event.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeEvent(event)
+            BallastDebuggerEventV3.EventEmitted(connectionId, viewModelName, uuid, now, event.type, serializedContent, contentType.toString())
         }
         is BallastNotification.EventHandledSuccessfully -> {
-            BallastDebuggerEventV3.EventHandledSuccessfully(connectionId, viewModelName, uuid, now, event.type, event.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeEvent(event)
+            BallastDebuggerEventV3.EventHandledSuccessfully(connectionId, viewModelName, uuid, now, event.type, serializedContent, contentType.toString())
         }
         is BallastNotification.EventHandlerError -> {
+            val (contentType, serializedContent) = viewModelConnection.serializeEvent(event)
             BallastDebuggerEventV3.EventHandlerError(
-                connectionId, viewModelName, uuid, now, event.type, event.toString(),
+                connectionId, viewModelName, uuid, now, event.type, serializedContent, contentType.toString(),
                 throwable.stackTraceToString()
             )
         }
@@ -66,7 +79,8 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
             BallastDebuggerEventV3.EventProcessingStopped(connectionId, viewModelName, uuid, now)
         }
         is BallastNotification.StateChanged -> {
-            BallastDebuggerEventV3.StateChanged(connectionId, viewModelName, uuid, firstSeen, state.type, state.toString())
+            val (contentType, serializedContent) = viewModelConnection.serializeState(state)
+            BallastDebuggerEventV3.StateChanged(connectionId, viewModelName, uuid, firstSeen, state.type, serializedContent, contentType.toString())
         }
 
         is BallastNotification.SideJobQueued -> {

@@ -10,7 +10,8 @@ public data class BallastStateSnapshot(
     public val actualState: Any?,
 
     public val type: String = "",
-    public val toStringValue: String = "",
+    public val serializedValue: String = "",
+    public val contentType: String = "",
 
     public val emittedAt: LocalDateTime = LocalDateTime.now(),
 )

@@ -70,8 +70,9 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
+import com.copperleaf.ballast.debugger.idea.utils.datatypes.DataType
 import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
@@ -91,11 +92,12 @@ import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.navigation.routing.stringPath
 import com.copperleaf.ballast.repository.cache.Cached
 import com.copperleaf.ballast.repository.cache.getCachedOrNull
+import com.intellij.lang.Language
 import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.fileTypes.FileTypes
+import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.text.StringUtil
-import com.intellij.ui.EditorTextField
+import com.intellij.psi.PsiFileFactory
+import io.ktor.http.ContentType
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.toJavaLocalDateTime
@@ -310,19 +312,40 @@ fun Modifier.highlight(enabled: Boolean = true): Modifier {
 @Composable
 fun IntellijEditor(
     text: String,
+    mimeType: String,
     modifier: Modifier = Modifier,
-    fileType: String = "txt",
 ) {
     val project = LocalProject.current
-
-    val document = remember(text) {
-        EditorFactory.getInstance().createDocument(StringUtil.convertLineSeparators(text))
-    }
 
     SwingPanel(
         modifier = modifier,
         background = MaterialTheme.colors.surface,
-        factory = { EditorTextField(document, project, FileTypes.PLAIN_TEXT, true) },
+        factory = {
+            val language: Language = Language
+                .findInstancesByMimeType(mimeType)
+                .toList()
+                .firstOrNull()
+                ?: PlainTextLanguage.INSTANCE
+
+            val contentType = ContentType.parse(mimeType)
+            val dataTypeConverter = DataType.getForMimeType(contentType)
+            val reformattedText = dataTypeConverter.reformat(text)
+
+            val editor = EditorFactory.getInstance().createEditor(
+                PsiFileFactory.getInstance(project).createFileFromText(language, reformattedText).viewProvider.document,
+                project,
+                language.associatedFileType!!,
+                false,
+            )
+
+            editor.settings.apply {
+                isLineNumbersShown = true
+                isAutoCodeFoldingEnabled = true
+                isFoldingOutlineShown = true
+            }
+
+            editor.component
+        },
         update = { },
     )
 }
@@ -376,7 +399,7 @@ fun rememberViewModelStatesList(
 ): State<List<BallastStateSnapshot>> {
     return viewModelValue {
         viewModel?.states?.maybeFilter(searchText) {
-            listOf(it.toStringValue)
+            listOf(it.serializedValue)
         } ?: emptyList()
     }
 }
@@ -398,7 +421,7 @@ fun rememberViewModelInputsList(
 ): State<List<BallastInputState>> {
     return viewModelValue {
         viewModel?.inputs?.maybeFilter(searchText) {
-            listOf(it.type, it.toStringValue)
+            listOf(it.type, it.serializedValue)
         } ?: emptyList()
     }
 }
@@ -420,7 +443,7 @@ fun rememberViewModelEventsList(
 ): State<List<BallastEventState>> {
     return viewModelValue {
         viewModel?.events?.maybeFilter(searchText) {
-            listOf(it.type, it.toStringValue)
+            listOf(it.type, it.serializedValue)
         } ?: emptyList()
     }
 }
@@ -496,7 +519,7 @@ fun rememberConnectionCurrentDestination(
                 ?.find { it.viewModelName == uiSettings.routerViewModelName }
                 ?.states
                 ?.firstOrNull()
-                ?.toStringValue
+                ?.serializedValue
                 ?.let {
                     it
                         .trim()
@@ -671,4 +694,8 @@ fun <T> DropdownSelector(
 private fun <T> viewModelValue(calculation: () -> T): State<T> {
     return derivedStateOf { calculation() }
 //    return remember { derivedStateOf { calculation() } }
-} 
+}
+
+internal fun String.asFileType(): String {
+    return this
+}

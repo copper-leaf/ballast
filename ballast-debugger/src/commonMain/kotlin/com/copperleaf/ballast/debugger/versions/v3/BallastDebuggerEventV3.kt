@@ -86,7 +86,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val inputType: String,
-        public val inputToStringValue: String,
+        public val serializedInput: String,
+        public val inputContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -98,7 +99,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val inputType: String,
-        public val inputToStringValue: String,
+        public val serializedInput: String,
+        public val inputContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -110,7 +112,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val inputType: String,
-        public val inputToStringValue: String,
+        public val serializedInput: String,
+        public val inputContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -122,7 +125,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val inputType: String,
-        public val inputToStringValue: String,
+        public val serializedInput: String,
+        public val inputContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -134,7 +138,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val inputType: String,
-        public val inputToStringValue: String,
+        public val serializedInput: String,
+        public val inputContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -146,7 +151,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val inputType: String,
-        public val inputToStringValue: String,
+        public val serializedInput: String,
+        public val inputContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -158,7 +164,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val inputType: String,
-        public val inputToStringValue: String,
+        public val serializedInput: String,
+        public val inputContentType: String,
         public val stacktrace: String,
     ) : BallastDebuggerEventV3()
 
@@ -174,7 +181,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val eventType: String,
-        public val eventToStringValue: String,
+        public val serializedEvent: String,
+        public val eventContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -186,7 +194,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val eventType: String,
-        public val eventToStringValue: String,
+        public val serializedEvent: String,
+        public val eventContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -198,7 +207,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val eventType: String,
-        public val eventToStringValue: String,
+        public val serializedEvent: String,
+        public val eventContentType: String,
     ) : BallastDebuggerEventV3()
 
     @Serializable
@@ -210,7 +220,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val eventType: String,
-        public val eventToStringValue: String,
+        public val serializedEvent: String,
+        public val eventContentType: String,
         public val stacktrace: String,
     ) : BallastDebuggerEventV3()
 
@@ -244,7 +255,8 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val stateType: String,
-        public val stateToStringValue: String,
+        public val serializedState: String,
+        public val stateContentType: String,
     ) : BallastDebuggerEventV3()
 
 // Side-jobs

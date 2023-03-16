@@ -179,7 +179,8 @@ public data class BallastViewModelState(
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
-                        toStringValue = event.inputToStringValue,
+                        serializedValue = event.serializedInput,
+                        contentType = event.inputContentType,
                         status = BallastInputState.Status.Queued,
                         firstSeen = event.timestamp,
                     )
@@ -190,7 +191,8 @@ public data class BallastViewModelState(
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
-                        toStringValue = event.inputToStringValue,
+                        serializedValue = event.serializedInput,
+                        contentType = event.inputContentType,
                         status = BallastInputState.Status.Running,
                         lastSeen = event.timestamp,
                     )
@@ -201,7 +203,8 @@ public data class BallastViewModelState(
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
-                        toStringValue = event.inputToStringValue,
+                        serializedValue = event.serializedInput,
+                        contentType = event.inputContentType,
                         lastSeen = event.timestamp,
                         status = BallastInputState.Status.Completed(
                             duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
@@ -214,7 +217,8 @@ public data class BallastViewModelState(
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
-                        toStringValue = event.inputToStringValue,
+                        serializedValue = event.serializedInput,
+                        contentType = event.inputContentType,
                         lastSeen = event.timestamp,
                         status = BallastInputState.Status.Cancelled(
                             duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
@@ -227,7 +231,8 @@ public data class BallastViewModelState(
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
-                        toStringValue = event.inputToStringValue,
+                        serializedValue = event.serializedInput,
+                        contentType = event.inputContentType,
                         lastSeen = event.timestamp,
                         status = BallastInputState.Status.Error(
                             duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
@@ -241,7 +246,8 @@ public data class BallastViewModelState(
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
-                        toStringValue = event.inputToStringValue,
+                        serializedValue = event.serializedInput,
+                        contentType = event.inputContentType,
                         status = BallastInputState.Status.Dropped,
                         lastSeen = event.timestamp,
                     )
@@ -252,7 +258,8 @@ public data class BallastViewModelState(
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
-                        toStringValue = event.inputToStringValue,
+                        serializedValue = event.serializedInput,
+                        contentType = event.inputContentType,
                         status = BallastInputState.Status.Rejected,
                         lastSeen = event.timestamp,
                     )
@@ -263,7 +270,8 @@ public data class BallastViewModelState(
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
-                        toStringValue = event.eventToStringValue,
+                        serializedValue = event.serializedEvent,
+                        contentType = event.eventContentType,
                         status = BallastEventState.Status.Queued,
                         firstSeen = event.timestamp,
                     )
@@ -274,7 +282,8 @@ public data class BallastViewModelState(
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
-                        toStringValue = event.eventToStringValue,
+                        serializedValue = event.serializedEvent,
+                        contentType = event.eventContentType,
                         status = BallastEventState.Status.Running,
                         lastSeen = event.timestamp,
                     )
@@ -285,7 +294,8 @@ public data class BallastViewModelState(
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
-                        toStringValue = event.eventToStringValue,
+                        serializedValue = event.serializedEvent,
+                        contentType = event.eventContentType,
                         lastSeen = event.timestamp,
                         status = BallastEventState.Status.Completed(
                             duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
@@ -298,7 +308,8 @@ public data class BallastViewModelState(
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
-                        toStringValue = event.eventToStringValue,
+                        serializedValue = event.serializedEvent,
+                        contentType = event.eventContentType,
                         lastSeen = event.timestamp,
                         status = BallastEventState.Status.Error(
                             duration = (event.timestamp - this.firstSeen).removeFraction(DurationUnit.MICROSECONDS),
@@ -321,7 +332,8 @@ public data class BallastViewModelState(
                     copy(
                         emittedAt = event.timestamp,
                         type = event.stateType,
-                        toStringValue = event.stateToStringValue,
+                        serializedValue = event.serializedState,
+                        contentType = event.stateContentType,
                     )
                 }
             }
