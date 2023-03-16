@@ -5,7 +5,7 @@ import com.copperleaf.ballast.repository.cache.Cached
 import kotlinx.coroutines.flow.Flow
 
 #parse("File Header.java")
-interface ${featureName}Repository {
+public interface ${featureName}Repository {
 
     fun clearAllCaches()
     fun getDataList(refreshCache: Boolean = false): Flow<Cached<List<String>>>

@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 #parse("File Header.java")
-class ${featureName}RepositoryImpl(
+public class ${featureName}RepositoryImpl(
     eventBus: EventBus,
     configBuilder: BallastViewModelConfiguration.Builder,
 ) : AndroidBallastRepository<

@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.features.templates.BallastViewModel
 import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 
 /**
@@ -8,9 +9,14 @@ import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
  * will not update this object, the screen reading from these settings must be re-created to receive updates.
  */
 data class IntellijPluginSettingsDefaults(
+    // GeneralSettings
     override val ballastVersion: String = BALLAST_VERSION,
     override val darkTheme: Boolean = true,
+
+    // BallastDebuggerServerSettings
     override val debuggerServerPort: Int = 9684,
+
+    // DebuggerUiSettings
     override val lastRoute: DebuggerRoute = DebuggerRoute.Connection,
     override val lastViewModelName: String = "",
     override val autoselectDebuggerConnections: Boolean = true,
@@ -18,4 +24,9 @@ data class IntellijPluginSettingsDefaults(
     override val showCurrentRoute: Boolean = true,
     override val routerViewModelName: String = "Router",
     override val detailsPanePercentage: Float = 0.35f,
+
+    // TemplatesSettings
+    override val baseViewModelType: BallastViewModel.ViewModelTemplate = BallastViewModel.ViewModelTemplate.Basic,
+    override val allComponentsIncludesViewModel: Boolean = true,
+    override val allComponentsIncludesSavedStateAdapter: Boolean = false,
 ) : IntellijPluginSettings

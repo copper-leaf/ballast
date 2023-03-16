@@ -19,13 +19,14 @@ class BallastViewModel : BaseTemplateCreator<BallastViewModel.ViewModelTemplate>
 
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder
-            .setTitle("New Ballast UI Component")
-            .addTemplate("BasicViewModel", ViewModelTemplate.Basic)
-            .addTemplate("AndroidViewModel", ViewModelTemplate.Android)
-            .addTemplate("IosViewModel", ViewModelTemplate.Ios)
+            .setTitle("New Ballast UI ViewModel")
+            .addTemplate(ViewModelTemplate.Basic)
+            .addTemplate(ViewModelTemplate.Android)
+            .addTemplate(ViewModelTemplate.Ios)
+            .addTemplate(ViewModelTemplate.Typealias)
     }
 
-    override fun parseTemplateName(templateName: String): List<ViewModelTemplate> {
+    override fun parseTemplateName(project: Project, templateName: String): List<ViewModelTemplate> {
         return ViewModelTemplate
             .values()
             .firstOrNull { templateName == it.templateName }
@@ -36,10 +37,12 @@ class BallastViewModel : BaseTemplateCreator<BallastViewModel.ViewModelTemplate>
     enum class ViewModelTemplate(
         override val templateName: String,
         override val fileNameSuffix: String,
+        override val displayName: String,
         override val icon: Icon,
     ) : BaseTemplateCreator.TemplateKind {
-        Basic("BasicViewModel", "ViewModel", KotlinIcons.CLASS),
-        Android("AndroidViewModel", "ViewModel", KotlinIcons.CLASS),
-        Ios("IosViewModel", "ViewModel", KotlinIcons.CLASS),
+        Basic("BasicViewModel", "ViewModel", "BasicViewModel", KotlinIcons.CLASS),
+        Android("AndroidViewModel", "ViewModel", "AndroidViewModel", KotlinIcons.CLASS),
+        Ios("IosViewModel", "ViewModel", "IosViewModel", KotlinIcons.CLASS),
+        Typealias("TypealiasViewModel", "ViewModel", "Typealias", KotlinIcons.TYPE_ALIAS),
     }
 }

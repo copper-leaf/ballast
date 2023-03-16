@@ -86,6 +86,9 @@ that they have been tested and are known to work there, or have specific feature
 ```kotlin
 repositories {
     mavenCentral()
+  
+    // SNAPSHOT builds are available as well at the MavenCentral Snapshots repository
+    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots")
 }
 
 // for plain JVM or Android projects

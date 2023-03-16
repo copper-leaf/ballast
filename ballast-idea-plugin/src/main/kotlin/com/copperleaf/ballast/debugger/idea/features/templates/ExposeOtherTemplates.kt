@@ -22,9 +22,10 @@ class ExposeOtherTemplates : FileTemplateGroupDescriptorFactory {
 
     override fun getFileTemplatesDescriptor(): FileTemplateGroupDescriptor {
         return FileTemplateGroupDescriptor("Ballast", KotlinIcons.MPP).apply {
-            BallastUi.UiTemplate.values().forEach {
-                addTemplate(FileTemplateDescriptor(it.templateName, it.icon))
-            }
+            addTemplate(FileTemplateDescriptor(BallastUi.UiTemplate.Contract.templateName, BallastUi.UiTemplate.Contract.icon))
+            addTemplate(FileTemplateDescriptor(BallastUi.UiTemplate.InputHandler.templateName, BallastUi.UiTemplate.InputHandler.icon))
+            addTemplate(FileTemplateDescriptor(BallastUi.UiTemplate.EventHandler.templateName, BallastUi.UiTemplate.EventHandler.icon))
+            addTemplate(FileTemplateDescriptor(BallastUi.UiTemplate.SavedStateAdapter.templateName, BallastUi.UiTemplate.SavedStateAdapter.icon))
 
             BallastRepository.RepositoryTemplate.values().forEach {
                 addTemplate(FileTemplateDescriptor(it.templateName, it.icon))

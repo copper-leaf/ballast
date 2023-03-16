@@ -26,7 +26,6 @@ interface BallastIntellijPluginInjector {
         private val projectMap = mutableMapOf<Project, BallastIntellijPluginInjector>()
         fun getInstance(project: Project): BallastIntellijPluginInjector {
             return projectMap.computeIfAbsent(project) {
-                println("Creating injector for project: $project")
                 BallastIntellijPluginInjectorImpl(it)
             }
         }

@@ -7,4 +7,8 @@ import com.copperleaf.ballast.debugger.server.BallastDebuggerServerSettings
  *
  * See [IntellijPluginMutableSettings] for a mutable variant of settings.
  */
-interface IntellijPluginSettings : DebuggerUiSettings, BallastDebuggerServerSettings
+interface IntellijPluginSettings :
+    GeneralSettings,
+    BallastDebuggerServerSettings,
+    DebuggerUiSettings,
+    TemplatesSettings

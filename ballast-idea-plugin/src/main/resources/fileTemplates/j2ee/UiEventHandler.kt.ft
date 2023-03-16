@@ -5,7 +5,7 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
 
 #parse("File Header.java")
-class ${featureName}EventHandler : EventHandler<
+public class ${featureName}EventHandler : EventHandler<
     ${featureName}Contract.Inputs,
     ${featureName}Contract.Events,
     ${featureName}Contract.State> {

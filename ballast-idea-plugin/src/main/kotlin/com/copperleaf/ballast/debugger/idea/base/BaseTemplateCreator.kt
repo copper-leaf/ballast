@@ -14,7 +14,7 @@ import com.intellij.openapi.util.io.FileUtilRt
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiFile
 import com.intellij.psi.SmartPointerManager
-import java.util.Properties
+import java.util.*
 import javax.swing.Icon
 
 /**
@@ -39,6 +39,8 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
     interface TemplateKind {
         val templateName: String
         val fileNameSuffix: String
+
+        val displayName: String
         val icon: Icon
 
         fun getTemplate(project: Project): FileTemplate {
@@ -50,7 +52,7 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
         }
     }
 
-    abstract fun parseTemplateName(templateName: String): List<T>
+    abstract fun parseTemplateName(project: Project, templateName: String): List<T>
 
     final override fun createFileFromTemplate(name: String?, template: FileTemplate, dir: PsiDirectory): PsiFile? {
         val (actualName, actualDir) = if (name != null) {
@@ -62,7 +64,7 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
 
         val featureName = FileUtilRt.getNameWithoutExtension(actualName!!)
 
-        val templateKinds = parseTemplateName(template.name)
+        val templateKinds = parseTemplateName(dir.project, template.name)
 
         templateKinds.forEach { templateKind ->
             createFileFromTemplate(
@@ -104,9 +106,8 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
     }
 
     protected fun CreateFileFromTemplateDialog.Builder.addTemplate(
-        name: String,
         templateKind: T,
     ): CreateFileFromTemplateDialog.Builder {
-        return this.addKind(name, templateKind.icon, templateKind.templateName)
+        return this.addKind(templateKind.displayName, templateKind.icon, templateKind.templateName)
     }
 }

@@ -20,16 +20,16 @@ class BallastRepository : BaseTemplateCreator<BallastRepository.RepositoryTempla
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder
             .setTitle("New Ballast Repository")
-            .addTemplate("Contract", RepositoryTemplate.Contract)
-            .addTemplate("Repository", RepositoryTemplate.Repository)
-            .addTemplate("InputHandler", RepositoryTemplate.InputHandler)
-            .addTemplate("RepositoryImpl", RepositoryTemplate.StandardRepositoryImpl)
-            .addTemplate("AndroidRepositoryImpl", RepositoryTemplate.AndroidRepositoryImpl)
+            .addTemplate(RepositoryTemplate.Contract)
+            .addTemplate(RepositoryTemplate.Repository)
+            .addTemplate(RepositoryTemplate.InputHandler)
+            .addTemplate(RepositoryTemplate.StandardRepositoryImpl)
+            .addTemplate(RepositoryTemplate.AndroidRepositoryImpl)
             .addKind("Standard Repository (All components)", KotlinIcons.SCRIPT, "Internal_Repository_Standard")
             .addKind("Android Repository (All components)", KotlinIcons.SCRIPT, "Internal_Repository_Android")
     }
 
-    override fun parseTemplateName(templateName: String): List<RepositoryTemplate> {
+    override fun parseTemplateName(project: Project, templateName: String): List<RepositoryTemplate> {
         return RepositoryTemplate
             .values()
             .firstOrNull { templateName == it.templateName }
@@ -54,12 +54,13 @@ class BallastRepository : BaseTemplateCreator<BallastRepository.RepositoryTempla
     enum class RepositoryTemplate(
         override val templateName: String,
         override val fileNameSuffix: String,
+        override val displayName: String,
         override val icon: Icon,
     ) : BaseTemplateCreator.TemplateKind {
-        Contract("RepositoryContract", "RepositoryContract", KotlinIcons.OBJECT),
-        Repository("RepositoryInterface", "Repository", KotlinIcons.INTERFACE),
-        InputHandler("RepositoryInputHandler", "RepositoryInputHandler", KotlinIcons.CLASS),
-        StandardRepositoryImpl("RepositoryImpl", "RepositoryImpl", KotlinIcons.CLASS),
-        AndroidRepositoryImpl("AndroidRepositoryImpl", "RepositoryImpl", KotlinIcons.CLASS),
+        Contract("RepositoryContract", "RepositoryContract", "Contract", KotlinIcons.OBJECT),
+        Repository("RepositoryInterface", "Repository", "Repository", KotlinIcons.INTERFACE),
+        InputHandler("RepositoryInputHandler", "RepositoryInputHandler", "InputHandler", KotlinIcons.CLASS),
+        StandardRepositoryImpl("RepositoryImpl", "RepositoryImpl", "RepositoryImpl", KotlinIcons.CLASS),
+        AndroidRepositoryImpl("AndroidRepositoryImpl", "RepositoryImpl", "AndroidRepositoryImpl", KotlinIcons.CLASS),
     }
 }

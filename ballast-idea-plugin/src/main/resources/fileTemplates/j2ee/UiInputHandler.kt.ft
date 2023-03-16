@@ -6,7 +6,7 @@ import com.copperleaf.ballast.InputHandlerScope
 import kotlinx.coroutines.delay
 
 #parse("File Header.java")
-class ${featureName}InputHandler : InputHandler<
+public class ${featureName}InputHandler : InputHandler<
     ${featureName}Contract.Inputs,
     ${featureName}Contract.Events,
     ${featureName}Contract.State> {
