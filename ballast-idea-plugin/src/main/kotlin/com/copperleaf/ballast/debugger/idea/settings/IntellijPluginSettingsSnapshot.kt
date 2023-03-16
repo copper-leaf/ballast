@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
-import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 
 /**
  * A read-only snapshot of settings, as captured at a specific point in time. Changes to the underlying preferences

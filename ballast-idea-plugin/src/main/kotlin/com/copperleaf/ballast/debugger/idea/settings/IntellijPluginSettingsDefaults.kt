@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
-import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import io.github.copper_leaf.ballast_idea_plugin.BALLAST_VERSION
 
 /**
