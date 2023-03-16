@@ -11,7 +11,8 @@ public data class BallastInputState(
     public val actualInput: Any?,
 
     public val type: String = "",
-    public val toStringValue: String = "",
+    public val serializedValue: String = "",
+    public val contentType: String = "",
 
     public val status: Status = Status.Queued,
 

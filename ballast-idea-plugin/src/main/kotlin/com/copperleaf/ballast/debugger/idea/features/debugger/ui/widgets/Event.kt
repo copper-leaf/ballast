@@ -89,13 +89,13 @@ fun ColumnScope.EventDetails(
 
         if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(event.toStringValue)
+                IntellijEditor(event.serializedValue, event.contentType.asFileType())
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
-                topContent = { IntellijEditor(event.toStringValue, Modifier.fillMaxSize()) },
-                bottomContent = { IntellijEditor(errorStatus.stacktrace, Modifier.fillMaxSize()) },
+                topContent = { IntellijEditor(event.serializedValue, event.contentType.asFileType(), Modifier.fillMaxSize()) },
+                bottomContent = { IntellijEditor(errorStatus.stacktrace, "txt", Modifier.fillMaxSize()) },
             )
         }
     }

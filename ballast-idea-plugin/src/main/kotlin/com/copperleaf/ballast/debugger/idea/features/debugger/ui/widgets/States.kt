@@ -83,7 +83,7 @@ fun ColumnScope.StateDetails(
 ) {
     if(stateSnapshot != null) {
         Box(Modifier.fillMaxSize()) {
-            IntellijEditor(stateSnapshot.toStringValue)
+            IntellijEditor(stateSnapshot.serializedValue, stateSnapshot.contentType.asFileType())
         }
     }
 }

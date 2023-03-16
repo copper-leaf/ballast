@@ -91,13 +91,13 @@ fun ColumnScope.InputDetails(
         val errorStatus = input.status as? BallastInputState.Status.Error
         if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(input.toStringValue)
+                IntellijEditor(input.serializedValue, input.contentType.asFileType())
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
-                topContent = { IntellijEditor(input.toStringValue, Modifier.fillMaxSize()) },
-                bottomContent = { IntellijEditor(errorStatus.stacktrace, Modifier.fillMaxSize()) },
+                topContent = { IntellijEditor(input.serializedValue, input.contentType.asFileType(), Modifier.fillMaxSize()) },
+                bottomContent = { IntellijEditor(errorStatus.stacktrace, "txt", Modifier.fillMaxSize()) },
             )
         }
     }

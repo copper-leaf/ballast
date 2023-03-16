@@ -60,9 +60,11 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.http.ContentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
+import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -128,7 +130,7 @@ class ComposeDesktopInjectorImpl(
     ): CounterViewModel {
         return CounterViewModel(
             viewModelCoroutineScope = coroutineScope,
-            config = commonBuilder()
+            config = commonBuilder(debugger = false)
                 .apply {
                     if (syncClientType != null && syncAdapter != null) {
                         this += BallastSyncInterceptor(
@@ -140,6 +142,19 @@ class ComposeDesktopInjectorImpl(
                             ),
                         )
                     }
+
+                    this += BallastDebuggerInterceptor(
+                        debuggerConnection,
+                        serializeInput = {
+                            ContentType.Application.Json to Json.encodeToString(CounterContract.Inputs.serializer(), it as CounterContract.Inputs)
+                        },
+                        serializeEvent = {
+                            ContentType.Application.Json to Json.encodeToString(CounterContract.Events.serializer(), it as CounterContract.Events)
+                        },
+                        serializeState = {
+                            ContentType.Application.Json to Json.encodeToString(CounterContract.State.serializer(), it as CounterContract.State)
+                        },
+                    )
                 }
                 .withViewModel(
                     initialState = CounterContract.State(),
@@ -294,12 +309,14 @@ class ComposeDesktopInjectorImpl(
         }
     }
 
-    private fun commonBuilder(): BallastViewModelConfiguration.Builder {
+    private fun commonBuilder(debugger: Boolean = true): BallastViewModelConfiguration.Builder {
         return BallastViewModelConfiguration.Builder()
             .apply {
                 this += LoggingInterceptor()
-                this += BallastDebuggerInterceptor(debuggerConnection)
                 logger = ::PrintlnLogger
+                if (debugger) {
+                    this += BallastDebuggerInterceptor(debuggerConnection)
+                }
             }
     }
 }

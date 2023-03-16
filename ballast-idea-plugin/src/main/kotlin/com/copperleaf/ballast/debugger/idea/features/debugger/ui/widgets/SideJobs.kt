@@ -88,13 +88,13 @@ fun ColumnScope.SideJobDetails(
 
         if(errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(sideJob.key)
+                IntellijEditor(sideJob.key, "txt")
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
-                topContent = { IntellijEditor(sideJob.key, Modifier.fillMaxSize()) },
-                bottomContent = { IntellijEditor(errorStatus.stacktrace, Modifier.fillMaxSize()) },
+                topContent = { IntellijEditor(sideJob.key, "txt", Modifier.fillMaxSize()) },
+                bottomContent = { IntellijEditor(errorStatus.stacktrace, "txt", Modifier.fillMaxSize()) },
             )
         }
     }
