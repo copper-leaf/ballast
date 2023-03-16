@@ -22,13 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.copperleaf.ballast.debugger.idea.theme.IdeaPluginTheme
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.CheckboxArea
+import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.DropdownSelector
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.ProvideTime
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.Section
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.ToolBarActionIconButton
 import com.copperleaf.ballast.debugger.idea.features.settings.injector.SettingsPanelInjector
 import com.copperleaf.ballast.debugger.idea.features.settings.vm.SettingsUiContract
+import com.copperleaf.ballast.debugger.idea.features.templates.BallastViewModel
+import com.copperleaf.ballast.debugger.idea.theme.IdeaPluginTheme
 
 object SettingsUi {
 
@@ -59,7 +61,7 @@ object SettingsUi {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Section(
-                title = { Text("Appearance") }
+                title = { Text("General") }
             ) {
                 CheckboxArea(
                     checked = uiState.modifiedSettings.darkTheme,
@@ -113,7 +115,7 @@ object SettingsUi {
             }
 
             Section(
-                title = { Text("Debugger Features") }
+                title = { Text("Debugger UI") }
             ) {
                 CheckboxArea(
                     checked = uiState.modifiedSettings.alwaysShowCurrentState,
@@ -157,6 +159,44 @@ object SettingsUi {
                 )
             }
 
+            Section(
+                title = { Text("Templates") }
+            ) {
+                DropdownSelector(
+                    items = BallastViewModel.ViewModelTemplate.values().toList(),
+                    value = uiState.modifiedSettings.baseViewModelType,
+                    onValueChange = {
+                        postInput(
+                            SettingsUiContract.Inputs.UpdateSettings { copy(baseViewModelType = it) }
+                        )
+                    },
+                    valueRender = { it.displayName },
+                    label = { Text("Base ViewModel Type") }
+                )
+
+                CheckboxArea(
+                    checked = uiState.modifiedSettings.allComponentsIncludesViewModel,
+                    onCheckedChange = {
+                        postInput(
+                            SettingsUiContract.Inputs.UpdateSettings { copy(allComponentsIncludesViewModel = it) }
+                        )
+                    },
+                ) {
+                    Text("All Components - Include ViewModel")
+                }
+
+                CheckboxArea(
+                    checked = uiState.modifiedSettings.allComponentsIncludesSavedStateAdapter,
+                    onCheckedChange = {
+                        postInput(
+                            SettingsUiContract.Inputs.UpdateSettings { copy(allComponentsIncludesSavedStateAdapter = it) }
+                        )
+                    },
+                ) {
+                    Text("All Components - Include SavedStateAdapter")
+                }
+            }
+
             Divider()
 
             Row(
@@ -169,6 +209,7 @@ object SettingsUi {
                             SettingsUiContract.Inputs.DiscardChanges
                         )
                     },
+                    enabled = uiState.isModified,
                 ) { Text("Discard Changes") }
                 Button(
                     onClick = {
@@ -176,7 +217,16 @@ object SettingsUi {
                             SettingsUiContract.Inputs.RestoreDefaultSettings
                         )
                     },
+                    enabled = uiState.isModified,
                 ) { Text("Restore Defaults") }
+                Button(
+                    onClick = {
+                        postInput(
+                            SettingsUiContract.Inputs.ApplySettings
+                        )
+                    },
+                    enabled = uiState.isModified,
+                ) { Text("Save All") }
             }
         }
     }

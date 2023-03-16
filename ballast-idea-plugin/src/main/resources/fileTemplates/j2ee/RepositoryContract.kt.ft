@@ -4,20 +4,20 @@
 import com.copperleaf.ballast.repository.cache.Cached
 
 #parse("File Header.java")
-object ${featureName}RepositoryContract {
-    data class State(
-        val initialized: Boolean = false,
+public object ${featureName}RepositoryContract {
+    public data class State(
+        public val initialized: Boolean = false,
 
-        val dataListInitialized: Boolean = false,
-        val dataList: Cached<List<String>> = Cached.NotLoaded(),
+        public val dataListInitialized: Boolean = false,
+        public val dataList: Cached<List<String>> = Cached.NotLoaded(),
     )
 
-    sealed class Inputs {
-        object ClearCaches : Inputs()
-        object Initialize : Inputs()
-        object RefreshAllCaches : Inputs()
+    public sealed class Inputs {
+        public object ClearCaches : Inputs()
+        public object Initialize : Inputs()
+        public object RefreshAllCaches : Inputs()
 
-        data class RefreshDataList(val forceRefresh: Boolean) : Inputs()
-        data class DataListUpdated(val dataList: Cached<List<String>>) : Inputs()
+        public data class RefreshDataList(val forceRefresh: Boolean) : Inputs()
+        public data class DataListUpdated(val dataList: Cached<List<String>>) : Inputs()
     }
 }

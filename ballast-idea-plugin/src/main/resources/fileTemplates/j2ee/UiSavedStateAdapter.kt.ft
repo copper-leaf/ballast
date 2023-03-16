@@ -6,14 +6,14 @@ import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
 
 #parse("File Header.java")
-class ${featureName}SavedStateAdapter(
+public class ${featureName}SavedStateAdapter(
     private val prefs: ${featureName}SavedStateAdapter.Prefs
 ) : SavedStateAdapter<
     ${featureName}Contract.Inputs,
     ${featureName}Contract.Events,
     ${featureName}Contract.State> {
     
-    interface Prefs { 
+    public interface Prefs {
         var loading: Boolean
     }
 

@@ -1,6 +1,8 @@
 package com.copperleaf.ballast.debugger.idea.features.templates
 
+import com.copperleaf.ballast.debugger.idea.BallastIntellijPluginInjector
 import com.copperleaf.ballast.debugger.idea.base.BaseTemplateCreator
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
@@ -14,6 +16,7 @@ import javax.swing.Icon
  *   - InputHandler
  *   - EventHandler
  *   - SavedStateAdapter
+ *   - ViewModel
  *
  * See https://plugins.jetbrains.com/docs/intellij/templates.html
  *     https://plugins.jetbrains.com/docs/intellij/using-file-templates.html#custom-create-file-from-template-actions
@@ -23,6 +26,8 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
     "Creates new components for Ballast UIs",
     KotlinIcons.MPP,
 ), DumbAware {
+    private val defaultViewModelItem = UiTemplate.ViewModel("BasicViewModel")
+
     override fun getActionName(directory: PsiDirectory?, newName: String, templateName: String?): String {
         return "Create Ballast UI component: $newName"
     }
@@ -30,43 +35,59 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
     override fun buildDialog(project: Project, directory: PsiDirectory, builder: CreateFileFromTemplateDialog.Builder) {
         builder
             .setTitle("New Ballast UI Component")
-            .addTemplate("Contract", UiTemplate.Contract)
-            .addTemplate("InputHandler", UiTemplate.InputHandler)
-            .addTemplate("EventHandler", UiTemplate.EventHandler)
-            .addTemplate("SavedStateAdapter", UiTemplate.SavedStateAdapter)
-            .addKind("Contract, InputHandler, EventHandler", KotlinIcons.SCRIPT, "Internal_Ui_CIE")
-            .addKind("All Components", KotlinIcons.SCRIPT, "Internal_Ui_All")
+            .addTemplate(UiTemplate.Contract)
+            .addTemplate(UiTemplate.InputHandler)
+            .addTemplate(UiTemplate.EventHandler)
+            .addTemplate(UiTemplate.SavedStateAdapter)
+            .addTemplate(defaultViewModelItem)
+            .addKind("All components", KotlinIcons.SCRIPT, "Internal_Ui_All")
     }
 
-    override fun parseTemplateName(templateName: String): List<UiTemplate> {
-        return UiTemplate
-            .values()
-            .firstOrNull { templateName == it.templateName }
-            ?.let { listOf(it) }
-            ?: when (templateName) {
-                "Internal_Ui_CIE" -> listOf(
-                    UiTemplate.Contract,
-                    UiTemplate.InputHandler,
-                    UiTemplate.EventHandler,
-                )
-                "Internal_Ui_All" -> listOf(
-                    UiTemplate.Contract,
-                    UiTemplate.InputHandler,
-                    UiTemplate.EventHandler,
-                    UiTemplate.SavedStateAdapter,
-                )
-                else -> error("Unknown template type")
+    override fun parseTemplateName(project: Project, templateName: String): List<UiTemplate> {
+        val injector = BallastIntellijPluginInjector.getInstance(project)
+        val persistentSettings = injector.repository.observeStates().value.persistentSettings
+        val settingsSnapshot = IntellijPluginSettingsSnapshot.fromSettings(persistentSettings)
+
+        return getTemplatesFromName(settingsSnapshot, templateName)
+            ?: error("Unknown template type: $templateName")
+    }
+
+    private fun getTemplatesFromName(settings: IntellijPluginSettingsSnapshot, templateName: String): List<UiTemplate>? {
+        println("templateName: $templateName (${defaultViewModelItem.templateName})")
+        return when(templateName) {
+            UiTemplate.Contract.templateName -> listOf(UiTemplate.Contract)
+            UiTemplate.InputHandler.templateName -> listOf(UiTemplate.InputHandler)
+            UiTemplate.EventHandler.templateName -> listOf(UiTemplate.EventHandler)
+            UiTemplate.SavedStateAdapter.templateName -> listOf(UiTemplate.SavedStateAdapter)
+            defaultViewModelItem.templateName -> listOf(UiTemplate.ViewModel(settings.baseViewModelType.templateName))
+            "Internal_Ui_All" -> {
+                buildList {
+                    this += UiTemplate.Contract
+                    this += UiTemplate.InputHandler
+                    this += UiTemplate.EventHandler
+                    if(settings.allComponentsIncludesViewModel) {
+                        this += UiTemplate.ViewModel(settings.baseViewModelType.templateName)
+                    }
+                    if (settings.allComponentsIncludesSavedStateAdapter) {
+                        this += UiTemplate.SavedStateAdapter
+                    }
+                }
             }
+            else -> null
+        }
     }
 
-    enum class UiTemplate(
+    sealed class UiTemplate(
         override val templateName: String,
         override val fileNameSuffix: String,
+
+        override val displayName: String,
         override val icon: Icon,
     ) : BaseTemplateCreator.TemplateKind {
-        Contract("UiContract", "Contract", KotlinIcons.OBJECT),
-        InputHandler("UiInputHandler", "InputHandler", KotlinIcons.CLASS),
-        EventHandler("UiEventHandler", "EventHandler", KotlinIcons.CLASS),
-        SavedStateAdapter("UiSavedStateAdapter", "SavedStateAdapter", KotlinIcons.CLASS),
+        object Contract : UiTemplate("UiContract", "Contract", "Contract", KotlinIcons.OBJECT)
+        object InputHandler : UiTemplate("UiInputHandler", "InputHandler", "InputHandler", KotlinIcons.CLASS)
+        object EventHandler : UiTemplate("UiEventHandler", "EventHandler", "EventHandler", KotlinIcons.CLASS)
+        object SavedStateAdapter : UiTemplate("UiSavedStateAdapter", "SavedStateAdapter", "SavedStateAdapter", KotlinIcons.CLASS)
+        class ViewModel(templateName: String) : UiTemplate(templateName, "ViewModel", "ViewModel", KotlinIcons.CLASS)
     }
 }

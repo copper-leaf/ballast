@@ -1,0 +1,10 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
+#end
+
+import com.copperleaf.ballast.BallastViewModel
+
+#parse("File Header.java")
+public typealias ${featureName}ViewModel = BallastViewModel<
+    ${featureName}Contract.Inputs,
+    ${featureName}Contract.Events,
+    ${featureName}Contract.State>

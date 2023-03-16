@@ -10,7 +10,7 @@ import com.copperleaf.ballast.repository.bus.observeInputsFromBus
 import com.copperleaf.ballast.repository.cache.fetchWithCache
 
 #parse("File Header.java")
-class ${featureName}RepositoryInputHandler(
+public class ${featureName}RepositoryInputHandler(
     private val eventBus: EventBus,
 ) : InputHandler<
     ${featureName}RepositoryContract.Inputs,
