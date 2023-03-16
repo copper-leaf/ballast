@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.debugger.idea.settings
 
 import com.copperleaf.ballast.debugger.idea.repository.RepositoryViewModel
-import com.copperleaf.ballast.debugger.idea.ui.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.utils.PropertiesComponentSettings
 import com.copperleaf.ballast.debugger.idea.utils.enum
 import com.intellij.ide.util.PropertiesComponent

@@ -48,17 +48,17 @@ This IDEA plugin is built upon the best features of Kotlin:
             secondary="true"
             icon="AllIcons.Toolwindows.Documentation"
             anchor="bottom"
-            factoryClass="com.copperleaf.ballast.debugger.idea.ui.debugger.ui.DebuggerToolWindow$Factory"/>
+            factoryClass="com.copperleaf.ballast.debugger.idea.features.debugger.ui.DebuggerToolWindow$Factory"/>
 
         <!-- File Templates -->
         <fileTemplateGroup
-            implementation="com.copperleaf.ballast.debugger.idea.templates.ExposeOtherTemplates"/>
+            implementation="com.copperleaf.ballast.debugger.idea.features.templates.ExposeOtherTemplates"/>
 
         <!-- Settings UI -->
         <projectConfigurable
             parentId="tools"
-            id="com.copperleaf.ballast.debugger.idea.ui.settings.ui.BallastPluginSettingsPanel"
-            instance="com.copperleaf.ballast.debugger.idea.ui.settings.ui.BallastPluginSettingsPanel"
+            id="com.copperleaf.ballast.debugger.idea.features.settings.ui.BallastPluginSettingsPanel"
+            instance="com.copperleaf.ballast.debugger.idea.features.settings.ui.BallastPluginSettingsPanel"
             displayName="Ballast"
             nonDefaultProject="true"/>
     </extensions>
@@ -66,18 +66,18 @@ This IDEA plugin is built upon the best features of Kotlin:
     <actions>
         <!-- New File Actions -->
         <action
-            id="com.copperleaf.ballast.debugger.idea.templates.BallastUi"
-            class="com.copperleaf.ballast.debugger.idea.templates.BallastUi">
+            id="com.copperleaf.ballast.debugger.idea.features.templates.BallastUi"
+            class="com.copperleaf.ballast.debugger.idea.features.templates.BallastUi">
             <add-to-group group-id="NewGroup"/>
         </action>
         <action
-            id="com.copperleaf.ballast.debugger.idea.templates.BallastRepository"
-            class="com.copperleaf.ballast.debugger.idea.templates.BallastRepository">
+            id="com.copperleaf.ballast.debugger.idea.features.templates.BallastRepository"
+            class="com.copperleaf.ballast.debugger.idea.features.templates.BallastRepository">
             <add-to-group group-id="NewGroup"/>
         </action>
         <action
-            id="com.copperleaf.ballast.debugger.idea.templates.BallastViewModel"
-            class="com.copperleaf.ballast.debugger.idea.templates.BallastViewModel">
+            id="com.copperleaf.ballast.debugger.idea.features.templates.BallastViewModel"
+            class="com.copperleaf.ballast.debugger.idea.features.templates.BallastViewModel">
             <add-to-group group-id="NewGroup"/>
         </action>
     </actions>
