@@ -9,8 +9,8 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.versions.ClientVersion
@@ -40,7 +40,7 @@ enum class ViewModelContentTab(
             Events -> true
             SideJobs -> true
             Interceptors -> version >= ClientVersion(3, null, null)
-            Logs -> version >= ClientVersion(3, null, null)
+            Logs -> true
             Timeline -> version >= ClientVersion(3, null, null)
         }
     }

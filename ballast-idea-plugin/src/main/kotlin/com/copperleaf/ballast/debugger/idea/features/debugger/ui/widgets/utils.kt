@@ -73,27 +73,17 @@ import androidx.compose.ui.unit.dp
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.idea.utils.datatypes.DataType
-import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
-import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
-import com.copperleaf.ballast.debugger.models.BallastEventState
-import com.copperleaf.ballast.debugger.models.BallastInputState
-import com.copperleaf.ballast.debugger.models.BallastInterceptorState
-import com.copperleaf.ballast.debugger.models.BallastSideJobState
-import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
-import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.now
-import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
-import com.copperleaf.ballast.navigation.routing.optionalStringPath
 import com.copperleaf.ballast.navigation.routing.pathParameter
-import com.copperleaf.ballast.navigation.routing.stringPath
 import com.copperleaf.ballast.repository.cache.Cached
 import com.copperleaf.ballast.repository.cache.getCachedOrNull
 import com.intellij.lang.Language
 import com.intellij.openapi.editor.EditorFactory
+import com.intellij.openapi.fileTypes.FileTypes
 import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
@@ -111,7 +101,7 @@ import kotlin.time.Duration
 
 val minSplitPaneSize = 48.dp
 
-fun LocalDateTime.format(pattern: String): String {
+fun LocalDateTime.format(pattern: String = "hh:mm:ss a"): String {
     return this.toJavaLocalDateTime().format(
         DateTimeFormatter.ofPattern(pattern)
     )
@@ -312,194 +302,44 @@ fun Modifier.highlight(enabled: Boolean = true): Modifier {
 @Composable
 fun IntellijEditor(
     text: String,
-    mimeType: String,
+    contentType: ContentType,
     modifier: Modifier = Modifier,
 ) {
     val project = LocalProject.current
+    val editor = remember(text, contentType) {
+        val language: Language = Language
+            .findInstancesByMimeType(contentType.asContentTypeString())
+            .toList()
+            .firstOrNull()
+            ?: PlainTextLanguage.INSTANCE
+
+        val dataTypeConverter = DataType.getForMimeType(contentType)
+        val reformattedText = dataTypeConverter.reformat(text)
+
+        val editor = EditorFactory.getInstance().createEditor(
+            PsiFileFactory.getInstance(project).createFileFromText(language, reformattedText).viewProvider.document,
+            project,
+            language.associatedFileType ?: FileTypes.PLAIN_TEXT,
+            true,
+        )
+        println("Creating IntellijEditor($text, ${contentType.asContentTypeString()})")
+        println("  --> ($reformattedText, $contentType)")
+
+        editor.settings.apply {
+            isLineNumbersShown = true
+            isAutoCodeFoldingEnabled = true
+            isFoldingOutlineShown = true
+        }
+
+        editor
+    }
 
     SwingPanel(
         modifier = modifier,
         background = MaterialTheme.colors.surface,
-        factory = {
-            val language: Language = Language
-                .findInstancesByMimeType(mimeType)
-                .toList()
-                .firstOrNull()
-                ?: PlainTextLanguage.INSTANCE
-
-            val contentType = ContentType.parse(mimeType)
-            val dataTypeConverter = DataType.getForMimeType(contentType)
-            val reformattedText = dataTypeConverter.reformat(text)
-
-            val editor = EditorFactory.getInstance().createEditor(
-                PsiFileFactory.getInstance(project).createFileFromText(language, reformattedText).viewProvider.document,
-                project,
-                language.associatedFileType!!,
-                false,
-            )
-
-            editor.settings.apply {
-                isLineNumbersShown = true
-                isAutoCodeFoldingEnabled = true
-                isFoldingOutlineShown = true
-            }
-
-            editor.component
-        },
+        factory = { editor.component },
         update = { },
     )
-}
-
-@Composable
-fun rememberConnectionsList(
-    serverState: BallastApplicationState,
-): State<List<BallastConnectionState>> {
-    return viewModelValue {
-        serverState.connections
-    }
-}
-
-@Composable
-fun Destination.ParametersProvider.rememberSelectedConnection(
-    connectionsList: List<BallastConnectionState>,
-): State<BallastConnectionState?> {
-    return viewModelValue {
-        val connectionId: String? by optionalStringPath()
-        connectionsList.find { connection -> connection.connectionId == connectionId }
-    }
-}
-
-@Composable
-fun rememberViewModelList(
-    connection: BallastConnectionState?,
-): State<List<BallastViewModelState?>> {
-    return viewModelValue {
-        if (connection == null) {
-            emptyList()
-        } else {
-            listOf(null) + connection.viewModels
-        }
-    }
-}
-
-@Composable
-fun Destination.ParametersProvider.rememberSelectedViewModel(
-    connection: BallastConnectionState?,
-): State<BallastViewModelState?> {
-    return viewModelValue {
-        val viewModelName: String by stringPath()
-        connection?.viewModels?.find { vm -> vm.viewModelName == viewModelName }
-    }
-}
-
-@Composable
-fun rememberViewModelStatesList(
-    viewModel: BallastViewModelState?,
-    searchText: String,
-): State<List<BallastStateSnapshot>> {
-    return viewModelValue {
-        viewModel?.states?.maybeFilter(searchText) {
-            listOf(it.serializedValue)
-        } ?: emptyList()
-    }
-}
-
-@Composable
-fun Destination.ParametersProvider.rememberSelectedViewModelStateSnapshot(
-    viewModel: BallastViewModelState?,
-): State<BallastStateSnapshot?> {
-    return viewModelValue {
-        val stateUuid: String by stringPath()
-        viewModel?.states?.find { state -> state.uuid == stateUuid }
-    }
-}
-
-@Composable
-fun rememberViewModelInputsList(
-    viewModel: BallastViewModelState?,
-    searchText: String,
-): State<List<BallastInputState>> {
-    return viewModelValue {
-        viewModel?.inputs?.maybeFilter(searchText) {
-            listOf(it.type, it.serializedValue)
-        } ?: emptyList()
-    }
-}
-
-@Composable
-fun Destination.ParametersProvider.rememberSelectedViewModelInput(
-    viewModel: BallastViewModelState?,
-): State<BallastInputState?> {
-    return viewModelValue {
-        val inputUuid: String by stringPath()
-        viewModel?.inputs?.find { it.uuid == inputUuid }
-    }
-}
-
-@Composable
-fun rememberViewModelEventsList(
-    viewModel: BallastViewModelState?,
-    searchText: String,
-): State<List<BallastEventState>> {
-    return viewModelValue {
-        viewModel?.events?.maybeFilter(searchText) {
-            listOf(it.type, it.serializedValue)
-        } ?: emptyList()
-    }
-}
-
-@Composable
-fun Destination.ParametersProvider.rememberSelectedViewModelEvent(
-    viewModel: BallastViewModelState?,
-): State<BallastEventState?> {
-    return viewModelValue {
-        val eventUuid: String by stringPath()
-        viewModel?.events?.find { it.uuid == eventUuid }
-    }
-}
-
-@Composable
-fun rememberViewModelSideJobsList(
-    viewModel: BallastViewModelState?,
-    searchText: String,
-): State<List<BallastSideJobState>> {
-    return viewModelValue {
-        viewModel?.sideJobs?.maybeFilter(searchText) {
-            listOf(it.key)
-        } ?: emptyList()
-    }
-}
-
-@Composable
-fun Destination.ParametersProvider.rememberSelectedViewModelSideJob(
-    viewModel: BallastViewModelState?,
-): State<BallastSideJobState?> {
-    return viewModelValue {
-        val sideJobUuid: String by stringPath()
-        viewModel?.sideJobs?.find { it.uuid == sideJobUuid }
-    }
-}
-
-@Composable
-fun rememberViewModelInterceptorList(
-    viewModel: BallastViewModelState?,
-    searchText: String,
-): State<List<BallastInterceptorState>> {
-    return viewModelValue {
-        viewModel?.interceptors?.maybeFilter(searchText) {
-            listOf(it.type, it.toStringValue)
-        } ?: emptyList()
-    }
-}
-
-@Composable
-fun Destination.ParametersProvider.rememberSelectedViewModelInterceptor(
-    viewModel: BallastViewModelState?,
-): State<BallastInterceptorState?> {
-    return viewModelValue {
-        val interceptorUuid: String by stringPath()
-        viewModel?.interceptors?.find { it.uuid == interceptorUuid }
-    }
 }
 
 @Composable
@@ -691,11 +531,15 @@ fun <T> DropdownSelector(
 }
 
 @Composable
-private fun <T> viewModelValue(calculation: () -> T): State<T> {
+internal fun <T> viewModelValue(calculation: () -> T): State<T> {
     return derivedStateOf { calculation() }
 //    return remember { derivedStateOf { calculation() } }
 }
 
-internal fun String.asFileType(): String {
-    return this
+internal fun String.asContentType(): ContentType {
+    return ContentType.parse(this)
+}
+
+internal fun ContentType.asContentTypeString(): String {
+    return "$contentType/$contentSubtype"
 }

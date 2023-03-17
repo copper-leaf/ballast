@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import com.copperleaf.ballast.debugger.idea.theme.IdeaPluginTheme
 import com.copperleaf.ballast.debugger.idea.features.debugger.injector.DebuggerToolWindowInjector
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.DebuggerPrimaryToolbar
@@ -21,6 +20,7 @@ import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.Interce
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.InterceptorDetailsToolbar
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.InterceptorsList
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.InterceptorsListToolbar
+import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.LogsList
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.ProvideTime
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.SideJobDetails
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.SideJobDetailsToolbar
@@ -45,9 +45,11 @@ import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.remembe
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.rememberViewModelInputsList
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.rememberViewModelInterceptorList
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.rememberViewModelList
+import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.rememberViewModelLogsList
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.rememberViewModelSideJobsList
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.rememberViewModelStatesList
 import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.theme.IdeaPluginTheme
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.renderCurrentDestination
 
@@ -408,6 +410,7 @@ object DebuggerUi {
                 val viewModelList by rememberViewModelList(connection)
                 val viewModel by rememberSelectedViewModel(connection)
                 val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.cachedSettings)
+                val fullHistory by rememberViewModelLogsList(viewModel, uiState.searchText)
 
                 DebuggerScaffold(
                     primaryToolbar = {
@@ -422,6 +425,7 @@ object DebuggerUi {
                         )
                     },
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
+                    mainContentLeft = { LogsList(connection, viewModel, fullHistory, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, postInput) },
                 )
             }

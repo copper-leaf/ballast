@@ -1,34 +1,44 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastSideJobState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
+import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.pathParameter
+import com.copperleaf.ballast.navigation.routing.stringPath
+import io.ktor.http.ContentType
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -83,18 +93,28 @@ fun ColumnScope.SideJobDetails(
     sideJob: BallastSideJobState?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
-    if(sideJob != null) {
+    if (sideJob != null) {
         val errorStatus = sideJob.status as? BallastSideJobState.Status.Error
 
-        if(errorStatus == null) {
+        if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(sideJob.key, "txt")
+                IntellijEditor(sideJob.key, ContentType.Text.Any)
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
-                topContent = { IntellijEditor(sideJob.key, "txt", Modifier.fillMaxSize()) },
-                bottomContent = { IntellijEditor(errorStatus.stacktrace, "txt", Modifier.fillMaxSize()) },
+                topContent = {
+                    IntellijEditor(sideJob.key, ContentType.Text.Any, Modifier.fillMaxSize())
+                },
+                bottomContent = {
+                    Column(Modifier.verticalScroll(rememberScrollState())) {
+                        Text(
+                            text = errorStatus.stacktrace,
+                            color = MaterialTheme.colors.error,
+                            fontFamily = FontFamily.Monospace,
+                        )
+                    }
+                },
             )
         }
     }
@@ -143,4 +163,29 @@ fun SideJobSummary(
             }
         },
     )
+}
+
+// Data for SideJobs
+// ---------------------------------------------------------------------------------------------------------------------
+
+@Composable
+fun rememberViewModelSideJobsList(
+    viewModel: BallastViewModelState?,
+    searchText: String,
+): State<List<BallastSideJobState>> {
+    return viewModelValue {
+        viewModel?.sideJobs?.maybeFilter(searchText) {
+            listOf(it.key)
+        } ?: emptyList()
+    }
+}
+
+@Composable
+fun Destination.ParametersProvider.rememberSelectedViewModelSideJob(
+    viewModel: BallastViewModelState?,
+): State<BallastSideJobState?> {
+    return viewModelValue {
+        val sideJobUuid: String by stringPath()
+        viewModel?.sideJobs?.find { it.uuid == sideJobUuid }
+    }
 }

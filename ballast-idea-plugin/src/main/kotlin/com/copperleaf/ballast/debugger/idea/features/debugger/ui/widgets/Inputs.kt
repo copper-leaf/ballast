@@ -8,31 +8,39 @@ import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastInputState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.pathParameter
+import com.copperleaf.ballast.navigation.routing.stringPath
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
 import kotlin.time.Duration
 import kotlin.time.DurationUnit
@@ -91,13 +99,23 @@ fun ColumnScope.InputDetails(
         val errorStatus = input.status as? BallastInputState.Status.Error
         if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(input.serializedValue, input.contentType.asFileType())
+                IntellijEditor(input.serializedValue, input.contentType.asContentType())
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
-                topContent = { IntellijEditor(input.serializedValue, input.contentType.asFileType(), Modifier.fillMaxSize()) },
-                bottomContent = { IntellijEditor(errorStatus.stacktrace, "txt", Modifier.fillMaxSize()) },
+                topContent = {
+                    IntellijEditor(input.serializedValue, input.contentType.asContentType(), Modifier.fillMaxSize())
+                },
+                bottomContent = {
+                    Column(Modifier.verticalScroll(rememberScrollState())) {
+                        Text(
+                            text = errorStatus.stacktrace,
+                            color = MaterialTheme.colors.error,
+                            fontFamily = FontFamily.Monospace,
+                        )
+                    }
+                },
             )
         }
     }
@@ -161,5 +179,30 @@ fun InputSummary(
                 }
             }
         )
+    }
+}
+
+// Data for Inputs
+// ---------------------------------------------------------------------------------------------------------------------
+
+@Composable
+fun rememberViewModelInputsList(
+    viewModel: BallastViewModelState?,
+    searchText: String,
+): State<List<BallastInputState>> {
+    return viewModelValue {
+        viewModel?.inputs?.maybeFilter(searchText) {
+            listOf(it.type, it.serializedValue)
+        } ?: emptyList()
+    }
+}
+
+@Composable
+fun Destination.ParametersProvider.rememberSelectedViewModelInput(
+    viewModel: BallastViewModelState?,
+): State<BallastInputState?> {
+    return viewModelValue {
+        val inputUuid: String by stringPath()
+        viewModel?.inputs?.find { it.uuid == inputUuid }
     }
 }
