@@ -71,7 +71,11 @@ public sealed class BallastDebuggerEventV3 {
         override val uuid: String,
         override val timestamp: LocalDateTime,
         public val status: StatusV3,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "ViewModel status moved to: $status"
+        }
+    }
 
 
 // Inputs
@@ -88,7 +92,11 @@ public sealed class BallastDebuggerEventV3 {
         public val inputType: String,
         public val serializedInput: String,
         public val inputContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Input Queued: $serializedInput"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.InputAccepted")
@@ -101,7 +109,11 @@ public sealed class BallastDebuggerEventV3 {
         public val inputType: String,
         public val serializedInput: String,
         public val inputContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Accepting input: $serializedInput"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.InputRejected")
@@ -114,7 +126,11 @@ public sealed class BallastDebuggerEventV3 {
         public val inputType: String,
         public val serializedInput: String,
         public val inputContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Rejecting input: $serializedInput"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.InputDropped")
@@ -127,7 +143,11 @@ public sealed class BallastDebuggerEventV3 {
         public val inputType: String,
         public val serializedInput: String,
         public val inputContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Dropping input: $serializedInput"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.InputHandledSuccessfully")
@@ -140,7 +160,11 @@ public sealed class BallastDebuggerEventV3 {
         public val inputType: String,
         public val serializedInput: String,
         public val inputContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Input handled successfully: $serializedInput"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.InputCancelled")
@@ -153,7 +177,11 @@ public sealed class BallastDebuggerEventV3 {
         public val inputType: String,
         public val serializedInput: String,
         public val inputContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Input cancelled: $serializedInput"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.InputHandlerError")
@@ -167,7 +195,11 @@ public sealed class BallastDebuggerEventV3 {
         public val serializedInput: String,
         public val inputContentType: String,
         public val stacktrace: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Error handling input: $serializedInput\n$stacktrace"
+        }
+    }
 
 // Events
 // ---------------------------------------------------------------------------------------------------------------------
@@ -183,7 +215,11 @@ public sealed class BallastDebuggerEventV3 {
         public val eventType: String,
         public val serializedEvent: String,
         public val eventContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Event Queued: $serializedEvent"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.EventEmitted")
@@ -196,7 +232,11 @@ public sealed class BallastDebuggerEventV3 {
         public val eventType: String,
         public val serializedEvent: String,
         public val eventContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Emitting event: $serializedEvent"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.EventHandledSuccessfully")
@@ -209,7 +249,11 @@ public sealed class BallastDebuggerEventV3 {
         public val eventType: String,
         public val serializedEvent: String,
         public val eventContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Event handled successfully: $serializedEvent"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.EventHandlerError")
@@ -223,7 +267,11 @@ public sealed class BallastDebuggerEventV3 {
         public val serializedEvent: String,
         public val eventContentType: String,
         public val stacktrace: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Error handling event: $serializedEvent\n$stacktrace)"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.EventProcessingStarted")
@@ -232,7 +280,11 @@ public sealed class BallastDebuggerEventV3 {
         override val viewModelName: String,
         override val uuid: String,
         override val timestamp: LocalDateTime,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Event processing started"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.EventProcessingStopped")
@@ -241,7 +293,11 @@ public sealed class BallastDebuggerEventV3 {
         override val viewModelName: String,
         override val uuid: String,
         override val timestamp: LocalDateTime,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Event processing stopped"
+        }
+    }
 
 // States
 // ---------------------------------------------------------------------------------------------------------------------
@@ -257,7 +313,11 @@ public sealed class BallastDebuggerEventV3 {
         public val stateType: String,
         public val serializedState: String,
         public val stateContentType: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "State changed: $serializedState"
+        }
+    }
 
 // Side-jobs
 // ---------------------------------------------------------------------------------------------------------------------
@@ -271,7 +331,11 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val key: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "sideJob queued: $key"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.SideJobStarted")
@@ -283,7 +347,14 @@ public sealed class BallastDebuggerEventV3 {
 
         public val key: String,
         public val restartState: SideJobScope.RestartState,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return when (restartState) {
+                SideJobScope.RestartState.Initial -> "sideJob started: $key"
+                SideJobScope.RestartState.Restarted -> "sideJob restarted: $key"
+            }
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.SideJobCompleted")
@@ -295,7 +366,11 @@ public sealed class BallastDebuggerEventV3 {
 
         public val key: String,
         public val restartState: SideJobScope.RestartState,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "sideJob finished: $key"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.SideJobCancelled")
@@ -307,7 +382,11 @@ public sealed class BallastDebuggerEventV3 {
 
         public val key: String,
         public val restartState: SideJobScope.RestartState,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "sideJob cancelled: $key"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.SideJobError")
@@ -320,7 +399,11 @@ public sealed class BallastDebuggerEventV3 {
         public val key: String,
         public val restartState: SideJobScope.RestartState,
         public val stacktrace: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Error in sideJob: $key\n$stacktrace"
+        }
+    }
 
 // Interceptors
 // ---------------------------------------------------------------------------------------------------------------------
@@ -335,7 +418,11 @@ public sealed class BallastDebuggerEventV3 {
 
         public val interceptorType: String,
         public val interceptorToStringValue: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Interceptor attached: $interceptorType"
+        }
+    }
 
     @Serializable
     @SerialName("$EVENT_MODEL_BASE_CLASS_NAME.InterceptorFailed")
@@ -348,7 +435,11 @@ public sealed class BallastDebuggerEventV3 {
         public val interceptorType: String,
         public val interceptorToStringValue: String,
         public val stacktrace: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Interceptor failed: $interceptorType\n$stacktrace"
+        }
+    }
 
 // Other
 // ---------------------------------------------------------------------------------------------------------------------
@@ -362,7 +453,11 @@ public sealed class BallastDebuggerEventV3 {
         override val timestamp: LocalDateTime,
 
         public val stacktrace: String,
-    ) : BallastDebuggerEventV3()
+    ) : BallastDebuggerEventV3() {
+        override fun toString(): String {
+            return "Uncaught error\n$stacktrace"
+        }
+    }
 
     @Serializable
     public enum class StatusV3 {

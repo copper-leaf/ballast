@@ -45,7 +45,7 @@ fun DebuggerScaffold(
                 Box(
                     modifier = Modifier.fillMaxWidth().weight(1f),
                 ) {
-                    if (mainContentLeft != null || mainContentRight != null) {
+                    if (mainContentLeft != null && mainContentRight != null) {
                         HorizontalSplitPane(
                             splitPaneState = rememberSplitPaneState(0.35f),
                         ) {
@@ -57,14 +57,14 @@ fun DebuggerScaffold(
                                         }
                                     }
                                     Column(Modifier.fillMaxHeight().weight(1f)) {
-                                        mainContentLeft?.invoke(this)
+                                        mainContentLeft()
                                     }
                                 }
                             }
                             second() {
                                 Row(Modifier.fillMaxSize()) {
                                     Column(Modifier.fillMaxHeight().weight(1f)) {
-                                        mainContentRight?.invoke(this)
+                                        mainContentRight()
                                     }
                                     if (contentRightToolbar != null) {
                                         Column {
@@ -74,6 +74,20 @@ fun DebuggerScaffold(
                                 }
                             }
                         }
+                    }
+                    else if(mainContentLeft != null) {
+                        Row(Modifier.fillMaxSize()) {
+                            if (contentLeftToolbar != null) {
+                                Column {
+                                    contentLeftToolbar()
+                                }
+                            }
+                            Column(Modifier.fillMaxHeight().weight(1f)) {
+                                mainContentLeft.invoke(this)
+                            }
+                        }
+                    } else if(mainContentRight != null) {
+                        error("use mainContentLeft for a single-panel view instead")
                     }
                 }
                 if (secondaryContent != null) {

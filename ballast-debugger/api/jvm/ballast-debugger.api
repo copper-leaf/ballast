@@ -536,6 +536,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -566,6 +567,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -597,6 +599,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -624,6 +627,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -651,6 +655,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -681,6 +686,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -739,6 +745,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -769,6 +776,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -799,6 +807,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -829,6 +838,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -860,6 +870,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -890,6 +901,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -920,6 +932,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -949,6 +962,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -979,6 +993,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1062,6 +1077,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1091,6 +1107,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1121,6 +1138,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1149,6 +1167,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1178,6 +1197,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1208,6 +1228,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1262,6 +1283,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
@@ -1291,6 +1313,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public final fun getViewModelType ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
 	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 

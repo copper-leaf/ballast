@@ -16,16 +16,20 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastInterceptorState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
+import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.pathParameter
+import com.copperleaf.ballast.navigation.routing.stringPath
 
 @Composable
 fun ColumnScope.InterceptorsListToolbar(
@@ -111,4 +115,29 @@ fun InterceptorSummary(
         text = { Text(interceptorState.type) },
         overlineText = { Text(interceptorState.status.toString()) },
     )
+}
+
+// Data for Interceptors
+// ---------------------------------------------------------------------------------------------------------------------
+
+@Composable
+fun rememberViewModelInterceptorList(
+    viewModel: BallastViewModelState?,
+    searchText: String,
+): State<List<BallastInterceptorState>> {
+    return viewModelValue {
+        viewModel?.interceptors?.maybeFilter(searchText) {
+            listOf(it.type, it.toStringValue)
+        } ?: emptyList()
+    }
+}
+
+@Composable
+fun Destination.ParametersProvider.rememberSelectedViewModelInterceptor(
+    viewModel: BallastViewModelState?,
+): State<BallastInterceptorState?> {
+    return viewModelValue {
+        val interceptorUuid: String by stringPath()
+        viewModel?.interceptors?.find { it.uuid == interceptorUuid }
+    }
 }

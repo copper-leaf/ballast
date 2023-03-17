@@ -19,17 +19,21 @@ import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.pathParameter
+import com.copperleaf.ballast.navigation.routing.stringPath
 
 @Composable
 fun ColumnScope.StatesListToolbar(
@@ -83,7 +87,7 @@ fun ColumnScope.StateDetails(
 ) {
     if(stateSnapshot != null) {
         Box(Modifier.fillMaxSize()) {
-            IntellijEditor(stateSnapshot.serializedValue, stateSnapshot.contentType.asFileType())
+            IntellijEditor(stateSnapshot.serializedValue, stateSnapshot.contentType.asContentType())
         }
     }
 }
@@ -135,7 +139,34 @@ fun StateSnapshotSummary(
                     )
                 }
         ) {
-            Text(stateSnapshot.emittedAt.format("hh:mm:ss a"))
+            Text(stateSnapshot.emittedAt.format())
         }
+    }
+}
+
+// Data for States
+// ---------------------------------------------------------------------------------------------------------------------
+
+
+
+@Composable
+fun rememberViewModelStatesList(
+    viewModel: BallastViewModelState?,
+    searchText: String,
+): State<List<BallastStateSnapshot>> {
+    return viewModelValue {
+        viewModel?.states?.maybeFilter(searchText) {
+            listOf(it.serializedValue)
+        } ?: emptyList()
+    }
+}
+
+@Composable
+fun Destination.ParametersProvider.rememberSelectedViewModelStateSnapshot(
+    viewModel: BallastViewModelState?,
+): State<BallastStateSnapshot?> {
+    return viewModelValue {
+        val stateUuid: String by stringPath()
+        viewModel?.states?.find { state -> state.uuid == stateUuid }
     }
 }

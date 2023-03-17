@@ -9,14 +9,19 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
-import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
+import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
+import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
+import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
+import com.copperleaf.ballast.navigation.routing.optionalStringPath
 import com.copperleaf.ballast.navigation.routing.pathParameter
+import com.copperleaf.ballast.navigation.routing.stringPath
 
 @Composable
 fun RowScope.DebuggerPrimaryToolbar(
@@ -139,4 +144,49 @@ fun DebuggerConnectionViewModelsComboBox(
             }
         }
     )
+}
+
+// Data for Primary Toolbar
+// ---------------------------------------------------------------------------------------------------------------------
+
+@Composable
+fun rememberConnectionsList(
+    serverState: BallastApplicationState,
+): State<List<BallastConnectionState>> {
+    return viewModelValue {
+        serverState.connections
+    }
+}
+
+@Composable
+fun Destination.ParametersProvider.rememberSelectedConnection(
+    connectionsList: List<BallastConnectionState>,
+): State<BallastConnectionState?> {
+    return viewModelValue {
+        val connectionId: String? by optionalStringPath()
+        connectionsList.find { connection -> connection.connectionId == connectionId }
+    }
+}
+
+@Composable
+fun rememberViewModelList(
+    connection: BallastConnectionState?,
+): State<List<BallastViewModelState?>> {
+    return viewModelValue {
+        if (connection == null) {
+            emptyList()
+        } else {
+            listOf(null) + connection.viewModels
+        }
+    }
+}
+
+@Composable
+fun Destination.ParametersProvider.rememberSelectedViewModel(
+    connection: BallastConnectionState?,
+): State<BallastViewModelState?> {
+    return viewModelValue {
+        val viewModelName: String by stringPath()
+        connection?.viewModels?.find { vm -> vm.viewModelName == viewModelName }
+    }
 }
