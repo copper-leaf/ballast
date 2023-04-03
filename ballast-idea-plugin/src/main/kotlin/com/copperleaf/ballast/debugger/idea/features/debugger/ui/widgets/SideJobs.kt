@@ -6,16 +6,13 @@ import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
@@ -24,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
 import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
@@ -107,13 +103,7 @@ fun ColumnScope.SideJobDetails(
                     IntellijEditor(sideJob.key, ContentType.Text.Any, Modifier.fillMaxSize())
                 },
                 bottomContent = {
-                    Column(Modifier.verticalScroll(rememberScrollState())) {
-                        Text(
-                            text = errorStatus.stacktrace,
-                            color = MaterialTheme.colors.error,
-                            fontFamily = FontFamily.Monospace,
-                        )
-                    }
+                    IntellijEditor(errorStatus.stacktrace, ContentType.Text.Any, Modifier.fillMaxSize(), MaterialTheme.colors.error)
                 },
             )
         }

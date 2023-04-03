@@ -8,7 +8,8 @@ enum class DebuggerRoute(
     routeFormat: String,
     override val annotations: Set<RouteAnnotation> = emptySet(),
 ) : Route {
-    Connection("/debugger/{connectionId?}"),
+    Home("/debugger"),
+    Connection("/debugger/{connectionId}"),
 
     ViewModelStates("/debugger/{connectionId}/vm/{viewModelName}/states"),
     ViewModelStateDetails("/debugger/{connectionId}/vm/{viewModelName}/states/{stateUuid}"),
