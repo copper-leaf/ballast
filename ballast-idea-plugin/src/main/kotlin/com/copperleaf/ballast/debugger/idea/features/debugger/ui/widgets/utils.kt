@@ -27,8 +27,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.text.selection.DisableSelection
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Badge
 import androidx.compose.material.Card
 import androidx.compose.material.Checkbox
@@ -57,7 +61,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.composed
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.FocusState
@@ -69,6 +72,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
@@ -81,12 +85,7 @@ import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.repository.cache.Cached
 import com.copperleaf.ballast.repository.cache.getCachedOrNull
-import com.intellij.lang.Language
-import com.intellij.openapi.editor.EditorFactory
-import com.intellij.openapi.fileTypes.FileTypes
-import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiFileFactory
 import io.ktor.http.ContentType
 import kotlinx.coroutines.delay
 import kotlinx.datetime.LocalDateTime
@@ -304,42 +303,30 @@ fun IntellijEditor(
     text: String,
     contentType: ContentType,
     modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colors.onSurface,
 ) {
-    val project = LocalProject.current
-    val editor = remember(text, contentType) {
-        val language: Language = Language
-            .findInstancesByMimeType(contentType.asContentTypeString())
-            .toList()
-            .firstOrNull()
-            ?: PlainTextLanguage.INSTANCE
-
-        val dataTypeConverter = DataType.getForMimeType(contentType)
-        val reformattedText = dataTypeConverter.reformat(text)
-
-        val editor = EditorFactory.getInstance().createEditor(
-            PsiFileFactory.getInstance(project).createFileFromText(language, reformattedText).viewProvider.document,
-            project,
-            language.associatedFileType ?: FileTypes.PLAIN_TEXT,
-            true,
-        )
-        println("Creating IntellijEditor($text, ${contentType.asContentTypeString()})")
-        println("  --> ($reformattedText, $contentType)")
-
-        editor.settings.apply {
-            isLineNumbersShown = true
-            isAutoCodeFoldingEnabled = true
-            isFoldingOutlineShown = true
+    Column(modifier.fillMaxSize().background(Color(51, 51, 51)).verticalScroll(rememberScrollState())) {
+        val lines = remember(text, contentType) {
+            val dataTypeConverter = DataType.getForMimeType(contentType)
+            val reformattedText = dataTypeConverter.reformat(text)
+            reformattedText.lines()
         }
 
-        editor
+        SelectionContainer {
+            lines.forEachIndexed { index, line ->
+                Row {
+                    DisableSelection {
+                        Text("${index + 1}", Modifier.width(24.dp))
+                    }
+                    Text(
+                        text = line,
+                        color = color,
+                        fontFamily = FontFamily.Monospace,
+                    )
+                }
+            }
+        }
     }
-
-    SwingPanel(
-        modifier = modifier,
-        background = MaterialTheme.colors.surface,
-        factory = { editor.component },
-        update = { },
-    )
 }
 
 @Composable
@@ -381,6 +368,7 @@ fun getRouteForSelectedViewModel(
 ): String {
     return if (viewModelName != null) {
         val newRoute = when (currentRoute) {
+            DebuggerRoute.Home -> DebuggerRoute.Home
             DebuggerRoute.Connection -> DebuggerRoute.ViewModelStates
             DebuggerRoute.ViewModelStates -> DebuggerRoute.ViewModelStates
             DebuggerRoute.ViewModelStateDetails -> DebuggerRoute.ViewModelStates

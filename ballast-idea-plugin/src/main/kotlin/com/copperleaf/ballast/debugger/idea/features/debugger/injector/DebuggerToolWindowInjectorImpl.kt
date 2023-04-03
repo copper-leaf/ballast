@@ -33,7 +33,7 @@ class DebuggerToolWindowInjectorImpl(
             .commonViewModelBuilder(loggingEnabled = false)
             .withRouter(
                 routingTable = RoutingTable.fromEnum(DebuggerRoute.values()),
-                initialRoute = DebuggerRoute.Connection
+                initialRoute = DebuggerRoute.Home,
             )
             .build(),
         eventHandler = RouterEventHandler(),

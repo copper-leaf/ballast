@@ -170,3 +170,12 @@ fun Destination.ParametersProvider.rememberSelectedViewModelStateSnapshot(
         viewModel?.states?.find { state -> state.uuid == stateUuid }
     }
 }
+
+@Composable
+fun rememberLatestViewModelStateSnapshot(
+    viewModel: BallastViewModelState?,
+): State<BallastStateSnapshot?> {
+    return viewModelValue {
+        viewModel?.states?.firstOrNull()
+    }
+}

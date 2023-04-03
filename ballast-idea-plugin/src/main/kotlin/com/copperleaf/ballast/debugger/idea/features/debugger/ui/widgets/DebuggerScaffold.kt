@@ -45,37 +45,7 @@ fun DebuggerScaffold(
                 Box(
                     modifier = Modifier.fillMaxWidth().weight(1f),
                 ) {
-                    if (mainContentLeft != null && mainContentRight != null) {
-                        HorizontalSplitPane(
-                            splitPaneState = rememberSplitPaneState(0.35f),
-                        ) {
-                            first(minSize = 60.dp) {
-                                Row(Modifier.fillMaxSize()) {
-                                    if (contentLeftToolbar != null) {
-                                        Column {
-                                            contentLeftToolbar()
-                                        }
-                                    }
-                                    Column(Modifier.fillMaxHeight().weight(1f)) {
-                                        mainContentLeft()
-                                    }
-                                }
-                            }
-                            second() {
-                                Row(Modifier.fillMaxSize()) {
-                                    Column(Modifier.fillMaxHeight().weight(1f)) {
-                                        mainContentRight()
-                                    }
-                                    if (contentRightToolbar != null) {
-                                        Column {
-                                            contentRightToolbar()
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else if(mainContentLeft != null) {
+                    val mainContentLeftLambda = @Composable {
                         Row(Modifier.fillMaxSize()) {
                             if (contentLeftToolbar != null) {
                                 Column {
@@ -83,10 +53,75 @@ fun DebuggerScaffold(
                                 }
                             }
                             Column(Modifier.fillMaxHeight().weight(1f)) {
-                                mainContentLeft.invoke(this)
+                                mainContentLeft?.invoke(this)
                             }
                         }
-                    } else if(mainContentRight != null) {
+                    }
+                    val mainContentRightLambda = @Composable {
+                        Row(Modifier.fillMaxSize()) {
+                            Column(Modifier.fillMaxHeight().weight(1f)) {
+                                mainContentRight?.invoke(this)
+                            }
+                            if (contentRightToolbar != null) {
+                                Column {
+                                    contentRightToolbar()
+                                }
+                            }
+                        }
+                    }
+                    val stickyContentLambda = @Composable {
+                        Row(Modifier.fillMaxSize()) {
+                            Column(Modifier.fillMaxHeight().weight(1f)) {
+                                stickyContent?.invoke(this)
+                            }
+                        }
+                    }
+
+                    if (mainContentLeft != null && mainContentRight != null && stickyContent != null) {
+                        HorizontalSplitPane(
+                            splitPaneState = rememberSplitPaneState(0.35f),
+                        ) {
+                            first(minSize = 60.dp) { mainContentLeftLambda() }
+                            second() {
+                                Row(Modifier.fillMaxSize()) {
+                                    HorizontalSplitPane(
+                                        splitPaneState = rememberSplitPaneState(0.35f),
+                                    ) {
+                                        first(minSize = 60.dp) { mainContentRightLambda() }
+                                        second() { stickyContentLambda() }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (mainContentLeft != null && mainContentRight != null) {
+                        HorizontalSplitPane(
+                            splitPaneState = rememberSplitPaneState(0.35f),
+                        ) {
+                            first(minSize = 60.dp) {
+                                mainContentLeftLambda()
+                            }
+                            second() {
+                                mainContentRightLambda()
+                            }
+                        }
+                    }
+                    else if (mainContentLeft != null && stickyContent != null) {
+                        HorizontalSplitPane(
+                            splitPaneState = rememberSplitPaneState(0.35f),
+                        ) {
+                            first(minSize = 60.dp) {
+                                mainContentLeftLambda()
+                            }
+                            second() {
+                                stickyContentLambda()
+                            }
+                        }
+                    }
+                    else if(mainContentLeft != null) {
+                        mainContentLeftLambda()
+                    }
+                    else if(mainContentRight != null) {
                         error("use mainContentLeft for a single-panel view instead")
                     }
                 }

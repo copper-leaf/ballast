@@ -83,6 +83,7 @@ enum class ViewModelContentTab(
     companion object {
         fun fromRoute(route: DebuggerRoute): ViewModelContentTab? {
             return when (route) {
+                DebuggerRoute.Home -> null
                 DebuggerRoute.Connection -> null
                 DebuggerRoute.ViewModelStates -> States
                 DebuggerRoute.ViewModelStateDetails -> States
