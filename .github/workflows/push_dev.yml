@@ -17,8 +17,10 @@ jobs:
     name: 'Test on ${{ matrix.os }} JDK ${{ matrix.java }}'
     runs-on: '${{ matrix.os }}'
     steps:
-      - uses: 'actions/checkout@v2'
-      - run: 'git fetch --prune --unshallow --tags'
+      - uses: 'actions/checkout@v3'
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0 # all commit history and tags
       - name: 'Set up JDK ${{ matrix.java }}'
         uses: 'actions/setup-java@v2'
         with:
@@ -45,8 +47,10 @@ jobs:
       JB_PASSPHRASE: '${{ secrets.JB_PASSPHRASE }}'
       JB_MARKETPLACE_TOKEN: '${{ secrets.JB_MARKETPLACE_TOKEN }}'
     steps:
-      - uses: 'actions/checkout@v2'
-      - run: 'git fetch --prune --unshallow --tags'
+      - uses: 'actions/checkout@v3'
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0 # all commit history and tags
       - name: 'Set up JDK 11'
         uses: 'actions/setup-java@v2'
         with:

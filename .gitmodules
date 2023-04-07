@@ -1,0 +1,3 @@
+[submodule "gradle-convention-plugins"]
+	path = gradle-convention-plugins
+	url = https://github.com/copper-leaf/gradle-convention-plugins.git
