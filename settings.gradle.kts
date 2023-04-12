@@ -1,3 +1,23 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+val conventionDir = "./gradle-convention-plugins"
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("$conventionDir/gradle/conventionLibs.versions.toml"))
+        }
+    }
+}
+
+includeBuild(conventionDir)
+
 rootProject.name = "ballast"
 
 include(":ballast-api")
@@ -16,8 +36,8 @@ include(":ballast-navigation")
 include(":ballast-firebase-crashlytics")
 include(":ballast-firebase-analytics")
 
-include(":ballast-idea-plugin")
 include(":ballast-debugger-server")
+include(":ballast-idea-plugin")
 
 include(":ballast-test")
 

@@ -1,28 +1,18 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.jetbrains.compose.compose
+import com.copperleaf.gradle.projectVersion
 
 plugins {
-    kotlin("multiplatform")
-    `copper-leaf-base`
-    `copper-leaf-version`
-    `copper-leaf-lint`
-    id("com.github.gmazzo.buildconfig")
-    id("org.jetbrains.compose")
-    kotlin("plugin.serialization")
+    id("copper-leaf-base")
+    id("copper-leaf-targets")
+    id("copper-leaf-kotest")
+    id("copper-leaf-buildConfig")
+    id("copper-leaf-compose")
+    id("copper-leaf-serialization")
+//    id("copper-leaf-lint")
 }
 
-var projectVersion: ProjectVersion by project.extra
-description = "Opinionated Application State Management framework for Kotlin Multiplatform"
-
-// Kotlin config
-// ---------------------------------------------------------------------------------------------------------------------
-
 kotlin {
-    // targets
-    jvm { }
-
-    // sourcesets
     sourceSets {
         all {
             languageSettings.apply {
@@ -41,19 +31,8 @@ kotlin {
                 implementation(project(":ballast-undo"))
                 implementation(project(":ballast-navigation"))
 
-                implementation(compose.desktop.currentOs)
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.materialIconsExtended)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.desktop.components.splitPane)
-
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.logging)
+                implementation(libs.bundles.ktorClient)
                 implementation(libs.ktor.client.okhttp)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.kotlinx.coroutines.swing)
                 implementation(libs.multiplatformSettings.core)
                 implementation(libs.multiplatformSettings.noArg)
@@ -62,23 +41,8 @@ kotlin {
     }
 }
 
-tasks.withType<JavaCompile> {
-    sourceCompatibility = Config.javaVersion
-    targetCompatibility = Config.javaVersion
-}
-tasks.withType<Test> {
-    testLogging {
-        showStandardStreams = true
-    }
-}
-
 buildConfig {
-    useKotlinOutput {
-        internalVisibility = true
-        topLevelConstants = true
-    }
-
-    buildConfigField("String", "BALLAST_VERSION", "\"${projectVersion}\"")
+    projectVersion(project, "BALLAST_VERSION")
 }
 
 // Compose Desktop config

@@ -1,0 +1,1045 @@
+public final class com/copperleaf/ballast/debugger/idea/BallastIdeaPlugin {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector$Companion;
+	public abstract fun commonViewModelBuilder (ZLkotlin/jvm/functions/Function0;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+	public abstract fun getDefaultCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getIoCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getMainCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public abstract fun getProject ()Lcom/intellij/openapi/project/Project;
+	public abstract fun getRepository ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public abstract fun newMainCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector$Companion {
+	public final fun getInstance (Lcom/intellij/openapi/project/Project;)Lcom/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector$DefaultImpls {
+	public static synthetic fun commonViewModelBuilder$default (Lcom/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector;ZLkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjectorImpl : com/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector {
+	public static final field $stable I
+	public fun <init> (Lcom/intellij/openapi/project/Project;)V
+	public fun commonViewModelBuilder (ZLkotlin/jvm/functions/Function0;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+	public fun getDefaultCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getIoCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getMainCoroutineDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public fun getProject ()Lcom/intellij/openapi/project/Project;
+	public fun getRepository ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public fun newMainCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator : com/intellij/ide/actions/CreateFileFromTemplateAction, com/intellij/openapi/project/DumbAware {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljavax/swing/Icon;)V
+	protected final fun addTemplate (Lcom/intellij/ide/actions/CreateFileFromTemplateDialog$Builder;Lcom/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind;)Lcom/intellij/ide/actions/CreateFileFromTemplateDialog$Builder;
+	protected final fun createFileFromTemplate (Ljava/lang/String;Lcom/intellij/ide/fileTemplates/FileTemplate;Lcom/intellij/psi/PsiDirectory;)Lcom/intellij/psi/PsiFile;
+	public abstract fun parseTemplateName (Lcom/intellij/openapi/project/Project;Ljava/lang/String;)Ljava/util/List;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind {
+	public abstract fun getActualFileName (Ljava/lang/String;)Ljava/lang/String;
+	public abstract fun getDisplayName ()Ljava/lang/String;
+	public abstract fun getFileNameSuffix ()Ljava/lang/String;
+	public abstract fun getIcon ()Ljavax/swing/Icon;
+	public abstract fun getTemplate (Lcom/intellij/openapi/project/Project;)Lcom/intellij/ide/fileTemplates/FileTemplate;
+	public abstract fun getTemplateName ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind$DefaultImpls {
+	public static fun getActualFileName (Lcom/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind;Ljava/lang/String;)Ljava/lang/String;
+	public static fun getTemplate (Lcom/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind;Lcom/intellij/openapi/project/Project;)Lcom/intellij/ide/fileTemplates/FileTemplate;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/base/IntellijPluginBallastLogger : com/copperleaf/ballast/BallastLogger {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public fun debug (Ljava/lang/String;)V
+	public fun error (Ljava/lang/Throwable;)V
+	public fun info (Ljava/lang/String;)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/base/UtilsKt {
+	public static final fun BallastComposePanel (IIIILkotlin/jvm/functions/Function2;)Ljavax/swing/JComponent;
+	public static synthetic fun BallastComposePanel$default (IIIILkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ljavax/swing/JComponent;
+	public static final fun setContent (Lcom/intellij/openapi/wm/ToolWindow;Ljava/lang/String;ZLkotlin/jvm/functions/Function2;)Ljavax/swing/JComponent;
+	public static synthetic fun setContent$default (Lcom/intellij/openapi/wm/ToolWindow;Ljava/lang/String;ZLkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ljavax/swing/JComponent;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/features/debugger/injector/DebuggerToolWindowInjector {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/idea/features/debugger/injector/DebuggerToolWindowInjector$Companion;
+	public abstract fun getDebuggerRouter ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public abstract fun getDebuggerServerViewModel ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public abstract fun getDebuggerUiViewModel ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public abstract fun getProject ()Lcom/intellij/openapi/project/Project;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/injector/DebuggerToolWindowInjector$Companion {
+	public final fun getInstance (Lcom/intellij/openapi/project/Project;Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/injector/DebuggerToolWindowInjector;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/injector/DebuggerToolWindowInjectorImpl : com/copperleaf/ballast/debugger/idea/features/debugger/injector/DebuggerToolWindowInjector {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector;Lkotlinx/coroutines/CoroutineScope;)V
+	public fun getDebuggerRouter ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public fun getDebuggerServerViewModel ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public fun getDebuggerUiViewModel ()Lcom/copperleaf/ballast/core/BasicViewModel;
+	public fun getProject ()Lcom/intellij/openapi/project/Project;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute : java/lang/Enum, com/copperleaf/ballast/navigation/routing/Route {
+	public static final field Connection Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field Home Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelEventDetails Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelEvents Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelInputDetails Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelInputs Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelInterceptorDetails Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelInterceptors Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelLogs Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelSideJobDetails Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelSideJobs Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelStateDetails Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelStates Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static final field ViewModelTimeline Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public fun getAnnotations ()Ljava/util/Set;
+	public fun getMatcher ()Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public static fun values ()[Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/router/RouterEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/navigation/routing/RouterContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/server/DebuggerServerEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function0;)V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/DebuggerToolWindow {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/DebuggerToolWindow$Factory : com/intellij/openapi/project/DumbAware, com/intellij/openapi/wm/ToolWindowFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun createToolWindowContent (Lcom/intellij/openapi/project/Project;Lcom/intellij/openapi/wm/ToolWindow;)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/DebuggerUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/DebuggerUi;
+	public final fun Content (Lcom/copperleaf/ballast/debugger/idea/features/debugger/injector/DebuggerToolWindowInjector;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public final fun RouteContent (Lcom/copperleaf/ballast/navigation/routing/Destination$Match;Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$DebuggerPrimaryToolbarKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$DebuggerPrimaryToolbarKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$UtilsKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$UtilsKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/DebuggerPrimaryToolbarKt {
+	public static final fun DebuggerConnectionViewModelsComboBox (Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun DebuggerConnectionsComboBox (Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun DebuggerPrimaryToolbar (Landroidx/compose/foundation/layout/RowScope;Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun rememberConnectionsList (Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberSelectedConnection (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/util/List;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberSelectedViewModel (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberViewModelList (Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/DebuggerScaffoldKt {
+	public static final fun DebuggerScaffold (Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/EventsKt {
+	public static final fun EventDetails (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastEventState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun EventDetailsToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lcom/copperleaf/ballast/debugger/models/BallastEventState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun EventSummary (Lcom/copperleaf/ballast/debugger/models/BallastEventState;Lcom/copperleaf/ballast/debugger/models/BallastEventState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun EventsList (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastEventState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun EventsListToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun rememberSelectedViewModelEvent (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberViewModelEventsList (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/InputsKt {
+	public static final fun InputDetails (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastInputState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InputDetailsToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lcom/copperleaf/ballast/debugger/models/BallastInputState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InputSummary (Lcom/copperleaf/ballast/debugger/models/BallastInputState;Lcom/copperleaf/ballast/debugger/models/BallastInputState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InputsList (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastInputState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InputsListToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun rememberSelectedViewModelInput (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberViewModelInputsList (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/InterceptorsKt {
+	public static final fun InterceptorDetails (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InterceptorDetailsToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InterceptorSummary (Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState;Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InterceptorsList (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun InterceptorsListToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun rememberSelectedViewModelInterceptor (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberViewModelInterceptorList (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/LogsKt {
+	public static final fun LogSummary (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun LogsList (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun LogsListToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun rememberViewModelLogsList (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/SideJobsKt {
+	public static final fun SideJobDetails (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun SideJobDetailsToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun SideJobSummary (Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun SideJobsList (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastSideJobState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun SideJobsListToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun rememberSelectedViewModelSideJob (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberViewModelSideJobsList (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/SpecialRouterToolbarKt {
+	public static final fun SpecialRouterToolbar (Landroidx/compose/foundation/layout/ColumnScope;Ljava/lang/String;Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/SpecialViewModelStateKt {
+	public static final fun SpecialViewModelState (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastStateSnapshot;Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/StatesKt {
+	public static final fun StateDetails (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastStateSnapshot;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun StateDetailsToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lcom/copperleaf/ballast/debugger/models/BallastStateSnapshot;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun StateSnapshotSummary (Lcom/copperleaf/ballast/debugger/models/BallastStateSnapshot;Lcom/copperleaf/ballast/debugger/models/BallastStateSnapshot;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun StatesList (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lcom/copperleaf/ballast/debugger/models/BallastStateSnapshot;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun StatesListToolbar (Landroidx/compose/foundation/layout/ColumnScope;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public static final fun rememberLatestViewModelStateSnapshot (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberSelectedViewModelStateSnapshot (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun rememberViewModelStatesList (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/UtilsKt {
+	public static final fun CheckboxArea (ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ColoredSplitter (Lorg/jetbrains/compose/splitpane/SplitterScope;Z)V
+	public static final fun DropdownSelector (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun IntellijEditor-ww6aTOc (Ljava/lang/String;Lio/ktor/http/ContentType;Landroidx/compose/ui/Modifier;JLandroidx/compose/runtime/Composer;II)V
+	public static final fun ProvideTime (Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public static final fun Section (Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun SplitPane (Lorg/jetbrains/compose/splitpane/SplitPaneState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun StatusIcon-kbVaWH0 (ZLjava/lang/String;Ljava/lang/String;Landroidx/compose/ui/graphics/vector/ImageVector;Landroidx/compose/ui/graphics/Color;ILandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ToolBarActionIconButton (Landroidx/compose/ui/graphics/vector/ImageVector;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;I)V
+	public static final fun VSplitPane (Lorg/jetbrains/compose/splitpane/SplitPaneState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun ago (Lkotlinx/datetime/LocalDateTime;Lkotlinx/datetime/LocalDateTime;)J
+	public static synthetic fun ago$default (Lkotlinx/datetime/LocalDateTime;Lkotlinx/datetime/LocalDateTime;ILjava/lang/Object;)J
+	public static final fun currentTimeAsState (Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun cursorForResize (Landroidx/compose/ui/Modifier;Z)Landroidx/compose/ui/Modifier;
+	public static final fun format (Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;)Ljava/lang/String;
+	public static synthetic fun format$default (Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;ILjava/lang/Object;)Ljava/lang/String;
+	public static final fun getLocalProject ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getLocalTimer ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+	public static final fun getMinSplitPaneSize ()F
+	public static final fun getRouteForSelectedViewModel (Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun highlight (Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
+	public static final fun onHoverState (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
+	public static final fun rememberConnectionCurrentDestination (Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/repository/cache/Cached;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab : java/lang/Enum {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab$Companion;
+	public static final field Events Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public static final field Inputs Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public static final field Interceptors Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public static final field Logs Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public static final field SideJobs Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public static final field States Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public static final field Timeline Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public final fun getIcon ()Landroidx/compose/ui/graphics/vector/ImageVector;
+	public final fun getText ()Ljava/lang/String;
+	public final fun isActive (Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;)Z
+	public final fun isEnabled (Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;)Z
+	public final fun navigate (Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$Navigate;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public static fun values ()[Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab$Companion {
+	public final fun fromRoute (Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelTabStripKt {
+	public static final fun ViewModelTabStrip (Lcom/copperleaf/ballast/navigation/routing/Destination$Match;Lcom/copperleaf/ballast/debugger/models/BallastConnectionState;Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract;
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Events {
+	public static final field $stable I
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$BackstackChanged : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$BackstackChanged;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$BackstackChanged;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$BackstackChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBackstack ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$ClearAllConnections : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$ClearAllConnections;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$Initialize : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$Initialize;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$Navigate : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$Navigate;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$Navigate;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$Navigate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDestinationUrl ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$OnConnectionEstablished : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$OnConnectionEstablished;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$OnConnectionEstablished;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$OnConnectionEstablished;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectionId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SendDebuggerAction : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;
+	public final fun copy (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SendDebuggerAction;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SendDebuggerAction;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SendDebuggerAction;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAction ()Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$ServerStateChanged : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;
+	public final fun copy (Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$ServerStateChanged;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$ServerStateChanged;Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$ServerStateChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getServerState ()Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SettingsChanged : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/repository/cache/Cached;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun copy (Lcom/copperleaf/ballast/repository/cache/Cached;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SettingsChanged;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SettingsChanged;Lcom/copperleaf/ballast/repository/cache/Cached;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$SettingsChanged;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSettings ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSearchText : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSearchText;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSearchText;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSearchText;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSelectedViewModelContentTab : com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public final fun copy (Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSelectedViewModelContentTab;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSelectedViewModelContentTab;Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs$UpdateSelectedViewModelContentTab;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTab ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ViewModelContentTab;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;Ljava/util/List;Ljava/lang/String;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;Ljava/util/List;Ljava/lang/String;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun component2 ()Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;
+	public final fun component3 ()Ljava/util/List;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Lorg/jetbrains/compose/splitpane/SplitPaneState;
+	public final fun component6 ()Lorg/jetbrains/compose/splitpane/SplitPaneState;
+	public final fun component7 ()Lorg/jetbrains/compose/splitpane/SplitPaneState;
+	public final fun copy (Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;Ljava/util/List;Ljava/lang/String;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$State;Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;Ljava/util/List;Ljava/lang/String;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;Lorg/jetbrains/compose/splitpane/SplitPaneState;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBackstack ()Ljava/util/List;
+	public final fun getCachedSettings ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun getConnectionsPanePercentage ()Lorg/jetbrains/compose/splitpane/SplitPaneState;
+	public final fun getEventsPanePercentage ()Lorg/jetbrains/compose/splitpane/SplitPaneState;
+	public final fun getSearchText ()Ljava/lang/String;
+	public final fun getServerState ()Lcom/copperleaf/ballast/debugger/models/BallastApplicationState;
+	public final fun getSettings ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun getViewModelsPanePercentage ()Lorg/jetbrains/compose/splitpane/SplitPaneState;
+	public fun hashCode ()I
+	public final fun isReady ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/core/BasicViewModel;Lcom/copperleaf/ballast/core/BasicViewModel;Lcom/copperleaf/ballast/core/BasicViewModel;)V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/debugger/idea/features/debugger/vm/DebuggerUiContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/features/settings/injector/SettingsPanelInjector {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/idea/features/settings/injector/SettingsPanelInjector$Companion;
+	public abstract fun getProject ()Lcom/intellij/openapi/project/Project;
+	public abstract fun getSettingsPanelCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
+	public abstract fun getSettingsPanelViewModel ()Lcom/copperleaf/ballast/core/BasicViewModel;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/injector/SettingsPanelInjector$Companion {
+	public final fun getInstance (Lcom/intellij/openapi/project/Project;)Lcom/copperleaf/ballast/debugger/idea/features/settings/injector/SettingsPanelInjector;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/injector/SettingsPanelInjectorImpl : com/copperleaf/ballast/debugger/idea/features/settings/injector/SettingsPanelInjector {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/debugger/idea/BallastIntellijPluginInjector;)V
+	public fun getProject ()Lcom/intellij/openapi/project/Project;
+	public fun getSettingsPanelCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
+	public fun getSettingsPanelViewModel ()Lcom/copperleaf/ballast/core/BasicViewModel;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/ui/BallastPluginSettingsPanel : com/intellij/openapi/options/Configurable, com/intellij/openapi/options/Configurable$NoScroll {
+	public static final field $stable I
+	public fun <init> (Lcom/intellij/openapi/project/Project;)V
+	public fun apply ()V
+	public fun createComponent ()Ljavax/swing/JComponent;
+	public fun disposeUIResources ()V
+	public fun getDisplayName ()Ljava/lang/String;
+	public fun isModified ()Z
+	public fun reset ()V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/ui/ComposableSingletons$SettingsUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/ui/ComposableSingletons$SettingsUiKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-10 Lkotlin/jvm/functions/Function2;
+	public static field lambda-11 Lkotlin/jvm/functions/Function2;
+	public static field lambda-12 Lkotlin/jvm/functions/Function2;
+	public static field lambda-13 Lkotlin/jvm/functions/Function2;
+	public static field lambda-14 Lkotlin/jvm/functions/Function3;
+	public static field lambda-15 Lkotlin/jvm/functions/Function3;
+	public static field lambda-16 Lkotlin/jvm/functions/Function3;
+	public static field lambda-17 Lkotlin/jvm/functions/Function3;
+	public static field lambda-18 Lkotlin/jvm/functions/Function3;
+	public static field lambda-2 Lkotlin/jvm/functions/Function3;
+	public static field lambda-3 Lkotlin/jvm/functions/Function2;
+	public static field lambda-4 Lkotlin/jvm/functions/Function2;
+	public static field lambda-5 Lkotlin/jvm/functions/Function2;
+	public static field lambda-6 Lkotlin/jvm/functions/Function3;
+	public static field lambda-7 Lkotlin/jvm/functions/Function2;
+	public static field lambda-8 Lkotlin/jvm/functions/Function3;
+	public static field lambda-9 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-10$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-11$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-12$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-13$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-14$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-15$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-16$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-17$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-18$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-2$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-3$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-4$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-5$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-6$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-7$ballast_idea_plugin ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-8$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda-9$ballast_idea_plugin ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/ui/SettingsUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/ui/SettingsUi;
+	public final fun Content (Lcom/copperleaf/ballast/debugger/idea/features/settings/injector/SettingsPanelInjector;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract;
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Events {
+	public static final field $stable I
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$ApplySettings : com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$ApplySettings;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$CloseGracefully : com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$CloseGracefully;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$DiscardChanges : com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$DiscardChanges;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$Initialize : com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$Initialize;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$RestoreDefaultSettings : com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$RestoreDefaultSettings;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$SavedSettingsUpdated : com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/repository/cache/Cached;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun copy (Lcom/copperleaf/ballast/repository/cache/Cached;)Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$SavedSettingsUpdated;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$SavedSettingsUpdated;Lcom/copperleaf/ballast/repository/cache/Cached;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$SavedSettingsUpdated;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCachedSettings ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$UpdateSettings : com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public final fun component1 ()Lkotlin/jvm/functions/Function1;
+	public final fun copy (Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$UpdateSettings;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$UpdateSettings;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs$UpdateSettings;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Lkotlin/jvm/functions/Function1;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun component2 ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun component3 ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun component4 ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun copy (Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;)Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$State;Lcom/copperleaf/ballast/repository/cache/Cached;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCachedSettings ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun getDefaultValues ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun getModifiedSettings ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun getOriginalSettings ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public fun hashCode ()I
+	public final fun isModified ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/core/BasicViewModel;)V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/debugger/idea/features/settings/vm/SettingsUiContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastRepository : com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator, com/intellij/openapi/project/DumbAware {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun parseTemplateName (Lcom/intellij/openapi/project/Project;Ljava/lang/String;)Ljava/util/List;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate : java/lang/Enum, com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind {
+	public static final field AndroidRepositoryImpl Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate;
+	public static final field Contract Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate;
+	public static final field InputHandler Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate;
+	public static final field Repository Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate;
+	public static final field StandardRepositoryImpl Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate;
+	public fun getActualFileName (Ljava/lang/String;)Ljava/lang/String;
+	public fun getDisplayName ()Ljava/lang/String;
+	public fun getFileNameSuffix ()Ljava/lang/String;
+	public fun getIcon ()Ljavax/swing/Icon;
+	public fun getTemplate (Lcom/intellij/openapi/project/Project;)Lcom/intellij/ide/fileTemplates/FileTemplate;
+	public fun getTemplateName ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate;
+	public static fun values ()[Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastRepository$RepositoryTemplate;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastUi : com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator, com/intellij/openapi/project/DumbAware {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun parseTemplateName (Lcom/intellij/openapi/project/Project;Ljava/lang/String;)Ljava/util/List;
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate : com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljavax/swing/Icon;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getActualFileName (Ljava/lang/String;)Ljava/lang/String;
+	public fun getDisplayName ()Ljava/lang/String;
+	public fun getFileNameSuffix ()Ljava/lang/String;
+	public fun getIcon ()Ljavax/swing/Icon;
+	public fun getTemplate (Lcom/intellij/openapi/project/Project;)Lcom/intellij/ide/fileTemplates/FileTemplate;
+	public fun getTemplateName ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$Contract : com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$Contract;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$EventHandler : com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$EventHandler;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$InputHandler : com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$InputHandler;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$SavedStateAdapter : com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$SavedStateAdapter;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate$ViewModel : com/copperleaf/ballast/debugger/idea/features/templates/BallastUi$UiTemplate {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel : com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator, com/intellij/openapi/project/DumbAware {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun parseTemplateName (Lcom/intellij/openapi/project/Project;Ljava/lang/String;)Ljava/util/List;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate : java/lang/Enum, com/copperleaf/ballast/debugger/idea/base/BaseTemplateCreator$TemplateKind {
+	public static final field Android Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public static final field Basic Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public static final field Ios Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public static final field Typealias Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public fun getActualFileName (Ljava/lang/String;)Ljava/lang/String;
+	public fun getDisplayName ()Ljava/lang/String;
+	public fun getFileNameSuffix ()Ljava/lang/String;
+	public fun getIcon ()Ljavax/swing/Icon;
+	public fun getTemplate (Lcom/intellij/openapi/project/Project;)Lcom/intellij/ide/fileTemplates/FileTemplate;
+	public fun getTemplateName ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public static fun values ()[Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/features/templates/ExposeOtherTemplates : com/intellij/ide/fileTemplates/FileTemplateGroupDescriptorFactory {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun getFileTemplatesDescriptor ()Lcom/intellij/ide/fileTemplates/FileTemplateGroupDescriptor;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/repository/RepositoryContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract;
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Events {
+	public static final field $stable I
+}
+
+public abstract class com/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs {
+	public static final field $stable I
+}
+
+public final class com/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs$Initialize : com/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs$Initialize;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs$SaveUpdatedSettings : com/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun copy (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;)Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs$SaveUpdatedSettings;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs$SaveUpdatedSettings;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs$SaveUpdatedSettings;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSettings ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/repository/RepositoryContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginPersistentSettings;Lcom/copperleaf/ballast/repository/cache/Cached;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginPersistentSettings;Lcom/copperleaf/ballast/repository/cache/Cached;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component2 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun copy (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginPersistentSettings;Lcom/copperleaf/ballast/repository/cache/Cached;)Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$State;Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginPersistentSettings;Lcom/copperleaf/ballast/repository/cache/Cached;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSettings ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/repository/RepositoryEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/repository/RepositoryInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/debugger/idea/repository/RepositoryContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/settings/DebuggerUiSettings {
+	public abstract fun getAlwaysShowCurrentState ()Z
+	public abstract fun getAutoselectDebuggerConnections ()Z
+	public abstract fun getDetailsPanePercentage ()F
+	public abstract fun getLastRoute ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public abstract fun getLastViewModelName ()Ljava/lang/String;
+	public abstract fun getRouterViewModelName ()Ljava/lang/String;
+	public abstract fun getShowCurrentRoute ()Z
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/settings/GeneralSettings {
+	public abstract fun getBallastVersion ()Ljava/lang/String;
+	public abstract fun getDarkTheme ()Z
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/settings/IntellijPluginMutableSettings : com/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettings {
+	public abstract fun getAllComponentsIncludesSavedStateAdapter ()Z
+	public abstract fun getAllComponentsIncludesViewModel ()Z
+	public abstract fun getAlwaysShowCurrentState ()Z
+	public abstract fun getAutoselectDebuggerConnections ()Z
+	public abstract fun getBaseViewModelType ()Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public abstract fun getDarkTheme ()Z
+	public abstract fun getDebuggerServerPort ()I
+	public abstract fun getDetailsPanePercentage ()F
+	public abstract fun getLastRoute ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public abstract fun getLastViewModelName ()Ljava/lang/String;
+	public abstract fun getRouterViewModelName ()Ljava/lang/String;
+	public abstract fun getShowCurrentRoute ()Z
+	public abstract fun setAllComponentsIncludesSavedStateAdapter (Z)V
+	public abstract fun setAllComponentsIncludesViewModel (Z)V
+	public abstract fun setAlwaysShowCurrentState (Z)V
+	public abstract fun setAutoselectDebuggerConnections (Z)V
+	public abstract fun setBaseViewModelType (Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;)V
+	public abstract fun setDarkTheme (Z)V
+	public abstract fun setDebuggerServerPort (I)V
+	public abstract fun setDetailsPanePercentage (F)V
+	public abstract fun setLastRoute (Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;)V
+	public abstract fun setLastViewModelName (Ljava/lang/String;)V
+	public abstract fun setRouterViewModelName (Ljava/lang/String;)V
+	public abstract fun setShowCurrentRoute (Z)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/settings/IntellijPluginPersistentSettings : com/copperleaf/ballast/debugger/idea/settings/IntellijPluginMutableSettings, com/russhwolf/settings/Settings {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun applyFromSnapshot (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettings;)V
+	public fun clear ()V
+	public fun getAllComponentsIncludesSavedStateAdapter ()Z
+	public fun getAllComponentsIncludesViewModel ()Z
+	public fun getAlwaysShowCurrentState ()Z
+	public fun getAutoselectDebuggerConnections ()Z
+	public fun getBallastVersion ()Ljava/lang/String;
+	public fun getBaseViewModelType ()Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
+	public fun getDarkTheme ()Z
+	public fun getDebuggerServerPort ()I
+	public fun getDetailsPanePercentage ()F
+	public fun getDouble (Ljava/lang/String;D)D
+	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
+	public fun getLastRoute ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public fun getLastViewModelName ()Ljava/lang/String;
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getRouterViewModelName ()Ljava/lang/String;
+	public fun getShowCurrentRoute ()Z
+	public fun getSize ()I
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
+	public fun hasKey (Ljava/lang/String;)Z
+	public fun putBoolean (Ljava/lang/String;Z)V
+	public fun putDouble (Ljava/lang/String;D)V
+	public fun putFloat (Ljava/lang/String;F)V
+	public fun putInt (Ljava/lang/String;I)V
+	public fun putLong (Ljava/lang/String;J)V
+	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun remove (Ljava/lang/String;)V
+	public fun setAllComponentsIncludesSavedStateAdapter (Z)V
+	public fun setAllComponentsIncludesViewModel (Z)V
+	public fun setAlwaysShowCurrentState (Z)V
+	public fun setAutoselectDebuggerConnections (Z)V
+	public fun setBaseViewModelType (Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;)V
+	public fun setDarkTheme (Z)V
+	public fun setDebuggerServerPort (I)V
+	public fun setDetailsPanePercentage (F)V
+	public fun setLastRoute (Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;)V
+	public fun setLastViewModelName (Ljava/lang/String;)V
+	public fun setRouterViewModelName (Ljava/lang/String;)V
+	public fun setShowCurrentRoute (Z)V
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettings : com/copperleaf/ballast/debugger/idea/settings/DebuggerUiSettings, com/copperleaf/ballast/debugger/idea/settings/GeneralSettings, com/copperleaf/ballast/debugger/idea/settings/TemplatesSettings, com/copperleaf/ballast/debugger/server/BallastDebuggerServerSettings {
+}
+
+public final class com/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsDefaults : com/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettings {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;ZILcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;ZZZLjava/lang/String;FLcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;ZZ)V
+	public synthetic fun <init> (Ljava/lang/String;ZILcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;ZZZLjava/lang/String;FLcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()F
+	public final fun component11 ()Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public final fun component12 ()Z
+	public final fun component13 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()I
+	public final fun component4 ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun component8 ()Z
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;ZILcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;ZZZLjava/lang/String;FLcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;ZZ)Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsDefaults;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsDefaults;Ljava/lang/String;ZILcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;ZZZLjava/lang/String;FLcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;ZZILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsDefaults;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAllComponentsIncludesSavedStateAdapter ()Z
+	public fun getAllComponentsIncludesViewModel ()Z
+	public fun getAlwaysShowCurrentState ()Z
+	public fun getAutoselectDebuggerConnections ()Z
+	public fun getBallastVersion ()Ljava/lang/String;
+	public fun getBaseViewModelType ()Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public fun getDarkTheme ()Z
+	public fun getDebuggerServerPort ()I
+	public fun getDetailsPanePercentage ()F
+	public fun getLastRoute ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public fun getLastViewModelName ()Ljava/lang/String;
+	public fun getRouterViewModelName ()Ljava/lang/String;
+	public fun getShowCurrentRoute ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot : com/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettings {
+	public static final field $stable I
+	public static final field Companion Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot$Companion;
+	public fun <init> (Ljava/lang/String;ZILcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;ZZZLjava/lang/String;FLcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;ZZ)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()F
+	public final fun component11 ()Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public final fun component12 ()Z
+	public final fun component13 ()Z
+	public final fun component2 ()Z
+	public final fun component3 ()I
+	public final fun component4 ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Z
+	public final fun component7 ()Z
+	public final fun component8 ()Z
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;ZILcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;ZZZLjava/lang/String;FLcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;ZZ)Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;Ljava/lang/String;ZILcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;Ljava/lang/String;ZZZLjava/lang/String;FLcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;ZZILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getAllComponentsIncludesSavedStateAdapter ()Z
+	public fun getAllComponentsIncludesViewModel ()Z
+	public fun getAlwaysShowCurrentState ()Z
+	public fun getAutoselectDebuggerConnections ()Z
+	public fun getBallastVersion ()Ljava/lang/String;
+	public fun getBaseViewModelType ()Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+	public fun getDarkTheme ()Z
+	public fun getDebuggerServerPort ()I
+	public fun getDetailsPanePercentage ()F
+	public fun getLastRoute ()Lcom/copperleaf/ballast/debugger/idea/features/debugger/router/DebuggerRoute;
+	public fun getLastViewModelName ()Ljava/lang/String;
+	public fun getRouterViewModelName ()Ljava/lang/String;
+	public fun getShowCurrentRoute ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot$Companion {
+	public final fun defaults ()Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+	public final fun fromSettings (Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettings;)Lcom/copperleaf/ballast/debugger/idea/settings/IntellijPluginSettingsSnapshot;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/settings/TemplatesSettings {
+	public abstract fun getAllComponentsIncludesSavedStateAdapter ()Z
+	public abstract fun getAllComponentsIncludesViewModel ()Z
+	public abstract fun getBaseViewModelType ()Lcom/copperleaf/ballast/debugger/idea/features/templates/BallastViewModel$ViewModelTemplate;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/theme/IdeaPluginThemeKt {
+	public static final fun IdeaPluginTheme (Lcom/intellij/openapi/project/Project;Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/theme/ShapesKt {
+	public static final fun getShapes ()Landroidx/compose/material/Shapes;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/theme/SwingColor {
+	public abstract fun getBackground-0d7_KjU ()J
+}
+
+public final class com/copperleaf/ballast/debugger/idea/theme/SwingColorKt {
+	public static final fun SwingColor (Landroidx/compose/runtime/Composer;I)Lcom/copperleaf/ballast/debugger/idea/theme/SwingColor;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/theme/TypographyKt {
+	public static final fun getTypography ()Landroidx/compose/material/Typography;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/utils/PropertiesComponentSettings : com/russhwolf/settings/Settings {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;Lcom/intellij/ide/util/PropertiesComponent;)V
+	public fun clear ()V
+	public fun getBoolean (Ljava/lang/String;Z)Z
+	public fun getBooleanOrNull (Ljava/lang/String;)Ljava/lang/Boolean;
+	public fun getDouble (Ljava/lang/String;D)D
+	public fun getDoubleOrNull (Ljava/lang/String;)Ljava/lang/Double;
+	public fun getFloat (Ljava/lang/String;F)F
+	public fun getFloatOrNull (Ljava/lang/String;)Ljava/lang/Float;
+	public fun getInt (Ljava/lang/String;I)I
+	public fun getIntOrNull (Ljava/lang/String;)Ljava/lang/Integer;
+	public fun getKeys ()Ljava/util/Set;
+	public fun getLong (Ljava/lang/String;J)J
+	public fun getLongOrNull (Ljava/lang/String;)Ljava/lang/Long;
+	public fun getSize ()I
+	public fun getString (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+	public fun getStringOrNull (Ljava/lang/String;)Ljava/lang/String;
+	public fun hasKey (Ljava/lang/String;)Z
+	public fun putBoolean (Ljava/lang/String;Z)V
+	public fun putDouble (Ljava/lang/String;D)V
+	public fun putFloat (Ljava/lang/String;F)V
+	public fun putInt (Ljava/lang/String;I)V
+	public fun putLong (Ljava/lang/String;J)V
+	public fun putString (Ljava/lang/String;Ljava/lang/String;)V
+	public fun remove (Ljava/lang/String;)V
+}
+
+public final class com/copperleaf/ballast/debugger/idea/utils/SearchFilterKt {
+	public static final fun maybeFilter (Ljava/util/List;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/utils/SettingsUtilsKt {
+	public static final fun enum (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Ljava/lang/Enum;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/ReadWriteProperty;
+	public static synthetic fun enum$default (Lcom/russhwolf/settings/Settings;Ljava/lang/String;Ljava/lang/Enum;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lkotlin/properties/ReadWriteProperty;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/idea/utils/datatypes/DataType {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/idea/utils/datatypes/DataType$Companion;
+	public abstract fun parseToJson (Ljava/lang/String;)Lkotlinx/serialization/json/JsonElement;
+	public abstract fun reformat (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/utils/datatypes/DataType$Companion {
+	public final fun getForMimeType (Lio/ktor/http/ContentType;)Lcom/copperleaf/ballast/debugger/idea/utils/datatypes/DataType;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/utils/datatypes/JsonDataType : com/copperleaf/ballast/debugger/idea/utils/datatypes/DataType {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun parseToJson (Ljava/lang/String;)Lkotlinx/serialization/json/JsonElement;
+	public fun reformat (Ljava/lang/String;)Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/idea/utils/datatypes/ToStringDataType : com/copperleaf/ballast/debugger/idea/utils/datatypes/DataType {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun parseToJson (Ljava/lang/String;)Lkotlinx/serialization/json/JsonElement;
+	public fun reformat (Ljava/lang/String;)Ljava/lang/String;
+}
+

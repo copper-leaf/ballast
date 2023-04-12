@@ -30,7 +30,7 @@ public final class com/copperleaf/ballast/firebase/FirebaseAnalyticsTracker : co
 	public fun trackAnalyticsEvent (Ljava/lang/String;Ljava/util/Map;)V
 }
 
-public final class com/copperleaf/ballast/firebaseanalytics/BuildConfig {
+public final class com/copperleaf/ballast/firebase/analytics/BuildConfig {
 	public static final field BUILD_TYPE Ljava/lang/String;
 	public static final field DEBUG Z
 	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;

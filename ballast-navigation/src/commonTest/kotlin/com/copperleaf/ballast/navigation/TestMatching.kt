@@ -1,40 +1,17 @@
 package com.copperleaf.ballast.navigation
 
+import com.copperleaf.ballast.navigation.Assertions.assertEquals
+import com.copperleaf.ballast.navigation.Assertions.assertFailsWith
+import com.copperleaf.ballast.navigation.Assertions.assertSame
+import com.copperleaf.ballast.navigation.Assertions.assertTrue
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
 import com.copperleaf.ballast.navigation.routing.matchDestination
 import com.copperleaf.ballast.navigation.routing.matchDestinationOrThrow
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertSame
-import kotlin.test.assertTrue
+import io.kotest.core.spec.style.StringSpec
 
-class TestMatching {
-
-    fun String.shouldMatch(
-        route: SimpleRoute,
-        expectedPathParameters: Map<String, List<String>> = emptyMap(),
-        expectedQueryParameters: Map<String, List<String>> = emptyMap(),
-    ) {
-        val match = route.matcher.matchDestinationOrThrow(route, UnmatchedDestination.parse(this))
-        assertEquals(expectedPathParameters, match.pathParameters)
-        assertEquals(expectedQueryParameters, match.queryParameters)
-    }
-
-    fun String.shouldNotMatch(
-        route: SimpleRoute,
-        expectedErrorMessage: String,
-    ) {
-        assertFailsWith<IllegalStateException> {
-            route.matcher.matchDestinationOrThrow(route, UnmatchedDestination.parse(this))
-        }.also {
-            assertEquals(expectedErrorMessage, it.message)
-        }
-    }
-
-    @Test
-    fun testMatchPath() {
+class TestMatching : StringSpec({
+    "testMatchPath" {
         SimpleRoute("/one").apply {
             "/one".shouldMatch(this)
             "/".shouldNotMatch(
@@ -173,8 +150,7 @@ class TestMatching {
         }
     }
 
-    @Test
-    fun testMatchQuery() {
+    "testMatchQuery" {
         SimpleRoute("/one?one=two").apply {
             "/one?one=two".shouldMatch(
                 this,
@@ -357,8 +333,7 @@ class TestMatching {
         }
     }
 
-    @Test
-    fun testRoutePriority() {
+    "testRoutePriority" {
         val pathRoute = SimpleRoute("/one/{two?}?three={!}")
         val queryRoute = SimpleRoute("/one?two={?}&three={!}")
         val simpleRoutingTable = SimpleRoutingTable(queryRoute, pathRoute)
@@ -377,8 +352,7 @@ class TestMatching {
         assertSame(pathRoute, (destination as Destination.Match).originalRoute)
     }
 
-    @Test
-    fun testRoutePriorityWithHardcodedWeights() {
+    "testRoutePriorityWithHardcodedWeights" {
         val pathRoute = SimpleRoute("/one/{two?}?three={!}")
         val queryRoute = SimpleRoute("/one?two={?}&three={!}", Double.MAX_VALUE)
         val simpleRoutingTable = SimpleRoutingTable(queryRoute, pathRoute)
@@ -397,9 +371,7 @@ class TestMatching {
         assertSame(queryRoute, (destination as Destination.Match).originalRoute)
     }
 
-
-    @Test
-    fun testRoutePriorityWithManyQueryParameters() {
+    "testRoutePriorityWithManyQueryParameters" {
         val pathRoute = SimpleRoute("/one/{two?}?three={!}")
         val queryRoute = SimpleRoute("/one?two={?}&three={!}&four={?}")
         val simpleRoutingTable = SimpleRoutingTable(queryRoute, pathRoute)
@@ -416,5 +388,28 @@ class TestMatching {
         val destination = simpleRoutingTable.findMatch(unmatchedDestination)
         assertTrue { destination is Destination.Match }
         assertSame(queryRoute, (destination as Destination.Match).originalRoute)
+    }
+}) {
+    companion object {
+        fun String.shouldMatch(
+            route: SimpleRoute,
+            expectedPathParameters: Map<String, List<String>> = emptyMap(),
+            expectedQueryParameters: Map<String, List<String>> = emptyMap(),
+        ) {
+            val match = route.matcher.matchDestinationOrThrow(route, UnmatchedDestination.parse(this))
+            assertEquals(expectedPathParameters, match.pathParameters)
+            assertEquals(expectedQueryParameters, match.queryParameters)
+        }
+
+        fun String.shouldNotMatch(
+            route: SimpleRoute,
+            expectedErrorMessage: String,
+        ) {
+            assertFailsWith<IllegalStateException> {
+                route.matcher.matchDestinationOrThrow(route, UnmatchedDestination.parse(this))
+            }.also {
+                assertEquals(expectedErrorMessage, it.message)
+            }
+        }
     }
 }

@@ -1,14 +1,13 @@
 package com.copperleaf.ballast.navigation
 
+import com.copperleaf.ballast.navigation.Assertions.assertEquals
+import com.copperleaf.ballast.navigation.Assertions.assertSame
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertSame
+import io.kotest.core.spec.style.StringSpec
 
-class TestDestinationParser {
+class TestDestinationParser : StringSpec({
 
-    @Test
-    fun testParseDestination() {
+    "testParseDestination" {
         fun String.parseDestination() = UnmatchedDestination.parse(this)
 
         "/".let { original ->
@@ -40,4 +39,4 @@ class TestDestinationParser {
             }
         }
     }
-}
+})
