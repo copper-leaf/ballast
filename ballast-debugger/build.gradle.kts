@@ -1,27 +1,22 @@
-plugins {
-    `copper-leaf-android`
-    `copper-leaf-targets`
-    `copper-leaf-base`
-    `copper-leaf-version`
-    `copper-leaf-lint`
-    `copper-leaf-publish`
-    kotlin("plugin.serialization")
-    id("com.github.gmazzo.buildconfig")
-}
+import com.copperleaf.gradle.projectVersion
 
-description = "Opinionated Kotlin multiplatform Repository Caching library based on Ballast MVI"
+plugins {
+    id("copper-leaf-base")
+    id("copper-leaf-android-library")
+    id("copper-leaf-targets")
+    id("copper-leaf-buildConfig")
+    id("copper-leaf-serialization")
+    id("copper-leaf-kotest")
+//    id("copper-leaf-lint")
+    id("copper-leaf-publish")
+}
 
 kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-api"))
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.websockets)
-                implementation(libs.ktor.client.serialization)
-                implementation(libs.ktor.client.serialization.json)
-                implementation(libs.kotlinx.serialization)
-                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.bundles.ktorClient)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.benasher44.uuid)
             }
@@ -42,10 +37,5 @@ kotlin {
 }
 
 buildConfig {
-    useKotlinOutput {
-        internalVisibility = true
-        topLevelConstants = true
-    }
-
-    buildConfigField("String", "BALLAST_VERSION", "\"${project.version}\"")
+    projectVersion(project, "BALLAST_VERSION")
 }

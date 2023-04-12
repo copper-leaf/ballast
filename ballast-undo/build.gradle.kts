@@ -1,13 +1,11 @@
 plugins {
-    `copper-leaf-android`
-    `copper-leaf-targets`
-    `copper-leaf-base`
-    `copper-leaf-version`
-    `copper-leaf-lint`
-    `copper-leaf-publish`
+    id("copper-leaf-base")
+    id("copper-leaf-android-library")
+    id("copper-leaf-targets")
+    id("copper-leaf-kotest")
+//    id("copper-leaf-lint")
+    id("copper-leaf-publish")
 }
-
-description = "Opinionated Application State Management framework for Kotlin Multiplatform"
 
 kotlin {
     sourceSets {

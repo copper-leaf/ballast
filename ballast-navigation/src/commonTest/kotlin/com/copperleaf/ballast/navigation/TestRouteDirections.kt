@@ -1,5 +1,8 @@
 package com.copperleaf.ballast.navigation
 
+import com.copperleaf.ballast.navigation.Assertions.assertEquals
+import com.copperleaf.ballast.navigation.Assertions.assertFails
+import com.copperleaf.ballast.navigation.Assertions.assertTrue
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
@@ -9,18 +12,13 @@ import com.copperleaf.ballast.navigation.routing.matchDestination
 import com.copperleaf.ballast.navigation.routing.path
 import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.navigation.routing.queryParameter
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFails
-import kotlin.test.assertTrue
+import io.kotest.core.spec.style.StringSpec
 
-class TestRouteDirections {
-
+class TestRouteDirections : StringSpec({
 // Path Tests - Success
 // ---------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    fun testNoPathParametersAllowed() {
+    "testNoPathParametersAllowed()" {
         SimpleRoute("/").apply {
             directions()
                 .shouldBe("/")
@@ -31,8 +29,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun test1RequiredPathParameter() {
+    "test1RequiredPathParameter()" {
         SimpleRoute("/one/:two").apply {
             directions()
                 .pathParameter("two", "three")
@@ -46,8 +43,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun test1OptionalPathParameter() {
+    "test1OptionalPathParameter()" {
         SimpleRoute("/one/{two?}").apply {
             directions()
                 .shouldBe("/one")
@@ -63,8 +59,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testMultiplePathParameters() {
+    "testMultiplePathParameters()" {
         SimpleRoute("/one/:two/{three?}").apply {
             directions()
                 .pathParameter("two", "three")
@@ -83,16 +78,14 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testPathAnonymousTailcard() {
+    "testPathAnonymousTailcard()" {
         SimpleRoute("/one/{...}").apply {
             directions()
                 .shouldBe("/one")
         }
     }
 
-    @Test
-    fun testPathNamedTailcard() {
+    "testPathNamedTailcard()" {
         SimpleRoute("/one/{two...}").apply {
             directions()
                 .pathParameter("two", "three")
@@ -112,8 +105,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testPathParameterWithAnonymousTailcard() {
+    "testPathParameterWithAnonymousTailcard()" {
         SimpleRoute("/one/{two}/{...}").apply {
             directions()
                 .pathParameter("two", "three")
@@ -121,8 +113,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testPathParameterWithNamedTailcard() {
+    "testPathParameterWithNamedTailcard()" {
         SimpleRoute("/one/{two}/{three...}").apply {
             directions()
                 .pathParameter("two", "two")
@@ -145,8 +136,7 @@ class TestRouteDirections {
 // Path Tests - Failure
 // ---------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    fun testFailureWithNoPathParametersAllowed() {
+    "testFailureWithNoPathParametersAllowed()" {
         SimpleRoute("/").apply {
             directions()
                 .pathParameter("two", "two")
@@ -154,8 +144,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testFailureWithRequiredPathParameter() {
+    "testFailureWithRequiredPathParameter()" {
         SimpleRoute("/one/:two").apply {
             directions()
                 .shouldFail()
@@ -165,8 +154,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testPathWildcard() {
+    "testPathWildcard()" {
         SimpleRoute("/one/*").apply {
             directions()
                 .shouldFail()
@@ -179,24 +167,21 @@ class TestRouteDirections {
 // Query Parameter Tests - Success
 // ---------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    fun test1StaticQuery() {
+    "test1StaticQuery()" {
         SimpleRoute("/one?one=two").apply {
             directions()
                 .shouldBe("/one?one=two")
         }
     }
 
-    @Test
-    fun testMultipleStaticQuery() {
+    "testMultipleStaticQuery()" {
         SimpleRoute("/one?one=two&three=four").apply {
             directions()
                 .shouldBe("/one?one=two&three=four")
         }
     }
 
-    @Test
-    fun testRequiredQueryParameterWith1Value() {
+    "testRequiredQueryParameterWith1Value()" {
         SimpleRoute("/one?one={!}").apply {
             directions()
                 .queryParameter("one", "two")
@@ -204,8 +189,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testRequiredQueryParameterWithMultipleValues() {
+    "testRequiredQueryParameterWithMultipleValues()" {
         SimpleRoute("/one?one={[!]}").apply {
             directions()
                 .queryParameter("one", "two")
@@ -216,8 +200,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testOptionalQueryParameterWith1Value() {
+    "testOptionalQueryParameterWith1Value()" {
         SimpleRoute("/one?one={?}").apply {
             directions().shouldBe("/one")
             directions()
@@ -226,8 +209,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testOptionalQueryParameterWithMultipleValues() {
+    "testOptionalQueryParameterWithMultipleValues()" {
         SimpleRoute("/one?one={[?]}").apply {
             directions().shouldBe("/one")
             directions()
@@ -239,8 +221,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testRemainder() {
+    "testRemainder()" {
         SimpleRoute("/one?{...}").apply {
             directions()
                 .shouldBe("/one")
@@ -260,8 +241,7 @@ class TestRouteDirections {
 // Query Parameter Tests - Failure
 // ---------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    fun testFailureWithNoQuery() {
+    "testFailureWithNoQuery()" {
         SimpleRoute("/one").apply {
             directions()
                 .queryParameter("one", "two")
@@ -269,8 +249,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testFailureWith1StaticQuery() {
+    "testFailureWith1StaticQuery()" {
         SimpleRoute("/one?one=two").apply {
             directions()
                 .queryParameter("one", "two")
@@ -278,8 +257,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testFailureWithRequiredQueryParameterWith1Value() {
+    "testFailureWithRequiredQueryParameterWith1Value()" {
         SimpleRoute("/one?one={!}").apply {
             directions()
                 .shouldFail()
@@ -292,8 +270,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testFailureWithRequiredQueryParameterWithMultipleValue() {
+    "testFailureWithRequiredQueryParameterWithMultipleValue()" {
         SimpleRoute("/one?one={[!]}").apply {
             directions()
                 .shouldFail()
@@ -303,8 +280,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testFailureWithOptionalQueryParameterWith1Value() {
+    "testFailureWithOptionalQueryParameterWith1Value()" {
         SimpleRoute("/one?one={?}").apply {
             directions()
                 .queryParameter("two", "three")
@@ -315,8 +291,7 @@ class TestRouteDirections {
         }
     }
 
-    @Test
-    fun testFailureWithOptionalQueryParameterWithMultipleValue() {
+    "testFailureWithOptionalQueryParameterWithMultipleValue()" {
         SimpleRoute("/one?one={[?]}").apply {
             directions()
                 .queryParameter("two", "three")
@@ -327,8 +302,7 @@ class TestRouteDirections {
 // Test encoding
 // ---------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    fun testEncoding() {
+    "testEncoding()" {
         SimpleRoute("/one/:two?three={?}").apply {
             directions()
                 .pathParameter("two", "a b")
@@ -340,24 +314,23 @@ class TestRouteDirections {
                 .shouldBe("/one/a%2Fb?three=c%2F%26%2Fd")
         }
     }
+}) {
+    companion object {
+        private fun <T : Route> Destination.Directions<T>.shouldBe(expectedDestinationUrl: String) {
+            val generatedDestinationUrl = build()
 
-// Helpers
-// ---------------------------------------------------------------------------------------------------------------------
+            // check that the generated directions is what we expect, as set in the test case
+            assertEquals(expectedDestinationUrl, generatedDestinationUrl)
 
-    private fun <T : Route> Destination.Directions<T>.shouldBe(expectedDestinationUrl: String) {
-        val generatedDestinationUrl = build()
+            // check that the directions generated by a route will also be able to be matched by that same route
+            val match = route.matcher.matchDestination(route, UnmatchedDestination.parse(generatedDestinationUrl))
+            assertTrue { match is Destination.Match<T> }
+        }
 
-        // check that the generated directions is what we expect, as set in the test case
-        assertEquals(expectedDestinationUrl, generatedDestinationUrl)
-
-        // check that the directions generated by a route will also be able to be matched by that same route
-        val match = route.matcher.matchDestination(route, UnmatchedDestination.parse(generatedDestinationUrl))
-        assertTrue { match is Destination.Match<T> }
-    }
-
-    private fun <T : Route> Destination.Directions<T>.shouldFail() {
-        assertFails {
-            build()
+        private fun <T : Route> Destination.Directions<T>.shouldFail() {
+            assertFails {
+                build()
+            }
         }
     }
 }

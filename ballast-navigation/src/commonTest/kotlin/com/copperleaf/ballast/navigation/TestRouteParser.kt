@@ -5,89 +5,84 @@ import com.copperleaf.ballast.navigation.internal.QueryStringParser
 import com.copperleaf.ballast.navigation.routing.PathSegment
 import com.copperleaf.ballast.navigation.routing.QueryParameter
 import com.copperleaf.ballast.navigation.routing.RouteMatcher
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import io.kotest.core.spec.style.StringSpec
 
-class TestRouteParser {
-
+class TestRouteParser : StringSpec({
 // Path
 // ---------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    fun testPathSegmentParser() {
+    "testPathSegmentParser" {
         PathParser.parsePathSegment("one").apply {
-            assertEquals(PathSegment.Static("one"), this)
-            assertEquals(5, weight)
+            Assertions.assertEquals(PathSegment.Static("one"), this)
+            Assertions.assertEquals(5, weight)
         }
         PathParser.parsePathSegment("two").apply {
-            assertEquals(PathSegment.Static("two"), this)
-            assertEquals(5, weight)
+            Assertions.assertEquals(PathSegment.Static("two"), this)
+            Assertions.assertEquals(5, weight)
         }
         PathParser.parsePathSegment(":one").apply {
-            assertEquals(PathSegment.Parameter("one", false), this)
-            assertEquals(4, weight)
+            Assertions.assertEquals(PathSegment.Parameter("one", false), this)
+            Assertions.assertEquals(4, weight)
         }
         PathParser.parsePathSegment("{one}").apply {
-            assertEquals(PathSegment.Parameter("one", false), this)
-            assertEquals(4, weight)
+            Assertions.assertEquals(PathSegment.Parameter("one", false), this)
+            Assertions.assertEquals(4, weight)
         }
         PathParser.parsePathSegment("*").apply {
-            assertEquals(PathSegment.Wildcard, this)
-            assertEquals(3, weight)
+            Assertions.assertEquals(PathSegment.Wildcard, this)
+            Assertions.assertEquals(3, weight)
         }
         PathParser.parsePathSegment("{one?}").apply {
-            assertEquals(PathSegment.Parameter("one", true), this)
-            assertEquals(2, weight)
+            Assertions.assertEquals(PathSegment.Parameter("one", true), this)
+            Assertions.assertEquals(2, weight)
         }
         PathParser.parsePathSegment("{...}").apply {
-            assertEquals(PathSegment.Tailcard(null), this)
-            assertEquals(1, weight)
+            Assertions.assertEquals(PathSegment.Tailcard(null), this)
+            Assertions.assertEquals(1, weight)
         }
         PathParser.parsePathSegment("{one...}").apply {
-            assertEquals(PathSegment.Tailcard("one"), this)
-            assertEquals(1, weight)
+            Assertions.assertEquals(PathSegment.Tailcard("one"), this)
+            Assertions.assertEquals(1, weight)
         }
     }
 
-    @Test
-    fun testPathParser() {
+    "testPathParser" {
         PathParser.parsePath("/").apply {
-            assertEquals(listOf(), this)
+            Assertions.assertEquals(listOf<PathSegment>(), this)
         }
         PathParser.parsePath("/one").apply {
-            assertEquals(listOf(PathSegment.Static("one")), this)
+            Assertions.assertEquals(listOf(PathSegment.Static("one")), this)
         }
         PathParser.parsePath("/two").apply {
-            assertEquals(listOf(PathSegment.Static("two")), this)
+            Assertions.assertEquals(listOf(PathSegment.Static("two")), this)
         }
         PathParser.parsePath("/one-two").apply {
-            assertEquals(listOf(PathSegment.Static("one-two")), this)
+            Assertions.assertEquals(listOf(PathSegment.Static("one-two")), this)
         }
         PathParser.parsePath("/one_two").apply {
-            assertEquals(listOf(PathSegment.Static("one_two")), this)
+            Assertions.assertEquals(listOf(PathSegment.Static("one_two")), this)
         }
         PathParser.parsePath("/:one").apply {
-            assertEquals(listOf(PathSegment.Parameter("one", false)), this)
+            Assertions.assertEquals(listOf(PathSegment.Parameter("one", false)), this)
         }
         PathParser.parsePath("/{one}").apply {
-            assertEquals(listOf(PathSegment.Parameter("one", false)), this)
+            Assertions.assertEquals(listOf(PathSegment.Parameter("one", false)), this)
         }
         PathParser.parsePath("/*").apply {
-            assertEquals(listOf(PathSegment.Wildcard), this)
+            Assertions.assertEquals(listOf(PathSegment.Wildcard), this)
         }
         PathParser.parsePath("/{one?}").apply {
-            assertEquals(listOf(PathSegment.Parameter("one", true)), this)
+            Assertions.assertEquals(listOf(PathSegment.Parameter("one", true)), this)
         }
         PathParser.parsePath("/{...}").apply {
-            assertEquals(listOf(PathSegment.Tailcard(null)), this)
+            Assertions.assertEquals(listOf(PathSegment.Tailcard(null)), this)
         }
         PathParser.parsePath("/{one...}").apply {
-            assertEquals(listOf(PathSegment.Tailcard("one")), this)
+            Assertions.assertEquals(listOf(PathSegment.Tailcard("one")), this)
         }
 
         PathParser.parsePath("/one/two/*/:three/{four}/{five?}").apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Static("two"),
@@ -99,7 +94,7 @@ class TestRouteParser {
             )
         }
         PathParser.parsePath("/one/two/*/:three/{four}/{...}").apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Static("two"),
@@ -111,7 +106,7 @@ class TestRouteParser {
             )
         }
         PathParser.parsePath("/one/two/*/:three/{four}/{five...}").apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Static("two"),
@@ -125,7 +120,7 @@ class TestRouteParser {
 
         // the parser does not validate whether the segments are correct, it's just checking the format
         PathParser.parsePath("/one/two/*/:three/{four}/{five...}/{six?}/{seven...}/*/{...}").apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Static("two"),
@@ -145,64 +140,62 @@ class TestRouteParser {
 // Query Parameters
 // ---------------------------------------------------------------------------------------------------------------------
 
-    @Test
-    fun testQueryParameterParser() {
+    "testQueryParameterParser" {
         QueryStringParser.parseQueryParameter("one=two").apply {
-            assertEquals(QueryParameter.Static("one", listOf("two")), this)
-            assertEquals(5, weight)
+            Assertions.assertEquals(QueryParameter.Static("one", listOf("two")), this)
+            Assertions.assertEquals(5, weight)
         }
         QueryStringParser.parseQueryParameter("one=[two,three,four]").apply {
-            assertEquals(QueryParameter.Static("one", listOf("four", "three", "two")), this)
-            assertEquals(5, weight)
+            Assertions.assertEquals(QueryParameter.Static("one", listOf("four", "three", "two")), this)
+            Assertions.assertEquals(5, weight)
         }
         QueryStringParser.parseQueryParameter("one={!}").apply {
-            assertEquals(QueryParameter.Parameter("one", false, false), this)
-            assertEquals(4, weight)
+            Assertions.assertEquals(QueryParameter.Parameter("one", false, false), this)
+            Assertions.assertEquals(4, weight)
         }
         QueryStringParser.parseQueryParameter("one={[!]}").apply {
-            assertEquals(QueryParameter.Parameter("one", false, true), this)
-            assertEquals(4, weight)
+            Assertions.assertEquals(QueryParameter.Parameter("one", false, true), this)
+            Assertions.assertEquals(4, weight)
         }
         QueryStringParser.parseQueryParameter("one={?}").apply {
-            assertEquals(QueryParameter.Parameter("one", true, false), this)
-            assertEquals(2, weight)
+            Assertions.assertEquals(QueryParameter.Parameter("one", true, false), this)
+            Assertions.assertEquals(2, weight)
         }
         QueryStringParser.parseQueryParameter("one={[?]}").apply {
-            assertEquals(QueryParameter.Parameter("one", true, true), this)
-            assertEquals(2, weight)
+            Assertions.assertEquals(QueryParameter.Parameter("one", true, true), this)
+            Assertions.assertEquals(2, weight)
         }
         QueryStringParser.parseQueryParameter("{...}").apply {
-            assertEquals(QueryParameter.Remainder, this)
-            assertEquals(1, weight)
+            Assertions.assertEquals(QueryParameter.Remainder, this)
+            Assertions.assertEquals(1, weight)
         }
     }
 
-    @Test
-    fun testQueryStringParser() {
+    "testQueryStringParser" {
         QueryStringParser.parseQueryString("one=two").apply {
-            assertEquals(listOf(QueryParameter.Static("one", listOf("two"))), this)
+            Assertions.assertEquals(listOf(QueryParameter.Static("one", listOf("two"))), this)
         }
         QueryStringParser.parseQueryString("one=[two,three,four]").apply {
-            assertEquals(listOf(QueryParameter.Static("one", listOf("four", "three", "two"))), this)
+            Assertions.assertEquals(listOf(QueryParameter.Static("one", listOf("four", "three", "two"))), this)
         }
         QueryStringParser.parseQueryString("one={!}").apply {
-            assertEquals(listOf(QueryParameter.Parameter("one", false, false)), this)
+            Assertions.assertEquals(listOf(QueryParameter.Parameter("one", false, false)), this)
         }
         QueryStringParser.parseQueryString("one={[!]}").apply {
-            assertEquals(listOf(QueryParameter.Parameter("one", false, true)), this)
+            Assertions.assertEquals(listOf(QueryParameter.Parameter("one", false, true)), this)
         }
         QueryStringParser.parseQueryString("one={?}").apply {
-            assertEquals(listOf(QueryParameter.Parameter("one", true, false)), this)
+            Assertions.assertEquals(listOf(QueryParameter.Parameter("one", true, false)), this)
         }
         QueryStringParser.parseQueryString("one={[?]}").apply {
-            assertEquals(listOf(QueryParameter.Parameter("one", true, true)), this)
+            Assertions.assertEquals(listOf(QueryParameter.Parameter("one", true, true)), this)
         }
         QueryStringParser.parseQueryString("{...}").apply {
-            assertEquals(listOf(QueryParameter.Remainder), this)
+            Assertions.assertEquals(listOf(QueryParameter.Remainder), this)
         }
 
         QueryStringParser.parseQueryString("one=two&three=[four,five]&six={!}&seven={[?]}&{...}").apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     QueryParameter.Static("one", listOf("two")),
                     QueryParameter.Static("three", listOf("five", "four")),
@@ -214,41 +207,40 @@ class TestRouteParser {
         }
     }
 
-    @Test
-    fun testCreateMatcher() {
+    "testCreateMatcher" {
         fun String.createMatcher() = RouteMatcher.create(this)
 
         "/one".createMatcher().apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                 ),
                 path
             )
-            assertEquals(50.0, weight)
+            Assertions.assertEquals(50.0, weight)
         }
         "/one/two".createMatcher().apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Static("two"),
                 ),
                 path
             )
-            assertEquals(550.0, weight)
+            Assertions.assertEquals(550.0, weight)
         }
         "/one/:two".createMatcher().apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Parameter("two", false),
                 ),
                 path
             )
-            assertEquals(540.0, weight)
+            Assertions.assertEquals(540.0, weight)
         }
         "/one/:two/{three?}".createMatcher().apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Parameter("two", false),
@@ -256,10 +248,10 @@ class TestRouteParser {
                 ),
                 path
             )
-            assertEquals(5420.0, weight)
+            Assertions.assertEquals(5420.0, weight)
         }
         "/one/:two/{three}/*/{four}".createMatcher().apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Parameter("two", false),
@@ -269,11 +261,11 @@ class TestRouteParser {
                 ),
                 path
             )
-            assertEquals(544340.0, weight)
+            Assertions.assertEquals(544340.0, weight)
         }
 
         "/one/:two/{three?}?one=two".createMatcher().apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Parameter("two", false),
@@ -281,16 +273,16 @@ class TestRouteParser {
                 ),
                 path
             )
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     QueryParameter.Static("one", listOf("two")),
                 ),
                 query
             )
-            assertEquals(5420_5.0, weight)
+            Assertions.assertEquals(5420_5.0, weight)
         }
         "/one/:two/{three}/{...}?one=two&four={!}&{...}".createMatcher().apply {
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     PathSegment.Static("one"),
                     PathSegment.Parameter("two", false),
@@ -299,7 +291,7 @@ class TestRouteParser {
                 ),
                 path
             )
-            assertEquals(
+            Assertions.assertEquals(
                 listOf(
                     QueryParameter.Static("one", listOf("two")),
                     QueryParameter.Parameter("four", false, false),
@@ -307,29 +299,29 @@ class TestRouteParser {
                 ),
                 query
             )
-            assertEquals(54410_541.0, weight)
+            Assertions.assertEquals(54410_541.0, weight)
         }
 
-        assertFailsWith<Throwable> { "/one/:two/{three?}/{four?}".createMatcher() }.let {
-            assertEquals("you can only have one optional parameter or tailcard, but not both", it.message)
+        Assertions.assertFailsWith<Throwable> { "/one/:two/{three?}/{four?}".createMatcher() }.let {
+            Assertions.assertEquals("you can only have one optional parameter or tailcard, but not both", it.message)
         }
-        assertFailsWith<Throwable> { "/one/:two/{three?}/{...}".createMatcher() }.let {
-            assertEquals("you can only have one optional parameter or tailcard, but not both", it.message)
+        Assertions.assertFailsWith<Throwable> { "/one/:two/{three?}/{...}".createMatcher() }.let {
+            Assertions.assertEquals("you can only have one optional parameter or tailcard, but not both", it.message)
         }
-        assertFailsWith<Throwable> { "/one/:two/{three?}/{four...}".createMatcher() }.let {
-            assertEquals("you can only have one optional parameter or tailcard, but not both", it.message)
+        Assertions.assertFailsWith<Throwable> { "/one/:two/{three?}/{four...}".createMatcher() }.let {
+            Assertions.assertEquals("you can only have one optional parameter or tailcard, but not both", it.message)
         }
-        assertFailsWith<Throwable> { "/one/:two/{three?}/four".createMatcher() }.let {
-            assertEquals("optional parameters and tailcards must be at the end of the path", it.message)
+        Assertions.assertFailsWith<Throwable> { "/one/:two/{three?}/four".createMatcher() }.let {
+            Assertions.assertEquals("optional parameters and tailcards must be at the end of the path", it.message)
         }
-        assertFailsWith<Throwable> { "/one/:two/{two}".createMatcher() }.let {
-            assertEquals("parameter names must be unique", it.message)
+        Assertions.assertFailsWith<Throwable> { "/one/:two/{two}".createMatcher() }.let {
+            Assertions.assertEquals("parameter names must be unique", it.message)
         }
-        assertFailsWith<Throwable> { "/one/:two/{two...}".createMatcher() }.let {
-            assertEquals("parameter names must be unique", it.message)
+        Assertions.assertFailsWith<Throwable> { "/one/:two/{two...}".createMatcher() }.let {
+            Assertions.assertEquals("parameter names must be unique", it.message)
         }
-        assertFailsWith<Throwable> { "one/two".createMatcher() }.let {
-            assertEquals(
+        Assertions.assertFailsWith<Throwable> { "one/two".createMatcher() }.let {
+            Assertions.assertEquals(
                 """
                 |Parse error at 1:1 (LeadingSlashParser)
                 |
@@ -343,8 +335,7 @@ class TestRouteParser {
         }
     }
 
-//    @Test
-//    fun testPrependPath() {
+//    "testPrependPath" {
 //        URLBuilder()
 //            .apply { encodedPath = "/one/two/three" }.build()
 //            .prependPath("arkham-explorer")
@@ -362,4 +353,4 @@ class TestRouteParser {
 //            this
 //        }
 //    }
-}
+})
