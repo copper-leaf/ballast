@@ -33,8 +33,8 @@ include(":ballast-sync")
 include(":ballast-undo")
 include(":ballast-navigation")
 
-include(":ballast-firebase-crashlytics")
-include(":ballast-firebase-analytics")
+include(":ballast-crash-reporting")
+include(":ballast-analytics")
 
 include(":ballast-debugger-server")
 include(":ballast-idea-plugin")

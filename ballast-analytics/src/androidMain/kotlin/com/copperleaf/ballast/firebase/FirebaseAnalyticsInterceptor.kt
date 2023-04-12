@@ -18,7 +18,7 @@ import kotlin.reflect.KClass
 @Deprecated(
     "Use BallastAnalyticsInterceptor with FirebaseAnalyticsTracker instead. Deprecated since v3, to be removed in v4.",
     replaceWith = ReplaceWith(
-        "BallastAnalyticsInterceptor(FirebaseAnalyticsTracker(Firebase.analytics)) { it.isAnnotatedWith(FirebaseAnalyticsTrackInput::class) }",
+        "BallastAnalyticsInterceptor(FirebaseAnalyticsTracker(Firebase.analytics)) { it.isAnnotatedWith<FirebaseAnalyticsTrackInput>() }",
 
         "com.copperleaf.ballast.firebase.BallastAnalyticsInterceptor",
         "com.google.firebase.ktx.Firebase",
@@ -45,7 +45,7 @@ class FirebaseAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
             notifications
                 .onEach { notification ->
                     if (notification is BallastNotification.InputAccepted) {
-                        if (notification.input.isAnnotatedWith(FirebaseAnalyticsTrackInput::class)) {
+                        if (notification.input.isAnnotatedWith<FirebaseAnalyticsTrackInput>()) {
                             analytics.logEvent("action") {
                                 param(Keys.ViewModelName, notification.viewModelName)
                                 param(
@@ -64,7 +64,7 @@ class FirebaseAnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
 
 public fun <Inputs : Any, Events : Any, State : Any> FirebaseAnalyticsInterceptor(
     analytics: FirebaseAnalytics = Firebase.analytics,
-    shouldTrackInput: (Inputs) -> Boolean = { it.isAnnotatedWith(FirebaseAnalyticsTrackInput::class) },
+    shouldTrackInput: (Inputs) -> Boolean = { it.isAnnotatedWith<FirebaseAnalyticsTrackInput>() },
 ): BallastAnalyticsInterceptor<Inputs, Events, State> {
     return BallastAnalyticsInterceptor(
         tracker = FirebaseAnalyticsTracker(analytics),
@@ -72,6 +72,6 @@ public fun <Inputs : Any, Events : Any, State : Any> FirebaseAnalyticsIntercepto
     )
 }
 
-public fun <T : Any, Ann : Annotation> T.isAnnotatedWith(annotationClass: KClass<Ann>): Boolean {
-    return this::class.java.isAnnotationPresent(annotationClass.java)
+public inline fun <reified Ann : Annotation> Any.isAnnotatedWith(): Boolean {
+    return this::class.java.isAnnotationPresent(Ann::class.java)
 }
