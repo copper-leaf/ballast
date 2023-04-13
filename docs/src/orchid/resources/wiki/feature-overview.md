@@ -3,6 +3,25 @@
 
 # High-level Feature Overview
 
+At a high level, Ballast is a library to help you manage the state of your application as it changes over time. It 
+follows the basic pattern of MVI, which is that the ViewModel state cannot be changed directly, but instead you must 
+send your _intent_ to change the state to the library, which is make sure that request is processed safely. The basic
+MVI loop looks like this:
+
+```mermaid
+graph
+    ViewModel--State-->UI
+    UI--Inputs-->ViewModel
+```
+
+In addition to providing a robust and safe system for processing changes and producing new states, it also offers 
+features for emitting one-off [Events](#events) and running and restarting tasks that run in the background with 
+[Side Jobs](#side-jobs). For more advanced usage, Ballast also has a flexible [plugin API](#interceptors), with many
+[Modules][4] available to extend the functionality of your ViewModels with features like logging, time-travel debugging, 
+and automatic state restoration.
+
+Explore the sections below for the basic components that make up a complete Ballast ViewModel workflow.
+
 ## ViewModels
 
 The ViewModel is Ballast's container for implementing the MVI pattern. It holds onto all data and assembles your
@@ -53,10 +72,10 @@ object LoginScreenContract {
 ### State
 
 The most important component of the MVI contract, and of the Ballast library, is the State. All the data in your UI that
-changes meaningfully should be modeled in your State. States are persistent, held in-memory, and guaranteed to always 
-exist through the StateFlow. You will typically observe a `StateFlow` of your ViewModel state, but you can also access 
-it once as a snapshot at that point in time. How you build your UI and model your Inputs should be derived completely 
-from how you model your State.
+changes meaningfully should be modeled in your State. States are held in-memory, and are guaranteed to always exist 
+through the StateFlow. You will typically observe a `StateFlow` of your ViewModel state, but you can also access it once
+as a snapshot at that point in time. How you build your UI and model your Inputs should be derived completely from how 
+you model your State.
 
 State is modeled as a Kotlin immutable `data class`:
 
@@ -76,6 +95,13 @@ modeled simultaneously.
 
 For these reasons, Ballast's opinion is that the Contract's State class should be a `data class`. But `sealed classes`
 work great as individual properties within that State!
+
+{% alert 'info' :: compileAs('md') %}
+Pro tip: data classes are great because they make it easy to update the state with `.copy()` and are built-in to the 
+Kotlin language, but there are other ways to update immutable data classes that you might find nicer to work with. Try
+checking out [Arrow Optics](https://arrow-kt.io/learn/immutable-data/intro/#meet-optics) or [KopyKat](https://kopyk.at/)
+as an alternative!
+{% endalert %}
 
 ### Inputs
 
@@ -98,13 +124,18 @@ A good rule of thumb is to avoid re-using any Inputs for more than 1 purpose. It
 will do to the State _without having to look at its implementation or the State_. If you are tempted to re-send the same
 input to do 2 different things, it should just be 2 different Inputs.
 
+{% alert 'info' :: compileAs('md')  %}
+Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
+You can also use a `sealed interface` instead of `sealed class`.
+{% endalert %}
+
 ### Events
 
-A necessary feature of UI programming is to handle actions once, only once, and only at the appropriate time (such as
-Navigation requests). The processing of these Events is typically tightly coupled to the UI framework itself and doesn't
-make much sense to be modeled in the State because the request is not persistent. Ballast uses Events as a way to keep
-the platform-specific event-handling logic out of the ViewModel while ensuring all the guarantees of one-off Events that
-one would expect.
+A necessary feature of UI programming is to handle some actions once, only once, and only at the appropriate time (such 
+as Navigation requests). The processing of these Events is typically tightly coupled to the UI framework itself and 
+doesn't make much sense to be modeled in the State because the request should not be kept around after it has been 
+handled. Ballast uses Events as a way to keep the platform-specific event-handling logic out of the ViewModel while 
+ensuring all the guarantees of one-off Events that one would expect.
 
 Like Inputs, Events are modeled as a Kotlin `sealed class`:
 
@@ -115,6 +146,11 @@ sealed class Events {
 }
 ```
 
+{% alert 'info' :: compileAs('md')  %}
+Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
+You can also use a `sealed interface` instead of `sealed class`.
+{% endalert %}
+
 ## Handlers
 
 Everything in the Contract is entirely declarative, but at some point Ballast needs to _do something_ with everything in
@@ -123,12 +159,12 @@ full MVI pattern.
 
 ### Input Handlers
 
-All of Ballast's processing revolves, literally, around the Input Handler. It is the only place in the MVI loop that is
+All of Ballast's processing revolves around the Input Handler. It is the only place in the MVI loop that is
 allowed to run arbitrary code, and it is based upon Kotlin Coroutines to allow the entire processor loop to run
 asynchronously. Inputs that get sent to a ViewModel are placed into a queue, and the Input Handler pulls them out of the
 queue one-at-a-time to be processed.
 
-And InputHandler is a class which implements the `InputHandler` interface. The `InputHandler.handleInput()` callback
+An InputHandler is a class which implements the `InputHandler` interface. The `InputHandler.handleInput()` callback
 receives a generic `Input` which should get split out into its sealed subclasses with a `when` statement. The 
 InputHandler will be provided to the ViewModel upon its creation.
 
@@ -201,9 +237,9 @@ override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(
 }
 ```
 
-The `sideJob()` lambda's receiver DSL is able to post both Inputs and Events back to the ViewModel. It also includes
-a snapshot of the State taken when the SideJob is started, and a flag to let you know if the sideJob is started 
-for the first time or restarted.
+SideJobs are not able to directly access the ViewModel State since they are running in parallel to the InputHandler, but
+the `sideJob()` lambda's receiver DSL is able to post both Inputs and Events back to the ViewModel to request changes to
+the state.
 
 ## Configuration
 
@@ -240,12 +276,12 @@ public class ExampleViewModel(
 One of the primary features of Ballast, and indeed one of the biggest benefits of the MVI pattern in general, is it 
 ability to decouple the _intent_ to do work from the actual processing of that work. Because of this separation, it 
 makes it possible to intercept all the objects moving throughout the ViewModel and add a bunch of other really useful
-functionality, without requiring any changes to the Contract or Processor code.
+functionality, without requiring any changes to the Contract or Handler code.
 
 A basic Interceptor works like a [Decorator][1], being attached to the ViewModel without affecting any of the normal
 processing behavior of the ViewModel. It receives `BallastNotifications` from the ViewModel to notify the status of 
 every feature as it goes through the steps of processing, such as being queued, completed, or failed. Basic Interceptors 
-are purely a read-only mechanism, and are not able to make any changes to the ViewModel.
+are purely a read-only mechanism, and are not able to make any changes to the ViewModel. 
 
 ```kotlin
 public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
@@ -257,11 +293,16 @@ public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 }
 ```
 
+{% alert 'danger' :: compileAs('md') %}
+Note that this style of writing Interceptors is deprecated since v3.0.0, and the `onNotify` method will be removed in 
+v4. Use the "advanced" Interceptor below for creating new Interceptors.
+{% endalert %}
+
 More advanced Interceptors are given additional privileges and are able to push changes back to the ViewModel. Rather 
 than being notified when something interesting happens, they are notified when the ViewModel starts up and are given 
 direct access to the Notifications flow, as well as a way to send data directly back into the ViewModel's processing 
 queue, for doing unique and privileged things like time-travel debugging. Advanced Interceptors are able to restore the
-ViewModel state arbitrarily, and send Inputs back to the ViewModel for processing, both of which will be handled 
+ViewModel state arbitrarily, and send Inputs back to the ViewModel for processing, both of which will be 
 processed in the normal queue by the InputStrategy.
 
 ```kotlin
@@ -272,9 +313,12 @@ public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
     ) {
         launch(start = CoroutineStart.UNDISPATCHED) {
-            notifications.collect {
-                onNotify(logger, it)
-            }
+            notifications.awaitViewModelStart()
+            notifications
+                .onEach {
+                    // do something
+                }
+                .collect()
         }
     }
 }
@@ -328,5 +372,5 @@ maintains a list of all Inputs and a copy of the latest State, so it may consume
 sensitive information to the logger, and as such should never be used in production.
 
 [1]: https://en.wikipedia.org/wiki/Decorator_pattern
-[2]: {{ 'Ballast Firebase' | link }}
 [3]: {{ 'Ballast Repository' | link }}
+[4]: {{ 'Modules' | link }}

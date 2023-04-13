@@ -8,10 +8,10 @@ apiValidation {
     ignoredProjects.addAll(
         listOf(
             "docs",
-//            "android",
-//            "desktop",
-//            "web",
-//            "ballast-idea-plugin",
+            "android",
+            "desktop",
+            "web",
+            "ballast-idea-plugin",
         )
     )
 }

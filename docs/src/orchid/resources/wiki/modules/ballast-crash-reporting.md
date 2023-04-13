@@ -5,17 +5,17 @@
 
 ## Overview
 
-Ballast's Firebase modules offer an easy, declarative way to send data automatically to Firebase on Android. Analytics 
-and Crashlytics are both supported, each with different modules, so you can pick and choose the features you need.
+Ballast's Crash Reporting module automatically sends errors in your ViewModels to you crash reporting SDK. Support for 
+Firebase Crashlytics is supported out-of-the-box on Android.
+
+Since v3.0.0, crash reporting is now available in all targets, for use with other analytics trackers.
 
 ## Usage
-
-### Crashlytics
 
 Ballast's Crashlytics integration provides automatic tracing of your Inputs and gives you Logs and Keys attached to your
 crash reports to aid in identifying and getting to the root cause of your application issues. Crashlytics should be 
 integrated in your app [as normal][1], and then 
-you need to add the [`ballast-crashlytics`](#Installation) dependency, and add the Interceptor to your ViewModel 
+you need to add the [`ballast-firebase-crashlytics`](#Installation) dependency, and add the Interceptor to your ViewModel 
 configuration. Note that the below example uses `AndroidViewModel`, but the `FirebaseCrashlyticsInterceptor` will work 
 just the same with any other Ballast ViewModel type (Repositories, BasicViewModel, etc.).
 
@@ -29,7 +29,13 @@ constructor() : AndroidViewModel<
         ExampleContract.State>(
     config = BallastViewModelConfiguration.Builder()
         .apply {
-            this += FirebaseCrashlyticsInterceptor(Firebase.crashlytics)
+            // customized interceptor
+            this += CrashReportingInterceptor(
+                tracker = FirebaseCrashReporter(Firebase.crashlytics),
+                shouldTrackInput = { !it.isAnnotatedWith<FirebaseCrashlyticsIgnore>() },
+            )
+            // helper function for setting up crash reporting with Firebase
+            this += FirebaseCrashlyticsInterceptor() // FirebaseCrashlyticsInterceptor factory function, which returns CrashReportingInterceptor
         }
         .withViewModel(
             initialState = ExampleContract.State(),
@@ -57,46 +63,6 @@ Add `@FirebaseCrashlyticsIgnore` to Inputs you do not want to sent to Firebase, 
 In addition to logs, the `FirebaseCrashlyticsInterceptor` will also record any exceptions that are thrown but do not 
 crash the app as a [non-fatal exception][3]
 
-### Analytics
-
-Ballast's Firebase Analytics integration provides automatic tracking of your Inputs to the Firebase Analytics dashboard. 
-Firebase Analytics should be integrated in your app [as normal][4], and then you need to add the 
-[`ballast-firebase-analytics`](#Installation) dependency and add the Interceptor to your ViewModel configuration. Note 
-that the below example uses `AndroidViewModel`, but the `FirebaseAnalyticsInterceptor` will work just the same with any 
-other Ballast ViewModel type (Repositories, BasicViewModel, etc.).
-
-```kotlin
-@HiltViewModel
-class ExampleViewModel
-@Inject
-constructor() : AndroidViewModel<
-        ExampleContract.Inputs,
-        ExampleContract.Events,
-        ExampleContract.State>(
-    config = BallastViewModelConfiguration.Builder()
-        .apply {
-            this += FirebaseAnalyticsInterceptor(Firebase.analytics)
-        }
-        .withViewModel(
-            initialState = ExampleContract.State(),
-            inputHandler = ExampleInputHandler(),
-            name = "Example",
-        )
-        .build(),
-)
-```
-
-While Crashlytics takes an opt-out approach to logging Inputs, Analytics is entirely opt-in. Most Inputs in your app 
-probably aren't necessary to track, what you're mostly interested in is conversions. The `FirebaseAnalyticsInterceptor` 
-will only track Inputs that are annotated with `FirebaseAnalyticsTrackInput`, and ignore the rest. Each Input will be
-logged using its `.toString()` value, so be sure to override `.toString()` for any inputs you want tracked to remove any
-sensitive info from them.
-
-{% alert 'warning' :: compileAs('md') %}
-Make sure any inputs annotated with `@FirebaseAnalyticsTrackInput` do not leak any senesitive information through 
-`.toString()`.
-{% endalert %}
-
 ## Installation
 
 ```kotlin
@@ -106,8 +72,8 @@ repositories {
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-crashlytics:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-crash-reporting:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
 }
 
 // for multiplatform projects
@@ -115,8 +81,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-crashlytics:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-crash-reporting:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
             }
         }
     }
