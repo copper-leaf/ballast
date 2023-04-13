@@ -404,7 +404,7 @@ public abstract class com/copperleaf/ballast/debugger/versions/v3/BallastDebugge
 	public synthetic fun <init> (ILkotlinx/serialization/internal/SerializationConstructorMarker;)V
 	public abstract fun getConnectionId ()Ljava/lang/String;
 	public abstract fun getViewModelName ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$Companion {
@@ -426,7 +426,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerAc
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -459,7 +459,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerAc
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -490,7 +490,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerAc
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -515,7 +515,7 @@ public abstract class com/copperleaf/ballast/debugger/versions/v3/BallastDebugge
 	public abstract fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public abstract fun getUuid ()Ljava/lang/String;
 	public abstract fun getViewModelName ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Companion {
@@ -534,7 +534,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -564,7 +564,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -595,7 +595,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -622,7 +622,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -649,7 +649,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -679,7 +679,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -706,7 +706,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -736,7 +736,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -766,7 +766,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -796,7 +796,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -826,7 +826,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -857,7 +857,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -887,7 +887,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -917,7 +917,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -946,7 +946,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -976,7 +976,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1002,7 +1002,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1028,7 +1028,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1057,7 +1057,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1086,7 +1086,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1116,7 +1116,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1144,7 +1144,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1173,7 +1173,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1203,7 +1203,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1256,7 +1256,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getUuid ()Ljava/lang/String;
 	public fun getViewModelName ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
@@ -1285,7 +1285,7 @@ public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEv
 	public fun getViewModelName ()Ljava/lang/String;
 	public final fun getViewModelType ()Ljava/lang/String;
 	public fun toString ()Ljava/lang/String;
-	public static final fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged$$serializer : kotlinx/serialization/internal/GeneratedSerializer {

@@ -38,7 +38,7 @@ which are needed to build a fully-functional and _safe_ UI "state machine". Ball
 [Structured Concurrency](https://elizarov.medium.com/structured-concurrency-722d765aa952),
 and [Flows](https://kotlinlang.org/docs/flow.html), though familiarity with them is not strictly necessary to use
 Ballast. A more complete diagram of the Ballast MVI model looks more like the diagram below. See
-{{ 'Features' | anchor }} for more information on the features described in this diagram.
+[Features][8] for more information on the features described in this diagram.
 
 ```mermaid
 flowchart TD
@@ -932,7 +932,7 @@ where we do not need those resources.
 But real-world applications aren't always that simple. One use-case is observing a stream of events (a Kotlin `Flow`) of
 some data source, rather than a discrete suspending value. For example, rather than the respository directly delivering
 the results of an API call, it may cache it, and send multiple emissions to notify of the cache status (see
-{{ 'Ballast Repository' | anchor }} module). Or you connect to the phone's GPS and receive an endless stream of GPS
+[Ballast Repository][9] module). Or you connect to the phone's GPS and receive an endless stream of GPS
 coordinates you need to display on a map. We need a new strategy to handle this kind of use-case: a "side-job".
 
 Until this point, we've been working with the notion that the InputHandler will suspend until the async work completes,
@@ -1115,3 +1115,5 @@ viewModel.trySend(Inputs.RequestLogout)
 [5]: https://www.raywenderlich.com/817602-mvi-architecture-for-android-tutorial-getting-started
 [6]: https://developer.android.com/jetpack/compose/architecture
 [7]: https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9
+[8]: {{ 'Features' | link }}
+[8]: {{ 'Ballast Repository' | link }}

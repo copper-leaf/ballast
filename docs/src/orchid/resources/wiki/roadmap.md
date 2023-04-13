@@ -17,12 +17,6 @@ I will happily link to that repo from the Ballast documentation.
 - [Refactor Repository module][#31]: The Repository Module has some good ideas about how to use the MVI for managing the 
   repository an other layers of your application, extending the MVI pattern beyond just the UI. But the current 
   implementation needs to be refined and streamlined.
-- [Refactor test module][#31]: The Test module currently uses some pretty hacky implementation details to run the tests
-  and gather the results correctly, but it should be possible to collect all the data needed and handle all interactions
-  just with an Interceptor, which would be much easier to maintain. 
-- [Update IntelliJ Plugin UI][#12]: Currently, the debugger panel in the IntelliJ Plugin uses Material Compose UI, whose 
-  UI elements are too big and just look out of place in the IDE. It would be nice to rewrite the UI using something like 
-  the [Compose Jetbrains Theme][c] (and maybe add some additional features in the process).
 
 [#7]: https://github.com/copper-leaf/ballast/issues/7
 [a]: https://github.com/Tinder/StateMachine
