@@ -1,0 +1,18 @@
+public final class com/copperleaf/ballast/analytics/AnalyticsInterceptor : com/copperleaf/ballast/BallastInterceptor {
+	public fun <init> (Lcom/copperleaf/ballast/analytics/AnalyticsTracker;Lkotlin/jvm/functions/Function1;)V
+	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
+	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public abstract interface class com/copperleaf/ballast/analytics/AnalyticsTracker {
+	public abstract fun trackAnalyticsEvent (Ljava/lang/String;Ljava/util/Map;)V
+}
+
+public final class com/copperleaf/ballast/analytics/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+

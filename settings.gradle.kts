@@ -34,7 +34,9 @@ include(":ballast-undo")
 include(":ballast-navigation")
 
 include(":ballast-crash-reporting")
+include(":ballast-firebase-crashlytics")
 include(":ballast-analytics")
+include(":ballast-firebase-analytics")
 
 include(":ballast-debugger-server")
 include(":ballast-idea-plugin")
