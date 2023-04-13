@@ -1,0 +1,35 @@
+public final class com/copperleaf/ballast/firebase/BallastCrashlyticsException : com/copperleaf/ballast/core/BallastException {
+	public fun <init> (Ljava/lang/Throwable;Z)V
+}
+
+public final class com/copperleaf/ballast/firebase/FirebaseCrashReporter : com/copperleaf/ballast/crashreporting/CrashReporter {
+	public fun <init> (Lcom/google/firebase/crashlytics/FirebaseCrashlytics;)V
+	public fun logInput (Ljava/lang/String;Ljava/lang/Object;)V
+	public fun recordEventError (Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Throwable;)V
+	public fun recordInputError (Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Throwable;)V
+	public fun recordSideJobError (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public fun recordUnhandledError (Ljava/lang/String;Ljava/lang/Throwable;)V
+}
+
+public abstract interface annotation class com/copperleaf/ballast/firebase/FirebaseCrashlyticsIgnore : java/lang/annotation/Annotation {
+}
+
+public final class com/copperleaf/ballast/firebase/FirebaseCrashlyticsInterceptor : com/copperleaf/ballast/BallastInterceptor {
+	public fun <init> (Lcom/google/firebase/crashlytics/FirebaseCrashlytics;)V
+	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
+	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+}
+
+public final class com/copperleaf/ballast/firebase/FirebaseCrashlyticsInterceptorKt {
+	public static final fun FirebaseCrashlyticsInterceptor (Lcom/google/firebase/crashlytics/FirebaseCrashlytics;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/crashreporting/CrashReportingInterceptor;
+	public static synthetic fun FirebaseCrashlyticsInterceptor$default (Lcom/google/firebase/crashlytics/FirebaseCrashlytics;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/copperleaf/ballast/crashreporting/CrashReportingInterceptor;
+}
+
+public final class com/copperleaf/ballast/firebase/crashlytics/BuildConfig {
+	public static final field BUILD_TYPE Ljava/lang/String;
+	public static final field DEBUG Z
+	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
+	public fun <init> ()V
+}
+

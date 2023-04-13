@@ -12,19 +12,14 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-api"))
+                api(project(":ballast-crash-reporting"))
             }
         }
-        val jvmMain by getting {
-            dependencies { }
-        }
         val androidMain by getting {
-            dependencies { }
-        }
-        val jsMain by getting {
-            dependencies { }
-        }
-        val iosMain by getting {
-            dependencies { }
+            dependencies {
+                implementation(project.dependencies.platform(libs.firebase.bom))
+                implementation(libs.firebase.crashlytics)
+            }
         }
     }
 }
