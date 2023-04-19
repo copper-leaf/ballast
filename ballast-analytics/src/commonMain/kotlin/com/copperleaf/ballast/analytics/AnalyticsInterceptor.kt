@@ -4,22 +4,23 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.awaitViewModelStart
+import com.copperleaf.ballast.inputs
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 public class AnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val tracker: AnalyticsTracker,
-    private val shouldTrackInput: (Inputs) -> Boolean,
+    private val adapter: AnalyticsAdapter<Inputs, Events, State>,
 ) : BallastInterceptor<Inputs, Events, State> {
 
-    private object Keys {
-        const val ViewModelName = "ViewModelName"
-        const val InputType = "InputType"
-        const val InputValue = "InputValue"
-    }
+    public constructor(
+        tracker: AnalyticsTracker,
+        shouldTrackInput: (Inputs) -> Boolean
+    ) : this(tracker, DefaultAnalyticsAdapter(shouldTrackInput))
 
     override fun BallastInterceptorScope<Inputs, Events, State>.start(
         notifications: Flow<BallastNotification<Inputs, Events, State>>
@@ -27,19 +28,16 @@ public class AnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
         launch(start = CoroutineStart.UNDISPATCHED) {
             notifications.awaitViewModelStart()
             notifications
-                .onEach { notification ->
-                    if (notification is BallastNotification.InputAccepted) {
-                        if (shouldTrackInput(notification.input)) {
-                            tracker.trackAnalyticsEvent(
-                                "action",
-                                mapOf(
-                                    Keys.ViewModelName to notification.viewModelName,
-                                    Keys.InputType to "${notification.viewModelName}.${notification.input::class.simpleName}",
-                                    Keys.InputValue to "${notification.viewModelName}.${notification.input}",
-                                )
-                            )
-                        }
+                .inputs {
+                    it.filter { input ->
+                        adapter.shouldTrackInput(input)
                     }
+                }
+                .onEach { input ->
+                    tracker.trackAnalyticsEvent(
+                        adapter.getEventIdForInput(input),
+                        adapter.getEventParametersForInput(hostViewModelName, input),
+                    )
                 }
                 .collect()
         }
