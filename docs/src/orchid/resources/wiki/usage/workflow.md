@@ -1,4 +1,4 @@
-[usage-guide.md](usage-guide.md)---
+---
 ---
 
 # High-level Workflow
@@ -59,7 +59,7 @@ provided through the InputHandler's contructor
 
 If you're using Ballast in a multiplatform project, the InputHandler should be in the `commonMain` sourceSet.
 
-See more about writing your InputHandler in {{ anchor(itemId = "Features", pageAnchorId = "Input Handlers", title = "Features") }}.
+See more about writing your InputHandler in {{ anchor(itemId = "Feature Overview", pageAnchorId = "Input Handlers", title = "Features") }}.
 
 ```kotlin
 import LoginScreenContract.*
@@ -201,3 +201,17 @@ On platforms that require the native programming language to use rather than Kot
 some boilerplate needed to wrap the Kotlin coroutines and `StateFlow` into something that the platform's native code can
 integrate with. But on Android, and using Compose for Desktop or Web, this is easily done in Kotlin. See each 
 [platform's][1] instructions for how to connect to the actual UI toolkit.
+
+[1]: https://facebook.github.io/flux/
+[2]: https://redux.js.org/
+[3]: https://vuex.vuejs.org/
+[4]: https://guide.elm-lang.org/architecture/
+[5]: https://www.raywenderlich.com/817602-mvi-architecture-for-android-tutorial-getting-started
+[6]: https://developer.android.com/jetpack/compose/architecture
+[7]: https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9
+[8]: {{ 'Feature Overview' | link }}
+[9]: {{ 'Ballast Repository' | link }}
+[10]: https://developer.android.com/topic/architecture/ui-layer/stateholders
+[11]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Lifo
+[12]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Fifo
+[13]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Parallel

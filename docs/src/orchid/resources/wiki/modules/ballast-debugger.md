@@ -27,11 +27,15 @@ it succeeds, and reconnect if the connection is terminated. Finally, add the`Bal
 all its data through the websocket and be captured and displayed on the plugin's UI.
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 The same connection should be shared among all ViewModels, to optimize the system resource usage and make it easier to
 explore in the Debugger UI.
 {% endalert %}
 
 {% alert 'danger' :: compileAs('md') %}
+**Danger**
+
 As the debugger will drain system resources and potentially leak sensitive information, you must **make sure** the 
 debugger is not running in production. Configure your app to only start the connection and install the interceptor in 
 debug builds, or better yet, only include the debugger dependency in debug builds, so you know it could never be running 

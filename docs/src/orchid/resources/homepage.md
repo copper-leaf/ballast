@@ -5,7 +5,7 @@
 
 > Opinionated Application State Management framework for Kotlin Multiplatform
 
-![Kotlin Version](https://img.shields.io/badge/Kotlin-1.7.10-orange)
+![Kotlin Version](https://img.shields.io/badge/Kotlin-1.8.20-orange)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/copper-leaf/ballast)](https://github.com/copper-leaf/ballast/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.copper-leaf/ballast-core)](https://search.maven.org/artifact/io.github.copper-leaf/ballast-core)
 [![Intellij Plugin Version](https://img.shields.io/jetbrains/plugin/v/18702-ballast)](https://plugins.jetbrains.com/plugin/18702-ballast)
@@ -78,8 +78,8 @@ that they have been tested and are known to work there, or have specific feature
 
 - {{ 'Android' | anchor }}
 - {{ 'iOS' | anchor }} (requires new Kotlin Native Memory Model)
-- {{ 'Compose Desktop (JVM)' | anchor }}
-- {{ 'Compose Web (JS)' | anchor }}
+- {{ 'Compose Desktop' | anchor }}
+- {{ 'Compose JS/DOM' | anchor }}
 
 # Installation
 

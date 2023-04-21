@@ -52,6 +52,8 @@ logged using its `.toString()` value, so be sure to override `.toString()` for a
 sensitive info from them.
 
 {% alert 'warning' :: compileAs('md') %}
+**Warning**
+
 Make sure any inputs annotated with `@FirebaseAnalyticsTrackInput` do not leak any sensitive information through 
 `.toString()`.
 {% endalert %}
