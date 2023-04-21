@@ -3,7 +3,7 @@ package com.copperleaf.ballast.savedstate
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastLogger
 
-public class SaveStateScopeImpl<Inputs : Any, Events : Any, State : Any>(
+internal class SaveStateScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val interceptorScope: BallastInterceptorScope<Inputs, Events, State>,
     private val previousState: State?,
     private val nextState: State,

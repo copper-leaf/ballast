@@ -97,7 +97,7 @@ class RouterViewModel(
 ```
 
 {% alert 'info' :: compileAs('md') %}
-**INFO**
+**Info**
 
 When using Ballast Navigation in the browser, you can use `.withBrowserHashRouter()` or `.withBrowserHistoryRouter()`
 instead of `.withRouter()` to synchronize the Router state with the browser's address bar. See
@@ -200,7 +200,7 @@ class BallastExamplesRouterEventHandler(
 
 
 {% alert 'info' :: compileAs('md') %}
-**INFO**
+**Info**
 
 If navigating with Android Fragments or Activities, use `Destination.Match.toBundle()` to capture the path and query
 parameters and pass them into the destination Fragment via its arguments. That Fragment can then convert its arguments
@@ -432,13 +432,13 @@ through the backstack (popping off all destinations with a given tag). Internall
 syncing the URL with the browser address bar.
 
 {% alert 'warning' :: compileAs('md') %}
-**WARNING**
+**Warning**
 
 This feature hasn't been thoroughly tested yet. Use it at your own risk, it may be changed or replaced in the future.
 {% endalert %}
 
 {% alert 'danger' :: compileAs('md') %}
-**DANGER**
+**Danger**
 
 Do not use Route Annotations for passing data between screens. Always pass information through path or query parameters,
 or lift larger objects into a ViewModel or your Repository layer that is shared by the originating and destination

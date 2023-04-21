@@ -25,6 +25,8 @@ How to use:
 {% snippet 'debuggerProTip' %}
 
 {% alert 'danger' :: compileAs('md') %}
+**Danger**
+
 **Disclaimer**: Because of CORS restrictions it is not possible to hit the BGG API directly, so the responses have been
 cached in this documentation site's domain. This site is not updated on any regular schedule so the data will definitely
 out-out-date. These cached responses are for demonstration purposes ONLY, and BGG will always remain the full owner of

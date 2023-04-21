@@ -3,6 +3,11 @@
 
 # Thinking in Ballast MVI
 
+The [Feature Overview][14] highlights the main features and APIs of the Ballast library, and is a good place to start 
+for understanding the use-case of this library. This page digs deeper into some of those concepts to more fully explore 
+the motivation behind this library and the reasoning behind it's opinionated structures, and the mechanics of some of
+its more advanced features.
+
 ## Ballast Overview
 
 Ballast is a library implementing an opinionated structure of the MVI state management architecture pattern, based on
@@ -214,10 +219,9 @@ MVP: Good in theory, but rarely implemented well in practice.
 
 Once everyone started noticing the problems inherent in traditional- and MVP-style UI programming, the natural fix
 became pretty apparent: rather than the interactions driving the UI, let's use a state model to drive the UI. One starts
-by developing creating a model of the screen's state, and then builds a UI that is assembled or synchronized to match
-that model.
+by creating a model of the screen's state, and then builds a UI that is assembled or synchronized to match that model.
 
-These are the early days of reactive programming, when Angular.JS because king, React was just starting to be developed,
+These are the early days of reactive programming, when Angular.JS was king, React was just starting to be developed,
 and all the UI toolkits started creating their own "MVVM" frameworks. The main idea with these is that you take
 something like a "Presenter" or "Controller" class, declare the state that lives within that Controller, and let a
 framework worry about applying that state to the UI for you. Additionally, the MVVM frameworks bind in the other
@@ -239,10 +243,10 @@ it was just more difficult than it needed to be.
 
 ### MVI
 
-- _2013 to now on web, with React_
-- _2019 to now on Android, with Compose_
-- _2019 to now on iOS, with Swift UI_
-- _2017 to now with Flutter_
+- _2013 and later on web, with React_
+- _2019 and later on Android, with Compose_
+- _2019 and later on iOS, with Swift UI_
+- _2017 and later with Flutter_
 
 MVI was the next iteration of UI programming, and by all accounts it seems to be the one that will stick around. It
 solves many of the problems outlined with traditional programming, but does it in a much more lightweight and
@@ -270,227 +274,88 @@ programming techniques, like time-travel debugging, undo/redo, multi-user synchr
 Hopefully this brief history of UI programming has given you some things to think about which will help you understand
 more about the specific design choices of Ballast, as outlined throughout the rest of this document.
 
-## UI Contract
+## Kinds of State
 
-All of Ballast was designed around an opinionated way to write your UI code to optimize the MVI pattern and make all
-your application screens/components look and work very similarly. It all starts with creating a "Contract", and from
-there we'll work to allow Ballast to manage that Contract.
+When thinking about how to structure your application, it's necessary to consider the different kinds of state you may
+need to manage. [State Holders and UI State][10] in the Android documentation does a great job of exploring some of the
+kinds of state you will need to manage, and is a great read that is broadly applicable to all UI programming, not just
+Android.
 
-### Modeling a UI Contract
+Here's a summary of the different kinds of state your app will need to manage.
 
-The convention with Ballast is to use one Ballast ViewModel for each screen in your application, and to create a
-"contract" for interfacing your UI to the screen's ViewModel. Note that Ballast works well with Compose or other
-declarative UI frameworks, but the model will still hold true even with standard Android Views as long as you make sure
-to manually update the UI widgets' state to match the ViewModel state. Anyway, start by defining the "contract", for
-example, a login screen.
+### Screen UI State
 
-```kotlin
-object LoginScreenContract {
-    data class State(
-        ...
-    )
+> Screen UI state is _what_ you need to display on the screen.
 
-    sealed class Inputs {
-        ...
-    }
+Screen UI state is _what_ you need to display on the screen. It is typically the kind of data that is loaded from some
+local or remote data source. This is the state the user intends to interact with or change, and is the real data that
+they care about and what drives them to use your application. Screen UI state is also usually independent of the
+application lifecycle, meaning that the actual subscriptions to the data sources may be paused when the app goes into
+the background, but the data itself doesn't need to be cleared, reset, or refreshed upon returning to the app. Simply
+re-subscribing to the data source is sufficient to restore the screen to the proper state.
 
-    sealed class Events {
-        ...
-    }
-}
-```
+Screen UI state is the primary use-case for using Ballast, which gives a clean and predictable mechanism for loading and
+updating the data that the user cares about. The explicit modeling of this data also makes it easy for developers to
+immediately understand the use-case of a given screen, but showing which data can be changed.
 
-Each Contract is a top-level `object` with a nested `State` `data class`, and `sealed class`es for `Inputs` and `Events`.
+### UI Element State
 
-`State` is the persistent state of the ViewModel, which will get pushed to the UI anytime it changes. The UI should
-update itself to display what's in that `State`, and in doing so will always be kept consistent with that State.
+> UI element state refers to properties intrinsic to UI elements that influence how they are rendered.
 
-`Inputs` are how the UI communicates back to the ViewModel. Each discrete action in the UI, each click listener, text
-changed listener, etc. should be separate classes within the `Input` sealed class. Each `Inputs` subclass is should be
-an `object` if the UI element doesn't directly deliver data to the ViewModel (a click listener), or a `data class` if
-it does need to deliver data (text changed). Don't worry about what to do with those yet, the Contract just defines the
-"what".
+UI element state refers to properties intrinsic to UI elements that influence how they are rendered. This is the data
+that the user doesn't consciously or intentionally interact with, but is necessary to present the Screen UI state in a
+way that is pleasant to the end-user. UI element states are usually tied to the application lifecycle. You may need to
+do some extra work to ensure the data is saved/restored (or cleared/reset) when the app goes into the background and
+then resumes.
 
-`Events` are modeled similar to Inputs, but in the other direction; Events are sent from the ViewModel to be processed
-exactly once by the UI. This would typically be things like requests to navigate to another screen.
+UI Element state is usually better managed within the UI itself, rather than within your screen's ViewModel. In Compose,
+these are values you'd rather manage as `remember { mutableStateOf() }`. Since they're not important enough to manage
+at the ViewModel level, they are ephemeral and reset each time you view the screen, but also avoid cluttering the
+ViewModel state with properties that aren't important to the end-user.
 
-Filling out the above contract for a Login Screen might end up looking like this:
+### Global Application State
 
-```kotlin
-object LoginScreenContract {
-    data class State(
-        val username: TextFieldValue,
-        val password: TextFieldValue,
-    )
+Global application state is the data that must be shared across multiple screens. It's usually a mix of data that the
+user cares about and is displayed to them as Screen UI State, but also data they aren't aware of but is necessary to
+load their data properly, such as an API session token. Broadly-speaking, global application state lives at a layer
+above the UI and thus should be independent of the application lifecycle, and we typically call this the"Repository
+Layer".
 
-    sealed class Inputs {
-        data class UsernameChanged(val newValue: TextFieldValue) : Inputs()
-        data class PasswordChanged(val newValue: TextFieldValue) : Inputs()
-        object LoginButtonClicked : Inputs()
-        object RegisterButtonClicked : Inputs()
-    }
+The structure of your app's global state can be quite complicated, and may be further broken down into several other
+layers or modules, such as Use-Cases, Repositories, Caching Layer, and Data Sources. The specifics of how these layers
+work together can be very complex, but if you think of this layer less as a series of interconnected modules, and more
+like you would with your UI state, then it can be a bit easier to manage. That is, consider all your data sources as the
+source of truth for the global state, but shouldn't be directly subscribed to by the UI. Rather, subscribe and cache the
+latest values in memory, in a Ballast ViewModel, so that the combination of states from the various sources works much
+like the State in the UI, which itself comes from multiple sources like the Repository layer or entered by the user.
 
-    sealed class Events {
-        object NavigateToDashboard : Events()
-        object NavigateToRegistration : Events()
-    }
-}
-```
+## Kinds of State Classes
 
-### What Not to put in a UI Contract
+The section above talks generally about how to think about different kinds of state in your app, but at some point that
+state needs to be realized into concrete classes in your Kotlin code. The biggest question here is what kind of class to
+use, with the typical options being either a `sealed class` or a `data class`. Other options, historically, were to use
+and Androidx `ViewModel` with `LiveData<T>` properties, or more recently a class with many `StateFlow<T>` or Compose
+`State<T>` properties.
 
-Obviously, the initial thought when building out a Contract is to put every single variable into the State, and you
-absolutely can do that. But with sufficiently large screens, this may become a bit too verbose and introduce a lot of
-back-and-forth jumping between the UI and the VM, which may not be strictly necessary. Assuming your entire UI,
-including its listeners, is updated with each state change (both local and ViewModel states), you can leave some amount
-of logic purely in the UI, and have the State and Inputs only model the things which are actually important from a
-business logic perspective.
-
-As an example, let's take a Checkout screen. At the end of the flow, once the user has entered all their information, we
-want to show a popup to confirm the user actually wants to submit the order to help prevent accidental clicks submitting
-it for them. If we had the logic for this popup in the Contract, it would look something like this in Jetpack Compose:
-
-```kotlin
-object CheckoutContract {
-    data class State(
-        val cart: List<CartItem>,
-        val isConfirmationDialogShowing: Boolean, // whether the popup should be open
-    )
-
-    sealed class Inputs {
-        ...
-
-        object CheckoutButtonClicked : Inputs() // open the popup
-        object ConfirmationDialogCheckoutButtonClicked : Inputs() // submit the order
-        object ConfirmationDialogCancelButtonClicked : Inputs() // close the popup
-        object ConfirmationDialogDismissed : Inputs() // close the popup
-    }
-
-    sealed class Events {
-        ...
-    }
-}
-
-@Composable
-fun Checkout(state: CheckoutContract.State, postInput: (CheckoutContract.Inputs)->Unit) {
-    ItemsInCard(state.cart)
-
-    Button(onClick = { postInput(CheckoutContract.Inputs.CheckoutButtonClicked) }) {
-        Text("Checkout")
-    }
-
-    if(state.isConfirmationDialogShowing) {
-        AlertDialog(
-            onDismissRequest = {
-                postInput(CheckoutContract.Inputs.ConfirmationDialogDismissed)
-            },
-            text = {
-                Text("Submit order?")
-            },
-            confirmButton = {
-                Button(onClick = { postInput(CheckoutContract.Inputs.ConfirmationDialogCheckoutButtonClicked) }) {
-                    Text("Submit")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { postInput(CheckoutContract.Inputs.ConfirmationDialogCancelButtonClicked) }) {
-                    Text("Cancel")
-                }
-            }
-        )
-    }
-}
-```
-
-Now, there's nothing wrong with this, it's just a bit verbose. And looking at this snippet, it's not immediately obvious
-that the purpose of all this code is just to show a confirmation dialog before submitting the order. It muddies up the
-actual intent and logic of this screen with a bunch of boilerplate, and since all of these events basically just toggles
-a Boolean property, it's not really necessary to have all the structure and protections of Ballast managing it. A better
-way to handle it is to leave the popup logic entirely in the UI and understand that popup to just be a UI detail, but
-not something business-critical that needs to be modeled in the Contract:
-
-```kotlin
-object CheckoutContract {
-    data class State(
-        val cart: List<CartItem>,
-    )
-
-    sealed class Inputs {
-        ...
-
-        object CheckoutButtonClicked : Inputs() // submit the order
-    }
-
-    sealed class Events {
-        ...
-    }
-}
-
-@Composable
-fun Checkout(state: CheckoutContract.State, postInput: (CheckoutContract.Inputs)->Unit) {
-    ItemsInCard(state.cart)
-
-    var isConfirmationDialogShowing by remember { mutableStateOf(false) }
-
-    Button(onClick = { isConfirmationDialogShowing = true }) {
-        Text("Checkout")
-    }
-
-    if(isConfirmationDialogShowing) {
-        AlertDialog(
-            onDismissRequest = {
-                isConfirmationDialogShowing = false
-            },
-            text = {
-                Text("Submit order?")
-            },
-            confirmButton = {
-                Button(onClick = { postInput(CheckoutContract.Inputs.CheckoutButtonClicked) }) {
-                    Text("Submit")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { isConfirmationDialogShowing = false }) {
-                    Text("Cancel")
-                }
-            }
-        )
-    }
-}
-```
-
-Notice how in this second snippet, it becomes more clear to see that clicking the main "Checkout" button does nothing
-dangerous, it only ever toggles a Boolean property. We can look at this code and know 100% for sure that the main
-"Checkout" button will never make the API call to submit the order. And it becomes easier to see exactly what point in
-the UI _does_ do something that could potentially trigger the API: hitting "submit" in the popup, since it's the only
-thing that posts an Input to the VM. We can also see from the Contract that submitting the order is the only truly
-important or potentially dangerous thing on this screen; anything else that _could_ happen is just UI stuff, but none of
-those actions to show the dialog or do anything else have the ability to submit any API calls because they never go
-through the Ballast ViewModel.
-
-Now, obviously, this is just an example. There may be perfectly legitimate use-cases for managing the state of a dialog
-in the Contract, such as displaying the result of an API call in a popup. There are also other use-cases for managing
-variables in the UI and keeping them out of the Contract, such as disabling a submit button if a checkbox is not
-checked. The main point is that Ballast is a tool to _help_ you manage complex UIs as a state machine, but it does not
-need to house every single property. There is nuance to how you structure a Contract. It's supposed to make it easier
-to read the code and understand what the UI is doing, and if it's getting bloated with a bunch of boilerplate inputs or
-state properties, you may want to take a step back and ask yourself whether something actually needs to be in the
-ViewModel or not.
-
-### Kinds of State Classes
-
-If you look online for how to model a UI state, you'll come across some common patterns, but also some anti-patterns. I
-firmly believe that a `data class` is the best way to start modeling your UI state, and this is the form that is
-encouraged throughout the Ballast library and documentation. This section aims to show you why I believe this to be
+I firmly believe that a `data class` is the best way to start modeling your UI state vs those other two options, and
+this is the form that is encouraged throughout the Ballast library and documentation. While Ballast enforces no
+restrictions on what kind of class you use for your State, this section aims to show you why I believe this to be
 the best starting point. That's not to say it's the best for all situations, but I do believe it will give you the best
 result while causing the fewest difficulties in the majority of use-cases.
 
-#### Sealed Class
+### Sealed Class
 
 Using a `sealed class` seems to be the most popular solution if you go by the articles you find on a quick web search.
 And it's clear to understand why: compared to the traditional way of building UIs, a sealed class gives you a way to
-ensure that the data on your screen is consistent with itself. Take the following example from the article
-[Modelling UI State on Android][7]:
+ensure that the data on your screen is consistent with itself.
+
+Take the following example from the article [Modelling UI State on Android][7]:
+
+> The Challenge: Build an app that calls a traffic light endpoint and shows the color of the traffic light (red, yellow
+> or green). During the network call show a ProgressBar. On success show a View with the color and in case of an error
+> show a TextView with a generic text. Only one view is visible at a time and there is no possibility to retry errors**.
+
+_**we will relax this qualifier later to explore how it affects the resulting states_
 
 ```kotlin
 sealed class TrafficLightState {
@@ -561,11 +426,11 @@ I hope you see where I'm going with this.
 
 The idea that a state is so easily mapped 1-1 to discrete values sounds great in theory, but doesn't hold up so well to
 real-world, non-trivial use-cases. It's difficult to extend, leads to repetition, and you end up with a combinatorial
-matrix of states that can quickly grow really complex. And while the sealed subclasses themselves model the discrete
-states well, they actually do nothing to model the _transitions_ between states. You can't use the type system to ensure
-you don't move from one state to another, and if you need to move between states and carry the data with it (such as
-from `Success` to `RefreshingFromSuccess`), then you have to abuse the type system to perform type-checks or type-casts
-to actually make that transition.
+matrix of states that can quickly grow overwhelmingly complex. And while the sealed subclasses themselves model the
+discrete states well, they actually do nothing to model the _transitions_ between states. You can't use the type system
+to ensure you don't move from one state to another, and if you need to move between states and carry the data with it
+(such as from `Success` to `RefreshingFromSuccess`), then you have to abuse the type system to perform type-checks or
+type-casts to actually make that transition.
 
 And finally, to drive the point home, let's consider what the actual UI code looks like here in this final case.
 Assuming we want to share the UI widgets whenever possible we get this:
@@ -626,7 +491,7 @@ successive change.
 
 So again, while this style sounds great in theory, it really just doesn't hold up when put into real-world code.
 
-#### Data Class
+### Data Class
 
 Whereas a `sealed class` maps well to discrete states but causes complexity when it comes to actually applying that to
 the UI and its interactions, a `data class` does the opposite: you first think about the data you want to display on the
@@ -644,9 +509,9 @@ data class TrafficLightState(
 That article's argument against this state is that it has invalid states. For example, you could have `isError` true at
 the same time that `color` is non-null, and what do you show in the UI at that point?
 
-The answer is pretty simple: just don't let that happen. Since it's a single object, you have full control over every
-property of it, and you can put that kind of logic directly within the class to ensure we never get a state that has
-both data and an error:
+The answer is pretty simple: just don't let that happen. Since it's a single immutable object, you have full control
+over every property of it, and you can put that kind of logic directly within the class to ensure we never get a state
+that has both data and an error:
 
 ```kotlin
 data class TrafficLightState(
@@ -701,17 +566,14 @@ previously in, be it error or success, will be displayed properly in the UI. For
 ```kotlin
 @Composable
 fun TrafficLight(state: TrafficLightState) {
-    // display progress bar in Loading or Refreshing states
     if(state.isLoading) {
         CircularProgressIndicator()
     }
 
-    // display the traffic light color when it's available
     if(state.color != null) {
         TrafficLightColor(state.color)
     }
 
-    // and a similar thing happens with the error text, except we just check types directly
     if(state.isError) {
         TrafficLightError()
     }
@@ -756,14 +618,18 @@ fun TrafficLight(state: TrafficLightState) {
 }
 ```
 
-#### Multiple Streams
+### Multiple Streams
 
-The final approach to modeling a UI state isn't really even compatible with Ballast, but it's a pattern I see
-considerably less frequently now with `StateFlow` than I did in years-past when `LiveData` reigned supreme on Android.
-The general idea was that instead of having a single stream of data representing your state as a single object (be it
-a `sealed class` or a `data class`), the `ViewModel` itself is the UI state. Each property you want to expose to the UI
-is a separate reactive property, so that anything you want to update in the UI just needs to observe the appropriate
-property and react in kind:
+The final approach to modeling a UI state isn't really even compatible with Ballast, but it's a pattern that
+historically has been very popular. It's really an evolution of the [MVVM](#mvvm) pattern, where you write code to apply
+these properties selectively to the UI rather than letting an automated framework do it. I see this pattern less now
+than I used to, as folks tend to use a single State Holder class as described above in a `StateFlow` rather than
+multiple `LiveData`, ReactiveX `Observable`, or single-property `StateFlow`. However, this pattern does seem to remain
+popular with Compose, especially when folks want to use `State` properties within a `ViewModel`.
+
+In this approach the `ViewModel` itself is considered the UI state, rather than being the thing that holds onto the UI
+state. Each property you want to expose to the UI is a separate reactive property, so that anything you want to update
+in the UI just needs to observe the appropriate property and react in kind:
 
 Also taking the example from [Modelling UI State on Android][7] (but replacing `LiveData` with `StateFlow`):
 
@@ -812,29 +678,151 @@ properties in an invalid way.
 
 In addition, there's not really any consistency between these values when we set them. If the code making the updates
 happens to be a bit slow, the `combine` function may collect a pair of values that are invalid, without us actually
-intending to make that the UI state. The state just happened to be invalid as it transitioned.
-Having to update the flows independently means there's no kind of "transation" that could be applied to ensure there's
-no ephemeral invalid states. But with a `data class`, a single `.update { it.copy() }` can freely change multiple
-properties at once without causing there to be any invalid intermediate states.
+intending to create an invalid UI state. The state just happened to be invalid as it transitioned. Having to update the
+flows independently means there's no kind of "transation" that could be applied to ensure there's no ephemeral invalid
+states. But with a `data class`, a single `.update { it.copy() }` can freely change multiple properties at once without
+causing there to be any invalid intermediate states.
 
-## Async Logic
+## Ballast Contract
 
-How to handle async logic within Ballast depends a bit on your specific needs, and will impact how Ballast requires you
-to write your code so that it is always handled safely. When working with Ballast, it is important to keep the following
-2 rules in mind:
+With the basic understanding of different types of state, and how to write Kotlin classes that effectively manage that
+State, we can now begin modeling our application using the Ballast convention. The full MVI model is a combination of
+both the State, and the `Inputs` that describe how to make changes to that State.
 
-1. Only 1 Input will be processed at any given time
-2. Inputs are processed in parallel to the UI, not synchronously. So a new Input may be dispatched to the ViewModel
-   while one is still running
+The convention with Ballast is to use one Ballast ViewModel for each screen in your application, and to create a
+"contract" for interfacing your UI to the screen's ViewModel. Note that Ballast works well with Compose or other
+declarative UI frameworks, but the model will still hold true even with standard Android Views as long as you make sure
+to manually update the UI widgets' state to match the ViewModel state. Anyway, start by defining the "contract", for
+example, a login screen.
 
-Ballast has several strategies to enforce these 2 rules and ensure they are well-behaved, or even allows you to customize
-its behavior to break the rules. But it's important to keep in mind these 2 rules and make sure you understand the
-consequences of breaking them. Let's break these rules down and understand how they impact your app, by considering the
-following example:
+```kotlin
+object LoginScreenContract {
+    data class State(
+        ...
+    )
 
-We have 2 Inputs which load data from a remote API. Each Input sets `loading` to true until the API call returns, then
-sets it back to false along with its results. Individually, each Input is perfectly well-behaved, but things start to go
-wrong when we try to send both Inputs at the same time.
+    sealed class Inputs {
+        ...
+    }
+
+    sealed class Events {
+        ...
+    }
+}
+```
+
+Each Contract is a top-level `object` with a nested `State` `data class`, and `sealed class`es for `Inputs` and `Events`.
+
+`State` is the in-memory state of the ViewModel, which will get pushed to the UI anytime it changes. The UI should
+update itself to display what's in that `State`, and in doing so will always be kept consistent with that State.
+
+`Inputs` are how the UI communicates back to the ViewModel. Each discrete action in the UI, each click listener, text
+changed listener, etc. should be separate classes within the `Input` sealed class. Each `Inputs` subclass is should be
+an `object` if the UI element doesn't directly deliver data to the ViewModel (a click listener), or a `data class` if
+it does need to deliver data (text changed). Don't worry about what to do with those yet, the Contract just defines the
+"what".
+
+`Events` are modeled similar to Inputs, but in the other direction; Events are sent from the ViewModel to be processed
+exactly once by the UI. This would typically be things like requests to navigate to another screen.
+
+Filling out the above contract for a Login Screen might end up looking like this:
+
+```kotlin
+object LoginScreenContract {
+    data class State(
+        val username: String,
+        val password: String,
+    )
+
+    sealed class Inputs {
+        data class UsernameChanged(val newValue: String) : Inputs()
+        data class PasswordChanged(val newValue: String) : Inputs()
+        object LoginButtonClicked : Inputs()
+        object RegisterButtonClicked : Inputs()
+    }
+
+    sealed class Events {
+        object NavigateToDashboard : Events()
+        object NavigateToRegistration : Events()
+    }
+}
+```
+
+Once the Contract is defined, it's time to create and InputHandler which processes the Inputs and generates new States,
+which might look like this:
+
+```kotlin
+import LoginScreenContract.*
+
+class LoginScreenInputHandler(
+    val router: Router<AppScreen>
+) : InputHandler<Inputs, Events, State> {
+    override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(
+        input: Inputs
+    ) = when (input) {
+        is UsernameChanged -> {
+            updateState { it.copy(username = input.newValue) }
+        }
+        is PasswordChanged -> {
+            updateState { it.copy(password = input.newValue) }
+        }
+        is LoginButtonClicked -> {
+            val currentState = getCurrentState()
+            val loginSuccessful = attemptLogin(currentState.username, currentState.password)
+            if(loginSuccessful) {
+                postEvent(NavigateToDashboard)
+            } else {
+                noOp()
+            }
+        }
+        is RegisterButtonClicked -> {
+            postEvent(NavigateToRegistration)
+        }
+    }
+}
+```
+
+There are a few other things to consider when working with Ballast to help you craft the best UI for your users and
+ease the readability and maintainability for your developers, which are described below.
+
+## Input Strategies
+
+How Inputs are handled within Ballast depends a bit on your specific needs, and will impact how Ballast requires you
+to write your code so that it is always handled safely. Ballast has several ways to configure how Inputs are processed,
+called `InputStrategies`, and understanding how and why to pick one over the other can help you build UIs that users
+love, while also avoiding some sutble issues in your implementation.
+
+At a high level, when working with Ballast and deciding how to process inputs, you should have the following things
+in mind:
+
+1. Inputs are processed atomically, and at most 1 Input should be processing at any given time.
+2. Inputs are processed asynchronously, in parallel to the UI.
+3. Inputs may take a long time to process, as their running on Kotlin Coroutines and may call suspending functions.
+
+The process of deciding which strategy to use ultimately comes down to what should happen to one running Input is
+another is sent at the same time.
+
+{% alert 'info' :: compileAs('md') %}
+**Info**
+
+Pro Tip: The text descriptions of these InputStrategies can be a bit confusing, but seeing them play out in real-time
+should make it obvious how they work. Playing with the [Kitchen Sink][1] with the [Debugger][2] gives you a simple way
+of experiencing these behaviors to get an intuition for when to use each one.
+
+[1]: {{ 'Kitchen Sink' | link }}
+[2]: {{ 'Ballast Debugger' | link }}
+{% endalert %}
+
+### FIFO
+
+A first-in-first-out (FIFO) strategy is the simplest to work with, and is recommended if you're just starting out with
+Ballast. It's the typical way one would think about writing code for single-threaded applications, where something that
+blocks the thread blocks it for everyone, but this makes it very predictable. You know that if you start running some
+block of code, it will always run into it's finished, and anything else that wants to run must wait for its turn.
+The first Input that is sent to the ViewModel will be the first that will be processed, even if others get sent
+afterward.
+
+As an example, take the following snippet, which needs to make 2 separate API calls to fetch all the data for a screen:
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
@@ -854,74 +842,79 @@ viewModel.trySend(Inputs.LoadPosts)
 viewModel.trySend(Inputs.LoadLatestPostContent)
 ```
 
-If we consider the user's perspective, they should see a progress indicator displayed for 2 seconds, because that's how
-long it takes to load the posts. The latest post loads more quickly than that, so we'd expect to display the progress
-indicator for as long as anything is still loading.
+In this scenario, since each Input will wait its turn to run, it will first take 2 seconds from `LoadPosts` and then
+another 1 second from `LoadLatestPostContent`, so it will take a total of 3 seconds to load the data for this screen.
 
-But with this implementation, if we sent both Inputs at the same time and allowed them to run in parallel, the progress
-indicator would be dismissed after only 1 second, and 1 second after that the user would see an unpleasant "jank" as the
-list of posts arrives unexpectedly.
+You can play with an interactive example [here][12].
 
-The following are some strategies we could employ to provide a better UX to the user, with their pros and cons
+{% alert 'danger' :: compileAs('md') %}
+**Danger**
 
-### Queue up the Inputs and run them 1 at a time
+For historical reasons, `FifoInputStrategy` is not the default, so you should manually choose to use
+`FifoInputStrategy` if you aren't sure which you need.
 
-The first thing we could do is to make sure that only 1 Input is executing at a time. This would ensure no race
-conditions are possible from interleaved code, but it would also mean that this snippet now takes 3 seconds to complete,
-instead of 2. It also leaves a tiny amount of time between when `LoadPosts` finished and sets `loading` to `false`, and
-when `LoadLatestPostContent` starts and sets it back to true. If the device is fast enough, the user might not notice,
-but slower devices may result in the progress indicator being briefly dismissed, then shown again.
+This default input strategy will likely be changed to `FifoInputStrategy` in a future version, so it would be best to
+start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default.
+{% endalert %}
 
-This works to prevent the race conditions, but it introduces another problem: if the user doesn't actually want to see
-these posts, and instead was just passing through this screen to get to another, they are stuck waiting for the whole
-thing to load anyway. Because the Inputs get queued up, the user's request to move to another screen will wait for the
-first two to complete before actually processing the navigation request. Obviously, this is not a great UX, and may
-leave the user frustrated with the slowness of the app.
+### LIFO
 
-### Cancel Inputs so only the latest 1 is running at a time
+A last-in-first-out (LIFO) strategy optimizes the experience for responsiveness rather than correctness. Instead of
+ensuring that each Input sent to the ViewModel can be executed completely, LIFO ensures that each Input is processed
+immediately, cancelling anything that's taking too long to process if it needs to. This means that any given Input might
+get cancelled part-way through its execution, which can be unintuitive if you're not expecting it, but it also means
+that the user is always able to do what they want without being made to wait.
 
-So we see that having only 1 Input run at a time is good, but the "blocking" queue is not. So instead, why don't we try
-only processing the latest Input we receive at any given time? With Kotlin flows, this is done with the `.mapLatest { }`
-operator, and actually is the default strategy Ballast uses (though it can be changed).
-
-When using `.mapLatest { }`, if the UI is loading some data and the user requests to navigate away, the API calls will
-be cancelled before they finish, so that Ballast can accept the latest Input and handle the navigation request
-immediately.
-
-But this is not without its drawbacks either. Since we sent both "initial" Inputs at the same time, the second one will
-immediately cancel the first. The result is a progress indicator that only displays for 1 second, and we load the latest
-post content but never get the full list of posts from the first Input. While this strategy does provide the best
-experience to the user, it can be subtly confusing for developers, which is why it's best to structure your app such
-that you don't encounter this situation.
-
-### Use a single "Initialize" Input to perform all long-running operations
-
-One way to restructure your Inputs to avoid accidental cancellation is to move all long-running "fetch" operations into
-a single Input, canonically called `Initialize`, and sending that 1 event when the screen starts instead of multiple for
-individual resources.
+Take the same snippet from the FIFO section:
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
-    is Inputs.Initialize -> {
-        coroutineScope {
-            updateState { it.copy(loading = true) }
-            val deferredPosts = async { postsRepository.getPosts() } // suspending function, takes 2 seconds
-            val deferredLatestPost = async { postsRepository.getLatestPost() } // suspending function, takes 1 second
-            updateState { it.copy(loading = false, posts = deferredPosts.await(), latestPost = deferredLatestPost.await()) }
-        }
+    is Inputs.LoadPosts -> {
+        updateState { it.copy(loading = true) }
+        val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+        updateState { it.copy(loading = false, posts = posts) }
+    }
+    is Inputs.LoadLatestPostContent -> {
+        updateState { it.copy(loading = true) }
+        val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+        updateState { it.copy(loading = false, latestPost = latestPost) }
     }
 }
 
-viewModel.trySend(Inputs.Initialize)
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
 ```
 
-So far, this is definitely the best way to handle this logic. Since we're using coroutines, we can run the fetching
-operations each in parallel with `async { ... }.await()`, and set a single `loading` flag that works for both endpoints.
-The result is both data sources are loaded, the progress indicator is visible for 2 seconds, and if the user navigates
-away these API calls will be cancelled and the navigation performed immediately.
+When using `LifoInputStrategy` here, the `LoadPosts` will start making its API call, but while it is suspended, it will
+get cancelled so that `LoadLatestPostContent` can run. So in this situation, your screen will finish loading in only 1
+second, but you will only have loaded the latest post, but not the full list of posts.
 
-This is the preferred pattern for loading data asynchronously in Ballast. But there are a few other use-cases that we'll
-consider in a later section.
+You can play with an interactive example [here][11].
+
+Clearly, this is not a great use case for LIFO, but let's consider some other situations where LIFO does make more
+sense.
+
+- You have an app that makes a long API call on the dashboard to load its data. But the user may not actually want to
+  view the data on the dashboard, and instead intended to make a change in their acount settings. By using LIFO, you can
+  allow the user to click the "Settings" button and be taken there immediately, without being forced to wait for the
+  dashboard to finish loading before they can navigate.
+- You have an ecommerce app, with the main store listing able to be searched by text, and filtered/sorted by price. The
+  results of the search requires an API call to get new results. By using LIFO, when the user changes the price filter,
+  they don't need to wait for the API call to finish to keep making other changes to their search query. The API call
+  will be cancelled each time they type or change the filter/sort data, and only when they've finished making all
+  changes does the API call actually get executed and the results loaded from the server.
+
+{% alert 'danger' :: compileAs('md') %}
+**Danger**
+
+For historical reasons, `LifoInputStrategy` is the default, but can be unintuitive to work with and cause subtle issues
+in your application. For this reason, it is recommended to manually choose to use `FifoInputStrategy` unless you are
+familiar enough with Ballast and it's workflow to understand the full implications `LifoInputStrategy`.
+
+This default input strategy will likely be changed to `FifoInputStrategy` in a future version, so it would be best to
+start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default or
+having your application start behaving differently in a future version of Ballast.
+{% endalert %}
 
 ## Side-jobs
 
@@ -938,15 +931,15 @@ coordinates you need to display on a map. We need a new strategy to handle this 
 Until this point, we've been working with the notion that the InputHandler will suspend until the async work completes,
 and we considered what would happen if a new Input arrived while one was already suspended. But if we have a
 potentially-infinite data source, we obviously cannot connect to that directly within the InputHandler. Similarly, maybe
-we have a situation where it's not feasible to move all initialization logic into a single Input, but we still want to
-load from multiple APIs in parallel. Both these can be accomplished by moving that work into a `sideJob { }` block.
+we have a situation where we need to load multiple APIs in parallel but do not wish to use `LifoInputStrategy`. Both
+these situations can be accomplished by moving the work to run in the "background" into a `sideJob { }` block.
 
 Side-jobs work kind-of like a "thunk" in Redux; they move async logic outside of the normal data flow of the
 ViewModel, running fully parallel to it, but provide a handle back to the ViewModel where it can post one or more
 additional Inputs with the results of its data. Since they're running parallel to the ViewModel, we cannot allow a
-sideJob to modify the `State`, otherwise we'd run into the same problem we had initially, so instead it needs to just
-send requests back into the proper Input stream to be processed as any other Input, applying the results to the state
-when they are processed themselves.
+sideJob to modify the `State`, otherwise we'd run into the same problem we had initially of race conditions, so instead
+it needs to just send requests back into the proper Input stream to be processed as any other Input, applying the
+results to the state when they are processed themselves.
 
 ### Basic Side-job Usage
 
@@ -954,19 +947,25 @@ Rewriting the original snippet to load both posts in a sideJob would look like t
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
-    is Inputs.PostsLoaded -> { updateState { it.copy(posts = input.posts) } }
-    is Inputs.LatestPostContentLoaded -> { updateState { it.copy(latestPost = input.latestPost) } }
     is Inputs.LoadPosts -> {
         sideJob {
             val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
             postInput(Inputs.PostsLoaded(posts))
         }
     }
+    is Inputs.PostsLoaded -> { 
+        updateState { it.copy(posts = input.posts) } 
+    }
+
+    
     is Inputs.LoadLatestPostContent -> {
         sideJob {
             val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
             postInput(Inputs.LatestPostContentLoaded(latestPost))
         }
+    }
+    is Inputs.LatestPostContentLoaded -> { 
+        updateState { it.copy(latestPost = input.latestPost) } 
     }
 }
 
@@ -984,25 +983,31 @@ refresh" simply by sending the same Input back to Ballast. With normal Input pro
 current Input and run the new one. But sideJobs break out of that cycle, and so Ballast requires each sideJob to
 have a different "key". If any Input tries to launch a sideJob with the same key, the old sideJob will be
 cancelled to accept the new one. This prevents multiple instances of the same block of code being run all in parallel if
-the same Input is sent multiple times.
+the same Input is sent multiple times. This is similar in principle to the keys passed to Compose's `remember() { }` 
+function.
 
 So the fix is to just provide a key to the `sideJob` function:
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
-    is Inputs.PostsLoaded -> { updateState { it.copy(posts = input.posts) } }
-    is Inputs.LatestPostContentLoaded -> { updateState { it.copy(latestPost = input.latestPost) } }
     is Inputs.LoadPosts -> {
         sideJob("LoadPosts") {
             val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
             postInput(Inputs.PostsLoaded(posts))
         }
     }
+    is Inputs.PostsLoaded -> { 
+        updateState { it.copy(posts = input.posts) } 
+    }
+    
     is Inputs.LoadLatestPostContent -> {
         sideJob("LoadLatestPostContent") {
             val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
             postInput(Inputs.LatestPostContentLoaded(latestPost))
         }
+    }
+    is Inputs.LatestPostContentLoaded -> { 
+        updateState { it.copy(latestPost = input.latestPost) } 
     }
 }
 
@@ -1024,7 +1029,6 @@ to the ViewModel.
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
-    is Inputs.GpsCoordinatesUpdated -> { updateState { it.copy(coordinates = input.coordinates) } }
     is Inputs.ObserveGpsSignal -> {
         sideJob("ObserveGpsSignal") {
             gpsRepository
@@ -1034,16 +1038,18 @@ suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) 
                 .launchIn(this)
         }
     }
+    is Inputs.GpsCoordinatesUpdated -> { 
+        updateState { it.copy(coordinates = input.coordinates) } 
+    }
 }
 
 viewModel.trySend(Inputs.ObserveGpsSignal)
 ```
 
-As this is one of the main use-cases for sideJobs, and Ballast offers a convenient shorthand for you:
+As this is one of the primary use-cases for sideJobs, Ballast offers a convenient shorthand for you:
 
 ```kotlin
 suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) = when(input) {
-    is Inputs.GpsCoordinatesUpdated -> { updateState { it.copy(coordinates = input.coordinates) } }
     is Inputs.ObserveGpsSignal -> {
         observeFlows(
             gpsRepository
@@ -1051,6 +1057,9 @@ suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(input: Inputs) 
                 .map { Inputs.GpsCoordinatesUpdated(it) },
             key = "ObserveGpsSignal"
         )
+    }
+    is Inputs.GpsCoordinatesUpdated -> { 
+        updateState { it.copy(coordinates = input.coordinates) } 
     }
 }
 
@@ -1115,5 +1124,10 @@ viewModel.trySend(Inputs.RequestLogout)
 [5]: https://www.raywenderlich.com/817602-mvi-architecture-for-android-tutorial-getting-started
 [6]: https://developer.android.com/jetpack/compose/architecture
 [7]: https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9
-[8]: {{ 'Features' | link }}
-[8]: {{ 'Ballast Repository' | link }}
+[8]: {{ 'Feature Overview' | link }}
+[9]: {{ 'Ballast Repository' | link }}
+[10]: https://developer.android.com/topic/architecture/ui-layer/stateholders
+[11]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Lifo
+[12]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Fifo
+[13]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Parallel
+[14]: {{ 'Feature Overview' | link }}

@@ -36,6 +36,8 @@ The following libraries are compared in this article:
 ### General Philosophy
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 This refers to the general development philosophy behind the development of the library, such as whether it's aiming
 to be lightweight or fully featured, as well as any other significant notes about how to approach the library.
 {% endalert %}
@@ -49,6 +51,8 @@ to be lightweight or fully featured, as well as any other significant notes abou
 ### MVI Style
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 MVI Style refers to the general API of the library: Redux-style sends discrete objects to the library and uses some kind
 of transformer class to split out the objects into discrete streams for each input type. Additionally, a true Redux 
 style only transforms state, with mapper functions receiving the current state and returning the updated state, 
@@ -69,6 +73,8 @@ within the library.
 ### Kotlin Multiplatform Support
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Whether this library is available for Kotlin Multiplatform, or is limited to a single platform.
 {% endalert %}
 
@@ -81,6 +87,8 @@ Whether this library is available for Kotlin Multiplatform, or is limited to a s
 ### Opinionated structure
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 MVI is a lert lightweight design pattern overall, not really mandaing much in terms of classes, naming conventions, etc. 
 But being so lightweight can make it difficult to get started if you're not comfortable with the MVI model, so it can be
 helpful to have a library be opinionated about how it should be used, so you can more easily copy-and-paste code 
@@ -96,6 +104,8 @@ snippets to make it easier to try out on your own.
 ### Reduced boilerplate
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 With the MVI model comes a fair amount of boilerplate. Between creating the ViewModel/Store, defining the contract for
 your State and Intents, and wiring everything up in your application code, it can be a bit overwheling. This section
 shows how each library attempts to wrangle that boilerplate and make it more approachable for new users, and less 
@@ -113,6 +123,8 @@ tedious for long-time users.
 ### Reactive State
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 All state management libraries have a way to observe states, and this shows the function calls needed to subscribe to 
 that state.
 {% endalert %}
@@ -126,6 +138,8 @@ that state.
 ### Get State Snapshot
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Since MVI is by nature reactive, not all libraries offer an option to just query it for the current state at a given 
 point in time. This section shows how to get a state snapshot if it is available.
 {% endalert %}
@@ -139,6 +153,8 @@ point in time. This section shows how to get a state snapshot if it is available
 ### State Immutability
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 One of the big requirements for the MVI model to work properly is an immutable state class. If you can mutate the 
 properties of the state in any way other than dispatching an Intent, then the whole model breaks down. This section 
 explains how each library achieves immutability.
@@ -153,6 +169,8 @@ explains how each library achieves immutability.
 ### Update State
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 This section shows the DSL methods used to update the state. Redux-style updates the state as part of the Reducer's 
 function signature, which always returns the updated state. MVVM+ style provides a privileged scope during the handling 
 of an Intent, which allows you to call a method to update the state.
@@ -167,6 +185,8 @@ of an Intent, which allows you to call a method to update the state.
 ### Restore Saved States
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Sometimes you may need to destroy and recreate a ViewModel, and it is convenient to have a way to restore the previous
 state of that ViewModel without needing to do a full data refresh. This shows how this could be achieved with each 
 library.
@@ -181,6 +201,8 @@ library.
 #### Lifecycle Support
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Applications usually have some concept of a "lifecycle", where screens, scopes, and other features are constructed and 
 torn down automatically by the framework. Ideally, you'd like your ViewModels to respect that lifecycle and prevent 
 changes from being sent to the UI when it is not able to receive them. This section shows how you would tie your
@@ -196,6 +218,8 @@ ViewModel's valid lifetime into the platform's Lifecycle.
 ## Automatic View-Binding
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 One can naively understand the MVI model as a way to automatically apply data to the UI. In reality this description
 is more accurate to the MVVM model, but regardless, some libraries offer specificly-tailed integrations into the UI
 to reduce boilerplate and blur the line between MVVM and MVI.
@@ -210,6 +234,8 @@ to reduce boilerplate and blur the line between MVVM and MVI.
 ## Non-UI State Management
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 State Management at its core is not concerned about UI, it's just concerned about data. And there's a lot of other data
 in your application that would do well to be managed in the same way as your UI state. This section shows which 
 libraries have special support or documentation for managing non-UI state.
@@ -226,6 +252,8 @@ libraries have special support or documentation for managing non-UI state.
 ### Create Intent
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Some MVI libraries have strict rules around creating Intents, while others are a bit more relaxes, or maybe even handle
 everything internally. This section shows how to create an Intent object.
 {% endalert %}
@@ -239,6 +267,8 @@ everything internally. This section shows how to create an Intent object.
 ### Send Intent to VM
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 This shows how one would dispatch an Intent into the library for eventual processing.
 {% endalert %}
 
@@ -253,6 +283,8 @@ This shows how one would dispatch an Intent into the library for eventual proces
 ### Async Foreground Computation
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Foreground computations block the Intent processing queue, allowing long-running work to be completed and then directly
 update the state before another Intent starts processing.
 {% endalert %}
@@ -266,6 +298,8 @@ update the state before another Intent starts processing.
 ### Async Background Computation
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Background computations do not block the main Intent queue and run in parallel to the ViewModel, but also cannot 
 directly update the state. Background jobs run in parallel to the ViewModel and send their own Intents, which will get 
 processed just as if the Intent were generated by the user. 
@@ -285,6 +319,8 @@ do not leak and continue running beyond the ViewModel's ability to process the c
 ### Send one-off Notifications
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Sending events that should only be handled once is not strictly part of the MVI model, but it can be a very useful 
 feature for integrating a state management library into an older, imperative UI toolkit. This section shows how to send
 these notifications from each library which supports it.
@@ -299,6 +335,8 @@ these notifications from each library which supports it.
 ### React to one-off Notifications 
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 If the library is capable of sending one-off notifications, this section shows how to register your application to 
 react to those notifications.
 {% endalert %}
@@ -314,6 +352,8 @@ react to those notifications.
 ### Visual Debugging
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 One of the great features of the MVI model is the ability to capture states and Intents and send them elsewhere. A 
 visual debugger is a great tool for capturing this activity and displaying it in a standalone UI that is not part of 
 your application, so you can inspect (or even change) the data being inspected.
@@ -328,6 +368,8 @@ your application, so you can inspect (or even change) the data being inspected.
 ### Automatic Logging
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Similar to Visual Debugging, it can be helpful to print the activity of your ViewModels to the application's logs so you
 can see the full history at a glance. This section shows which libraries support automatic logging, or whether you would
 need to manually wrap the library to handle it yourself.
@@ -342,6 +384,8 @@ need to manually wrap the library to handle it yourself.
 ### Testing Framework
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 State management is all about managing data and doing it predictably, even though the processing is typically done
 asynchronously. This section shows how one would validate that their Intents are being processed correctly.
 {% endalert %}

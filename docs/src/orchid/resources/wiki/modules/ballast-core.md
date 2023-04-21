@@ -37,6 +37,8 @@ InputHandlers or other Ballast features as well.
 {% snippet 'loggers' %}
 
 {% alert 'danger' :: compileAs('md') %}
+**Danger**
+
 Be sure to only include `LoggingInterceptor()` and the logger in debug builds, as logging in production may cause
 performance degradation and risks leaking sensitive info through to the application logs. It should not be used to
 create a paper-trail of activity in your app, you should use something like [Ballast Firebase][1] to more selectively

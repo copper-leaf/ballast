@@ -14,5 +14,5 @@ that they have been tested and are known to work there, or have specific feature
 
 - {{ 'Android' | anchor }}
 - {{ 'iOS' | anchor }} (requires new Kotlin Native Memory Model)
-- {{ 'Compose Desktop (JVM)' | anchor }}
-- {{ 'Compose Web (JS)' | anchor }}
+- {{ 'Compose Desktop' | anchor }}
+- {{ 'Compose JS/DOM' | anchor }}

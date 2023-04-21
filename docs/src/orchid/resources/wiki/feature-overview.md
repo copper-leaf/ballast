@@ -5,8 +5,9 @@
 
 At a high level, Ballast is a library to help you manage the state of your application as it changes over time. It 
 follows the basic pattern of MVI, which is that the ViewModel state cannot be changed directly, but instead you must 
-send your _intent_ to change the state to the library, which is make sure that request is processed safely. The basic
-MVI loop looks like this:
+send your _intent_ to change the state to the library. The library processes those requests safely, in a way that is
+predicable and repeatable, which generates new states that flow back to the UI automatically. The basic MVI loop looks 
+like this:
 
 ```mermaid
 graph
@@ -97,6 +98,8 @@ For these reasons, Ballast's opinion is that the Contract's State class should b
 work great as individual properties within that State!
 
 {% alert 'info' :: compileAs('md') %}
+**Info**
+
 Pro tip: data classes are great because they make it easy to update the state with `.copy()` and are built-in to the 
 Kotlin language, but there are other ways to update immutable data classes that you might find nicer to work with. Try
 checking out [Arrow Optics](https://arrow-kt.io/learn/immutable-data/intro/#meet-optics) or [KopyKat](https://kopyk.at/)
@@ -125,6 +128,8 @@ will do to the State _without having to look at its implementation or the State_
 input to do 2 different things, it should just be 2 different Inputs.
 
 {% alert 'info' :: compileAs('md')  %}
+**Info**
+
 Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
 You can also use a `sealed interface` instead of `sealed class`.
 {% endalert %}
@@ -147,15 +152,26 @@ sealed class Events {
 ```
 
 {% alert 'info' :: compileAs('md')  %}
+**Info**
+
 Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
 You can also use a `sealed interface` instead of `sealed class`.
 {% endalert %}
 
+{% alert 'warning' :: compileAs('md')  %}
+**Warning**
+
+In a strict MVI model, using "one-off events" is sometimes [considered an anti-pattern](https://manuelvivo.dev/viewmodel-events-antipatterns).
+Ballast processes Events with a `Channel`, making for an "at-most once" delivery model, which may not offer strong 
+enough guarantees for your application. If this model is not strong enough for your needs, it's best to take the 
+suggestion from the above article and reduce your Events to State instead of using Ballast's Events system.
+{% endalert %}
+
 ## Handlers
 
-Everything in the Contract is entirely declarative, but at some point Ballast needs to _do something_ with everything in
-the Contract. There are several elements of a complete Ballast ViewModel that get composed together to implement the
-full MVI pattern.
+Everything in the Contract is entirely declarative, but at some point Ballast needs to _do something_ with what you 
+defined in your Contract. There are several elements of a complete Ballast ViewModel that get composed together to 
+implement the full MVI pattern.
 
 ### Input Handlers
 
@@ -294,6 +310,8 @@ public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 ```
 
 {% alert 'danger' :: compileAs('md') %}
+**Danger**
+
 Note that this style of writing Interceptors is deprecated since v3.0.0, and the `onNotify` method will be removed in 
 v4. Use the "advanced" Interceptor below for creating new Interceptors.
 {% endalert %}
@@ -341,6 +359,10 @@ Ballast offers a simple logging API integrated throughout the library. An instan
 `BallastViewModelConfiguration` is exposed through all interfaces where custom code is run, so you don't have to juggle
 injecting Loggers and properly matching up tags amongst all the different classes that make up the Ballast ViewModel.
 
+Loggers are created individually for each ViewModel, and are supplied with a tag (the ViewModel name) upon creation, so 
+you can easily filter logs to isolate the activity from a single ViewModel. 
+
+
 ```kotlin
 import LoginScreenContract.*
 
@@ -363,6 +385,15 @@ class LoginScreenInputHandler : InputHandler<Inputs, Events, State> {
     }
 }
 ```
+
+You can access the Logger in the following places:
+
+- `InputHandlerScope`
+- `EventHandlerScope`
+- `SideJobScope`
+- `BallastInterceptorScope`
+- `SaveStateScope`
+- `RestoreStateScope`
 
 {% snippet 'loggers' %}
 
