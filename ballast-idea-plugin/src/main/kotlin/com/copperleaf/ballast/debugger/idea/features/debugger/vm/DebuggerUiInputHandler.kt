@@ -2,9 +2,9 @@ package com.copperleaf.ballast.debugger.idea.features.debugger.vm
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.debugger.idea.repository.RepositoryViewModel
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRouter
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.getRouteForSelectedViewModel
+import com.copperleaf.ballast.debugger.idea.repository.RepositoryViewModel
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerViewModel
 import com.copperleaf.ballast.navigation.routing.RouterContract
@@ -109,11 +109,9 @@ class DebuggerUiInputHandler(
         }
 
         is DebuggerUiContract.Inputs.SendDebuggerAction -> {
-            noOp()
-        }
-
-        is DebuggerUiContract.Inputs.UpdateSelectedViewModelContentTab -> {
-            noOp()
+            sideJob("SendDebuggerAction") {
+                debuggerServerViewModel.send(DebuggerServerContract.Inputs.SendDebuggerAction(input.action))
+            }
         }
     }
 

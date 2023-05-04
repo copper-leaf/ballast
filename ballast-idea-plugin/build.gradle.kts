@@ -11,10 +11,11 @@ dependencies {
     implementation(libs.bundles.ktorEmbeddedServer)
     implementation(libs.kotlinx.datetime)
 
-    // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     api(libs.kotlinx.coroutines.swing)
     api(libs.multiplatformSettings.core)
     api(libs.multiplatformSettings.test)
+
+    // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
     api(project(":ballast-core"))
     api(project(":ballast-repository"))
     api(project(":ballast-saved-state"))

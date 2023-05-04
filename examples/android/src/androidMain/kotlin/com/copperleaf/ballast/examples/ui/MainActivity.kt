@@ -3,11 +3,10 @@ package com.copperleaf.ballast.examples.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.copperleaf.ballast.examples.MainApplication
 import com.copperleaf.android.databinding.ActivityMainBinding
+import com.copperleaf.ballast.examples.MainApplication
 import com.copperleaf.ballast.examples.injector.AndroidInjector
 import com.copperleaf.ballast.examples.router.BallastExamples
 import com.copperleaf.ballast.examples.router.BallastExamplesRouter
@@ -26,10 +25,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private var binding: ActivityMainBinding? = null
-
-    override fun getDefaultViewModelCreationExtras(): CreationExtras {
-        return super.getDefaultViewModelCreationExtras()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
