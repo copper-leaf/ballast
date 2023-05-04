@@ -1,10 +1,11 @@
 ## 3.0.0 - 2022-11-28
 
-- Updates to Kotlin 1.8
-- Adds `shouldTrackInput()` parameter to `FirebaseAnalyticsInterceptor`, so Inputs can be selected for tracking without 
-  requiring an Annotation. Use-cases would be dynamically tracking an Input based on its contents, or adding tracking to 
-  input classes you cannot annotate.
-- 
+- Updates to Kotlin 1.8.20
+- Drops support for deprecated KMPP targets:
+  - JS Legacy
+  - iosArm32
+- Several API improvements, including some breaking changes. See [v3 Migration Guide](https://copper-leaf.github.io/ballast/wiki/usage/migration/v3)
+  for full list of changes and instructions for updating your project.
 
 ## 2.3.0 - 2022-11-28
 

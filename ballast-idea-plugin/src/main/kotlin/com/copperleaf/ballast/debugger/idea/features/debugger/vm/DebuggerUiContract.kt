@@ -1,8 +1,7 @@
 package com.copperleaf.ballast.debugger.idea.features.debugger.vm
 
-import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
-import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.ViewModelContentTab
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
 import com.copperleaf.ballast.navigation.routing.Backstack
@@ -41,8 +40,6 @@ object DebuggerUiContract {
         data class Navigate(val destinationUrl: String) : Inputs()
 
         data class SendDebuggerAction(val action: BallastDebuggerActionV3) : Inputs()
-        data class UpdateSelectedViewModelContentTab(val tab: ViewModelContentTab) : Inputs()
-
         data class UpdateSearchText(val value: String) : Inputs()
     }
 
