@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.debugger.idea.features.debugger.ui
 
+import androidx.compose.material.Divider
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -109,6 +111,7 @@ object DebuggerUi {
                     },
                 )
             }
+
             DebuggerRoute.Connection -> {
                 val connectionsList by rememberConnectionsList(uiState.serverState)
                 val connection by rememberSelectedConnection(connectionsList)
@@ -185,7 +188,11 @@ object DebuggerUi {
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
                     mainContentLeft = { StatesList(connection, viewModel, statesList, selectedState, postInput) },
                     contentLeftToolbar = { StatesListToolbar(connection, viewModel, statesList, postInput) },
-                    mainContentRight = { StateDetails(selectedState, postInput) },
+                    mainContentRight = {
+                        Text("Focused State")
+                        Divider()
+                        StateDetails(selectedState, postInput)
+                    },
                     contentRightToolbar = { StateDetailsToolbar(connection, viewModel, selectedState, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
                     stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
@@ -246,7 +253,11 @@ object DebuggerUi {
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
                     mainContentLeft = { InputsList(connection, viewModel, inputsList, selectedInput, postInput) },
                     contentLeftToolbar = { InputsListToolbar(connection, viewModel, inputsList, postInput) },
-                    mainContentRight = { InputDetails(selectedInput, postInput) },
+                    mainContentRight = {
+                        Text("Focused Input")
+                        Divider()
+                        InputDetails(selectedInput, postInput)
+                    },
                     contentRightToolbar = { InputDetailsToolbar(connection, viewModel, selectedInput, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
                     stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
@@ -307,7 +318,11 @@ object DebuggerUi {
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
                     mainContentLeft = { EventsList(connection, viewModel, eventsList, selectedEvent, postInput) },
                     contentLeftToolbar = { EventsListToolbar(connection, viewModel, eventsList, postInput) },
-                    mainContentRight = { EventDetails(selectedEvent, postInput) },
+                    mainContentRight = {
+                        Text("Focused Event")
+                        Divider()
+                        EventDetails(selectedEvent, postInput)
+                    },
                     contentRightToolbar = { EventDetailsToolbar(connection, viewModel, selectedEvent, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
                     stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
@@ -368,7 +383,11 @@ object DebuggerUi {
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
                     mainContentLeft = { SideJobsList(connection, viewModel, sideJobsList, selectedSideJob, postInput) },
                     contentLeftToolbar = { SideJobsListToolbar(connection, viewModel, sideJobsList, postInput) },
-                    mainContentRight = { SideJobDetails(selectedSideJob, postInput) },
+                    mainContentRight = {
+                        Text("Focused Side Job")
+                        Divider()
+                        SideJobDetails(selectedSideJob, postInput)
+                    },
                     contentRightToolbar = { SideJobDetailsToolbar(connection, viewModel, selectedSideJob, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
                     stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
@@ -429,7 +448,11 @@ object DebuggerUi {
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
                     mainContentLeft = { InterceptorsList(connection, viewModel, interceptorList, selectedInterceptor, postInput) },
                     contentLeftToolbar = { InterceptorsListToolbar(connection, viewModel, interceptorList, postInput) },
-                    mainContentRight = { InterceptorDetails(selectedInterceptor, postInput) },
+                    mainContentRight = {
+                        Text("Focused Interceptor")
+                        Divider()
+                        InterceptorDetails(selectedInterceptor, postInput)
+                    },
                     contentRightToolbar = { InterceptorDetailsToolbar(connection, viewModel, selectedInterceptor, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
                     stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
@@ -464,31 +487,31 @@ object DebuggerUi {
                 )
             }
 
-            DebuggerRoute.ViewModelTimeline -> {
-                val connectionsList by rememberConnectionsList(uiState.serverState)
-                val connection by rememberSelectedConnection(connectionsList)
-                val viewModelList by rememberViewModelList(connection)
-                val viewModel by rememberSelectedViewModel(connection)
-                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.cachedSettings)
-                val latestState by rememberLatestViewModelStateSnapshot(viewModel)
-
-                DebuggerScaffold(
-                    primaryToolbar = {
-                        DebuggerPrimaryToolbar(
-                            currentRoute,
-                            connectionsList,
-                            connection,
-                            viewModelList,
-                            viewModel,
-                            uiState.searchText,
-                            postInput,
-                        )
-                    },
-                    tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
-                    secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
-                    stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
-                )
-            }
+//            DebuggerRoute.ViewModelTimeline -> {
+//                val connectionsList by rememberConnectionsList(uiState.serverState)
+//                val connection by rememberSelectedConnection(connectionsList)
+//                val viewModelList by rememberViewModelList(connection)
+//                val viewModel by rememberSelectedViewModel(connection)
+//                val currentAppDestination by rememberConnectionCurrentDestination(connection, uiState.cachedSettings)
+//                val latestState by rememberLatestViewModelStateSnapshot(viewModel)
+//
+//                DebuggerScaffold(
+//                    primaryToolbar = {
+//                        DebuggerPrimaryToolbar(
+//                            currentRoute,
+//                            connectionsList,
+//                            connection,
+//                            viewModelList,
+//                            viewModel,
+//                            uiState.searchText,
+//                            postInput,
+//                        )
+//                    },
+//                    tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
+//                    secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
+//                    stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
+//                )
+//            }
         }
     }
 }

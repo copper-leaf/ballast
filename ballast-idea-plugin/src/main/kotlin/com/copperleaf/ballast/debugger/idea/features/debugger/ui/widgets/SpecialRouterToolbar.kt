@@ -4,6 +4,7 @@ package com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ fun ColumnScope.SpecialRouterToolbar(
                 onValueChange = { }, // ignore
                 modifier = Modifier.fillMaxWidth(),
                 readOnly = true,
+                label = { Text("Current Route") }
             )
         }
     }

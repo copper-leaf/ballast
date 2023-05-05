@@ -93,7 +93,6 @@ public class DebuggerServerInputHandler : InputHandler<
                                 updateWithDebuggerEvent(input.message, null)
                             }
                         }
-
                     }
                 )
             }
