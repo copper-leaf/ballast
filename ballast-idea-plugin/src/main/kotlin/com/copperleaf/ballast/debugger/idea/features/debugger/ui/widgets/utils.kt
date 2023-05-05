@@ -381,7 +381,7 @@ fun getRouteForSelectedViewModel(
             DebuggerRoute.ViewModelInterceptors -> DebuggerRoute.ViewModelInterceptors
             DebuggerRoute.ViewModelInterceptorDetails -> DebuggerRoute.ViewModelInterceptors
             DebuggerRoute.ViewModelLogs -> DebuggerRoute.ViewModelLogs
-            DebuggerRoute.ViewModelTimeline -> DebuggerRoute.ViewModelTimeline
+//            DebuggerRoute.ViewModelTimeline -> DebuggerRoute.ViewModelTimeline
         }
 
         newRoute

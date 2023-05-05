@@ -27,7 +27,7 @@ enum class DebuggerRoute(
     ViewModelInterceptorDetails("/debugger/{connectionId}/vm/{viewModelName}/interceptors/{interceptorUuid}"),
 
     ViewModelLogs("/debugger/{connectionId}/vm/{viewModelName}/logs"),
-    ViewModelTimeline("/debugger/{connectionId}/vm/{viewModelName}/timeline"),
+//    ViewModelTimeline("/debugger/{connectionId}/vm/{viewModelName}/timeline"),
     ;
 
     override val matcher: RouteMatcher = RouteMatcher.create(routeFormat)

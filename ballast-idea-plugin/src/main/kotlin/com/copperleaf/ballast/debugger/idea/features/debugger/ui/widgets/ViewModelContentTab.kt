@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.RestartAlt
-import androidx.compose.material.icons.filled.Timeline
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.features.debugger.vm.DebuggerUiContract
@@ -27,8 +26,8 @@ enum class ViewModelContentTab(
     Events(Icons.Default.NotificationsActive, "Events"),
     SideJobs(Icons.Default.CloudUpload, "SideJobs"),
     Interceptors(Icons.Default.RestartAlt, "Interceptors"),
-    Logs(Icons.Default.Description, "Logs"),
-    Timeline(Icons.Default.Timeline, "Timeline");
+    Logs(Icons.Default.Description, "Logs");
+//    Timeline(Icons.Default.Timeline, "Timeline");
 
     fun isEnabled(
         connection: BallastConnectionState
@@ -41,7 +40,7 @@ enum class ViewModelContentTab(
             SideJobs -> true
             Interceptors -> version >= ClientVersion(3, null, null)
             Logs -> true
-            Timeline -> version >= ClientVersion(3, null, null)
+//            Timeline -> version >= ClientVersion(3, null, null)
         }
     }
 
@@ -55,7 +54,7 @@ enum class ViewModelContentTab(
             SideJobs -> viewModel.sideJobsInProgress
             Interceptors -> false
             Logs -> false
-            Timeline -> false
+//            Timeline -> false
         }
     }
 
@@ -70,7 +69,7 @@ enum class ViewModelContentTab(
             SideJobs -> DebuggerRoute.ViewModelSideJobs.directions()
             Interceptors -> DebuggerRoute.ViewModelInterceptors.directions()
             Logs -> DebuggerRoute.ViewModelLogs.directions()
-            Timeline -> DebuggerRoute.ViewModelTimeline.directions()
+//            Timeline -> DebuggerRoute.ViewModelTimeline.directions()
         }
 
         return route
@@ -96,7 +95,7 @@ enum class ViewModelContentTab(
                 DebuggerRoute.ViewModelInterceptors -> Interceptors
                 DebuggerRoute.ViewModelInterceptorDetails -> Interceptors
                 DebuggerRoute.ViewModelLogs -> Logs
-                DebuggerRoute.ViewModelTimeline -> Timeline
+//                DebuggerRoute.ViewModelTimeline -> Timeline
             }
         }
     }

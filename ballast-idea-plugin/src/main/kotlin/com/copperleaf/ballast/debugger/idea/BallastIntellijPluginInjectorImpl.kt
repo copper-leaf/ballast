@@ -41,9 +41,11 @@ class BallastIntellijPluginInjectorImpl(
                 logger = { tag -> IntellijPluginBallastLogger(tag) }
                 inputStrategy = FifoInputStrategy()
 
-                if (loggingEnabled) {
-                    this += LoggingInterceptor()
-                }
+                this += LoggingInterceptor(
+                    logDebug = loggingEnabled,
+                    logInfo = loggingEnabled,
+                    logError = true, // log all errors
+                )
                 if (bootstrapInput != null) {
                     this += BootstrapInterceptor {
                         bootstrapInput()

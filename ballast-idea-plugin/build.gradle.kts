@@ -8,20 +8,20 @@ plugins {
 
 dependencies {
     // Ktor websocket server
-    implementation(libs.bundles.ktorEmbeddedServer)
     implementation(libs.kotlinx.datetime)
+    implementation(libs.bundles.ktorEmbeddedServer)
 
-    api(libs.kotlinx.coroutines.swing)
-    api(libs.multiplatformSettings.core)
-    api(libs.multiplatformSettings.test)
+    implementation(libs.kotlinx.coroutines.swing)
+    implementation(libs.multiplatformSettings.core)
+    implementation(libs.multiplatformSettings.test)
 
     // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
-    api(project(":ballast-core"))
-    api(project(":ballast-repository"))
-    api(project(":ballast-saved-state"))
-    api(project(":ballast-navigation"))
-    api(project(":ballast-debugger"))
-    api(project(":ballast-debugger-server"))
+    implementation(project(":ballast-core"))
+    implementation(project(":ballast-repository"))
+    implementation(project(":ballast-saved-state"))
+    implementation(project(":ballast-navigation"))
+    implementation(project(":ballast-debugger"))
+    implementation(project(":ballast-debugger-server"))
 }
 
 buildConfig {
