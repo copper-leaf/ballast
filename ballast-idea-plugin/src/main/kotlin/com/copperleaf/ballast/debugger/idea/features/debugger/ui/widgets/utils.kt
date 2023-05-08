@@ -313,16 +313,18 @@ fun IntellijEditor(
         }
 
         SelectionContainer {
-            lines.forEachIndexed { index, line ->
-                Row {
-                    DisableSelection {
-                        Text("${index + 1}", Modifier.width(24.dp))
+            Column {
+                lines.forEachIndexed { index, line ->
+                    Row {
+                        DisableSelection {
+                            Text("${index + 1}", Modifier.width(24.dp))
+                        }
+                        Text(
+                            text = line,
+                            color = color,
+                            fontFamily = FontFamily.Monospace,
+                        )
                     }
-                    Text(
-                        text = line,
-                        color = color,
-                        fontFamily = FontFamily.Monospace,
-                    )
                 }
             }
         }
