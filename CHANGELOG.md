@@ -1,4 +1,8 @@
-## 3.0.0 - 2022-11-28
+## 3.0.1 - 2022-05-13
+
+- Fixes regression in BallastSavedStateInterceptor
+
+## 3.0.0 - 2022-05-07
 
 - Updates to Kotlin 1.8.20
 - Drops support for deprecated KMPP targets:
