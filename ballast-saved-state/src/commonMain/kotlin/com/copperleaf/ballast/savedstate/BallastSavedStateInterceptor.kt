@@ -57,6 +57,8 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
 
                         is BallastNotification.EventProcessingStarted,
                         is BallastNotification.EventProcessingStopped,
+                        is BallastNotification.InterceptorAttached,
+                        is BallastNotification.InterceptorFailed,
                         is BallastNotification.UnhandledError -> {
                             // these notifications are fine to be sent any time, we can ignore them
                         }
