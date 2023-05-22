@@ -1,11 +1,10 @@
 package com.ballast.sharedui
 
-import androidx.compose.ui.window.Application
-import com.ballast.sharedui.root.RootContent
+import androidx.compose.ui.window.ComposeUIViewController
+import com.ballast.sharedui.content.RootContent
 import platform.UIKit.UIViewController
 
-
 @Suppress("FunctionName", "unused") // Used in iOS
-fun RootViewController(): UIViewController = Application("Ballast Shared UI") {
+fun RootViewController(): UIViewController = ComposeUIViewController {
     RootContent()
 }

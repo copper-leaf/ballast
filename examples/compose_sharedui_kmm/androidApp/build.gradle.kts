@@ -1,9 +1,8 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("org.jetbrains.compose")
 }
-
-val compose = "1.4.0-alpha04"
 
 android {
     namespace = "com.adrianwitaszak.ballastsharedui.android"
@@ -19,7 +18,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = compose
+        kotlinCompilerExtensionVersion = libs.versions.jetpackCompose.get()
     }
     packagingOptions {
         resources {
@@ -31,14 +30,25 @@ android {
             isMinifyEnabled = false
         }
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
 }
 
 dependencies {
     implementation(project(":shared"))
-    implementation("androidx.compose.ui:ui:$compose")
-    implementation("androidx.compose.ui:ui-tooling:$compose")
-    implementation("androidx.compose.ui:ui-tooling-preview:$compose")
-    implementation("androidx.compose.foundation:foundation:$compose")
-    implementation("androidx.compose.material:material:$compose")
-    implementation("androidx.activity:activity-compose:$compose")
+    implementation(compose.animation)
+    implementation(compose.animationGraphics)
+    implementation(compose.foundation)
+    implementation(compose.material)
+    implementation(compose.materialIconsExtended)
+    implementation(compose.runtime)
+    implementation(compose.ui)
+    implementation(libs.jetpackCompose.activity)
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.material)
 }
