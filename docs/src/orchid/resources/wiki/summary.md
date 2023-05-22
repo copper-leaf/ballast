@@ -36,6 +36,7 @@
   - [Navigation](examples/navigation.md)
   - [KaMPKit](examples/kamp-kit.md)
   - [KVision TODOMVC](examples/kvision-todomvc.md)
+  - [Shared Compose Multiplatform](examples/shared-compose-multiplatform.md)
 - [MVI Library Comparison](feature-comparison.md)
 - [Roadmap](roadmap.md)
 - [Changelog](changelog.md)
