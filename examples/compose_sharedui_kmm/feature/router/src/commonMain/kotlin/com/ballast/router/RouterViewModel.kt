@@ -15,7 +15,8 @@ import kotlinx.coroutines.CoroutineScope
 @OptIn(ExperimentalBallastApi::class)
 class RouterViewModel(
     viewModelScope: CoroutineScope,
-    initialRoute: RouterScreen,
+    initialRoute: RouterScreen?,
+    additionalConfiguration: BallastViewModelConfiguration.Builder.() -> Unit = { },
 ) : BasicRouter<RouterScreen>(
     config = BallastViewModelConfiguration.Builder()
         .apply {
@@ -26,6 +27,7 @@ class RouterViewModel(
             routingTable = RoutingTable.fromEnum(RouterScreen.values()),
             initialRoute = initialRoute
         )
+        .apply(additionalConfiguration)
         .build(),
     eventHandler = RouterEventHandler(),
     coroutineScope = viewModelScope
