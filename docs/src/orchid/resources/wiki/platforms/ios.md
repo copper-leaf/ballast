@@ -49,6 +49,8 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                api("io.github.copper-leaf:ballast-api:{{site.version}}")
+                api("io.github.copper-leaf:ballast-viewmodel:{{site.version}}")
                 api("io.github.copper-leaf:ballast-core:{{site.version}}")
                 api("io.github.copper-leaf:ballast-repository:{{site.version}}")
                 implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
@@ -59,6 +61,8 @@ kotlin {
     cocoapods {
         framework {
             isStatic = false // SwiftUI preview requires dynamic framework
+            export("io.github.copper-leaf:ballast-api:{{site.version}}")
+            export("io.github.copper-leaf:ballast-viewmodel:{{site.version}}")
             export("io.github.copper-leaf:ballast-core:{{site.version}}")
             export("io.github.copper-leaf:ballast-repository:{{site.version}}")
         }
