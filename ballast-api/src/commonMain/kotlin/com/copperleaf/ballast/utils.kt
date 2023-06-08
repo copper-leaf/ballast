@@ -4,6 +4,7 @@ import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.internal.Status
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.launchIn
@@ -384,6 +385,7 @@ public suspend inline fun <Inputs : Any, Events : Any, State : Any> Flow<Ballast
     filter {
         it is BallastNotification.ViewModelStatusChanged<Inputs, Events, State> && it.status == Status.Running
     }.take(1)
+        .collect()
 }
 
 /**

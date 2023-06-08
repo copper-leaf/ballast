@@ -1,3 +1,7 @@
+## 3.0.2 - 2022-06-08
+
+- Fixes regression where `awaitViewModelStart()` never calls a terminal Flow operator and doesn't actually suspend.
+
 ## 3.0.1 - 2022-05-13
 
 - Fixes regression in BallastSavedStateInterceptor
