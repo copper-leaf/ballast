@@ -1,10 +1,3 @@
-public final class com/copperleaf/ballast/firebase/FirebaseAnalyticsInterceptor : com/copperleaf/ballast/BallastInterceptor {
-	public fun <init> (Lcom/google/firebase/analytics/FirebaseAnalytics;)V
-	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
-	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
-}
-
 public final class com/copperleaf/ballast/firebase/FirebaseAnalyticsInterceptorKt {
 	public static final fun FirebaseAnalyticsInterceptor (Lcom/google/firebase/analytics/FirebaseAnalytics;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/analytics/AnalyticsInterceptor;
 	public static synthetic fun FirebaseAnalyticsInterceptor$default (Lcom/google/firebase/analytics/FirebaseAnalytics;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/copperleaf/ballast/analytics/AnalyticsInterceptor;

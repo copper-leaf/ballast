@@ -3,14 +3,11 @@ public abstract interface annotation class com/copperleaf/ballast/BallastDsl : j
 
 public abstract interface class com/copperleaf/ballast/BallastInterceptor {
 	public abstract fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
-	public abstract fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
 public final class com/copperleaf/ballast/BallastInterceptor$DefaultImpls {
 	public static fun getKey (Lcom/copperleaf/ballast/BallastInterceptor;)Lcom/copperleaf/ballast/BallastInterceptor$Key;
-	public static fun onNotify (Lcom/copperleaf/ballast/BallastInterceptor;Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static fun start (Lcom/copperleaf/ballast/BallastInterceptor;Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
 public abstract interface class com/copperleaf/ballast/BallastInterceptor$Key {
@@ -345,7 +342,6 @@ public final class com/copperleaf/ballast/Queued$ShutDownGracefully : com/copper
 }
 
 public abstract interface class com/copperleaf/ballast/SideJobScope : kotlinx/coroutines/CoroutineScope {
-	public abstract fun getCurrentStateWhenStarted ()Ljava/lang/Object;
 	public abstract fun getInterceptor (Lcom/copperleaf/ballast/BallastInterceptor$Key;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getKey ()Ljava/lang/String;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
@@ -382,16 +378,6 @@ public final class com/copperleaf/ballast/UtilsKt {
 	public static final fun withViewModel (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
 	public static synthetic fun withViewModel$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/FilteredInputHandler;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
 	public static synthetic fun withViewModel$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/InputFilter;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
-}
-
-public class com/copperleaf/ballast/core/BallastException : java/lang/RuntimeException {
-	public fun <init> (Ljava/lang/Throwable;ZLjava/lang/Object;Ljava/util/List;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getHandled ()Z
-	public final fun getInputSequence ()Ljava/util/List;
-	public final fun getLatestState ()Ljava/lang/Object;
-	public final fun get_cause ()Ljava/lang/Throwable;
-	public fun hashCode ()I
 }
 
 public class com/copperleaf/ballast/core/DefaultGuardian : com/copperleaf/ballast/InputStrategy$Guardian {

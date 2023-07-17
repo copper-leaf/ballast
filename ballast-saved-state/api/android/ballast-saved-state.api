@@ -16,7 +16,6 @@ public abstract interface class com/copperleaf/ballast/savedstate/AndroidSavedSt
 public final class com/copperleaf/ballast/savedstate/AndroidSavedStateAdapter$DefaultImpls {
 	public static fun get (Lcom/copperleaf/ballast/savedstate/AndroidSavedStateAdapter;Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
 	public static fun getPrefix (Lcom/copperleaf/ballast/savedstate/AndroidSavedStateAdapter;)Lkotlin/jvm/functions/Function1;
-	public static fun onRestoreComplete (Lcom/copperleaf/ballast/savedstate/AndroidSavedStateAdapter;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun saveAllToSavedStateHandle (Lcom/copperleaf/ballast/savedstate/AndroidSavedStateAdapter;Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static fun saveDiffToSavedStateHandle (Lcom/copperleaf/ballast/savedstate/AndroidSavedStateAdapter;Lcom/copperleaf/ballast/savedstate/SaveStateScope;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
@@ -25,7 +24,6 @@ public final class com/copperleaf/ballast/savedstate/BallastSavedStateIntercepto
 	public fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
-	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
@@ -52,12 +50,7 @@ public abstract interface class com/copperleaf/ballast/savedstate/SaveStateScope
 }
 
 public abstract interface class com/copperleaf/ballast/savedstate/SavedStateAdapter {
-	public abstract fun onRestoreComplete (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun restore (Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun save (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/copperleaf/ballast/savedstate/SavedStateAdapter$DefaultImpls {
-	public static fun onRestoreComplete (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 

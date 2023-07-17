@@ -570,7 +570,6 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
                 // run the sideJob, which may never complete
                 coroutineScope {
                     val sideJobScope = SideJobScopeImpl(
-                        currentStateWhenStarted = getCurrentState(),
                         key = latestSideJobForKey.key,
                         restartState = latestSideJobForKey.restartState,
                         sideJobCoroutineScope = this,
