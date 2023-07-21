@@ -154,12 +154,14 @@ private fun <Inputs : Any, Events : Any, State : Any> List<BallastInterceptor<*,
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.build(
 ): BallastViewModelConfiguration<Inputs, Events, State> {
     val vmName = name ?: "$inputHandler-vm"
+    @Suppress("DEPRECATION")
     return DefaultViewModelConfiguration<Inputs, Events, State>(
         initialState = initialState.requireTyped("initialState"),
         inputHandler = inputHandler.requireTyped("inputHandler"),
         filter = filter.requireTypedIfPresent("filter"),
         interceptors = interceptors.mapAsTyped(),
-        inputStrategy = inputStrategy.requireTyped("inputHandler"),
+        inputStrategy = inputStrategy.requireTyped("inputStrategy"),
+        eventStrategy = eventStrategy.requireTyped("eventStrategy"),
         inputsDispatcher = inputsDispatcher,
         eventsDispatcher = eventsDispatcher,
         sideJobsDispatcher = sideJobsDispatcher,
@@ -208,16 +210,18 @@ public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelCo
  * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
  * [BallastViewModelConfiguration].
  */
+@Deprecated("InputFilter is no longer used by the VM configuration. Pass the filter to the InputStrategy instead.")
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
     initialState: State,
     inputHandler: InputHandler<Inputs, Events, State>,
-    filter: InputFilter<Inputs, Events, State>? = null,
+    filter: InputFilter<Inputs, Events, State>?,
     name: String? = this.name,
 ): BallastViewModelConfiguration.Builder =
     this
         .apply {
             this.initialState = initialState
             this.inputHandler = inputHandler
+            @Suppress("DEPRECATION")
             this.filter = filter
             this.name = name
         }
@@ -229,6 +233,24 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
  */
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
     initialState: State,
+    inputHandler: InputHandler<Inputs, Events, State>,
+    name: String? = this.name,
+): BallastViewModelConfiguration.Builder =
+    this
+        .apply {
+            this.initialState = initialState
+            this.inputHandler = inputHandler
+            this.name = name
+        }
+
+/**
+ * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
+ * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
+ * [BallastViewModelConfiguration].
+ */
+@Deprecated("InputFilter is no longer used by the VM configuration. Pass the filter to the InputStrategy instead.")
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
+    initialState: State,
     inputHandler: FilteredInputHandler<Inputs, Events, State>,
     name: String? = this.name,
 ): BallastViewModelConfiguration.Builder =
@@ -236,6 +258,7 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         .apply {
             this.initialState = initialState
             this.inputHandler = inputHandler
+            @Suppress("DEPRECATION")
             this.filter = inputHandler
             this.name = name
         }

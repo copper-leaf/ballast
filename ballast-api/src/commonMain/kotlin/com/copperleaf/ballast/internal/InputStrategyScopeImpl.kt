@@ -1,11 +1,14 @@
 package com.copperleaf.ballast.internal
 
+import com.copperleaf.ballast.BallastLogger
+import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.InputStrategyScope
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Ballast ViewModels are designed to be safe and prevent you from doing things that could cause hard-to-debug race
@@ -21,13 +24,30 @@ import com.copperleaf.ballast.core.ParallelInputStrategy
  * @see [ParallelInputStrategy]
  */
 internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
+    coroutineScope: CoroutineScope,
     private val impl: BallastViewModelImpl<Inputs, Events, State>
-) : InputStrategyScope<Inputs, Events, State> {
+) : InputStrategyScope<Inputs, Events, State>, CoroutineScope by coroutineScope {
+
+    override val logger: BallastLogger
+        get() = impl.logger
 
     override suspend fun acceptQueued(
         queued: Queued<Inputs, Events, State>,
         guardian: InputStrategy.Guardian,
+        onCancelled: suspend () -> Unit
     ) {
-        impl.safelyHandleQueued(queued, guardian)
+        impl.safelyHandleQueued(queued, guardian, onCancelled)
+    }
+
+    override suspend fun getCurrentState(): State {
+        return impl.getCurrentState()
+    }
+
+    override suspend fun rollbackState(state: State) {
+        impl.safelySetState(state, null)
+    }
+
+    override suspend fun rejectInput(input: Inputs, currentState: State) {
+        impl.notify(BallastNotification.InputRejected(impl.type, impl.name, currentState, input))
     }
 }

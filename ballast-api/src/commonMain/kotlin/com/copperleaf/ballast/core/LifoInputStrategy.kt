@@ -1,10 +1,9 @@
 package com.copperleaf.ballast.core
 
-import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputStrategyScope
 import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 
@@ -25,31 +24,34 @@ import kotlinx.coroutines.flow.collectLatest
  * Since we know only 1 Input is being procced at a time, if an input gets cancelled partway through its processing, the
  * ViewModel state will roll back to prevent the ViewModel from being left in a bad state.
  */
-public class LifoInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor() :
-    InputStrategy<Inputs, Events, State> {
-
-    override fun createQueue(): Channel<Queued<Inputs, Events, State>> {
-        return Channel(64, BufferOverflow.DROP_LATEST)
-    }
-
-    override val rollbackOnCancellation: Boolean = true
+public class LifoInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor(
+    filter: InputFilter<Inputs, Events, State>?
+) : ChannelInputStrategy<Inputs, Events, State>(
+    capacity = 64,
+    onBufferOverflow = BufferOverflow.DROP_LATEST,
+    filter = filter,
+) {
 
     override suspend fun InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
     ) {
         filteredQueue
             .collectLatest { queued ->
-                acceptQueued(queued, DefaultGuardian())
+                val stateBeforeInput = getCurrentState()
+
+                acceptQueued(queued, DefaultGuardian()) {
+                    rollbackState(stateBeforeInput)
+                }
             }
     }
 
     public companion object {
         public operator fun invoke(): LifoInputStrategy<Any, Any, Any> {
-            return LifoInputStrategy()
+            return LifoInputStrategy(null)
         }
 
-        public fun <Inputs : Any, Events : Any, State : Any> typed(): LifoInputStrategy<Inputs, Events, State> {
-            return LifoInputStrategy()
+        public fun <Inputs : Any, Events : Any, State : Any> typed(filter: InputFilter<Inputs, Events, State>? = null): LifoInputStrategy<Inputs, Events, State> {
+            return LifoInputStrategy(filter)
         }
     }
 }

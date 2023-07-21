@@ -5,7 +5,6 @@ import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
-import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.SideJobScope
@@ -27,7 +26,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.launchIn
@@ -41,14 +39,12 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
-import kotlin.coroutines.coroutineContext
 import kotlin.time.Duration
 
 public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     internal val type: String,
-    private val config: BallastViewModelConfiguration<Inputs, Events, State>,
+    config: BallastViewModelConfiguration<Inputs, Events, State>,
 ) : BallastViewModel<Inputs, Events, State>,
     BallastViewModelConfiguration<Inputs, Events, State> by config {
 
@@ -150,8 +146,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 
         // ensure all queues are closed. In a graceful shutdown they will be closed already, but if the VM was closed by
         // the cancellation of its coroutineScope, then they will not be closed until this point.
-        _mainQueue.close()
-        _eventsQueue.close()
+        inputStrategy.close()
+        eventStrategy.close()
         _sideJobsRequestQueue.close()
         _notificationsQueue.close()
     }
@@ -200,49 +196,14 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Main Queue
 // ---------------------------------------------------------------------------------------------------------------------
 
-    private val _mainQueue: Channel<Queued<Inputs, Events, State>> = config.inputStrategy.createQueue()
-    private val _mainQueueDrained = CompletableDeferred<Unit>()
-
     private fun startMainQueueInternal() {
         // observe and process Inputs
-        viewModelScope.launch {
-            val filteredInputsFlow = _mainQueue
-                .receiveAsFlow()
-                .filter { queued -> filterQueued(queued) }
-                .flowOn(inputsDispatcher)
-                .onCompletion { _mainQueueDrained.complete(Unit) }
-
-            with(config.inputStrategy) {
-                InputStrategyScopeImpl(this@BallastViewModelImpl).processInputs(
-                    filteredQueue = filteredInputsFlow,
-                )
-            }
-        }
-    }
-
-    private suspend fun filterQueued(queued: Queued<Inputs, Events, State>): Boolean {
-        when (queued) {
-            is Queued.RestoreState -> {
-                // when restoring state, always accept the item
-                return true
-            }
-
-            is Queued.HandleInput -> {
-                // when handling an Input, check with the InputFilter to see if it should be accepted
-                val currentState = getCurrentState()
-                val shouldAcceptInput = filter?.filterInput(currentState, queued.input) ?: InputFilter.Result.Accept
-
-                if (shouldAcceptInput == InputFilter.Result.Reject) {
-                    notify(BallastNotification.InputRejected(type, name, currentState, queued.input))
-                    queued.deferred?.complete(Unit)
-                }
-
-                return shouldAcceptInput == InputFilter.Result.Accept
-            }
-
-            is Queued.ShutDownGracefully -> {
-                return true
-            }
+        val scope = InputStrategyScopeImpl(
+            viewModelScope + inputsDispatcher,
+            this@BallastViewModelImpl
+        )
+        with(inputStrategy) {
+            scope.start()
         }
     }
 
@@ -263,7 +224,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             }
         }
 
-        _mainQueue.send(queued)
+        inputStrategy.enqueue(queued)
 
         if (await) {
             queued.deferred?.await()
@@ -287,7 +248,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             }
         }
 
-        val result = _mainQueue.trySend(queued)
+        val result = inputStrategy.tryEnqueue(queued)
 
         if (result.isFailure || result.isClosed) {
             when (queued) {
@@ -310,10 +271,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
     internal suspend fun safelyHandleQueued(
         queued: Queued<Inputs, Events, State>,
         guardian: InputStrategy.Guardian,
+        onCancelled: suspend () -> Unit
     ) {
         when (queued) {
             is Queued.HandleInput -> {
-                safelyHandleInput(queued.input, queued.deferred, guardian)
+                safelyHandleInput(queued.input, queued.deferred, guardian, onCancelled)
             }
 
             is Queued.RestoreState -> {
@@ -330,10 +292,10 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         input: Inputs,
         deferred: CompletableDeferred<Unit>?,
         guardian: InputStrategy.Guardian,
+        onCancelled: suspend () -> Unit
     ) {
         notify(BallastNotification.InputAccepted(type, name, input))
 
-        val stateBeforeCancellation = getCurrentState()
         try {
             coroutineScope {
                 // Create a handler scope to handle the input normally
@@ -355,9 +317,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             // complete and may have left the State in a bad, erm..., state. We should reset it and
             // try to forget that we ever tried to process it in the first place
             notify(BallastNotification.InputCancelled(type, name, input))
-            if (config.inputStrategy.rollbackOnCancellation) {
-                safelySetState(stateBeforeCancellation, null)
-            }
+            onCancelled()
             deferred?.complete(Unit)
         } catch (e: Throwable) {
             notify(BallastNotification.InputHandlerError(type, name, input, e))
@@ -380,39 +340,40 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         notify(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
 
         // close the main queue and wait for all Inputs to be handled
-        _mainQueue.close()
-        _mainQueueDrained.await()
+        inputStrategy.close()
+        inputStrategy.flush()
     }
 
 // Events
 // ---------------------------------------------------------------------------------------------------------------------
 
-    private val _eventsQueue: Channel<Events> = Channel(BUFFERED, BufferOverflow.SUSPEND)
-    private val _eventsQueueDrained: CompletableDeferred<Unit> = CompletableDeferred()
-
-    public suspend fun attachEventHandler(
-        handler: EventHandler<Inputs, Events, State>
+    public fun attachEventHandler(
+        handler: EventHandler<Inputs, Events, State>,
+        coroutineScope: CoroutineScope = viewModelScope,
     ) {
-        notify(BallastNotification.EventProcessingStarted(type, name))
+        val eventHandlerCoroutineScope = coroutineScope +
+                uncaughtExceptionHandler +
+                eventsDispatcher
 
-        coroutineContext.job.invokeOnCompletion {
-            notifyImmediate(BallastNotification.EventProcessingStopped(type, name))
-        }
+        eventHandlerCoroutineScope.launch {
+            notify(BallastNotification.EventProcessingStarted(type, name))
 
-        withContext(uncaughtExceptionHandler) {
-            _eventsQueue
-                .receiveAsFlow()
-                .onEach { safelyHandleEvent(it, handler) }
-                .flowOn(eventsDispatcher)
-                .onCompletion { _eventsQueueDrained.complete(Unit) }
-                .launchIn(this)
+            coroutineContext.job.invokeOnCompletion {
+                notifyImmediate(BallastNotification.EventProcessingStopped(type, name))
+            }
+
+            val eventStrategyScope = EventStrategyScopeImpl(this@BallastViewModelImpl, handler)
+
+            with(eventStrategy) {
+                eventStrategyScope.start()
+            }
         }
     }
 
     internal suspend fun enqueueEvent(event: Events, deferred: CompletableDeferred<Unit>?, await: Boolean) {
         _internalState.value.status.checkEventsOpen()
         notify(BallastNotification.EventQueued(type, name, event))
-        _eventsQueue.send(event)
+        eventStrategy.enqueue(event)
         if (await && deferred != null) {
             deferred.await()
         }
@@ -454,8 +415,8 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         notify(BallastNotification.ViewModelStatusChanged(type, name, _internalState.value.status))
 
         // close the Events queue and wait for all Events to be handled
-        _eventsQueue.close()
-        _eventsQueueDrained.await()
+        eventStrategy.close()
+        eventStrategy.flush()
     }
 
 // States
@@ -465,7 +426,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         return _state.value
     }
 
-    private suspend fun safelySetState(state: State, deferred: CompletableDeferred<Unit>?) {
+    internal suspend fun safelySetState(state: State, deferred: CompletableDeferred<Unit>?) {
         _internalState.value.status.checkStateChangeOpen()
         _state.value = state
         notify(BallastNotification.StateChanged(type, name, getCurrentState()))
@@ -775,7 +736,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
             ?: error("Interceptor with key '$key' does not match the type of it key")
     }
 
-    private suspend fun notify(value: BallastNotification<Inputs, Events, State>) {
+    internal suspend fun notify(value: BallastNotification<Inputs, Events, State>) {
         _notificationsQueue.send(value)
     }
 

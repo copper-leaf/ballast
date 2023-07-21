@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.core
 
-import com.copperleaf.ballast.InputStrategy
+import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputStrategyScope
 import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.channels.BufferOverflow
@@ -21,30 +21,33 @@ import kotlinx.coroutines.flow.Flow
  * Since we know only 1 Input is being procced at a time, if an input gets cancelled partway through its processing, the
  * ViewModel state will roll back to prevent the ViewModel from being left in a bad state.
  */
-public class FifoInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor(): InputStrategy<Inputs, Events, State> {
-
-    override fun createQueue(): Channel<Queued<Inputs, Events, State>> {
-        return Channel(Channel.BUFFERED, BufferOverflow.SUSPEND)
-    }
-
-    override val rollbackOnCancellation: Boolean = true
-
+public class FifoInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor(
+    filter: InputFilter<Inputs, Events, State>?
+) : ChannelInputStrategy<Inputs, Events, State>(
+    capacity = Channel.BUFFERED,
+    onBufferOverflow = BufferOverflow.SUSPEND,
+    filter = filter,
+) {
     override suspend fun InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
     ) {
         filteredQueue
             .collect { queued ->
-                acceptQueued(queued, DefaultGuardian())
+                val stateBeforeInput = getCurrentState()
+
+                acceptQueued(queued, DefaultGuardian()) {
+                    rollbackState(stateBeforeInput)
+                }
             }
     }
 
     public companion object {
-        public operator fun invoke() : FifoInputStrategy<Any, Any, Any> {
-            return FifoInputStrategy()
+        public operator fun invoke(): FifoInputStrategy<Any, Any, Any> {
+            return FifoInputStrategy(null)
         }
 
-        public fun <Inputs : Any, Events : Any, State : Any> typed(): FifoInputStrategy<Inputs, Events, State> {
-            return FifoInputStrategy()
+        public fun <Inputs : Any, Events : Any, State : Any> typed(filter: InputFilter<Inputs, Events, State>? = null): FifoInputStrategy<Inputs, Events, State> {
+            return FifoInputStrategy(filter)
         }
     }
 }

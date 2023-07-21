@@ -3,7 +3,6 @@ package com.copperleaf.ballast.test.internal
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.EventHandler
-import com.copperleaf.ballast.InputFilter
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
@@ -16,14 +15,14 @@ import kotlin.time.Duration.Companion.seconds
 internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any>(
     internal val inputHandler: InputHandler<Inputs, Events, State>,
     internal val eventHandler: EventHandler<Inputs, Events, State>,
-    internal val filter: InputFilter<Inputs, Events, State>?,
+//    internal val filter: InputFilter<Inputs, Events, State>?,
 ) : BallastTestSuiteScope<Inputs, Events, State> {
 
     internal var skip: Boolean = false
 
     internal var suiteLogger: (String) -> BallastLogger = { SimpleTestLogger() }
     internal var defaultTimeout: Duration = 30.seconds
-    internal var inputStrategy: InputStrategy<Inputs, Events, State> = LifoInputStrategy.typed()
+    internal var inputStrategy: () -> InputStrategy<Inputs, Events, State> = { LifoInputStrategy.typed() }
 
     internal val interceptors: MutableList<() -> BallastInterceptor<Inputs, Events, State>> =
         mutableListOf()
@@ -48,7 +47,7 @@ internal class BallastTestSuiteScopeImpl<Inputs : Any, Events : Any, State : Any
     }
 
     override fun defaultInputStrategy(inputStrategy: () -> InputStrategy<Inputs, Events, State>) {
-        this.inputStrategy = inputStrategy()
+        this.inputStrategy = inputStrategy
     }
 
     override fun defaultInitialState(block: () -> State) {

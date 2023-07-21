@@ -7,7 +7,7 @@ plugins {
 apiValidation {
     ignoredProjects.addAll(
         listOf(
-            "docs",
+//            "docs",
             "android",
             "desktop",
             "web",

@@ -3,8 +3,7 @@ package com.copperleaf.ballast
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.ChannelResult
 
 /**
  * Ballast ViewModels are designed to be safe and prevent you from doing things that could cause hard-to-debug race
@@ -22,31 +21,38 @@ import kotlinx.coroutines.flow.Flow
 public interface InputStrategy<Inputs : Any, Events : Any, State : Any> {
 
     /**
-     * Create the ViewModel channel most appropriate for accepting Inputs to the ViewModel and passing them to the
-     * internal processing pipeline.
+     * Start the InputStrategy and allow the ViewModel to begin accepting Inputs.
      */
-    public fun createQueue(): Channel<Queued<Inputs, Events, State>>
+    public fun InputStrategyScope<Inputs, Events, State>.start()
 
     /**
-     * When an input gets cancelled, should the state be rolled back to where it was before the input was accepted? If
-     * the strategy guarantees that inputs will always be run sequentially, never in parallel, then this should be true.
-     * Otherwise, if inputs are executing in parallel, we can't meaningfully know what state we should roll back to,
-     * since another input have updated the state since we took a snapshot of the state before processing an input.
+     * Schedule [queued] for processing. This method will suspend until the value has been successfully placed into the
+     * queue, not necessarily until it starts or ends processing. Use the [Queued.deferred] to wait until it has been
+     * fully handled. This should be used to provide backpressure to the queue for strategies that need it.
      */
-    public val rollbackOnCancellation: Boolean
-
-    /**
-     * Collect the inputs that have been sent to the ViewModel and process each of them, typically using traditional
-     * Flow operators internally. [filteredQueue] is the Flow of inputs that are being received from the ViewModel's
-     * Channel, and have already been filtered according to the ViewModel's [InputFilter] if a filter was provided.
-     *
-     * Once an input has been received, it should be sent back to the ViewModel through [acceptQueued] for internal
-     * processing. The Strategy will provide a Guardian to the [InputHandlerScope], to ensure the Input is being handled
-     * safely according to its own rules, guarding against potential issues.
-     */
-    public suspend fun InputStrategyScope<Inputs, Events, State>.processInputs(
-        filteredQueue: Flow<Queued<Inputs, Events, State>>,
+    public suspend fun enqueue(
+        queued: Queued<Inputs, Events, State>,
     )
+
+    /**
+     * Schedule [queued] for processing without waiting for it to be placed in the queue. A [ChannelResult] will be
+     * returned to notify you of whether the value was placed into the queue, or whether the buffer was full and was
+     * dropped. This is the non-suspending version of [enqueue] that is unable to provide backpressure.
+     */
+    public fun tryEnqueue(
+        queued: Queued<Inputs, Events, State>,
+    ): ChannelResult<Unit>
+
+    /**
+     * Immediately mark the InputStrategy as closed. Aftr this function returns, no more Inputs may be sent to the VM,
+     * though anything currently in the queue may still be processed.
+     */
+    public fun close()
+
+    /**
+     * Suspend until everything in the queue has been fully processed.
+     */
+    public suspend fun flush()
 
     /**
      * A Guardian protects the integrity of the ViewModel state against potential problems, especially with race

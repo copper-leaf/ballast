@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.impl
+package com.copperleaf.ballast.contracts.test
 
 object TestContract {
     data class State(

@@ -3,6 +3,7 @@ package com.copperleaf.ballast
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
+import kotlinx.coroutines.CoroutineScope
 
 /**
  * Ballast ViewModels are designed to be safe and prevent you from doing things that could cause hard-to-debug race
@@ -17,11 +18,23 @@ import com.copperleaf.ballast.core.ParallelInputStrategy
  * @see [FifoInputStrategy]
  * @see [ParallelInputStrategy]
  */
-public interface InputStrategyScope<Inputs : Any, Events : Any, State : Any> {
+public interface InputStrategyScope<Inputs : Any, Events : Any, State : Any> : CoroutineScope {
+
+    public val logger: BallastLogger
+
+    public suspend fun getCurrentState(): State
 
     /**
      * Send a Queued item back to the ViewModel for processing. It will be protected by its [InputStrategy.Guardian] to
      * ensure that it is processed correctly.
      */
-    public suspend fun acceptQueued(queued: Queued<Inputs, Events, State>, guardian: InputStrategy.Guardian)
+    public suspend fun acceptQueued(
+        queued: Queued<Inputs, Events, State>,
+        guardian: InputStrategy.Guardian,
+        onCancelled: suspend () -> Unit
+    )
+
+    public suspend fun rejectInput(input: Inputs, currentState: State)
+
+    public suspend fun rollbackState(state: State)
 }

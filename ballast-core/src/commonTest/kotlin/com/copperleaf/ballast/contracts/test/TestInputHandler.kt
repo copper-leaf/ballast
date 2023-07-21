@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.impl
+package com.copperleaf.ballast.contracts.test
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class TestInputHandler : InputHandler<
-    TestContract.Inputs,
-    TestContract.Events,
-    TestContract.State> {
-    override suspend fun InputHandlerScope<
         TestContract.Inputs,
         TestContract.Events,
-        TestContract.State>.handleInput(
+        TestContract.State> {
+    override suspend fun InputHandlerScope<
+            TestContract.Inputs,
+            TestContract.Events,
+            TestContract.State>.handleInput(
         input: TestContract.Inputs
     ) = when (input) {
         is TestContract.Inputs.FilteredValue -> {
