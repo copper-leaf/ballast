@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.internal
+package com.copperleaf.ballast.internal.scopes
 
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
@@ -8,6 +8,9 @@ import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
+import com.copperleaf.ballast.internal.BallastViewModelImpl
+import com.copperleaf.ballast.internal.actors.InputActor
+import com.copperleaf.ballast.internal.actors.StateActor
 import kotlinx.coroutines.CoroutineScope
 
 /**
@@ -25,7 +28,10 @@ import kotlinx.coroutines.CoroutineScope
  */
 internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
     coroutineScope: CoroutineScope,
-    private val impl: BallastViewModelImpl<Inputs, Events, State>
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+
+    private val inputActor: InputActor<Inputs, Events, State>,
+    private val stateActor: StateActor<Inputs, Events, State>,
 ) : InputStrategyScope<Inputs, Events, State>, CoroutineScope by coroutineScope {
 
     override val logger: BallastLogger
@@ -36,18 +42,18 @@ internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
         guardian: InputStrategy.Guardian,
         onCancelled: suspend () -> Unit
     ) {
-        impl.safelyHandleQueued(queued, guardian, onCancelled)
+        inputActor.safelyHandleQueued(queued, guardian, onCancelled)
     }
 
     override suspend fun getCurrentState(): State {
-        return impl.getCurrentState()
+        return stateActor.getCurrentState()
     }
 
     override suspend fun rollbackState(state: State) {
-        impl.safelySetState(state, null)
+        stateActor.safelySetState(state, null)
     }
 
     override suspend fun rejectInput(input: Inputs, currentState: State) {
-        impl.notify(BallastNotification.InputRejected(impl.type, impl.name, currentState, input))
+        impl.interceptorActor.notify(BallastNotification.InputRejected(impl.type, impl.name, currentState, input))
     }
 }
