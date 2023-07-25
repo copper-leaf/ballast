@@ -41,10 +41,10 @@ InputHandlers or other Ballast features as well.
 
 Be sure to only include `LoggingInterceptor()` and the logger in debug builds, as logging in production may cause
 performance degradation and risks leaking sensitive info through to the application logs. It should not be used to
-create a paper-trail of activity in your app, you should use something like [Ballast Firebase][1] to more selectively
+create a paper-trail of activity in your app, you should use something like [Ballast Analytics][1] to more selectively
 create the paper-trail.
 
-[1]: {{ 'Ballast Firebase' | link }}
+[1]: {{ 'Ballast Analytics' | link }}
 {% endalert %}
 
 ```kotlin

@@ -9,4 +9,6 @@ interface BallastExamplesPreferences {
     // scorekeeper
     var scorekeeperButtonValues: List<Int>
     var scorekeeperScoresheetState: Map<String, Int>
+
+    var backstack: List<String>
 }

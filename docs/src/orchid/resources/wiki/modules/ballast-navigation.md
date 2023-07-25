@@ -17,7 +17,7 @@ it is built with Ballast at the core, you can extend your routing functionality 
 - Time-travel debugging and inspecting the backstack with the [Ballast Debugger][1]
 - Adding browser-like forward/backward navigation buttons with [Ballast Undo][2]
 - Synchronizing router state across components or devices with [Ballast Sync][3]
-- Tracking page views with [Ballast Firebase Analytics][4]
+- Tracking page views with [Ballast Analytics][4]
 
 ## Usage
 
@@ -648,7 +648,7 @@ kotlin {
 [1]: {{ 'Ballast Debugger' | link }}
 [2]: {{ 'Ballast Undo' | link }}
 [3]: {{ 'Ballast Sync' | link }}
-[4]: {{ 'Ballast Firebase' | link }}
+[4]: {{ 'Ballast Analytics' | link }}
 [5]: {{ 'Usage Guide' | link }}
 [6]: {{ 'Navigation' | link }}
 [7]: https://ktor.io/docs/routing-in-ktor.html#match_url

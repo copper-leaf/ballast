@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
  *
  * This Interceptor should never be used in production as it is likely to leak sensitive information to the logs. It is
  * not designed to make a "paper trail" for production logging. You should use the
- * [Ballast Firebase Analytics](https://copper-leaf.github.io/ballast/wiki/modules/ballast-firebase/#analytics) for that
+ * [Ballast Analytics](https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics) for that
  * on Android, or build a customer logger suitable for production that can ensure nothing sensitive gets logged.
  */
 public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(

@@ -15,6 +15,7 @@ import com.copperleaf.ballast.examples.repository.BggRepositoryImpl
 import com.copperleaf.ballast.examples.repository.BggRepositoryInputHandler
 import com.copperleaf.ballast.examples.router.BallastExamples
 import com.copperleaf.ballast.examples.router.BallastExamplesRouter
+import com.copperleaf.ballast.examples.router.RouterSavedStateAdapter
 import com.copperleaf.ballast.examples.ui.bgg.BggContract
 import com.copperleaf.ballast.examples.ui.bgg.BggEventHandler
 import com.copperleaf.ballast.examples.ui.bgg.BggInputHandler
@@ -55,12 +56,10 @@ import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import com.copperleaf.ballast.undo.state.withStateBasedUndoController
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
-import io.ktor.http.ContentType
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.logging.*
+import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
@@ -98,9 +97,17 @@ class ComposeDesktopInjectorImpl(
         BallastExamplesRouter(
             viewModelCoroutineScope = applicationScope,
             config = commonBuilder()
-                .withRouter(RoutingTable.fromEnum(BallastExamples.values()), BallastExamples.Counter)
+                .withRouter(RoutingTable.fromEnum(BallastExamples.values()), null)
                 .apply {
                     this += BallastUndoInterceptor(routerUndoController)
+                    this += BallastSavedStateInterceptor(
+                        RouterSavedStateAdapter(
+                            routingTable = RoutingTable.fromEnum(BallastExamples.values()),
+                            initialRoute = BallastExamples.Counter,
+                            prefs = preferences,
+                            preserveDiscreteStates = true,
+                        )
+                    )
                 }
                 .build(),
         )
@@ -146,13 +153,22 @@ class ComposeDesktopInjectorImpl(
                     this += BallastDebuggerInterceptor(
                         debuggerConnection,
                         serializeInput = {
-                            ContentType.Application.Json to Json.encodeToString(CounterContract.Inputs.serializer(), it as CounterContract.Inputs)
+                            ContentType.Application.Json to Json.encodeToString(
+                                CounterContract.Inputs.serializer(),
+                                it as CounterContract.Inputs
+                            )
                         },
                         serializeEvent = {
-                            ContentType.Application.Json to Json.encodeToString(CounterContract.Events.serializer(), it as CounterContract.Events)
+                            ContentType.Application.Json to Json.encodeToString(
+                                CounterContract.Events.serializer(),
+                                it as CounterContract.Events
+                            )
                         },
                         serializeState = {
-                            ContentType.Application.Json to Json.encodeToString(CounterContract.State.serializer(), it as CounterContract.State)
+                            ContentType.Application.Json to Json.encodeToString(
+                                CounterContract.State.serializer(),
+                                it as CounterContract.State
+                            )
                         },
                     )
                 }

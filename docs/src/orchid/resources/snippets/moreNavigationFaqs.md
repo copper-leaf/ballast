@@ -21,32 +21,91 @@ library's scope functionality, anyway, rather than Ballast itself.
 
 ### How do I save/restore the backstack?
 
-This is intentionally left out of this library, because I did not want to tie it directly to any serialization mechanism
-or library. But this is easy enough to achieve on your own, all you need to do is persist the original destination URLs
-and then restore them within an Input. This example shows how it might be done (if you are using `RouteAnnotations`,
-you'll want to (de)serialize those as well).
+Automatic state restoration is intentionally left out of this library, because I did not want to tie it directly to any 
+serialization mechanism or library. But this is easy enough to achieve on your own, all you need to do is persist the 
+original destination URLs and then restore them within an Input. This example shows how it might be done (if you are 
+using `RouteAnnotations`, you'll want to (de)serialize those as well).
 
 ```kotlin
-fun saveBackstack(router: Router<AppScrees>) {
-    val backstackUrls: List<String> = router.observeStates().backstack.map { it.originalDestinationUrl }
+fun saveBackstack(router: Router<AppScreen>) {
+    val backstackUrls: List<String> = router.observeStates().value.map { it.originalDestinationUrl }
     saveUrlsToSavedState(backstackUrls)
 }
 
-fun restoreBackstack(router: Router<AppScrees>) {
+fun restoreBackstack(router: Router<AppScreen>) {
     val backstackUrls: List<String> = getUrlsFromSavedState()
-    router.trySend(RestoreBackstack(backstackUrls))
+    router.trySend(RouterContract.Inputs.RestoreBackstack(backstackUrls))
 }
+```
 
-public data class RestoreBackstack<T : Route>(
-    val destinations: List<String>,
-) : Inputs<T>() {
-    override fun BackstackNavigator<T>.navigate() {
-        val restoredBackstack = destinations.map { matchDestination(it) }
-        updateBackstack { restoredBackstack }
+Automatically saving/restoring the state can be done with the help of the [Ballast Saved State module][13], by creating an
+adapter like this:
+
+```kotlin
+/**
+ * Automatically save and restore the state of the Router with any route changes. Do not pass an initial route to the
+ * BallastViewModelConfiguration.Builder.withRouter()` when using this adapter, as it will handle setting the initial
+ * route instead, and may conflict with the initial route set through that function.
+ *
+ * The actual serialization and persistence of the backstack is delegated through [prefs].
+ *
+ * If you are also using the Ballast Undo/Redo module for forward/backward navigation, set [preserveDiscreteStates] to
+ * true so the backstack is restored through individual [RouterContract.Inputs.GoToDestination] Inputs to capture each
+ * intermediate state. If not, it can be set to false so that a single [RouterContract.Inputs.RestoreBackstack] is used
+ * instead.
+ */
+public class RouterSavedStateAdapter<T : Route>(
+    private val routingTable: RoutingTable<T>,
+    private val initialRoute: T?,
+    private val prefs: Prefs,
+    private val preserveDiscreteStates: Boolean = false,
+) : SavedStateAdapter<
+        RouterContract.Inputs<T>,
+        RouterContract.Events<T>,
+        RouterContract.State<T>> {
+
+    public interface Prefs {
+        var backstackUrls: List<String>
     }
 
-    override fun toString(): String {
-        return "RestoreBackstack($destinations)"
+    override suspend fun SaveStateScope<
+            RouterContract.Inputs<T>,
+            RouterContract.Events<T>,
+            RouterContract.State<T>>.save() {
+        saveAll { backstack ->
+            prefs.backstackUrls = backstack.map { it.originalDestinationUrl }
+        }
+    }
+
+    override suspend fun RestoreStateScope<
+            RouterContract.Inputs<T>,
+            RouterContract.Events<T>,
+            RouterContract.State<T>
+            >.restore(): RouterContract.State<T> {
+        val savedBackstack = prefs.backstackUrls
+        if(savedBackstack.isEmpty()) {
+            initialRoute?.let { initialRoute ->
+                check(initialRoute.isStatic()) {
+                    "For a Route to be used as a Start Destination, it must be fully static. All path segments and " +
+                            "declared query parameters must either be static or optional."
+                }
+                postInput(
+                    RouterContract.Inputs.GoToDestination(initialRoute.directions().build())
+                )
+            }
+        } else if(preserveDiscreteStates) {
+            savedBackstack.forEach { destinationUrl ->
+                postInput(
+                    RouterContract.Inputs.GoToDestination(destinationUrl)
+                )
+            }
+        } else {
+            postInput(
+                RouterContract.Inputs.RestoreBackstack(savedBackstack)
+            )
+        }
+
+        return RouterContract.State(routingTable = routingTable)
     }
 }
 ```
@@ -129,7 +188,7 @@ mechanism simple and easy to work with.
 [1]: {{ 'Ballast Debugger' | link }}
 [2]: {{ 'Ballast Undo' | link }}
 [3]: {{ 'Ballast Sync' | link }}
-[4]: {{ 'Ballast Firebase' | link }}
+[4]: {{ 'Ballast Analytics' | link }}
 [5]: {{ 'Usage Guide' | link }}
 [6]: {{ 'Navigation' | link }}
 [7]: https://ktor.io/docs/routing-in-ktor.html#match_url
@@ -138,3 +197,4 @@ mechanism simple and easy to work with.
 [10]: https://developer.mozilla.org/en-US/docs/Web/API/History_API
 [11]: https://github.com/gmazzo/gradle-buildconfig-plugin
 [12]: https://github.com/hfhbd/routing-compose#development-usage
+[13]: {{ 'Ballast Saved State' | link }}
