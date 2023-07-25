@@ -5,7 +5,6 @@ import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.awaitViewModelStart
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ class DispatcherTestInterceptor : BallastInterceptor<
                 Queued.HandleInput(
                     null,
                     DispatcherTestContract.Inputs.SetInterceptorDispatcher(
-                        actualInterceptorDispatcher = coroutineContext[CoroutineDispatcher]
+                        actualInterceptorCoroutineScopeInfo = getCoroutineScopeInfo()
                     )
                 )
             )

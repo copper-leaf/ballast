@@ -21,10 +21,14 @@ internal class InputActor<Inputs : Any, Events : Any, State : Any>(
     internal fun startMainQueueInternal() {
         // observe and process Inputs
         val scope = InputStrategyScopeImpl(
-            impl.viewModelScope + impl.inputsDispatcher,
-            impl,
-            impl.inputActor,
-            impl.stateActor,
+            inputStrategyCoroutineScope = impl.viewModelScope +
+                    impl.inputsDispatcher,
+            logger = impl.logger,
+            hostViewModelType = impl.type,
+            hostViewModelName = impl.name,
+            inputActor = impl.inputActor,
+            stateActor = impl.stateActor,
+            interceptorActor = impl.interceptorActor,
         )
         with(impl.inputStrategy) {
             scope.start()
@@ -60,7 +64,13 @@ internal class InputActor<Inputs : Any, Events : Any, State : Any>(
 
         when (queued) {
             is Queued.HandleInput -> {
-                impl.interceptorActor.notifyImmediate(BallastNotification.InputQueued(impl.type, impl.name, queued.input))
+                impl.interceptorActor.notifyImmediate(
+                    BallastNotification.InputQueued(
+                        impl.type,
+                        impl.name,
+                        queued.input
+                    )
+                )
             }
 
             is Queued.RestoreState -> {
@@ -77,7 +87,13 @@ internal class InputActor<Inputs : Any, Events : Any, State : Any>(
         if (result.isFailure || result.isClosed) {
             when (queued) {
                 is Queued.HandleInput -> {
-                    impl.interceptorActor.notifyImmediate(BallastNotification.InputDropped(impl.type, impl.name, queued.input))
+                    impl.interceptorActor.notifyImmediate(
+                        BallastNotification.InputDropped(
+                            impl.type,
+                            impl.name,
+                            queued.input
+                        )
+                    )
                 }
 
                 is Queued.RestoreState -> {
@@ -123,15 +139,26 @@ internal class InputActor<Inputs : Any, Events : Any, State : Any>(
         try {
             coroutineScope {
                 // Create a handler scope to handle the input normally
-                val handlerScope =
-                    InputHandlerScopeImpl(guardian, impl, impl.stateActor, impl.eventActor, impl.sideJobActor)
+                val handlerScope = InputHandlerScopeImpl(
+                    guardian = guardian,
+                    logger = impl.logger,
+                    stateActor = impl.stateActor,
+                    eventActor = impl.eventActor,
+                    sideJobActor = impl.sideJobActor,
+                )
                 with(impl.inputHandler) {
                     handlerScope.handleInput(input)
                 }
                 handlerScope.close()
 
                 try {
-                    impl.interceptorActor.notify(BallastNotification.InputHandledSuccessfully(impl.type, impl.name, input))
+                    impl.interceptorActor.notify(
+                        BallastNotification.InputHandledSuccessfully(
+                            impl.type,
+                            impl.name,
+                            input
+                        )
+                    )
                 } catch (t: Throwable) {
                     impl.interceptorActor.notify(BallastNotification.InputHandlerError(impl.type, impl.name, input, t))
                 }
@@ -160,7 +187,13 @@ internal class InputActor<Inputs : Any, Events : Any, State : Any>(
                 sideJobsCancellationOpen = true,
             )
         }
-        impl.interceptorActor.notify(BallastNotification.ViewModelStatusChanged(impl.type, impl.name, impl.coordinator.coordinatorState.value))
+        impl.interceptorActor.notify(
+            BallastNotification.ViewModelStatusChanged(
+                impl.type,
+                impl.name,
+                impl.coordinator.coordinatorState.value
+            )
+        )
 
         // close the main queue and wait for all Inputs to be handled
         impl.inputStrategy.close()

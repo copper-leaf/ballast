@@ -8,6 +8,7 @@ import com.copperleaf.ballast.internal.scopes.EventHandlerScopeImpl
 import com.copperleaf.ballast.internal.scopes.EventStrategyScopeImpl
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
@@ -19,13 +20,15 @@ internal class EventActor<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>
 ) {
 
-    public fun attachEventHandler(
+    internal fun attachEventHandler(
         handler: EventHandler<Inputs, Events, State>,
         coroutineScope: CoroutineScope,
     ) {
         val eventHandlerCoroutineScope = coroutineScope +
-                impl.coordinator.uncaughtExceptionHandler +
-                impl.eventsDispatcher
+                impl.eventsDispatcher +
+                CoroutineExceptionHandler { _, e ->
+                    impl.interceptorActor.notifyImmediate(BallastNotification.UnhandledError(impl.type, impl.name, e))
+                }
 
         eventHandlerCoroutineScope.launch {
             impl.interceptorActor.notify(BallastNotification.EventProcessingStarted(impl.type, impl.name))
@@ -34,7 +37,11 @@ internal class EventActor<Inputs : Any, Events : Any, State : Any>(
                 impl.interceptorActor.notifyImmediate(BallastNotification.EventProcessingStopped(impl.type, impl.name))
             }
 
-            val eventStrategyScope = EventStrategyScopeImpl(impl, impl.eventActor, handler)
+            val eventStrategyScope = EventStrategyScopeImpl(
+                logger = impl.logger,
+                eventActor = impl.eventActor,
+                handler = handler,
+            )
 
             with(impl.eventStrategy) {
                 eventStrategyScope.start()
@@ -58,7 +65,11 @@ internal class EventActor<Inputs : Any, Events : Any, State : Any>(
         impl.interceptorActor.notify(BallastNotification.EventEmitted(impl.type, impl.name, event))
         try {
             coroutineScope {
-                val handlerScope = EventHandlerScopeImpl(impl, impl.inputActor, impl.interceptorActor)
+                val handlerScope = EventHandlerScopeImpl(
+                    logger = impl.logger,
+                    inputActor = impl.inputActor,
+                    interceptorActor = impl.interceptorActor,
+                )
                 with(handler) {
                     handlerScope.handleEvent(event)
                 }

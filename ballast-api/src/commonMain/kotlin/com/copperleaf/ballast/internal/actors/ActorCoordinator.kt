@@ -17,6 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlin.time.Duration
 
+/**
+ * ActorCoordinator is responsible for managing the internal state of the viewmodel, starting and stopping it in an
+ * orderly manner.
+ */
 internal class ActorCoordinator<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>
 ) {
@@ -25,18 +29,16 @@ internal class ActorCoordinator<Inputs : Any, Events : Any, State : Any>(
         Status.NotStarted
     )
 
-    internal val uncaughtExceptionHandler = CoroutineExceptionHandler { _, e ->
-        impl.interceptorActor.notifyImmediate(BallastNotification.UnhandledError(impl.type, impl.name, e))
-    }
-
-    public fun start(coroutineScope: CoroutineScope) {
+    internal fun start(coroutineScope: CoroutineScope) {
         // check the ViewModel is in a valid state to be started
         coordinatorState.value.checkCanStart()
 
         // create the real viewModel's coroutineScope
         impl.viewModelScope = coroutineScope +
-                uncaughtExceptionHandler +
-                SupervisorJob(parent = coroutineScope.coroutineContext.job)
+                SupervisorJob(parent = coroutineScope.coroutineContext.job) +
+                CoroutineExceptionHandler { _, e ->
+                    impl.interceptorActor.notifyImmediate(BallastNotification.UnhandledError(impl.type, impl.name, e))
+                }
 
         // set the VM to clear itself upon the cancellation of its coroutine scope
         impl.viewModelScope.coroutineContext.job.invokeOnCompletion {
@@ -80,33 +82,6 @@ internal class ActorCoordinator<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    private fun onCleared() {
-        coordinatorState.value.checkCanClear()
-
-        // side-jobs are already bound by the viewModelScope and will get cancelled automatically, but we still need
-        // to clear the internal state
-        coordinatorState.getAndUpdate {
-            Status.Cleared
-        }
-        impl.sideJobActor.cancelAllSideJobs()
-
-        // send the final notification to Interceptors that the status has changed to Cleared
-        impl.interceptorActor.notifyImmediate(
-            BallastNotification.ViewModelStatusChanged(
-                impl.type,
-                impl.name,
-                coordinatorState.value
-            )
-        )
-
-        // ensure all queues are closed. In a graceful shutdown they will be closed already, but if the VM was closed by
-        // the cancellation of its coroutineScope, then they will not be closed until this point.
-        impl.inputStrategy.close()
-        impl.eventStrategy.close()
-        impl.sideJobActor.close()
-        impl.interceptorActor.close()
-    }
-
     internal fun gracefullyShutDown(gracePeriod: Duration, deferred: CompletableDeferred<Unit>?) {
         coordinatorState.value.checkCanShutDown()
         impl.viewModelScope.launch {
@@ -147,5 +122,32 @@ internal class ActorCoordinator<Inputs : Any, Events : Any, State : Any>(
             // make sure nothing else will start processing
             impl.viewModelScope.cancel()
         }
+    }
+
+    private fun onCleared() {
+        coordinatorState.value.checkCanClear()
+
+        // side-jobs are already bound by the viewModelScope and will get cancelled automatically, but we still need
+        // to clear the internal state
+        coordinatorState.getAndUpdate {
+            Status.Cleared
+        }
+        impl.sideJobActor.cancelAllSideJobs()
+
+        // send the final notification to Interceptors that the status has changed to Cleared
+        impl.interceptorActor.notifyImmediate(
+            BallastNotification.ViewModelStatusChanged(
+                impl.type,
+                impl.name,
+                coordinatorState.value
+            )
+        )
+
+        // ensure all queues are closed. In a graceful shutdown they will be closed already, but if the VM was closed by
+        // the cancellation of its coroutineScope, then they will not be closed until this point.
+        impl.inputStrategy.close()
+        impl.eventStrategy.close()
+        impl.sideJobActor.close()
+        impl.interceptorActor.close()
     }
 }

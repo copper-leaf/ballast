@@ -60,12 +60,13 @@ internal class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
                     try {
                         BallastInterceptorScopeImpl(
                             interceptorCoroutineScope = impl.viewModelScope +
-                                    impl.coordinator.uncaughtExceptionHandler +
-                                    impl.interceptorDispatcher +
-                                    SupervisorJob(impl.viewModelScope.coroutineContext.job),
-                            impl,
-                            impl.inputActor,
-                            impl.eventActor,
+                                    SupervisorJob(impl.viewModelScope.coroutineContext.job) +
+                                    impl.interceptorDispatcher,
+                            logger = impl.logger,
+                            hostViewModelName = impl.name,
+                            hostViewModelType = impl.type,
+                            inputActor = impl.inputActor,
+                            eventActor = impl.eventActor,
                         ).start(notificationFlow)
                     } catch (e: Exception) {
                         notifyImmediate(

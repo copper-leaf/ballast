@@ -4,21 +4,19 @@ import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.SideJobScope
-import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.internal.actors.EventActor
 import com.copperleaf.ballast.internal.actors.SideJobActor
 import com.copperleaf.ballast.internal.actors.StateActor
 
 internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val guardian: InputStrategy.Guardian,
-    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+
+    override val logger: BallastLogger,
 
     private val stateActor: StateActor<Inputs, Events, State>,
     private val eventActor: EventActor<Inputs, Events, State>,
     private val sideJobActor: SideJobActor<Inputs, Events, State>,
 ) : InputHandlerScope<Inputs, Events, State> {
-
-    override val logger: BallastLogger get() = impl.logger
 
     override suspend fun getCurrentState(): State {
         guardian.checkStateAccess()

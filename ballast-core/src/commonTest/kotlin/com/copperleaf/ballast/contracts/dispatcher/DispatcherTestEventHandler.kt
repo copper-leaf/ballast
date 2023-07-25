@@ -2,8 +2,6 @@ package com.copperleaf.ballast.contracts.dispatcher
 
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlin.coroutines.coroutineContext
 
 @OptIn(ExperimentalStdlibApi::class)
 public class DispatcherTestEventHandler : EventHandler<
@@ -18,7 +16,7 @@ public class DispatcherTestEventHandler : EventHandler<
     ) = when (event) {
         is DispatcherTestContract.Events.GetEventDispatcher -> {
             postInput(DispatcherTestContract.Inputs.SetEventDispatcher(
-                actualEventDispatcher = coroutineContext[CoroutineDispatcher]
+                actualEventCoroutineScopeInfo = getCoroutineScopeInfo()
             ))
         }
     }

@@ -8,8 +8,8 @@ import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
-import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.internal.actors.InputActor
+import com.copperleaf.ballast.internal.actors.InterceptorActor
 import com.copperleaf.ballast.internal.actors.StateActor
 import kotlinx.coroutines.CoroutineScope
 
@@ -27,15 +27,17 @@ import kotlinx.coroutines.CoroutineScope
  * @see [ParallelInputStrategy]
  */
 internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
-    coroutineScope: CoroutineScope,
-    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+    inputStrategyCoroutineScope: CoroutineScope,
+
+    override val logger: BallastLogger,
+    private val hostViewModelType: String,
+    private val hostViewModelName: String,
 
     private val inputActor: InputActor<Inputs, Events, State>,
     private val stateActor: StateActor<Inputs, Events, State>,
-) : InputStrategyScope<Inputs, Events, State>, CoroutineScope by coroutineScope {
-
-    override val logger: BallastLogger
-        get() = impl.logger
+    private val interceptorActor: InterceptorActor<Inputs, Events, State>,
+) : InputStrategyScope<Inputs, Events, State>,
+    CoroutineScope by inputStrategyCoroutineScope {
 
     override suspend fun acceptQueued(
         queued: Queued<Inputs, Events, State>,
@@ -54,6 +56,13 @@ internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
     }
 
     override suspend fun rejectInput(input: Inputs, currentState: State) {
-        impl.interceptorActor.notify(BallastNotification.InputRejected(impl.type, impl.name, currentState, input))
+        interceptorActor.notify(
+            BallastNotification.InputRejected(
+                hostViewModelType,
+                hostViewModelName,
+                currentState,
+                input
+            )
+        )
     }
 }

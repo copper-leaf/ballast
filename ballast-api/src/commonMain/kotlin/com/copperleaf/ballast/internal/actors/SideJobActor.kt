@@ -116,13 +116,15 @@ internal class SideJobActor<Inputs : Any, Events : Any, State : Any>(
                 // run the sideJob, which may never complete
                 coroutineScope {
                     val sideJobScope = SideJobScopeImpl(
-                        key = latestSideJobForKey.key,
-                        restartState = latestSideJobForKey.restartState,
                         sideJobCoroutineScope = this,
-                        impl = impl,
+                        logger = impl.logger,
+
                         inputActor = impl.inputActor,
                         eventActor = impl.eventActor,
                         interceptorActor = impl.interceptorActor,
+
+                        key = latestSideJobForKey.key,
+                        restartState = latestSideJobForKey.restartState,
                     )
                     request.block.invoke(sideJobScope)
                 }
@@ -241,7 +243,7 @@ internal class SideJobActor<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    public fun close() {
+    internal fun close() {
         _sideJobsRequestQueue.close()
     }
 

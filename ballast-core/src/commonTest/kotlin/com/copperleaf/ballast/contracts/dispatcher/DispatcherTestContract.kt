@@ -1,21 +1,19 @@
 package com.copperleaf.ballast.contracts.dispatcher
 
-import kotlinx.coroutines.CoroutineDispatcher
-
 public object DispatcherTestContract {
     public data class State(
-        val actualInputDispatcher: CoroutineDispatcher? = null,
-        val actualEventDispatcher: CoroutineDispatcher? = null,
-        val actualSideJobDispatcher: CoroutineDispatcher? = null,
-        val actualInterceptorDispatcher: CoroutineDispatcher? = null,
+        val actualInputCoroutineScopeInfo: CoroutineScopeInfo? = null,
+        val actualEventCoroutineScopeInfo: CoroutineScopeInfo? = null,
+        val actualSideJobCoroutineScopeInfo: CoroutineScopeInfo? = null,
+        val actualInterceptorCoroutineScopeInfo: CoroutineScopeInfo? = null,
     )
 
     public sealed class Inputs {
         object Initialize : Inputs()
 
-        data class SetEventDispatcher(val actualEventDispatcher: CoroutineDispatcher?) : Inputs()
-        data class SetSideJobDispatcher(val actualSideJobDispatcher: CoroutineDispatcher?) : Inputs()
-        data class SetInterceptorDispatcher(val actualInterceptorDispatcher: CoroutineDispatcher?) : Inputs()
+        data class SetEventDispatcher(val actualEventCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
+        data class SetSideJobDispatcher(val actualSideJobCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
+        data class SetInterceptorDispatcher(val actualInterceptorCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
     }
 
     public sealed class Events {
