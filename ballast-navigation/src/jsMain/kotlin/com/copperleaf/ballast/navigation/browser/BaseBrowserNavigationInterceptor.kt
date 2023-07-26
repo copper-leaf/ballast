@@ -3,6 +3,7 @@ package com.copperleaf.ballast.navigation.browser
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.awaitViewModelStart
 import com.copperleaf.ballast.events
+import com.copperleaf.ballast.navigation.internal.Uri
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.build
@@ -11,7 +12,6 @@ import com.copperleaf.ballast.navigation.routing.mapCurrentDestination
 import com.copperleaf.ballast.navigation.vm.RouterInterceptor
 import com.copperleaf.ballast.navigation.vm.RouterInterceptorScope
 import com.copperleaf.ballast.navigation.vm.RouterNotification
-import io.ktor.http.Url
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
@@ -25,13 +25,13 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
 @Suppress("UNUSED_PARAMETER")
-public abstract class BaseBrowserNavigationInterceptor<T : Route>(
+public abstract class BaseBrowserNavigationInterceptor<T : Route> internal constructor(
     private val initialRoute: T
 ) : RouterInterceptor<T> {
 
-    internal abstract fun getInitialUrl(): Url?
-    internal abstract fun watchForUrlChanges(): Flow<Url>
-    internal abstract fun setDestinationUrl(url: Url)
+    internal abstract fun getInitialUrl(): Uri?
+    internal abstract fun watchForUrlChanges(): Flow<Uri>
+    internal abstract fun setDestinationUrl(url: Uri)
 
     final override fun RouterInterceptorScope<T>.start(
         notifications: Flow<RouterNotification<T>>
@@ -85,10 +85,10 @@ public abstract class BaseBrowserNavigationInterceptor<T : Route>(
                             // ignore this request
                             null
                         } else {
-                            Url(originalDestinationUrl)
+                            Uri.parse(originalDestinationUrl)
                         }
                     },
-                    notFound = { Url(it) },
+                    notFound = { Uri.parse(it) },
                 )
             }
             .distinctUntilChanged()

@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.navigation.routing
 
-import io.ktor.http.Url
+import com.copperleaf.ballast.navigation.internal.Uri
 
 /**
  * Represents a URL that was parsed, and can be used to match against a [Route] in a [RoutingTable].
@@ -18,15 +18,12 @@ public data class UnmatchedDestination(
             destinationUrl: String,
             extraAnnotations: Set<RouteAnnotation> = emptySet(),
         ): UnmatchedDestination {
-            val url = Url(destinationUrl)
-
-            val matchablePathSegments = url.pathSegments.dropWhile { it.isBlank() }.dropLastWhile { it.isBlank() }
-            val matchableQueryParameters = url.parameters.entries().associate { it.key to it.value }
+            val url = Uri.parse(destinationUrl)
 
             return UnmatchedDestination(
                 originalDestinationUrl = destinationUrl,
-                matchablePathSegments = matchablePathSegments,
-                matchableQueryParameters = matchableQueryParameters,
+                matchablePathSegments = url.decodedPathSegments,
+                matchableQueryParameters = url.decodedQueryParameters,
                 extraAnnotations = extraAnnotations,
             )
         }

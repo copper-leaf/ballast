@@ -3,6 +3,7 @@ package com.copperleaf.ballast.debugger.idea.features.debugger.vm
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
 
+@Suppress("UNUSED_EXPRESSION")
 class DebuggerUiEventHandler() : EventHandler<
         DebuggerUiContract.Inputs,
         DebuggerUiContract.Events,
