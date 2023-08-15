@@ -9,6 +9,7 @@ public class RestoreStateScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override val logger: BallastLogger = interceptorScope.logger
     override val hostViewModelName: String = interceptorScope.hostViewModelName
+    override val initialState: State = interceptorScope.initialState
 
     internal val inputToPostAfterRestore = mutableListOf<Inputs>()
     internal val eventsToPostAfterRestore = mutableListOf<Events>()

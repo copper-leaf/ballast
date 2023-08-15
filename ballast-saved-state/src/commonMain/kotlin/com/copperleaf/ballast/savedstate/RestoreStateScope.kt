@@ -7,6 +7,7 @@ public interface RestoreStateScope<Inputs : Any, Events : Any, State : Any> {
 
     public val logger: BallastLogger
     public val hostViewModelName: String
+    public val initialState: State
 
     /**
      * Post an Input back to the ViewModel's queue after the state has been fully restored. This Input will not be

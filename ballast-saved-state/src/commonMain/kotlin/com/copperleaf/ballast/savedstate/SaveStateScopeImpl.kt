@@ -13,13 +13,25 @@ internal class SaveStateScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override val hostViewModelName: String = interceptorScope.hostViewModelName
 
     override suspend fun <Prop> saveDiff(
-        computeProperty: State.() -> Prop ,
+        computeProperty: State.() -> Prop,
         onChanged: suspend (Prop) -> Unit,
+    ) {
+        saveDiff(
+            computeProperty = computeProperty,
+            isChanged = { previousValue, nextValue -> previousValue != nextValue },
+            onChanged = onChanged,
+        )
+    }
+
+    override suspend fun <Prop> saveDiff(
+        computeProperty: State.() -> Prop,
+        isChanged: (Prop, Prop) -> Boolean,
+        onChanged: suspend (Prop) -> Unit
     ) {
         val previousValue = previousState?.computeProperty()
         val nextValue = nextState.computeProperty()
 
-        if (previousValue == null || previousValue != nextValue) {
+        if (previousValue == null || isChanged(previousValue, nextValue)) {
             onChanged(nextValue)
         }
     }
@@ -27,10 +39,20 @@ internal class SaveStateScopeImpl<Inputs : Any, Events : Any, State : Any>(
     override suspend fun saveAll(
         onChanged: suspend (State) -> Unit,
     ) {
+        saveAll(
+            isChanged = { previousValue, nextValue -> previousValue != nextValue },
+            onChanged = onChanged,
+        )
+    }
+
+    override suspend fun saveAll(
+        isChanged: (State, State) -> Boolean,
+        onChanged: suspend (State) -> Unit,
+    ) {
         val previousValue = previousState
         val nextValue = nextState
 
-        if (previousValue == null || previousValue != nextValue) {
+        if (previousValue == null || isChanged(previousValue, nextValue)) {
             onChanged(nextValue)
         }
     }

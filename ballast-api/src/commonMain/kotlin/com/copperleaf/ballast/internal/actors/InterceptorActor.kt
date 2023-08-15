@@ -65,6 +65,7 @@ internal class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
                             logger = impl.logger,
                             hostViewModelName = impl.name,
                             hostViewModelType = impl.type,
+                            initialState = impl.initialState,
                             inputActor = impl.inputActor,
                             eventActor = impl.eventActor,
                         ).start(notificationFlow)

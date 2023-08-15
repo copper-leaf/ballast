@@ -13,6 +13,7 @@ internal class BallastInterceptorScopeImpl<Inputs : Any, Events : Any, State : A
     override val logger: BallastLogger,
     override val hostViewModelType: String,
     override val hostViewModelName: String,
+    override val initialState: State,
 
     private val inputActor: InputActor<Inputs, Events, State>,
     private val eventActor: EventActor<Inputs, Events, State>,
