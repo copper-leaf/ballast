@@ -24,6 +24,7 @@ import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.client.request.header
 import io.ktor.client.request.url
+import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.websocket.Frame
@@ -77,7 +78,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         block()
     }
 
-    private val outgoingMessages = Channel<BallastDebuggerOutgoingEventWrapper<*, *, *>>(Channel.UNLIMITED, BufferOverflow.SUSPEND)
+    private val outgoingMessages =
+        Channel<BallastDebuggerOutgoingEventWrapper<*, *, *>>(Channel.UNLIMITED, BufferOverflow.SUSPEND)
     private val incomingActions = MutableSharedFlow<BallastDebuggerActionV4>()
     private var waitForEvent = CompletableDeferred<Unit>()
 
@@ -164,7 +166,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                         val isForThisViewModel = applicationState.connections
                             .firstOrNull { it.connectionId == this@BallastDebuggerClientConnection.connectionId }
                             ?.viewModels
-                            ?.firstOrNull { it.viewModelName == hostViewModelName }
+                            ?.filter { it.viewModelName == hostViewModelName }
 
                         if (isForThisViewModel != null) {
                             action to isForThisViewModel
@@ -175,7 +177,15 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                         null
                     }
                 }
-                .collect { (action, thisViewModel) -> handleAction(viewModelConnection, action, thisViewModel) }
+                .collect { (action, thisViewModelList) ->
+                    thisViewModelList.forEach { thisViewModel ->
+                        try {
+                            handleAction(viewModelConnection, action, thisViewModel)
+                        } catch (e: Throwable) {
+                            // ignore for now
+                        }
+                    }
+                }
         }
         applicationCoroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
             viewModelConnection
@@ -385,6 +395,30 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     sendToQueue(Queued.RestoreState(null, stateToRestore))
                 } else {
                 }
+            }
+
+            is BallastDebuggerActionV4.RequestReplaceState -> {
+                if (viewModelConnection.deserializeState == null) {
+                    logger.info("States cannot be replaced from serialized state.")
+                    return
+                }
+
+                val stateToReplaceResult = runCatching {
+                    viewModelConnection.deserializeState!!(
+                        ContentType.parse(action.stateContentType),
+                        action.serializedState,
+                    )
+                }
+
+                stateToReplaceResult.fold(
+                    onSuccess = { state ->
+                        sendToQueue(Queued.RestoreState(null, state))
+                    },
+                    onFailure = { error ->
+                        logger.info("Serialized state is formatted incorrectly")
+                        logger.error(error)
+                    },
+                )
             }
         }
     }

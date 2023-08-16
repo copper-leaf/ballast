@@ -2,9 +2,7 @@ package com.copperleaf.ballast.debugger.versions.v4
 
 import com.copperleaf.ballast.debugger.versions.ClientModelConverter
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
 
 public class ClientModelConverterV3ToV4 : ClientModelConverter<
         BallastDebuggerEventV3,
@@ -271,6 +269,10 @@ public class ClientModelConverterV3ToV4 : ClientModelConverter<
                 viewModelName = viewModelName,
                 inputUuid = inputUuid,
             )
+
+            is BallastDebuggerActionV4.RequestReplaceState -> {
+                error("RequestReplaceState only supported on clients v4+")
+            }
         }
     }
 }

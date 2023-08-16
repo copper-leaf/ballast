@@ -33,4 +33,13 @@ public sealed class BallastDebuggerActionV4 {
         override val viewModelName: String,
         val inputUuid: String,
     ) : BallastDebuggerActionV4()
+
+    @Serializable
+    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestReplaceState")
+    public data class RequestReplaceState(
+        override val connectionId: String,
+        override val viewModelName: String,
+        val serializedState: String,
+        val stateContentType: String,
+    ) : BallastDebuggerActionV4()
 }

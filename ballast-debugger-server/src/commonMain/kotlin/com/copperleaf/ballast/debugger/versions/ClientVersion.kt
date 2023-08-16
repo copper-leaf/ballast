@@ -4,10 +4,10 @@ import com.copperleaf.ballast.debugger.versions.unsupported.ClientModelMapperUns
 import com.copperleaf.ballast.debugger.versions.v1.ClientModelSerializerV1
 import com.copperleaf.ballast.debugger.versions.v2.ClientModelConverterV1ToV2
 import com.copperleaf.ballast.debugger.versions.v2.ClientModelSerializerV2
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
 import com.copperleaf.ballast.debugger.versions.v3.ClientModelConverterV2ToV3
 import com.copperleaf.ballast.debugger.versions.v3.ClientModelSerializerV3
+import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
+import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
 import com.copperleaf.ballast.debugger.versions.v4.ClientModelConverterV3ToV4
 import com.copperleaf.ballast.debugger.versions.v4.ClientModelSerializerV4
 
@@ -69,9 +69,9 @@ public data class ClientVersion(val major: Int, val minor: Int?, val patch: Int?
 
 
     public companion object {
-        public fun parse(connectionBallastVersion: String): ClientVersion {
+        public fun parse(connectionBallastVersion: String?): ClientVersion {
             return try {
-                val (major, minor, patch) = connectionBallastVersion
+                val (major, minor, patch) = connectionBallastVersion!!
                     .removeSuffix("-SNAPSHOT")
                     .split('.')
                     .map { it.trim().toInt() }

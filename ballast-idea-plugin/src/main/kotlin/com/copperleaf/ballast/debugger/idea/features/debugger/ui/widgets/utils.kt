@@ -452,6 +452,7 @@ fun CheckboxArea(
 fun ToolBarActionIconButton(
     imageVector: ImageVector,
     contentDescription: String,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     TooltipArea(
@@ -463,6 +464,7 @@ fun ToolBarActionIconButton(
         content = {
             IconButton(
                 onClick = onClick,
+                enabled = enabled,
                 modifier = Modifier
                     .size(56.dp)
                     .border(

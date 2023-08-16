@@ -11,6 +11,7 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
     private val serializeInput: (Inputs) -> Pair<ContentType, String> = { ContentType.Text.Any to it.toString() },
     private val serializeEvent: (Events) -> Pair<ContentType, String> = { ContentType.Text.Any to it.toString() },
     private val serializeState: (State) -> Pair<ContentType, String> = { ContentType.Text.Any to it.toString() },
+    private val deserializeState: ((ContentType, String) -> State)? = null,
 ) : BallastInterceptor<Inputs, Events, State> {
 
     override fun BallastInterceptorScope<Inputs, Events, State>.start(notifications: Flow<BallastNotification<Inputs, Events, State>>) {
@@ -22,6 +23,7 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
                     serializeInput = serializeInput,
                     serializeEvent = serializeEvent,
                     serializeState = serializeState,
+                    deserializeState = deserializeState,
                 )
             )
         }

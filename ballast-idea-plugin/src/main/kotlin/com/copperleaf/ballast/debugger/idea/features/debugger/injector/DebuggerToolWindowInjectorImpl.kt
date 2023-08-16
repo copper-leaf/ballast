@@ -42,7 +42,7 @@ class DebuggerToolWindowInjectorImpl(
     override val debuggerServerViewModel: DebuggerServerViewModel = BasicViewModel(
         coroutineScope = toolWindowCoroutineScope,
         config = pluginInjector
-            .commonViewModelBuilder(loggingEnabled = false)
+            .commonViewModelBuilder(loggingEnabled = true)
             .withViewModel(
                 initialState = DebuggerServerContract.State(),
                 inputHandler = DebuggerServerInputHandler(),

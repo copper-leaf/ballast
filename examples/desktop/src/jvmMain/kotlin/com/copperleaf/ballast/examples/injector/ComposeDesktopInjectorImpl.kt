@@ -56,10 +56,12 @@ import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import com.copperleaf.ballast.undo.state.withStateBasedUndoController
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.http.ContentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
@@ -170,6 +172,13 @@ class ComposeDesktopInjectorImpl(
                                 it as CounterContract.State
                             )
                         },
+                        deserializeState = { contentType: ContentType, serializedState: String ->
+                            check(contentType == ContentType.Application.Json)
+                            Json.decodeFromString(
+                                CounterContract.State.serializer(),
+                                serializedState,
+                            )
+                        }
                     )
                 }
                 .withViewModel(

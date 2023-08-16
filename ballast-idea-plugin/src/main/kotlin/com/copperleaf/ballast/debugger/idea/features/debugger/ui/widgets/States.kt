@@ -15,11 +15,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollbarAdapter
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CloudSync
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
@@ -28,6 +38,7 @@ import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
+import com.copperleaf.ballast.debugger.versions.ClientVersion
 import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
@@ -42,6 +53,49 @@ fun ColumnScope.StatesListToolbar(
     states: List<BallastStateSnapshot>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
+    val majorVersion = ClientVersion.parse(connection?.connectionBallastVersion).major
+
+    // Replace states from JSON
+    var showInputDialog by remember { mutableStateOf(false) }
+    var serializedState by remember { mutableStateOf("") }
+
+    ToolBarActionIconButton(
+        imageVector = Icons.Default.CloudSync,
+        enabled = majorVersion >= 4,
+        contentDescription = if(majorVersion >= 4) "Replace State" else "Replace State (v4+)",
+        onClick = { showInputDialog = true },
+    )
+
+    if (showInputDialog) {
+        AlertDialog(
+            onDismissRequest = { showInputDialog = false },
+            confirmButton = {
+                Button({
+                    postInput(
+                        DebuggerUiContract.Inputs.SendDebuggerAction(
+                            BallastDebuggerActionV4.RequestReplaceState(
+                                connection!!.connectionId,
+                                viewModel!!.viewModelName,
+                                serializedState = serializedState,
+                                stateContentType = "application/json"
+                            )
+                        )
+                    )
+                    showInputDialog = false
+                }) { Text("Send State") }
+            },
+            dismissButton = {
+                OutlinedButton({ showInputDialog = false }) { Text("Cancel") }
+            },
+            title = { Text("Replace state with JSON") },
+            text = {
+                OutlinedTextField(
+                    value = serializedState,
+                    onValueChange = { serializedState = it },
+                )
+            }
+        )
+    }
 }
 
 @Composable
@@ -85,7 +139,7 @@ fun ColumnScope.StateDetails(
     stateSnapshot: BallastStateSnapshot?,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
-    if(stateSnapshot != null) {
+    if (stateSnapshot != null) {
         Box(Modifier.fillMaxSize()) {
             IntellijEditor(stateSnapshot.serializedValue, stateSnapshot.contentType.asContentType())
         }
@@ -146,7 +200,6 @@ fun StateSnapshotSummary(
 
 // Data for States
 // ---------------------------------------------------------------------------------------------------------------------
-
 
 
 @Composable
