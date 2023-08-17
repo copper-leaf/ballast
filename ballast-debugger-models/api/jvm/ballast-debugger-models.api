@@ -252,6 +252,7 @@ public final class com/copperleaf/ballast/debugger/models/BallastInterceptorStat
 public final class com/copperleaf/ballast/debugger/models/BallastInterceptorState$Status : java/lang/Enum {
 	public static final field Attached Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState$Status;
 	public static final field Failed Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState$Status;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState$Status;
 	public static fun values ()[Lcom/copperleaf/ballast/debugger/models/BallastInterceptorState$Status;
 }
@@ -1285,6 +1286,7 @@ public final class com/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEv
 	public static final field NotStarted Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4$StatusV4;
 	public static final field Running Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4$StatusV4;
 	public static final field ShuttingDown Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4$StatusV4;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4$StatusV4;
 	public static fun values ()[Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4$StatusV4;
 }

@@ -142,7 +142,7 @@ class ComposeWebInjectorImpl(
                         serializeState = {
                             ContentType.Application.Json to Json.encodeToString(
                                 CounterContract.State.serializer(),
-                                it as CounterContract.State
+                                it
                             )
                         },
                         deserializeState = { contentType: ContentType, serializedState: String ->

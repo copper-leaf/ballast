@@ -21,6 +21,7 @@ public final class com/copperleaf/ballast/sync/DefaultSyncConnection$ClientType 
 	public static final field Replica Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;
 	public static final field Source Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;
 	public static final field Spectator Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
 	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;
 	public static fun values ()[Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;
 }
