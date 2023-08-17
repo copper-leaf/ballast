@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.idea.features.templates
 
-import com.copperleaf.ballast.debugger.idea.BallastIntellijPluginInjector
+import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
 import com.copperleaf.ballast.debugger.idea.base.BaseTemplateCreator
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
@@ -44,13 +44,13 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
     }
 
     override fun parseTemplateName(project: Project, templateName: String): List<UiTemplate> {
-        val injector = BallastIntellijPluginInjector.getInstance(project)
-        val persistentSettings = injector.repository.observeStates().value.persistentSettings
-        val settingsSnapshot = IntellijPluginSettingsSnapshot.fromSettings(persistentSettings)
+        val settingsSnapshot = BallastIdeaPlugin.getSettings(project)
 
         return getTemplatesFromName(settingsSnapshot, templateName)
             ?: error("Unknown template type: $templateName")
     }
+
+
 
     private fun getTemplatesFromName(settings: IntellijPluginSettingsSnapshot, templateName: String): List<UiTemplate>? {
         println("templateName: $templateName (${defaultViewModelItem.templateName})")

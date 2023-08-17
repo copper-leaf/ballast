@@ -2,17 +2,17 @@
 #end
 
 #parse("File Header.java")
-public object ${featureName}Contract {
-    public data class State(
-        val loading: Boolean = false,
+${classVisibility}object ${featureName}Contract {
+    ${classVisibility}data class State(
+        ${propertyVisibility}val loading: Boolean = false,
     )
 
-    public sealed class Inputs {
-        object Initialize : Inputs()
-        object GoBack : Inputs()
+    ${classVisibility}sealed interface Inputs {
+        ${propertyVisibility}${dataObjectModifier}object Initialize : Inputs
+        ${propertyVisibility}${dataObjectModifier}object GoBack : Inputs
     }
 
-    public sealed class Events {
-        object NavigateUp : Events()
+    ${classVisibility}sealed interface Events {
+        ${propertyVisibility}${dataObjectModifier}object NavigateUp : Events
     }
 }

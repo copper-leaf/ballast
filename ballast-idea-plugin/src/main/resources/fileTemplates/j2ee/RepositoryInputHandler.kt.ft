@@ -10,7 +10,7 @@ import com.copperleaf.ballast.repository.bus.observeInputsFromBus
 import com.copperleaf.ballast.repository.cache.fetchWithCache
 
 #parse("File Header.java")
-public class ${featureName}RepositoryInputHandler(
+${classVisibility}class ${featureName}RepositoryInputHandler(
     private val eventBus: EventBus,
 ) : InputHandler<
     ${featureName}RepositoryContract.Inputs,
@@ -21,7 +21,7 @@ public class ${featureName}RepositoryInputHandler(
         Any,
         ${featureName}RepositoryContract.State>.handleInput(
         input: ${featureName}RepositoryContract.Inputs
-    ) = when (input) {
+    ): Unit = when (input) {
         is ${featureName}RepositoryContract.Inputs.ClearCaches -> {
             updateState { ${featureName}RepositoryContract.State() }
         }

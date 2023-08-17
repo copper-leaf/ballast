@@ -6,7 +6,7 @@ import com.copperleaf.ballast.InputHandlerScope
 import kotlinx.coroutines.delay
 
 #parse("File Header.java")
-public class ${featureName}InputHandler : InputHandler<
+${classVisibility}class ${featureName}InputHandler : InputHandler<
     ${featureName}Contract.Inputs,
     ${featureName}Contract.Events,
     ${featureName}Contract.State> {
@@ -15,7 +15,7 @@ public class ${featureName}InputHandler : InputHandler<
         ${featureName}Contract.Events,
         ${featureName}Contract.State>.handleInput(
         input: ${featureName}Contract.Inputs
-    ) = when (input) {
+    ): Unit = when (input) {
         is ${featureName}Contract.Inputs.Initialize -> {
             updateState { it.copy(loading = true) }
             delay(1000)

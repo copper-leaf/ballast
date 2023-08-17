@@ -46,6 +46,9 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.ProvideTextStyle
+import androidx.compose.material.RadioButton
+import androidx.compose.material.RadioButtonColors
+import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -449,6 +452,35 @@ fun CheckboxArea(
 }
 
 @Composable
+fun RadioButtonArea(
+    selected: Boolean,
+    onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    colors: RadioButtonColors = RadioButtonDefaults.colors(),
+    text: @Composable () -> Unit,
+) {
+    Row(
+        modifier
+            .toggleable(
+                value = selected,
+                onValueChange = { onClick?.invoke() },
+            )
+            .padding(top = 2.dp, bottom = 2.dp, start = 2.dp, end = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        RadioButton(
+            selected = selected,
+            onClick = null,
+        )
+        Row(Modifier.padding(start = 8.dp)) {
+            text()
+        }
+    }
+}
+
+@Composable
 fun ToolBarActionIconButton(
     imageVector: ImageVector,
     contentDescription: String,
@@ -518,6 +550,28 @@ fun <T> DropdownSelector(
                     Text(text = valueRender(item))
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun <T> RadioGroup(
+    items: List<T>,
+    value: T,
+    onValueChange: (T) -> Unit,
+    modifier: Modifier = Modifier,
+    valueRender: (T) -> String = { it.toString() },
+    label: @Composable (() -> Unit)? = null
+) {
+    Column(modifier = modifier) {
+        label?.invoke()
+
+        items.forEach { item: T ->
+            RadioButtonArea(
+                selected = item == value,
+                onClick = { onValueChange(item) },
+                text = { Text(text = valueRender(item)) },
+            )
         }
     }
 }
