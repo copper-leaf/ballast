@@ -3,7 +3,7 @@ package com.copperleaf.ballast.debugger.idea.features.debugger.vm
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.models.BallastApplicationState
-import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
 import com.copperleaf.ballast.navigation.routing.Backstack
 import com.copperleaf.ballast.repository.cache.Cached
 import com.copperleaf.ballast.repository.cache.getCachedOrThrow
@@ -39,7 +39,7 @@ object DebuggerUiContract {
         object ClearAllConnections : Inputs()
         data class Navigate(val destinationUrl: String) : Inputs()
 
-        data class SendDebuggerAction(val action: BallastDebuggerActionV3) : Inputs()
+        data class SendDebuggerAction(val action: BallastDebuggerActionV4) : Inputs()
         data class UpdateSearchText(val value: String) : Inputs()
     }
 

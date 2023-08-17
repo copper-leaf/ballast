@@ -2,13 +2,14 @@
 
 package com.copperleaf.ballast.debugger.server
 
-import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.BALLAST_VERSION_HEADER
-import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection.Companion.CONNECTION_ID_HEADER
+import com.copperleaf.ballast.BallastLogger
+import com.copperleaf.ballast.debugger.BALLAST_VERSION_HEADER
+import com.copperleaf.ballast.debugger.CONNECTION_ID_HEADER
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 import com.copperleaf.ballast.debugger.versions.ClientModelSerializer
 import com.copperleaf.ballast.debugger.versions.ClientVersion
-import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
-import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
+import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
+import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
 import io.github.copper_leaf.ballast_debugger_server.BALLAST_VERSION
 import io.ktor.server.application.call
 import io.ktor.server.application.install
@@ -37,8 +38,9 @@ import kotlinx.coroutines.withContext
 import org.slf4j.event.Level
 
 public class BallastDebuggerServerConnection(
+    private val logger: BallastLogger,
     private val settings: BallastDebuggerServerSettings,
-    private val outgoingActions: SharedFlow<BallastDebuggerActionV3>,
+    private val outgoingActions: SharedFlow<BallastDebuggerActionV4>,
     private val postInput: suspend (DebuggerServerContract.Inputs) -> Unit,
 ) {
     public suspend fun runServer() {
@@ -74,20 +76,21 @@ public class BallastDebuggerServerConnection(
                         )
 
                         val parsedVersion = ClientVersion.parse(connectionBallastVersion)
-                        println("Incoming connection. Client version: $parsedVersion")
+                        logger.debug("Incoming connection. Client version: $parsedVersion")
 
                         val modelMapper = ClientVersion.getSerializer(parsedVersion)
                         if (modelMapper.supported) {
+                            logger.debug("Client version $parsedVersion is supported: $modelMapper")
                             // get the mapper for a particular version of the API, to allow clients with different '
                             // versions to connect to the same debugger server
                             joinAll(
                                 processOutgoing(modelMapper, connectionId),
                                 processIncoming(modelMapper),
                             )
-                            println("Client version at $parsedVersion is finished")
+                            logger.debug("Client version at $parsedVersion is finished")
                         } else {
                             // otherwise, drop the connection immediately, the client's version in incompatible
-                            println("Client version $parsedVersion is not supported")
+                            logger.debug("Client version $parsedVersion is not supported")
                         }
                     }
                 }
@@ -96,7 +99,7 @@ public class BallastDebuggerServerConnection(
     }
 
     private fun WebSocketServerSession.processOutgoing(
-        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV3, BallastDebuggerActionV3>,
+        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV4, BallastDebuggerActionV4>,
         connectionId: String
     ): Job {
         val session = this
@@ -115,7 +118,7 @@ public class BallastDebuggerServerConnection(
     }
 
     private fun WebSocketServerSession.processIncoming(
-        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV3, BallastDebuggerActionV3>,
+        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV4, BallastDebuggerActionV4>,
     ): Job {
         return incoming
             .receiveAsFlow()
@@ -129,6 +132,7 @@ public class BallastDebuggerServerConnection(
                         .let { postInput(it) }
                 } catch (e: Exception) {
                     // ignore
+                    logger.error(e)
                 }
             }
             .launchIn(this)

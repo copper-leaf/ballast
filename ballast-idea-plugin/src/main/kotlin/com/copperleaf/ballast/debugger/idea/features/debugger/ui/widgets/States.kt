@@ -28,7 +28,7 @@ import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
-import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
@@ -105,7 +105,7 @@ fun StateSnapshotSummary(
                 this += ContextMenuItem("Rollback to this State") {
                     postInput(
                         DebuggerUiContract.Inputs.SendDebuggerAction(
-                            BallastDebuggerActionV3.RequestRestoreState(
+                            BallastDebuggerActionV4.RequestRestoreState(
                                 connectionId = stateSnapshot.connectionId,
                                 viewModelName = stateSnapshot.viewModelName,
                                 stateUuid = stateSnapshot.uuid,

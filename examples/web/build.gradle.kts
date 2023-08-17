@@ -39,7 +39,7 @@ kotlin {
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-repository"))
                 implementation(project(":ballast-saved-state"))
-                implementation(project(":ballast-debugger"))
+                implementation(project(":ballast-debugger-client"))
                 implementation(project(":ballast-sync"))
                 implementation(project(":ballast-undo"))
                 implementation(project(":ballast-navigation"))

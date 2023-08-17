@@ -31,7 +31,7 @@ import com.copperleaf.ballast.debugger.models.BallastInputState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
-import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerActionV3
+import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
@@ -126,7 +126,7 @@ fun InputSummary(
                 this += ContextMenuItem("Resend Input") {
                     postInput(
                         DebuggerUiContract.Inputs.SendDebuggerAction(
-                            BallastDebuggerActionV3.RequestResendInput(
+                            BallastDebuggerActionV4.RequestResendInput(
                                 connectionId = inputState.connectionId,
                                 viewModelName = inputState.viewModelName,
                                 inputUuid = inputState.uuid,

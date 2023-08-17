@@ -1,5 +1,5 @@
 public final class com/copperleaf/ballast/debugger/server/BallastDebuggerServerConnection {
-	public fun <init> (Lcom/copperleaf/ballast/debugger/server/BallastDebuggerServerSettings;Lkotlinx/coroutines/flow/SharedFlow;Lkotlin/jvm/functions/Function2;)V
+	public fun <init> (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/debugger/server/BallastDebuggerServerSettings;Lkotlinx/coroutines/flow/SharedFlow;Lkotlin/jvm/functions/Function2;)V
 	public final fun runServer (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
@@ -70,12 +70,12 @@ public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContr
 }
 
 public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$DebuggerEventReceived : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
-	public fun <init> (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;)V
-	public final fun component1 ()Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;
-	public final fun copy (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$DebuggerEventReceived;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$DebuggerEventReceived;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$DebuggerEventReceived;
+	public fun <init> (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;
+	public final fun copy (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$DebuggerEventReceived;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$DebuggerEventReceived;Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$DebuggerEventReceived;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getMessage ()Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;
+	public final fun getMessage ()Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -92,12 +92,12 @@ public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContr
 }
 
 public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$SendDebuggerAction : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
-	public fun <init> (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;)V
-	public final fun component1 ()Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;
-	public final fun copy (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$SendDebuggerAction;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$SendDebuggerAction;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$SendDebuggerAction;
+	public fun <init> (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4;
+	public final fun copy (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$SendDebuggerAction;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$SendDebuggerAction;Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$SendDebuggerAction;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAction ()Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;
+	public final fun getAction ()Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -1837,10 +1837,6 @@ public final class com/copperleaf/ballast/debugger/versions/v2/ClientModelConver
 	public synthetic fun mapEvent (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/debugger/versions/v2/ClientModelSerializerV1ToV2 : com/copperleaf/ballast/debugger/versions/CompositeModelSerializer {
-	public fun <init> ()V
-}
-
 public final class com/copperleaf/ballast/debugger/versions/v2/ClientModelSerializerV2 : com/copperleaf/ballast/debugger/versions/ClientModelSerializer {
 	public fun <init> ()V
 	public fun getSupported ()Z
@@ -1848,6 +1844,899 @@ public final class com/copperleaf/ballast/debugger/versions/v2/ClientModelSerial
 	public synthetic fun mapIncoming (Ljava/lang/String;)Ljava/lang/Object;
 	public fun mapOutgoing (Lcom/copperleaf/ballast/debugger/versions/v2/BallastDebuggerActionV2;)Ljava/lang/String;
 	public synthetic fun mapOutgoing (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public abstract class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$Companion;
+	public synthetic fun <init> (ILkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public abstract fun getConnectionId ()Ljava/lang/String;
+	public abstract fun getViewModelName ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestResendInput$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getStateUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestRestoreState$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConnectionId ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3$RequestViewModelRefresh$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Companion;
+	public synthetic fun <init> (ILkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public abstract fun getConnectionId ()Ljava/lang/String;
+	public abstract fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public abstract fun getUuid ()Ljava/lang/String;
+	public abstract fun getViewModelName ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getEventContentType ()Ljava/lang/String;
+	public final fun getEventType ()Ljava/lang/String;
+	public final fun getSerializedEvent ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventEmitted$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getEventContentType ()Ljava/lang/String;
+	public final fun getEventType ()Ljava/lang/String;
+	public final fun getSerializedEvent ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandledSuccessfully$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getEventContentType ()Ljava/lang/String;
+	public final fun getEventType ()Ljava/lang/String;
+	public final fun getSerializedEvent ()Ljava/lang/String;
+	public final fun getStacktrace ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventHandlerError$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStarted$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventProcessingStopped$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getEventContentType ()Ljava/lang/String;
+	public final fun getEventType ()Ljava/lang/String;
+	public final fun getSerializedEvent ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$EventQueued$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun getConnectionBallastVersion ()Ljava/lang/String;
+	public fun getConnectionId ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$Heartbeat$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getInputType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputAccepted$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getInputType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputCancelled$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getInputType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputDropped$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getInputType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandledSuccessfully$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getInputType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public final fun getStacktrace ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputHandlerError$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getInputType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputQueued$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getInputType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InputRejected$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInterceptorToStringValue ()Ljava/lang/String;
+	public final fun getInterceptorType ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorAttached$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInterceptorToStringValue ()Ljava/lang/String;
+	public final fun getInterceptorType ()Ljava/lang/String;
+	public final fun getStacktrace ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$InterceptorFailed$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelComplete$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$RefreshViewModelStart$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCancelled$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobCompleted$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
+	public final fun getStacktrace ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobError$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobQueued$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getRestartState ()Lcom/copperleaf/ballast/SideJobScope$RestartState;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$SideJobStarted$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getSerializedState ()Ljava/lang/String;
+	public final fun getStateContentType ()Ljava/lang/String;
+	public final fun getStateType ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StateChanged$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3 : java/lang/Enum {
+	public static final field Cleared Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3$Companion;
+	public static final field NotStarted Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;
+	public static final field Running Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;
+	public static final field ShuttingDown Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;
+	public static fun values ()[Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Ljava/lang/String;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getStacktrace ()Ljava/lang/String;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$UnhandledError$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged : com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/datetime/LocalDateTime;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;)V
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getStatus ()Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$StatusV3;
+	public fun getTimestamp ()Lkotlinx/datetime/LocalDateTime;
+	public fun getUuid ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public final fun getViewModelType ()Ljava/lang/String;
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3$ViewModelStatusChanged$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v3/ClientModelConverterV2ToV3 : com/copperleaf/ballast/debugger/versions/ClientModelConverter {
@@ -1858,20 +2747,29 @@ public final class com/copperleaf/ballast/debugger/versions/v3/ClientModelConver
 	public synthetic fun mapEvent (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/debugger/versions/v3/ClientModelSerializerV1ToV3 : com/copperleaf/ballast/debugger/versions/CompositeModelSerializer {
-	public fun <init> ()V
-}
-
-public final class com/copperleaf/ballast/debugger/versions/v3/ClientModelSerializerV2ToV3 : com/copperleaf/ballast/debugger/versions/CompositeModelSerializer {
-	public fun <init> ()V
-}
-
 public final class com/copperleaf/ballast/debugger/versions/v3/ClientModelSerializerV3 : com/copperleaf/ballast/debugger/versions/ClientModelSerializer {
 	public fun <init> ()V
 	public fun getSupported ()Z
 	public fun mapIncoming (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;
 	public synthetic fun mapIncoming (Ljava/lang/String;)Ljava/lang/Object;
 	public fun mapOutgoing (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;)Ljava/lang/String;
+	public synthetic fun mapOutgoing (Ljava/lang/Object;)Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v4/ClientModelConverterV3ToV4 : com/copperleaf/ballast/debugger/versions/ClientModelConverter {
+	public fun <init> ()V
+	public fun mapAction (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4;)Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerActionV3;
+	public synthetic fun mapAction (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun mapEvent (Lcom/copperleaf/ballast/debugger/versions/v3/BallastDebuggerEventV3;)Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;
+	public synthetic fun mapEvent (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v4/ClientModelSerializerV4 : com/copperleaf/ballast/debugger/versions/ClientModelSerializer {
+	public fun <init> ()V
+	public fun getSupported ()Z
+	public fun mapIncoming (Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;
+	public synthetic fun mapIncoming (Ljava/lang/String;)Ljava/lang/Object;
+	public fun mapOutgoing (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4;)Ljava/lang/String;
 	public synthetic fun mapOutgoing (Ljava/lang/Object;)Ljava/lang/String;
 }
 
