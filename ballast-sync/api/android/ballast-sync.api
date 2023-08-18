@@ -4,13 +4,6 @@ public final class com/copperleaf/ballast/sync/BallastSyncInterceptor : com/copp
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
-public final class com/copperleaf/ballast/sync/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public final class com/copperleaf/ballast/sync/DefaultSyncConnection : com/copperleaf/ballast/sync/SyncConnection {
 	public fun <init> (Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;Lcom/copperleaf/ballast/sync/SyncConnectionAdapter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;Lcom/copperleaf/ballast/sync/SyncConnectionAdapter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V

@@ -23,10 +23,3 @@ public final class com/copperleaf/ballast/firebase/FirebaseCrashlyticsIntercepto
 	public static synthetic fun FirebaseCrashlyticsInterceptor$default (Lcom/google/firebase/crashlytics/FirebaseCrashlytics;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/copperleaf/ballast/crashreporting/CrashReportingInterceptor;
 }
 
-public final class com/copperleaf/ballast/firebase/crashlytics/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-

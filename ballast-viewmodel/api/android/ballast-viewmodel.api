@@ -28,10 +28,3 @@ public class com/copperleaf/ballast/core/BasicViewModel : com/copperleaf/ballast
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/viewmodel/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-

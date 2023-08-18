@@ -406,13 +406,6 @@ public final class com/copperleaf/ballast/UtilsKt {
 	public static synthetic fun withViewModel$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Ljava/lang/Object;Lcom/copperleaf/ballast/InputHandler;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
 }
 
-public final class com/copperleaf/ballast/api/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public final class com/copperleaf/ballast/core/BufferedEventStrategy : com/copperleaf/ballast/core/ChannelEventStrategy {
 	public static final field Companion Lcom/copperleaf/ballast/core/BufferedEventStrategy$Companion;
 	public fun processEvents (Lcom/copperleaf/ballast/EventStrategyScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

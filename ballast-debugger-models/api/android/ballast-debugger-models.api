@@ -411,13 +411,6 @@ public final class com/copperleaf/ballast/debugger/models/BallastViewModelState 
 	public final fun updateWithDebuggerEvent (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerEventV4;Ljava/lang/Object;)Lcom/copperleaf/ballast/debugger/models/BallastViewModelState;
 }
 
-public final class com/copperleaf/ballast/debugger/models/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public final class com/copperleaf/ballast/debugger/models/JsonKt {
 	public static final fun getActualValue (Lcom/copperleaf/ballast/BallastNotification;)Ljava/lang/Object;
 	public static final fun getDebuggerEventJson ()Lkotlinx/serialization/json/Json;
