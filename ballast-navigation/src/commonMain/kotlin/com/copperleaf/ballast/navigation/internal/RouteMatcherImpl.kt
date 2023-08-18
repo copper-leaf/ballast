@@ -152,12 +152,12 @@ internal data class RouteMatcherImpl(
     )
 
     private sealed interface PathMatchResult {
-        object Mismatch : PathMatchResult
+        data object Mismatch : PathMatchResult
         data class Match(val parsedParameters: Map<String, List<String>>) : PathMatchResult
     }
 
     private sealed interface QueryMatchResult {
-        object Mismatch : QueryMatchResult
+        data object Mismatch : QueryMatchResult
         data class Match(val parsedParameters: Map<String, List<String>>) : QueryMatchResult
     }
 }

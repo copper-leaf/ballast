@@ -28,7 +28,7 @@ object DebuggerUiContract {
     }
 
     sealed class Inputs {
-        object Initialize : Inputs()
+        data object Initialize : Inputs()
 
         data class OnConnectionEstablished(val connectionId: String) : Inputs()
 
@@ -36,7 +36,12 @@ object DebuggerUiContract {
         data class BackstackChanged(val backstack: Backstack<DebuggerRoute>) : Inputs()
         data class SettingsChanged(val settings: Cached<IntellijPluginSettingsSnapshot>) : Inputs()
 
-        object ClearAllConnections : Inputs()
+        data object ClearAllConnections : Inputs()
+        data class ClearAllStates(val connectionId: String, val viewModelName: String) : Inputs()
+        data class ClearAllInputs(val connectionId: String, val viewModelName: String) : Inputs()
+        data class ClearAllEvents(val connectionId: String, val viewModelName: String) : Inputs()
+        data class ClearAllSideJobs(val connectionId: String, val viewModelName: String) : Inputs()
+        data class ClearAllLogs(val connectionId: String, val viewModelName: String) : Inputs()
         data class Navigate(val destinationUrl: String) : Inputs()
 
         data class SendDebuggerAction(val action: BallastDebuggerActionV4) : Inputs()

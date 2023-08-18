@@ -59,7 +59,7 @@ object KitchenSinkWebUi {
         Text("Inputs")
         Br { }
         BulmaButton(
-            onClick = { postInput(KitchenSinkContract.Inputs.LongRunningInput()) },
+            onClick = { postInput(KitchenSinkContract.Inputs.LongRunningInput) },
         ) {
             Text("LongRunningInput")
         }

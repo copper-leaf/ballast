@@ -25,7 +25,7 @@ class DebuggerUiInputHandler(
             DebuggerUiContract.Events,
             DebuggerUiContract.State>.handleInput(
         input: DebuggerUiContract.Inputs
-    ) = when (input) {
+    ): Unit = when (input) {
         is DebuggerUiContract.Inputs.Initialize -> {
             observeFlows(
                 "router state",
@@ -113,6 +113,12 @@ class DebuggerUiInputHandler(
                 debuggerServerViewModel.send(DebuggerServerContract.Inputs.SendDebuggerAction(input.action))
             }
         }
+
+        is DebuggerUiContract.Inputs.ClearAllStates -> { noOp() }
+        is DebuggerUiContract.Inputs.ClearAllInputs -> { noOp() }
+        is DebuggerUiContract.Inputs.ClearAllEvents -> { noOp() }
+        is DebuggerUiContract.Inputs.ClearAllSideJobs -> { noOp() }
+        is DebuggerUiContract.Inputs.ClearAllLogs -> { noOp() }
     }
 
     private suspend fun InputHandlerScope<

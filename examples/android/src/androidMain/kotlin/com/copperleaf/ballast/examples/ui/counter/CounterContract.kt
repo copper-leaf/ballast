@@ -6,12 +6,12 @@ object CounterContract {
     )
 
     sealed class Inputs {
-        object GoBack : Inputs()
+        data object GoBack : Inputs()
         data class Increment(val amount: Int) : Inputs()
         data class Decrement(val amount: Int) : Inputs()
     }
 
     sealed class Events {
-        object GoBack : Events()
+        data object GoBack : Events()
     }
 }

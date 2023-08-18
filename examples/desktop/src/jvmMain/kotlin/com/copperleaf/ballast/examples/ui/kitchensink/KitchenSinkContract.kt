@@ -10,29 +10,29 @@ object KitchenSinkContract {
     )
 
     sealed class Inputs {
-        object CloseKitchenSinkWindow : Inputs()
+        data object CloseKitchenSinkWindow : Inputs()
         data class ChangeInputStrategy(val inputStrategy: InputStrategySelection) : Inputs()
 
-        class LongRunningInput : Inputs()
-        object LongRunningEvent : Inputs()
-        object LongRunningSideJob : Inputs()
+        data object LongRunningInput : Inputs()
+        data object LongRunningEvent : Inputs()
+        data object LongRunningSideJob : Inputs()
 
-        object InfiniteSideJob : Inputs()
-        object CancelInfiniteSideJob : Inputs()
+        data object InfiniteSideJob : Inputs()
+        data object CancelInfiniteSideJob : Inputs()
         data class IncrementInfiniteCounter(val delta: Int) : Inputs()
 
-        object ErrorRunningInput : Inputs()
-        object ErrorRunningEvent : Inputs()
-        object ErrorRunningSideJob : Inputs()
+        data object ErrorRunningInput : Inputs()
+        data object ErrorRunningEvent : Inputs()
+        data object ErrorRunningSideJob : Inputs()
 
-        object ShutDownGracefully : Inputs()
+        data object ShutDownGracefully : Inputs()
     }
 
     sealed class Events {
-        object CloseWindow : Events()
+        data object CloseWindow : Events()
         data class NavigateTo(val directions: String) : Events()
 
-        class LongRunningEvent : Events()
-        class ErrorRunningEvent : Events()
+        data object LongRunningEvent : Events()
+        data object ErrorRunningEvent : Events()
     }
 }

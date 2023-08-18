@@ -11,7 +11,7 @@ object RepositoryContract {
     )
 
     sealed class Inputs {
-        object Initialize : Inputs()
+        data object Initialize : Inputs()
 
         data class SaveUpdatedSettings(val settings: IntellijPluginSettingsSnapshot) : Inputs()
     }

@@ -18,7 +18,7 @@ object TodosContract {
     )
   
     sealed class Inputs {
-        object FetchSavedTodos : Inputs()
+        data object FetchSavedTodos : Inputs()
         data class AddTodo(val text: String) : Inputs()
         data class RemoveTodo(val text: String) : Inputs()
     }

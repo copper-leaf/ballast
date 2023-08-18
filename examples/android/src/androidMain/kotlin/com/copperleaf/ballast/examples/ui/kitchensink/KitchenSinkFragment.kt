@@ -10,9 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.copperleaf.ballast.examples.MainApplication
 import com.copperleaf.android.R
 import com.copperleaf.android.databinding.FragmentKitchenSinkBinding
+import com.copperleaf.ballast.examples.MainApplication
 import com.copperleaf.ballast.examples.injector.AndroidInjector
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.optionalEnumQuery
@@ -73,7 +73,7 @@ class KitchenSinkFragment : Fragment(), Destination.ParametersProvider {
             progress.hide()
         }
 
-        btnLongRunningInput.setOnClickListener { postInput(KitchenSinkContract.Inputs.LongRunningInput()) }
+        btnLongRunningInput.setOnClickListener { postInput(KitchenSinkContract.Inputs.LongRunningInput) }
         btnErrorRunningInput.setOnClickListener { postInput(KitchenSinkContract.Inputs.ErrorRunningInput) }
         btnLongRunningEvent.setOnClickListener { postInput(KitchenSinkContract.Inputs.LongRunningEvent) }
         btnErrorRunningEvent.setOnClickListener { postInput(KitchenSinkContract.Inputs.ErrorRunningEvent) }

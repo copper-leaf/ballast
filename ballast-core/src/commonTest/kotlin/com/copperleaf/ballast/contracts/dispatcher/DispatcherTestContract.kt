@@ -9,7 +9,7 @@ public object DispatcherTestContract {
     )
 
     public sealed class Inputs {
-        object Initialize : Inputs()
+        data object Initialize : Inputs()
 
         data class SetEventDispatcher(val actualEventCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
         data class SetSideJobDispatcher(val actualSideJobCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
@@ -17,6 +17,6 @@ public object DispatcherTestContract {
     }
 
     public sealed class Events {
-        object GetEventDispatcher : Events()
+        data object GetEventDispatcher : Events()
     }
 }

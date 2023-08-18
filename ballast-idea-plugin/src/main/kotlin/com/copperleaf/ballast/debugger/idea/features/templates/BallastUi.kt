@@ -84,10 +84,10 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
         override val displayName: String,
         override val icon: Icon,
     ) : BaseTemplateCreator.TemplateKind {
-        object Contract : UiTemplate("UiContract", "Contract", "Contract", KotlinIcons.OBJECT)
-        object InputHandler : UiTemplate("UiInputHandler", "InputHandler", "InputHandler", KotlinIcons.CLASS)
-        object EventHandler : UiTemplate("UiEventHandler", "EventHandler", "EventHandler", KotlinIcons.CLASS)
-        object SavedStateAdapter : UiTemplate("UiSavedStateAdapter", "SavedStateAdapter", "SavedStateAdapter", KotlinIcons.CLASS)
+        data object Contract : UiTemplate("UiContract", "Contract", "Contract", KotlinIcons.OBJECT)
+        data object InputHandler : UiTemplate("UiInputHandler", "InputHandler", "InputHandler", KotlinIcons.CLASS)
+        data object EventHandler : UiTemplate("UiEventHandler", "EventHandler", "EventHandler", KotlinIcons.CLASS)
+        data object SavedStateAdapter : UiTemplate("UiSavedStateAdapter", "SavedStateAdapter", "SavedStateAdapter", KotlinIcons.CLASS)
         class ViewModel(templateName: String) : UiTemplate(templateName, "ViewModel", "ViewModel", KotlinIcons.CLASS)
     }
 }

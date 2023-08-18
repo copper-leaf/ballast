@@ -8,22 +8,22 @@ object TestContract {
     )
 
     sealed class Inputs {
-        object FilteredValue : Inputs()
-        object ThrowErrorDuringHandling : Inputs()
+        data object FilteredValue : Inputs()
+        data object ThrowErrorDuringHandling : Inputs()
         data class UpdateStringValue(val stringValue: String) : Inputs()
-        object Increment : Inputs()
-        object Decrement : Inputs()
-        object IncrementWithRollback : Inputs()
-        object MultipleStateUpdates : Inputs()
-        object EventEmitted : Inputs()
-        object SideJobStartedNoInputOverride : Inputs()
-        object SideJobStartedWithInputOverride : Inputs()
-        object MultipleSideJobs : Inputs()
-        object SideJobsNotAtEnd : Inputs()
-        object TestTimeout : Inputs()
+        data object Increment : Inputs()
+        data object Decrement : Inputs()
+        data object IncrementWithRollback : Inputs()
+        data object MultipleStateUpdates : Inputs()
+        data object EventEmitted : Inputs()
+        data object SideJobStartedNoInputOverride : Inputs()
+        data object SideJobStartedWithInputOverride : Inputs()
+        data object MultipleSideJobs : Inputs()
+        data object SideJobsNotAtEnd : Inputs()
+        data object TestTimeout : Inputs()
     }
 
     sealed class Events {
-        object Notification : Events()
+        data object Notification : Events()
     }
 }

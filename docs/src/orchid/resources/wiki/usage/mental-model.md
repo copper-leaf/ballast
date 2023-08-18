@@ -359,8 +359,8 @@ _**we will relax this qualifier later to explore how it affects the resulting st
 
 ```kotlin
 sealed class TrafficLightState {
-    object Loading : TrafficLightState()
-    object Error : TrafficLightState()
+    data object Loading : TrafficLightState()
+    data object Error : TrafficLightState()
     data class Success(val color: Color) : TrafficLightState()
 }
 ```
@@ -737,13 +737,13 @@ object LoginScreenContract {
     sealed class Inputs {
         data class UsernameChanged(val newValue: String) : Inputs()
         data class PasswordChanged(val newValue: String) : Inputs()
-        object LoginButtonClicked : Inputs()
-        object RegisterButtonClicked : Inputs()
+        data object LoginButtonClicked : Inputs()
+        data object RegisterButtonClicked : Inputs()
     }
 
     sealed class Events {
-        object NavigateToDashboard : Events()
-        object NavigateToRegistration : Events()
+        data object NavigateToDashboard : Events()
+        data object NavigateToRegistration : Events()
     }
 }
 ```

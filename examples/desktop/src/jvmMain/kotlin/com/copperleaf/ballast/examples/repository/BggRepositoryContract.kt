@@ -14,9 +14,9 @@ object BggRepositoryContract {
     )
 
     sealed class Inputs {
-        object ClearCaches : Inputs()
-        object Initialize : Inputs()
-        object RefreshAllCaches : Inputs()
+        data object ClearCaches : Inputs()
+        data object Initialize : Inputs()
+        data object RefreshAllCaches : Inputs()
 
         data class BggHotListUpdated(val hotListType: HotListType, val bggHotList: Cached<List<BggHotListItem>>) : Inputs()
         data class RefreshBggHotList(val hotListType: HotListType, val forceRefresh: Boolean) : Inputs()

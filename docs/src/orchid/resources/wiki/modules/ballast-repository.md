@@ -97,9 +97,9 @@ object ExampleRepositoryContract {
     )
 
     sealed class Inputs {
-        object ClearCaches : Inputs()
-        object Initialize : Inputs()
-        object RefreshAllCaches : Inputs()
+        data object ClearCaches : Inputs()
+        data object Initialize : Inputs()
+        data object RefreshAllCaches : Inputs()
 
         data class RefreshExampleProperty(val forceRefresh: Boolean) : Inputs()
         data class ExamplePropertyUpdated(val value: Cached<ExampleValue>) : Inputs()

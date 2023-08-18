@@ -14,7 +14,7 @@ object ScorekeeperContract {
         data class RemovePlayer(val playerName: String) : Inputs()
         data class ChangeScore(val amount: Int) : Inputs()
 
-        object CommitAllTempScores : Inputs()
+        data object CommitAllTempScores : Inputs()
         data class CommitTempScore(val playerName: String) : Inputs()
 
         data class TogglePlayerSelection(val playerName: String) : Inputs()

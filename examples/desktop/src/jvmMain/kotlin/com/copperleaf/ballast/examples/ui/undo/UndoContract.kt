@@ -8,9 +8,9 @@ object UndoContract {
     )
 
     sealed class Inputs {
-        object Undo : Inputs()
-        object Redo : Inputs()
-        object CaptureStateNow : Inputs()
+        data object Undo : Inputs()
+        data object Redo : Inputs()
+        data object CaptureStateNow : Inputs()
         data class UpdateText(val value: String) : Inputs()
     }
 

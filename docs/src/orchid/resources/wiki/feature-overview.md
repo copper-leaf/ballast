@@ -59,13 +59,13 @@ object LoginScreenContract {
     sealed class Inputs {
         data class UsernameChanged(val newValue: TextFieldValue) : Inputs()
         data class PasswordChanged(val newValue: TextFieldValue) : Inputs()
-        object LoginButtonClicked : Inputs()
-        object RegisterButtonClicked : Inputs()
+        data object LoginButtonClicked : Inputs()
+        data object RegisterButtonClicked : Inputs()
     }
 
     sealed class Events {
-        object NavigateToDashboard : Events()
-        object NavigateToRegistration : Events()
+        data object NavigateToDashboard : Events()
+        data object NavigateToRegistration : Events()
     }
 }
 ```
@@ -118,8 +118,8 @@ Inputs are modeled as a Kotlin `sealed class`:
 sealed class Inputs {
     data class UsernameChanged(val newValue: TextFieldValue) : Inputs()
     data class PasswordChanged(val newValue: TextFieldValue) : Inputs()
-    object LoginButtonClicked : Inputs()
-    object RegisterButtonClicked : Inputs()
+    data object LoginButtonClicked : Inputs()
+    data object RegisterButtonClicked : Inputs()
 }
 ```
 
@@ -146,8 +146,8 @@ Like Inputs, Events are modeled as a Kotlin `sealed class`:
 
 ```kotlin
 sealed class Events {
-    object NavigateToDashboard : Events()
-    object NavigateToRegistration : Events()
+    data object NavigateToDashboard : Events()
+    data object NavigateToRegistration : Events()
 }
 ```
 
