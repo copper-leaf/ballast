@@ -36,12 +36,14 @@ object DebuggerUiContract {
         data class BackstackChanged(val backstack: Backstack<DebuggerRoute>) : Inputs()
         data class SettingsChanged(val settings: Cached<IntellijPluginSettingsSnapshot>) : Inputs()
 
+        // forwarded to Server VM
         data object ClearAllConnections : Inputs()
         data class ClearAllStates(val connectionId: String, val viewModelName: String) : Inputs()
         data class ClearAllInputs(val connectionId: String, val viewModelName: String) : Inputs()
         data class ClearAllEvents(val connectionId: String, val viewModelName: String) : Inputs()
         data class ClearAllSideJobs(val connectionId: String, val viewModelName: String) : Inputs()
         data class ClearAllLogs(val connectionId: String, val viewModelName: String) : Inputs()
+
         data class Navigate(val destinationUrl: String) : Inputs()
 
         data class SendDebuggerAction(val action: BallastDebuggerActionV4) : Inputs()

@@ -27,6 +27,15 @@ public sealed class BallastDebuggerActionV4 {
     ) : BallastDebuggerActionV4()
 
     @Serializable
+    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestReplaceState")
+    public data class RequestReplaceState(
+        override val connectionId: String,
+        override val viewModelName: String,
+        val serializedState: String,
+        val stateContentType: String,
+    ) : BallastDebuggerActionV4()
+
+    @Serializable
     @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestResendInput")
     public data class RequestResendInput(
         override val connectionId: String,
@@ -35,11 +44,11 @@ public sealed class BallastDebuggerActionV4 {
     ) : BallastDebuggerActionV4()
 
     @Serializable
-    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestReplaceState")
-    public data class RequestReplaceState(
+    @SerialName("$ACTION_MODEL_BASE_CLASS_NAME.RequestSendInput")
+    public data class RequestSendInput(
         override val connectionId: String,
         override val viewModelName: String,
-        val serializedState: String,
-        val stateContentType: String,
+        val serializedInput: String,
+        val inputContentType: String,
     ) : BallastDebuggerActionV4()
 }

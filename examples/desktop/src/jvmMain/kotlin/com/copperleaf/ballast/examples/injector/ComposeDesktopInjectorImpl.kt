@@ -152,6 +152,8 @@ class ComposeDesktopInjectorImpl(
                         )
                     }
 
+                    // TODO: add a kotlinx.serialization module to auto-enable all this boilerplate just by providing
+                    //  the State and Input serializers
                     this += BallastDebuggerInterceptor(
                         debuggerConnection,
                         serializeInput = {
@@ -177,6 +179,13 @@ class ComposeDesktopInjectorImpl(
                             Json.decodeFromString(
                                 CounterContract.State.serializer(),
                                 serializedState,
+                            )
+                        },
+                        deserializeInput = { contentType: ContentType, serializedInput: String ->
+                            check(contentType == ContentType.Application.Json)
+                            Json.decodeFromString(
+                                CounterContract.Inputs.serializer(),
+                                serializedInput,
                             )
                         }
                     )

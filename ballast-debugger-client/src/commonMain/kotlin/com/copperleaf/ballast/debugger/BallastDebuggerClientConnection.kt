@@ -373,18 +373,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 Unit
             }
 
-            is BallastDebuggerActionV4.RequestResendInput -> {
-                val inputToResend = thisViewModel
-                    .inputs
-                    .firstOrNull { it.uuid == action.inputUuid }
-                    ?.actualInput as? Inputs
-
-                if (inputToResend != null) {
-                    sendToQueue(Queued.HandleInput(null, inputToResend))
-                } else {
-                }
-            }
-
             is BallastDebuggerActionV4.RequestRestoreState -> {
                 val stateToRestore = thisViewModel
                     .states
@@ -416,6 +404,42 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                     },
                     onFailure = { error ->
                         logger.info("Serialized state is formatted incorrectly")
+                        logger.error(error)
+                    },
+                )
+            }
+
+            is BallastDebuggerActionV4.RequestResendInput -> {
+                val inputToResend = thisViewModel
+                    .inputs
+                    .firstOrNull { it.uuid == action.inputUuid }
+                    ?.actualInput as? Inputs
+
+                if (inputToResend != null) {
+                    sendToQueue(Queued.HandleInput(null, inputToResend))
+                } else {
+                }
+            }
+
+            is BallastDebuggerActionV4.RequestSendInput -> {
+                if (viewModelConnection.deserializeInput == null) {
+                    logger.info("Inputs cannot be replaced from serialized state.")
+                    return
+                }
+
+                val inputToSendResult = runCatching {
+                    viewModelConnection.deserializeInput!!(
+                        ContentType.parse(action.inputContentType),
+                        action.serializedInput,
+                    )
+                }
+
+                inputToSendResult.fold(
+                    onSuccess = { input ->
+                        sendToQueue(Queued.HandleInput(null, input))
+                    },
+                    onFailure = { error ->
+                        logger.info("Serialized input is formatted incorrectly")
                         logger.error(error)
                     },
                 )

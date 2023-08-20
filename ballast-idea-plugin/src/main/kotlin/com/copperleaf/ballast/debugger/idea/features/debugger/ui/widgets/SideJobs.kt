@@ -17,6 +17,8 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ListItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -46,6 +48,14 @@ fun ColumnScope.SideJobsListToolbar(
     sideJobs: List<BallastSideJobState>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
+    if (connection == null) return
+    if (viewModel == null) return
+
+    ToolBarActionIconButton(
+        imageVector = Icons.Default.ClearAll,
+        contentDescription = "Clear Side Jobs",
+        onClick = { postInput(DebuggerUiContract.Inputs.ClearAllSideJobs(connection.connectionId, viewModel.viewModelName)) },
+    )
 }
 
 @Composable

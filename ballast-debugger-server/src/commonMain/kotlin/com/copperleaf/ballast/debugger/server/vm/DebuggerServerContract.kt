@@ -35,6 +35,13 @@ public object DebuggerServerContract {
 
         public data class DebuggerEventReceived(val message: BallastDebuggerEventV4) : Inputs()
         public data class SendDebuggerAction(val action: BallastDebuggerActionV4) : Inputs()
+
+        public data object ClearAllConnections : Inputs()
+        public data class ClearAllStates(val connectionId: String, val viewModelName: String) : Inputs()
+        public data class ClearAllInputs(val connectionId: String, val viewModelName: String) : Inputs()
+        public data class ClearAllEvents(val connectionId: String, val viewModelName: String) : Inputs()
+        public data class ClearAllSideJobs(val connectionId: String, val viewModelName: String) : Inputs()
+        public data class ClearAllLogs(val connectionId: String, val viewModelName: String) : Inputs()
     }
 
     public sealed class Events {

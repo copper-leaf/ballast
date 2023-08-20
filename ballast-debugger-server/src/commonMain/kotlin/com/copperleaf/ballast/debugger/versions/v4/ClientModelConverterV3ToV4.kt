@@ -273,6 +273,10 @@ public class ClientModelConverterV3ToV4 : ClientModelConverter<
             is BallastDebuggerActionV4.RequestReplaceState -> {
                 error("RequestReplaceState only supported on clients v4+")
             }
+
+            is BallastDebuggerActionV4.RequestSendInput -> {
+                error("RequestSendInput only supported on clients v4+")
+            }
         }
     }
 }

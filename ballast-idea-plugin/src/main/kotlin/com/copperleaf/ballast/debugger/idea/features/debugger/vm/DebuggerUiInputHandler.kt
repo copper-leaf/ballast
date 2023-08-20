@@ -88,14 +88,6 @@ class DebuggerUiInputHandler(
             startServerIfNeeded(previousState, currentState)
         }
 
-        is DebuggerUiContract.Inputs.ClearAllConnections -> {
-            sideJob("ClearAllConnections") {
-                debuggerServerViewModel.send(
-                    DebuggerServerContract.Inputs.ClearAll
-                )
-            }
-        }
-
         is DebuggerUiContract.Inputs.Navigate -> {
             sideJob("Navigate") {
                 debuggerRouter.send(
@@ -114,11 +106,49 @@ class DebuggerUiInputHandler(
             }
         }
 
-        is DebuggerUiContract.Inputs.ClearAllStates -> { noOp() }
-        is DebuggerUiContract.Inputs.ClearAllInputs -> { noOp() }
-        is DebuggerUiContract.Inputs.ClearAllEvents -> { noOp() }
-        is DebuggerUiContract.Inputs.ClearAllSideJobs -> { noOp() }
-        is DebuggerUiContract.Inputs.ClearAllLogs -> { noOp() }
+        is DebuggerUiContract.Inputs.ClearAllConnections -> {
+            sideJob("ClearAllConnections") {
+                debuggerServerViewModel.send(
+                    DebuggerServerContract.Inputs.ClearAll
+                )
+            }
+        }
+        is DebuggerUiContract.Inputs.ClearAllStates -> {
+            sideJob("ClearAllStates") {
+                debuggerServerViewModel.send(
+                    DebuggerServerContract.Inputs.ClearAllStates(input.connectionId, input.viewModelName)
+                )
+            }
+        }
+
+        is DebuggerUiContract.Inputs.ClearAllInputs -> {
+            sideJob("ClearAllInputs") {
+                debuggerServerViewModel.send(
+                    DebuggerServerContract.Inputs.ClearAllInputs(input.connectionId, input.viewModelName)
+                )
+            }
+        }
+        is DebuggerUiContract.Inputs.ClearAllEvents -> {
+            sideJob("ClearAllEvents") {
+                debuggerServerViewModel.send(
+                    DebuggerServerContract.Inputs.ClearAllEvents(input.connectionId, input.viewModelName)
+                )
+            }
+        }
+        is DebuggerUiContract.Inputs.ClearAllSideJobs -> {
+            sideJob("ClearAllSideJobs") {
+                debuggerServerViewModel.send(
+                    DebuggerServerContract.Inputs.ClearAllSideJobs(input.connectionId, input.viewModelName)
+                )
+            }
+        }
+        is DebuggerUiContract.Inputs.ClearAllLogs -> {
+            sideJob("ClearAllLogs") {
+                debuggerServerViewModel.send(
+                    DebuggerServerContract.Inputs.ClearAllLogs(input.connectionId, input.viewModelName)
+                )
+            }
+        }
     }
 
     private suspend fun InputHandlerScope<

@@ -17,6 +17,7 @@ public data class BallastDebuggerViewModelConnection<Inputs : Any, Events : Any,
     public val serializeEvent: (Events) -> Pair<ContentType, String>,
     public val serializeState: (State) -> Pair<ContentType, String>,
     public val deserializeState: ((ContentType, String) -> State)?,
+    public val deserializeInput: ((ContentType, String) -> Inputs)?,
 )
 
 public class BallastDebuggerOutgoingEventWrapper<Inputs : Any, Events : Any, State : Any>(

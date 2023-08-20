@@ -1,4 +1,5 @@
 <idea-plugin>
+    <idea-version since-build="221"/>
     <id>com.copperleaf.ballast.Ballast</id>
     <name>Ballast</name>
     <vendor email="cjbrooks12@gmail.com" url="https://github.com/copper-leaf/ballast">Casey Brooks</vendor>

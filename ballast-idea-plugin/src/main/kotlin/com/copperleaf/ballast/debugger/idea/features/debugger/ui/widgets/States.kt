@@ -8,6 +8,7 @@ import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.material.icons.filled.CloudSync
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -53,16 +55,25 @@ fun ColumnScope.StatesListToolbar(
     states: List<BallastStateSnapshot>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
-    val majorVersion = ClientVersion.parse(connection?.connectionBallastVersion).major
+    if (connection == null) return
+    if (viewModel == null) return
+
+    ToolBarActionIconButton(
+        imageVector = Icons.Default.ClearAll,
+        contentDescription = "Clear States",
+        onClick = { postInput(DebuggerUiContract.Inputs.ClearAllStates(connection.connectionId, viewModel.viewModelName)) },
+    )
 
     // Replace states from JSON
+    val majorVersion = ClientVersion.parse(connection.connectionBallastVersion).major
     var showInputDialog by remember { mutableStateOf(false) }
+    var stateContentType by remember { mutableStateOf("application/json") }
     var serializedState by remember { mutableStateOf("") }
 
     ToolBarActionIconButton(
         imageVector = Icons.Default.CloudSync,
         enabled = majorVersion >= 4,
-        contentDescription = if(majorVersion >= 4) "Replace State" else "Replace State (v4+)",
+        contentDescription = if (majorVersion >= 4) "Send State" else "Send State (v4+)",
         onClick = { showInputDialog = true },
     )
 
@@ -74,10 +85,10 @@ fun ColumnScope.StatesListToolbar(
                     postInput(
                         DebuggerUiContract.Inputs.SendDebuggerAction(
                             BallastDebuggerActionV4.RequestReplaceState(
-                                connection!!.connectionId,
-                                viewModel!!.viewModelName,
+                                connection.connectionId,
+                                viewModel.viewModelName,
                                 serializedState = serializedState,
-                                stateContentType = "application/json"
+                                stateContentType = stateContentType,
                             )
                         )
                     )
@@ -89,10 +100,18 @@ fun ColumnScope.StatesListToolbar(
             },
             title = { Text("Replace state with JSON") },
             text = {
-                OutlinedTextField(
-                    value = serializedState,
-                    onValueChange = { serializedState = it },
-                )
+                Column {
+                    OutlinedTextField(
+                        label = { Text("Content Type") },
+                        value = stateContentType,
+                        onValueChange = { stateContentType = it },
+                    )
+                    OutlinedTextField(
+                        label = { Text("Serialized State") },
+                        value = serializedState,
+                        onValueChange = { serializedState = it },
+                    )
+                }
             }
         )
     }

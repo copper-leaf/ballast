@@ -2,6 +2,7 @@ package com.copperleaf.ballast.debugger.server.vm
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
+import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerConnection
@@ -103,6 +104,69 @@ public class DebuggerServerInputHandler : InputHandler<
             val currentState = getCurrentState()
 
             currentState.actions.emit(input.action)
+        }
+
+        is DebuggerServerContract.Inputs.ClearAllStates -> {
+            updateState {
+                it.copy(
+                    applicationState = it.applicationState.updateConnection(input.connectionId) {
+                        updateViewModel(input.viewModelName) {
+                            copy(states = emptyList())
+                        }
+                    }
+                )
+            }
+        }
+
+        is DebuggerServerContract.Inputs.ClearAllConnections -> {
+            updateState {
+                it.copy(applicationState = BallastApplicationState())
+            }
+        }
+
+        is DebuggerServerContract.Inputs.ClearAllInputs -> {
+            updateState {
+                it.copy(
+                    applicationState = it.applicationState.updateConnection(input.connectionId) {
+                        updateViewModel(input.viewModelName) {
+                            copy(inputs = emptyList())
+                        }
+                    }
+                )
+            }
+        }
+        is DebuggerServerContract.Inputs.ClearAllEvents -> {
+            updateState {
+                it.copy(
+                    applicationState = it.applicationState.updateConnection(input.connectionId) {
+                        updateViewModel(input.viewModelName) {
+                            copy(events = emptyList())
+                        }
+                    }
+                )
+            }
+        }
+        is DebuggerServerContract.Inputs.ClearAllSideJobs -> {
+            updateState {
+                it.copy(
+                    applicationState = it.applicationState.updateConnection(input.connectionId) {
+                        updateViewModel(input.viewModelName) {
+                            copy(sideJobs = emptyList())
+                        }
+                    }
+                )
+            }
+        }
+        is DebuggerServerContract.Inputs.ClearAllLogs -> {
+            updateState {
+                it.copy(
+                    applicationState = it.applicationState.updateConnection(input.connectionId) {
+                        updateViewModel(input.viewModelName) {
+                            copy(fullHistory = emptyList())
+                        }
+                    }
+                )
+            }
         }
     }
 }

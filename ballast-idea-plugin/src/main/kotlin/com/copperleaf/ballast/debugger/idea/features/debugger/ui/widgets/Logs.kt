@@ -14,6 +14,8 @@ import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ClearAll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
@@ -33,6 +35,14 @@ fun ColumnScope.LogsListToolbar(
     fullHistory: List<BallastDebuggerEventV4>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
+    if (connection == null) return
+    if (viewModel == null) return
+
+    ToolBarActionIconButton(
+        imageVector = Icons.Default.ClearAll,
+        contentDescription = "Clear Logs",
+        onClick = { postInput(DebuggerUiContract.Inputs.ClearAllLogs(connection.connectionId, viewModel.viewModelName)) },
+    )
 }
 
 @Composable
