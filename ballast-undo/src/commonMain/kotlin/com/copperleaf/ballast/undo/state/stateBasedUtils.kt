@@ -10,7 +10,10 @@ import kotlin.time.Duration.Companion.seconds
 public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withStateBasedUndoController(
     bufferStates: (Flow<State>) -> Flow<State> = { it.sample(5.seconds) },
     historyDepth: Int = 10,
-): BallastViewModelConfiguration.Builder {
+): BallastViewModelConfiguration.TypedBuilder<
+        StateBasedUndoControllerContract.Inputs<Inputs, Events, State>,
+        StateBasedUndoControllerContract.Events<Inputs, Events, State>,
+        StateBasedUndoControllerContract.State<Inputs, Events, State>> {
     return this
         .withViewModel(
             initialState = StateBasedUndoControllerContract.State<Inputs, Events, State>(),
@@ -18,6 +21,6 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
             name = "UndoController",
         )
         .apply {
-            this.inputStrategy = FifoInputStrategy()
+            this.inputStrategy = FifoInputStrategy.typed()
         }
 }

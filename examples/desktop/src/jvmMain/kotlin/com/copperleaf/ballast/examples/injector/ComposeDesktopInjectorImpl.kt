@@ -61,11 +61,9 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.http.ContentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
-import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -151,50 +149,20 @@ class ComposeDesktopInjectorImpl(
                             ),
                         )
                     }
-
-                    // TODO: add a kotlinx.serialization module to auto-enable all this boilerplate just by providing
-                    //  the State and Input serializers
-                    this += BallastDebuggerInterceptor(
-                        debuggerConnection,
-                        serializeInput = {
-                            ContentType.Application.Json to Json.encodeToString(
-                                CounterContract.Inputs.serializer(),
-                                it as CounterContract.Inputs
-                            )
-                        },
-                        serializeEvent = {
-                            ContentType.Application.Json to Json.encodeToString(
-                                CounterContract.Events.serializer(),
-                                it as CounterContract.Events
-                            )
-                        },
-                        serializeState = {
-                            ContentType.Application.Json to Json.encodeToString(
-                                CounterContract.State.serializer(),
-                                it
-                            )
-                        },
-                        deserializeState = { contentType: ContentType, serializedState: String ->
-                            check(contentType == ContentType.Application.Json)
-                            Json.decodeFromString(
-                                CounterContract.State.serializer(),
-                                serializedState,
-                            )
-                        },
-                        deserializeInput = { contentType: ContentType, serializedInput: String ->
-                            check(contentType == ContentType.Application.Json)
-                            Json.decodeFromString(
-                                CounterContract.Inputs.serializer(),
-                                serializedInput,
-                            )
-                        }
-                    )
                 }
                 .withViewModel(
                     initialState = CounterContract.State(),
                     inputHandler = CounterInputHandler(),
                     name = "Counter",
                 )
+                .apply {
+                    this += BallastDebuggerInterceptor.withJson(
+                        debuggerConnection,
+                        inputsSerializer = CounterContract.Inputs.serializer(),
+                        eventsSerializer = CounterContract.Events.serializer(),
+                        stateSerializer = CounterContract.State.serializer(),
+                    )
+                }
                 .build(),
             eventHandler = CounterEventHandler(),
         )

@@ -46,7 +46,7 @@ public interface BallastScenarioScope<Inputs : Any, Events : Any, State : Any> {
      * Customize and override any value in the [BallastViewModelConfiguration.Builder] for this test case. This is a
      * dangerous feature and could break the test machinery, make sure you know what you're doing!
      */
-    public fun customizeConfiguration(configure: (BallastViewModelConfiguration.Builder) -> BallastViewModelConfiguration.Builder)
+    public fun customizeConfiguration(configure: (BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>) -> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>)
 
     /**
      * Provide an alternative starting state for this scenario. Overrides the default starting state provided to the

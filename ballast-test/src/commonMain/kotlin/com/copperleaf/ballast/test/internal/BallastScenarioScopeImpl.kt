@@ -13,7 +13,7 @@ internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>
     override val name: String
 ) : BallastScenarioScope<Inputs, Events, State> {
     internal var givenBlock: (() -> State)? = null
-    internal var configurationBlock: ((BallastViewModelConfiguration.Builder) -> BallastViewModelConfiguration.Builder)? = null
+    internal var configurationBlock: ((BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>) -> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>)? = null
     internal lateinit var onInputSequenceBlock:
             suspend BallastScenarioInputSequenceScope<Inputs, Events, State>.() -> Unit
     internal lateinit var verifyBlock: TestResults<Inputs, Events, State>.() -> Unit
@@ -64,7 +64,7 @@ internal class BallastScenarioScopeImpl<Inputs : Any, Events : Any, State : Any>
         verifyBlock = block
     }
 
-    override fun customizeConfiguration(configure: (BallastViewModelConfiguration.Builder) -> BallastViewModelConfiguration.Builder) {
+    override fun customizeConfiguration(configure: (BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>) -> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>) {
         configurationBlock = configure
     }
 }

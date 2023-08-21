@@ -8,16 +8,18 @@ public final class com/copperleaf/ballast/debugger/BallastDebuggerOutgoingEventW
 }
 
 public final class com/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection {
-	public fun <init> (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;)V
+	public fun <init> (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Lkotlinx/coroutines/flow/Flow;
 	public final fun component3 ()Lkotlin/jvm/functions/Function1;
 	public final fun component4 ()Lkotlin/jvm/functions/Function1;
 	public final fun component5 ()Lkotlin/jvm/functions/Function1;
 	public final fun component6 ()Lkotlin/jvm/functions/Function2;
-	public final fun copy (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
+	public final fun component7 ()Lkotlin/jvm/functions/Function2;
+	public final fun copy (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDeserializeInput ()Lkotlin/jvm/functions/Function2;
 	public final fun getDeserializeState ()Lkotlin/jvm/functions/Function2;
 	public final fun getNotifications ()Lkotlinx/coroutines/flow/Flow;
 	public final fun getSerializeEvent ()Lkotlin/jvm/functions/Function1;
@@ -533,6 +535,41 @@ public final class com/copperleaf/ballast/debugger/versions/v4/BallastDebuggerAc
 }
 
 public final class com/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestRestoreState$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput : com/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4 {
+	public static final field Companion Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput$Companion;
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/internal/SerializationConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getConnectionId ()Ljava/lang/String;
+	public final fun getInputContentType ()Ljava/lang/String;
+	public final fun getSerializedInput ()Ljava/lang/String;
+	public fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+	public static final synthetic fun write$Self (Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput;Lkotlinx/serialization/encoding/CompositeEncoder;Lkotlinx/serialization/descriptors/SerialDescriptor;)V
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput$$serializer;
+	public fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/debugger/versions/v4/BallastDebuggerActionV4$RequestSendInput$Companion {
 	public final fun serializer ()Lkotlinx/serialization/KSerializer;
 }
 

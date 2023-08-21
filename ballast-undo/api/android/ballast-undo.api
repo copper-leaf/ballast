@@ -107,7 +107,7 @@ public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerCon
 }
 
 public final class com/copperleaf/ballast/undo/state/StateBasedUtilsKt {
-	public static final fun withStateBasedUndoController (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function1;I)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
-	public static synthetic fun withStateBasedUndoController$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function1;IILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+	public static final fun withStateBasedUndoController (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function1;I)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static synthetic fun withStateBasedUndoController$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function1;IILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 }
 

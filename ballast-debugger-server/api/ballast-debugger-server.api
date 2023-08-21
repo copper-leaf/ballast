@@ -32,6 +32,78 @@ public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContr
 	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAll;
 }
 
+public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllConnections : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
+	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllConnections;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllEvents : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllEvents;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllEvents;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllEvents;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectionId ()Ljava/lang/String;
+	public final fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllInputs : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllInputs;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllInputs;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllInputs;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectionId ()Ljava/lang/String;
+	public final fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllLogs : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllLogs;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllLogs;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllLogs;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectionId ()Ljava/lang/String;
+	public final fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllSideJobs : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllSideJobs;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllSideJobs;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllSideJobs;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectionId ()Ljava/lang/String;
+	public final fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllStates : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllStates;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllStates;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAllStates;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConnectionId ()Ljava/lang/String;
+	public final fun getViewModelName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
 public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearConnection : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
 	public fun <init> (Ljava/lang/String;)V
 	public final fun component1 ()Ljava/lang/String;

@@ -32,7 +32,7 @@ import com.copperleaf.ballast.withViewModel
 public fun <T : Route> BallastViewModelConfiguration.Builder.withRouter(
     routingTable: RoutingTable<T>,
     initialRoute: T?,
-): BallastViewModelConfiguration.Builder {
+): RouterBuilder<T> {
     return this
         .withViewModel(
             initialState = RouterContract.State(routingTable = routingTable),
@@ -40,7 +40,7 @@ public fun <T : Route> BallastViewModelConfiguration.Builder.withRouter(
             name = "Router",
         )
         .apply {
-            this.inputStrategy = FifoInputStrategy()
+            this.inputStrategy = FifoInputStrategy.typed()
 
             initialRoute?.let { initialRoute ->
                 check(initialRoute.isStatic()) {
@@ -57,6 +57,11 @@ public fun <T : Route> BallastViewModelConfiguration.Builder.withRouter(
 
 // Aliases to Ballast classes
 // ---------------------------------------------------------------------------------------------------------------------
+
+public typealias RouterBuilder<T> = BallastViewModelConfiguration.TypedBuilder<
+        RouterContract.Inputs<T>,
+        RouterContract.Events<T>,
+        RouterContract.State<T>>
 
 public typealias Router<T> = BallastViewModel<
         RouterContract.Inputs<T>,

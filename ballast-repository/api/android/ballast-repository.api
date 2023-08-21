@@ -17,6 +17,7 @@ public abstract class com/copperleaf/ballast/repository/BallastRepository : com/
 
 public final class com/copperleaf/ballast/repository/UtilsKt {
 	public static final fun withRepository (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+	public static final fun withRepository (Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 }
 
 public abstract interface class com/copperleaf/ballast/repository/bus/EventBus {
