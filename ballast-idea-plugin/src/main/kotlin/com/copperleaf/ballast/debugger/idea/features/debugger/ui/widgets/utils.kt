@@ -52,6 +52,7 @@ import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
@@ -77,6 +78,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.copperleaf.ballast.debugger.idea.features.debugger.router.DebuggerRoute
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.copperleaf.ballast.debugger.idea.utils.datatypes.DataType
@@ -88,6 +90,7 @@ import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.repository.cache.Cached
 import com.copperleaf.ballast.repository.cache.getCachedOrNull
+import com.intellij.openapi.ide.CopyPasteManager
 import com.intellij.openapi.project.Project
 import io.ktor.http.ContentType
 import kotlinx.coroutines.delay
@@ -98,6 +101,7 @@ import org.jetbrains.compose.splitpane.SplitPaneState
 import org.jetbrains.compose.splitpane.SplitterScope
 import org.jetbrains.compose.splitpane.VerticalSplitPane
 import java.awt.Cursor
+import java.awt.datatransfer.StringSelection
 import java.time.format.DateTimeFormatter
 import kotlin.time.Duration
 
@@ -307,26 +311,44 @@ fun IntellijEditor(
     contentType: ContentType,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colors.onSurface,
+    onContentCopied: ((String) -> Unit)? = null,
 ) {
-    Column(modifier.fillMaxSize().background(Color(51, 51, 51)).verticalScroll(rememberScrollState())) {
-        val lines = remember(text, contentType) {
-            val dataTypeConverter = DataType.getForMimeType(contentType)
-            val reformattedText = dataTypeConverter.reformat(text)
-            reformattedText.lines()
+    Box(modifier.fillMaxSize().background(Color(51, 51, 51))) {
+        if(onContentCopied != null) {
+            ToolBarActionIconButton(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .zIndex(10f),
+                imageVector = Icons.Default.CopyAll,
+                contentDescription = "Copy",
+                enabled = true,
+                onClick = {
+                    onContentCopied(text)
+                }
+            )
         }
 
-        SelectionContainer {
-            Column {
-                lines.forEachIndexed { index, line ->
-                    Row {
-                        DisableSelection {
-                            Text("${index + 1}", Modifier.width(24.dp))
+        Column(Modifier.zIndex(5f).fillMaxWidth().verticalScroll(rememberScrollState())) {
+            val lines = remember(text, contentType) {
+                val dataTypeConverter = DataType.getForMimeType(contentType)
+                val reformattedText = dataTypeConverter.reformat(text)
+                reformattedText.lines()
+            }
+
+            SelectionContainer(Modifier.fillMaxWidth()) {
+                Column(Modifier.fillMaxWidth()) {
+                    lines.forEachIndexed { index, line ->
+                        Row(Modifier.fillMaxWidth()) {
+                            DisableSelection {
+                                Text("${index + 1}", Modifier.width(24.dp))
+                            }
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = line,
+                                color = color,
+                                fontFamily = FontFamily.Monospace,
+                            )
                         }
-                        Text(
-                            text = line,
-                            color = color,
-                            fontFamily = FontFamily.Monospace,
-                        )
                     }
                 }
             }
@@ -484,10 +506,12 @@ fun RadioButtonArea(
 fun ToolBarActionIconButton(
     imageVector: ImageVector,
     contentDescription: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     TooltipArea(
+        modifier = modifier,
         tooltip = {
             Card(elevation = 4.dp) {
                 Text(contentDescription)

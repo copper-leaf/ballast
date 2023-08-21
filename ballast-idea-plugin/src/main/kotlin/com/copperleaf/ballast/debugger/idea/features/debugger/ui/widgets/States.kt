@@ -160,7 +160,11 @@ fun ColumnScope.StateDetails(
 ) {
     if (stateSnapshot != null) {
         Box(Modifier.fillMaxSize()) {
-            IntellijEditor(stateSnapshot.serializedValue, stateSnapshot.contentType.asContentType())
+            IntellijEditor(
+                stateSnapshot.serializedValue,
+                stateSnapshot.contentType.asContentType(),
+                onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+            )
         }
     }
 }

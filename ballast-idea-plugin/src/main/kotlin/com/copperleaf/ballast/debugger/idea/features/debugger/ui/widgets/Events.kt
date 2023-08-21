@@ -54,7 +54,14 @@ fun ColumnScope.EventsListToolbar(
     ToolBarActionIconButton(
         imageVector = Icons.Default.ClearAll,
         contentDescription = "Clear Events",
-        onClick = { postInput(DebuggerUiContract.Inputs.ClearAllEvents(connection.connectionId, viewModel.viewModelName)) },
+        onClick = {
+            postInput(
+                DebuggerUiContract.Inputs.ClearAllEvents(
+                    connection.connectionId,
+                    viewModel.viewModelName
+                )
+            )
+        },
     )
 }
 
@@ -104,16 +111,31 @@ fun ColumnScope.EventDetails(
 
         if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(event.serializedValue, event.contentType.asContentType())
+                IntellijEditor(
+                    event.serializedValue,
+                    event.contentType.asContentType(),
+                    onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                )
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
                 topContent = {
-                    IntellijEditor(event.serializedValue, event.contentType.asContentType(), Modifier.fillMaxSize())
+                    IntellijEditor(
+                        event.serializedValue,
+                        event.contentType.asContentType(),
+                        Modifier.fillMaxSize(),
+                        onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                    )
                 },
                 bottomContent = {
-                    IntellijEditor(errorStatus.stacktrace, ContentType.Text.Any, Modifier.fillMaxSize(), MaterialTheme.colors.error)
+                    IntellijEditor(
+                        errorStatus.stacktrace,
+                        ContentType.Text.Any,
+                        Modifier.fillMaxSize(),
+                        MaterialTheme.colors.error,
+                        onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                    )
                 },
             )
         }

@@ -23,6 +23,7 @@ import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.Interce
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.InterceptorsList
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.InterceptorsListToolbar
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.LogsList
+import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.LogsListToolbar
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.ProvideTime
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.SideJobDetails
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.SideJobDetailsToolbar
@@ -482,6 +483,7 @@ object DebuggerUi {
                     },
                     tabs = { ViewModelTabStrip(connection, viewModel, postInput) },
                     mainContentLeft = { LogsList(connection, viewModel, fullHistory, postInput) },
+                    contentLeftToolbar = { LogsListToolbar(connection, viewModel, fullHistory, postInput) },
                     secondaryContent = { SpecialRouterToolbar(currentAppDestination, uiState.cachedSettings, postInput) },
                     stickyContent = { SpecialViewModelState(latestState, uiState.cachedSettings, postInput) }
                 )

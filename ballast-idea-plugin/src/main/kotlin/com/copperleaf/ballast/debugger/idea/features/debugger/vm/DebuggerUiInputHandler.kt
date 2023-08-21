@@ -10,7 +10,9 @@ import com.copperleaf.ballast.debugger.server.vm.DebuggerServerViewModel
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.observeFlows
 import com.copperleaf.ballast.postInput
+import com.intellij.openapi.ide.CopyPasteManager
 import kotlinx.coroutines.flow.map
+import java.awt.datatransfer.StringSelection
 
 class DebuggerUiInputHandler(
     private val debuggerRouter: DebuggerRouter,
@@ -148,6 +150,9 @@ class DebuggerUiInputHandler(
                     DebuggerServerContract.Inputs.ClearAllLogs(input.connectionId, input.viewModelName)
                 )
             }
+        }
+        is DebuggerUiContract.Inputs.CopyToClipboard -> {
+            CopyPasteManager.getInstance().setContents(StringSelection(input.text))
         }
     }
 

@@ -48,6 +48,8 @@ object DebuggerUiContract {
 
         data class SendDebuggerAction(val action: BallastDebuggerActionV4) : Inputs()
         data class UpdateSearchText(val value: String) : Inputs()
+
+        data class CopyToClipboard(val text: String) : Inputs()
     }
 
     sealed class Events

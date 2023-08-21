@@ -68,7 +68,14 @@ fun ColumnScope.InputsListToolbar(
     ToolBarActionIconButton(
         imageVector = Icons.Default.ClearAll,
         contentDescription = "Clear Inputs",
-        onClick = { postInput(DebuggerUiContract.Inputs.ClearAllInputs(connection.connectionId, viewModel.viewModelName)) },
+        onClick = {
+            postInput(
+                DebuggerUiContract.Inputs.ClearAllInputs(
+                    connection.connectionId,
+                    viewModel.viewModelName
+                )
+            )
+        },
     )
 
     // Replace states from JSON
@@ -169,16 +176,31 @@ fun ColumnScope.InputDetails(
         val errorStatus = input.status as? BallastInputState.Status.Error
         if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(input.serializedValue, input.contentType.asContentType())
+                IntellijEditor(
+                    input.serializedValue,
+                    input.contentType.asContentType(),
+                    onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                )
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
                 topContent = {
-                    IntellijEditor(input.serializedValue, input.contentType.asContentType(), Modifier.fillMaxSize())
+                    IntellijEditor(
+                        input.serializedValue,
+                        input.contentType.asContentType(),
+                        Modifier.fillMaxSize(),
+                        onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                    )
                 },
                 bottomContent = {
-                    IntellijEditor(errorStatus.stacktrace, ContentType.Text.Any, Modifier.fillMaxSize(), MaterialTheme.colors.error)
+                    IntellijEditor(
+                        errorStatus.stacktrace,
+                        ContentType.Text.Any,
+                        Modifier.fillMaxSize(),
+                        MaterialTheme.colors.error,
+                        onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                    )
                 },
             )
         }

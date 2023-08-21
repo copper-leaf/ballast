@@ -54,7 +54,14 @@ fun ColumnScope.SideJobsListToolbar(
     ToolBarActionIconButton(
         imageVector = Icons.Default.ClearAll,
         contentDescription = "Clear Side Jobs",
-        onClick = { postInput(DebuggerUiContract.Inputs.ClearAllSideJobs(connection.connectionId, viewModel.viewModelName)) },
+        onClick = {
+            postInput(
+                DebuggerUiContract.Inputs.ClearAllSideJobs(
+                    connection.connectionId,
+                    viewModel.viewModelName
+                )
+            )
+        },
     )
 }
 
@@ -104,16 +111,31 @@ fun ColumnScope.SideJobDetails(
 
         if (errorStatus == null) {
             Box(Modifier.fillMaxSize()) {
-                IntellijEditor(sideJob.key, ContentType.Text.Any)
+                IntellijEditor(
+                    sideJob.key,
+                    ContentType.Text.Any,
+                    onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                )
             }
         } else {
             VSplitPane(
                 rememberSplitPaneState(initialPositionPercentage = 0.5f),
                 topContent = {
-                    IntellijEditor(sideJob.key, ContentType.Text.Any, Modifier.fillMaxSize())
+                    IntellijEditor(
+                        sideJob.key,
+                        ContentType.Text.Any,
+                        Modifier.fillMaxSize(),
+                        onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                    )
                 },
                 bottomContent = {
-                    IntellijEditor(errorStatus.stacktrace, ContentType.Text.Any, Modifier.fillMaxSize(), MaterialTheme.colors.error)
+                    IntellijEditor(
+                        errorStatus.stacktrace,
+                        ContentType.Text.Any,
+                        Modifier.fillMaxSize(),
+                        MaterialTheme.colors.error,
+                        onContentCopied = { postInput(DebuggerUiContract.Inputs.CopyToClipboard(it)) },
+                    )
                 },
             )
         }
