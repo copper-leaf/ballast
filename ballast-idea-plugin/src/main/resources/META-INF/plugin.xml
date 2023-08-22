@@ -49,7 +49,7 @@ This IDEA plugin is built upon the best features of Kotlin:
             secondary="true"
             icon="AllIcons.Toolwindows.Documentation"
             anchor="bottom"
-            factoryClass="com.copperleaf.ballast.debugger.idea.features.debugger.ui.DebuggerToolWindow$Factory"/>
+            factoryClass="com.copperleaf.ballast.debugger.idea.features.debugger.DebuggerToolWindow$Factory"/>
 
         <!-- File Templates -->
         <fileTemplateGroup

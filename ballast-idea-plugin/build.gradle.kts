@@ -22,6 +22,7 @@ dependencies {
     implementation(project(":ballast-navigation"))
     implementation(project(":ballast-debugger-models"))
     implementation(project(":ballast-debugger-server"))
+    implementation(project(":ballast-debugger-ui"))
 }
 
 buildConfig {

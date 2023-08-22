@@ -10,36 +10,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
-import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.LocalProject
-import com.copperleaf.ballast.repository.cache.Cached
-import com.copperleaf.ballast.repository.cache.getCachedOrNull
 import com.intellij.openapi.project.Project
 
 @Composable
 fun IdeaPluginTheme(
     project: Project,
-    settings: Cached<IntellijPluginSettingsSnapshot>,
+//    settings: Cached<IntellijPluginSettingsSnapshot>,
     content: @Composable () -> Unit,
 ) {
-    settings.getCachedOrNull()?.let {
-        IdeaPluginTheme(project, it, content)
-    }
+//    settings.getCachedOrNull()?.let {
+    IdeaPluginTheme(project, true, content)
+//    }
 }
 
 @Composable
 private fun IdeaPluginTheme(
     project: Project,
-    settings: IntellijPluginSettingsSnapshot,
+    darkTheme: Boolean,
     content: @Composable () -> Unit,
 ) {
-
-
     val primaryColor = Color(0xff_ffab00)
     val secondaryColor = Color(0xff_ffab00)
     val swingColors = SwingColor()
 
-    val materialColors = if (settings.darkTheme) {
+    val materialColors = if (darkTheme) {
         darkColors(
             primary = primaryColor,
             secondary = secondaryColor,
@@ -74,7 +68,6 @@ private fun IdeaPluginTheme(
         content = {
 //            DesktopTheme {
             CompositionLocalProvider(
-                LocalProject provides project,
                 LocalContentColor provides materialColors.onBackground,
             ) {
                 Column(

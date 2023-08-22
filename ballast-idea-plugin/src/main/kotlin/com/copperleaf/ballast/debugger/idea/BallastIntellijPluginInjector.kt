@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.debugger.idea
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
+import com.copperleaf.ballast.debugger.idea.features.debugger.repository.DebuggerUseCase
 import com.copperleaf.ballast.debugger.idea.repository.RepositoryViewModel
 import com.intellij.openapi.project.Project
 import kotlinx.coroutines.CoroutineDispatcher
@@ -21,6 +22,7 @@ interface BallastIntellijPluginInjector {
     fun newMainCoroutineScope(): CoroutineScope
 
     val repository: RepositoryViewModel
+    val debuggerUseCase: DebuggerUseCase
 
     companion object {
         private val projectMap = mutableMapOf<Project, BallastIntellijPluginInjector>()
