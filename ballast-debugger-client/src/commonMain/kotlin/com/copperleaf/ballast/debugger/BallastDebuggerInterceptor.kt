@@ -33,6 +33,10 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
         }
     }
 
+    override fun toString(): String {
+        return "BallastDebuggerInterceptor"
+    }
+
     public companion object {
         public fun <Inputs : Any, Events : Any, State : Any> withJson(
             connection: BallastDebuggerClientConnection<*>,

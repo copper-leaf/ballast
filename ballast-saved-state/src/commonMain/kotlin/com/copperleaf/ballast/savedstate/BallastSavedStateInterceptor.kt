@@ -125,4 +125,8 @@ public class BallastSavedStateInterceptor<Inputs : Any, Events : Any, State : An
             }
         }
     }
+
+    override fun toString(): String {
+        return "BallastSavedStateInterceptor(adapter=$adapter)"
+    }
 }

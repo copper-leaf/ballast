@@ -2,12 +2,14 @@ public final class com/copperleaf/ballast/sync/BallastSyncInterceptor : com/copp
 	public fun <init> (Lcom/copperleaf/ballast/sync/SyncConnection;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/sync/DefaultSyncConnection : com/copperleaf/ballast/sync/SyncConnection {
 	public fun <init> (Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;Lcom/copperleaf/ballast/sync/SyncConnectionAdapter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;Lcom/copperleaf/ballast/sync/SyncConnectionAdapter;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun connectViewModel (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/sync/DefaultSyncConnection$ClientType : java/lang/Enum {
@@ -25,6 +27,7 @@ public final class com/copperleaf/ballast/sync/InMemorySyncAdapter : com/copperl
 	public fun readStateFromSource (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendInputToSource (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendSynchronizedStateToReplicas (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class com/copperleaf/ballast/sync/SyncConnection {

@@ -10,7 +10,7 @@ public interface DataType {
 
     public companion object {
         public fun getForMimeType(mimeType: ContentType): DataType {
-            return when(mimeType) {
+            return when (mimeType) {
                 ContentType.Application.Json -> JsonDataType()
                 else -> ToStringDataType()
             }

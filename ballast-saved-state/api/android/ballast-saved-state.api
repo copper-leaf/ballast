@@ -18,6 +18,7 @@ public final class com/copperleaf/ballast/savedstate/BallastSavedStateIntercepto
 	public synthetic fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class com/copperleaf/ballast/savedstate/RestoreStateScope {

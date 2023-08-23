@@ -70,4 +70,8 @@ public class StateBasedUndoController<Inputs : Any, Events : Any, State : Any> i
             send(StateBasedUndoControllerContract.Inputs.ConnectViewModel(notifications))
         }
     }
+
+    override fun toString(): String {
+        return "StateBasedUndoController"
+    }
 }

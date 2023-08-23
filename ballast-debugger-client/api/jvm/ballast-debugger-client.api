@@ -15,6 +15,7 @@ public final class com/copperleaf/ballast/debugger/BallastDebuggerInterceptor : 
 	public synthetic fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/debugger/BallastDebuggerInterceptor$Companion {

@@ -23,6 +23,7 @@ public final class com/copperleaf/ballast/core/LoggingInterceptor : com/copperle
 	public synthetic fun <init> (ZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/core/LoggingUtilsKt {

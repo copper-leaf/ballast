@@ -70,12 +70,14 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         }
     }
 
-    private val client: HttpClient = HttpClient(engineFactory) {
-        install(WebSockets)
-        install(ContentNegotiation) {
-            json()
+    private val client: HttpClient by lazy {
+        HttpClient(engineFactory) {
+            install(WebSockets)
+            install(ContentNegotiation) {
+                json()
+            }
+            block()
         }
-        block()
     }
 
     private val outgoingMessages =

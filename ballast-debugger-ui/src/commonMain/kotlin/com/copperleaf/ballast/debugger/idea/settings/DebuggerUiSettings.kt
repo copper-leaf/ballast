@@ -18,4 +18,3 @@ public interface DebuggerUiSettings {
     public val routerViewModelName: String
     public val detailsPanePercentage: Float
 }
-

@@ -8,6 +8,7 @@ public abstract interface annotation class com/copperleaf/ballast/firebase/Fireb
 
 public final class com/copperleaf/ballast/firebase/FirebaseAnalyticsTracker : com/copperleaf/ballast/analytics/AnalyticsTracker {
 	public fun <init> (Lcom/google/firebase/analytics/FirebaseAnalytics;)V
+	public fun toString ()Ljava/lang/String;
 	public fun trackAnalyticsEvent (Ljava/lang/String;Ljava/util/Map;)V
 }
 

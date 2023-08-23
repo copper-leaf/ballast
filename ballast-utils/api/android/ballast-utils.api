@@ -2,6 +2,7 @@ public final class com/copperleaf/ballast/core/BootstrapInterceptor : com/copper
 	public fun <init> (Lkotlin/jvm/functions/Function1;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/core/KillSwitch : com/copperleaf/ballast/BallastInterceptor {
@@ -10,6 +11,7 @@ public final class com/copperleaf/ballast/core/KillSwitch : com/copperleaf/balla
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public final fun requestGracefulShutdown ()V
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/core/KillSwitch$Key : com/copperleaf/ballast/BallastInterceptor$Key {

@@ -9,4 +9,3 @@ public interface GeneralSettings {
     public val ballastVersion: String
     public val darkTheme: Boolean
 }
-

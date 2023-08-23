@@ -41,4 +41,8 @@ public class KillSwitch<Inputs : Any, Events : Any, State : Any>(
     public fun requestGracefulShutdown() {
         signal.complete(Unit)
     }
+
+    override fun toString(): String {
+        return "KillSwitch(gracePeriod=$gracePeriod)"
+    }
 }

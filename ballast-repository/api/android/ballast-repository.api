@@ -78,6 +78,7 @@ public final class com/copperleaf/ballast/repository/cache/DslKt {
 	public static final fun getValueOrThrow (Lcom/copperleaf/ballast/repository/cache/Cached;)Ljava/lang/Object;
 	public static final fun isFirstLoad (Lcom/copperleaf/ballast/repository/cache/Cached;)Z
 	public static final fun isLoading (Lcom/copperleaf/ballast/repository/cache/Cached;)Z
+	public static final fun isReady ([Lcom/copperleaf/ballast/repository/cache/Cached;)Z
 	public static final fun isValid (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Z
 	public static final fun map (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/repository/cache/Cached;
 	public static final fun onFailure (Lcom/copperleaf/ballast/repository/cache/Cached;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/repository/cache/Cached;

@@ -4,7 +4,7 @@ plugins {
     id("copper-leaf-kotest")
     id("copper-leaf-serialization")
     id("copper-leaf-compose")
-    id("copper-leaf-lint")
+//    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 

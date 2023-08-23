@@ -14,4 +14,8 @@ public class FirebaseAnalyticsTracker(
             }
         }
     }
+
+    override fun toString(): String {
+        return "FirebaseAnalyticsTracker"
+    }
 }

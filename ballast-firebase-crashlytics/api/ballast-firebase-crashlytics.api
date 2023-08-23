@@ -13,6 +13,7 @@ public final class com/copperleaf/ballast/firebase/FirebaseCrashReporter : com/c
 	public fun recordInputError (Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Throwable;)V
 	public fun recordSideJobError (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)V
 	public fun recordUnhandledError (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface annotation class com/copperleaf/ballast/firebase/FirebaseCrashlyticsIgnore : java/lang/annotation/Annotation {

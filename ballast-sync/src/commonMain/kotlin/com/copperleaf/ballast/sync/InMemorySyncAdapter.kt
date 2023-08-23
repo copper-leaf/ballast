@@ -34,4 +34,8 @@ public class InMemorySyncAdapter<
     override suspend fun readInputsFromReplicas(): Flow<Inputs> {
         return synchronizedInputs.receiveAsFlow()
     }
+
+    override fun toString(): String {
+        return "InMemorySyncAdapter"
+    }
 }

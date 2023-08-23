@@ -6,6 +6,7 @@ public final class com/copperleaf/ballast/undo/BallastUndoInterceptor : com/copp
 	public fun isUndoAvailable ()Lkotlinx/coroutines/flow/Flow;
 	public fun redo ()V
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 	public fun undo ()V
 }
 
@@ -44,6 +45,7 @@ public final class com/copperleaf/ballast/undo/state/StateBasedUndoController : 
 	public synthetic fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendAndAwaitCompletion (Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
 	public fun trySend-JP2dKIU (Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs;)Ljava/lang/Object;
 	public synthetic fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
 	public fun undo ()V

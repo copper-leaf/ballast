@@ -26,22 +26,18 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val logError: Boolean = true,
 ) : BallastInterceptor<Inputs, Events, State> {
 
-    /**
-     * A trivial implementation of an error log, which is attached to errors reported to crash reporters. A more robust
-     * method would be to write the input sequence to a File, which is then uploaded as an attachment File to the error
-     * report.
-     */
-    private val inputSequence = mutableListOf<Inputs>()
-
-    /**
-     * Also save the latest state that was emitted (if any) to aid in reproducing reported issues.
-     */
-    private var latestState: State? = null
-
     override fun BallastInterceptorScope<Inputs, Events, State>.start(
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
     ) {
         launch(start = CoroutineStart.UNDISPATCHED) {
+            // A trivial implementation of an error log, which is attached to errors reported to crash reporters. A more
+            // robust method would be to write the input sequence to a File, which is then uploaded as an attachment
+            // File to the error report.
+            val inputSequence = mutableListOf<Inputs>()
+
+            // Also save the latest state that was emitted (if any) to aid in reproducing reported issues.
+            var latestState: State? = null
+
             notifications
                 .onEach { notification ->
                     val error: BallastLoggingException? = when (notification) {
@@ -115,5 +111,14 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
                 }
                 .collect()
         }
+    }
+
+    override fun toString(): String {
+        val enabled = buildList<String> {
+            if(logDebug) { this += "debug" }
+            if(logInfo) { this += "info" }
+            if(logError) { this += "error" }
+        }
+        return "LoggingInterceptor(enabled=$enabled)"
     }
 }

@@ -191,4 +191,8 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any>(
         }
         onTestComplete.complete(testResult)
     }
+
+    override fun toString(): String {
+        return "TestInterceptor"
+    }
 }

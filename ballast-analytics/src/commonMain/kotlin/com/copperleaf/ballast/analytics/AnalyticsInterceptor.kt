@@ -42,4 +42,8 @@ public class AnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
                 .collect()
         }
     }
+
+    override fun toString(): String {
+        return "AnalyticsInterceptor(tracker=$tracker)"
+    }
 }

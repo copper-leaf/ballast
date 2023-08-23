@@ -24,4 +24,8 @@ public class BallastSyncInterceptor<
             )
         }
     }
+
+    override fun toString(): String {
+        return "BallastSyncInterceptor(connection=$connection)"
+    }
 }

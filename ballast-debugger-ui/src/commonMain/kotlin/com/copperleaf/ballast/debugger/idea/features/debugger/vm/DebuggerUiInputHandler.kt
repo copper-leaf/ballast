@@ -93,11 +93,13 @@ public class DebuggerUiInputHandler(
             val currentState = updateStateAndGet { it.copy(cachedGeneralSettings = input.settings) }
             startServerIfNeeded(previousState, currentState)
         }
+
         is DebuggerUiContract.Inputs.BallastDebuggerServerSettingsChanged -> {
             val previousState = getCurrentState()
             val currentState = updateStateAndGet { it.copy(cachedBallastDebuggerServerSettings = input.settings) }
             startServerIfNeeded(previousState, currentState)
         }
+
         is DebuggerUiContract.Inputs.DebuggerUiSettingsChanged -> {
             val previousState = getCurrentState()
             val currentState = updateStateAndGet { it.copy(cachedDebuggerUiSettings = input.settings) }
@@ -150,7 +152,9 @@ public class DebuggerUiInputHandler(
 
         if (requestServerStart) {
             sideJob("start server") {
-                debuggerServerViewModel.send(DebuggerServerContract.Inputs.StartServer(currentState.ballastDebuggerServerSettings))
+                debuggerServerViewModel.send(
+                    DebuggerServerContract.Inputs.StartServer(currentState.ballastDebuggerServerSettings)
+                )
             }
         }
     }
