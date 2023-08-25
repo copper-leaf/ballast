@@ -9,30 +9,30 @@ object KitchenSinkContract {
         val infiniteSideJobRunning: Boolean = false,
     )
 
-    sealed class Inputs {
-        data object CloseKitchenSinkWindow : Inputs()
-        data class ChangeInputStrategy(val inputStrategy: InputStrategySelection) : Inputs()
+    sealed interface Inputs {
+        data object CloseKitchenSinkWindow : Inputs
+        data class ChangeInputStrategy(val inputStrategy: InputStrategySelection) : Inputs
 
-        data object LongRunningInput : Inputs()
-        data object LongRunningEvent : Inputs()
-        data object LongRunningSideJob : Inputs()
+        data object LongRunningInput : Inputs
+        data object LongRunningEvent : Inputs
+        data object LongRunningSideJob : Inputs
 
-        data object InfiniteSideJob : Inputs()
-        data object CancelInfiniteSideJob : Inputs()
-        data class IncrementInfiniteCounter(val delta: Int) : Inputs()
+        data object InfiniteSideJob : Inputs
+        data object CancelInfiniteSideJob : Inputs
+        data class IncrementInfiniteCounter(val delta: Int) : Inputs
 
-        data object ErrorRunningInput : Inputs()
-        data object ErrorRunningEvent : Inputs()
-        data object ErrorRunningSideJob : Inputs()
+        data object ErrorRunningInput : Inputs
+        data object ErrorRunningEvent : Inputs
+        data object ErrorRunningSideJob : Inputs
 
-        data object ShutDownGracefully : Inputs()
+        data object ShutDownGracefully : Inputs
     }
 
-    sealed class Events {
-        data object CloseWindow : Events()
-        data class NavigateTo(val directions: String) : Events()
+    sealed interface Events {
+        data object CloseWindow : Events
+        data class NavigateTo(val directions: String) : Events
 
-        data object LongRunningEvent : Events()
-        data object ErrorRunningEvent : Events()
+        data object LongRunningEvent : Events
+        data object ErrorRunningEvent : Events
     }
 }

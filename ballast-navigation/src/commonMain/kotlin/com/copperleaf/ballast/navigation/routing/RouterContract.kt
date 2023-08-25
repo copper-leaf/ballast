@@ -145,14 +145,14 @@ public object RouterContract {
         }
     }
 
-    public sealed class Events<T : Route> {
+    public sealed interface Events<T : Route> {
 
         /**
          * Reports a change that was made to the backstack. []
          */
         public data class BackstackChanged<T : Route>(
             val backstack: Backstack<T>,
-        ) : Events<T>() {
+        ) : Events<T> {
             override fun toString(): String {
                 return "BackstackChanged(${backstack.currentDestinationOrNotFound})"
             }
@@ -162,7 +162,7 @@ public object RouterContract {
          * The router attempted to navigate backward, but the backstack was already empty. Typically, this would be a
          * request to either exit the app, to navigate back to the start destination.
          */
-        public class BackstackEmptied<T : Route> : Events<T>() {
+        public class BackstackEmptied<T : Route> : Events<T> {
             override fun toString(): String {
                 return "OnBackstackEmptied()"
             }
@@ -181,7 +181,7 @@ public object RouterContract {
         /**
          * The router attempted to navigate, but no change was actually made to the backstack.
          */
-        public class NoChange<T : Route> : Events<T>() {
+        public class NoChange<T : Route> : Events<T> {
             override fun toString(): String {
                 return "NoChange()"
             }

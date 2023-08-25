@@ -9,15 +9,15 @@ object CounterContract {
     )
 
     @Serializable
-    sealed class Inputs {
+    sealed interface Inputs {
         @Serializable
-        data class Increment(val amount: Int) : Inputs()
+        data class Increment(val amount: Int) : Inputs
         @Serializable
-        data class Decrement(val amount: Int) : Inputs()
+        data class Decrement(val amount: Int) : Inputs
     }
 
     @Serializable
-    sealed class Events {
+    sealed interface Events {
 
     }
 }

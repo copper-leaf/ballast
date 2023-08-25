@@ -35,27 +35,27 @@ public object DebuggerUiContract {
         public val debuggerUiSettings: DebuggerUiSettings by lazy { cachedDebuggerUiSettings.getCachedOrThrow() }
     }
 
-    public sealed class Inputs {
-        public data object Initialize : Inputs()
+    public sealed interface Inputs {
+        public data object Initialize : Inputs
 
-        public data class OnConnectionEstablished(val connectionId: String) : Inputs()
+        public data class OnConnectionEstablished(val connectionId: String) : Inputs
 
-        public data class ServerStateChanged(val serverState: BallastApplicationState) : Inputs()
-        public data class BackstackChanged(val backstack: Backstack<DebuggerRoute>) : Inputs()
-        public data class GeneralSettingsChanged(val settings: Cached<GeneralSettings>) : Inputs()
-        public data class BallastDebuggerServerSettingsChanged(val settings: Cached<BallastDebuggerServerSettings>) : Inputs()
-        public data class DebuggerUiSettingsChanged(val settings: Cached<DebuggerUiSettings>) : Inputs()
+        public data class ServerStateChanged(val serverState: BallastApplicationState) : Inputs
+        public data class BackstackChanged(val backstack: Backstack<DebuggerRoute>) : Inputs
+        public data class GeneralSettingsChanged(val settings: Cached<GeneralSettings>) : Inputs
+        public data class BallastDebuggerServerSettingsChanged(val settings: Cached<BallastDebuggerServerSettings>) : Inputs
+        public data class DebuggerUiSettingsChanged(val settings: Cached<DebuggerUiSettings>) : Inputs
 
         // forwarded to other VMs
-        public data class SendToDebuggerServer(val debuggerServerInput: DebuggerServerContract.Inputs) : Inputs()
-        public data class Navigate(val destinationUrl: String) : Inputs()
+        public data class SendToDebuggerServer(val debuggerServerInput: DebuggerServerContract.Inputs) : Inputs
+        public data class Navigate(val destinationUrl: String) : Inputs
 
         // manage own interactions
-        public data class UpdateSearchText(val value: String) : Inputs()
-        public data class CopyToClipboard(val text: String) : Inputs()
+        public data class UpdateSearchText(val value: String) : Inputs
+        public data class CopyToClipboard(val text: String) : Inputs
     }
 
-    public sealed class Events {
-        public data class CopyToClipboard(val text: String) : Events()
+    public sealed interface Events {
+        public data class CopyToClipboard(val text: String) : Events
     }
 }

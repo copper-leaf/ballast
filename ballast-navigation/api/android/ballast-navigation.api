@@ -372,7 +372,7 @@ public final class com/copperleaf/ballast/navigation/routing/RouterContract {
 	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/RouterContract;
 }
 
-public abstract class com/copperleaf/ballast/navigation/routing/RouterContract$Events {
+public abstract interface class com/copperleaf/ballast/navigation/routing/RouterContract$Events {
 }
 
 public final class com/copperleaf/ballast/navigation/routing/RouterContract$Events$BackstackChanged : com/copperleaf/ballast/navigation/routing/RouterContract$Events {

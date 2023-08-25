@@ -10,12 +10,12 @@ object BggContract {
         val bggHotList: Cached<List<BggHotListItem>> = Cached.NotLoaded(),
     )
 
-    sealed class Inputs {
-        data class ChangeHotListType(val hotListType: HotListType) : com.copperleaf.ballast.examples.ui.bgg.BggContract.Inputs()
-        data class FetchHotList(val forceRefresh: Boolean) : com.copperleaf.ballast.examples.ui.bgg.BggContract.Inputs()
-        data class HotListUpdated(val bggHotList: Cached<List<BggHotListItem>>) : com.copperleaf.ballast.examples.ui.bgg.BggContract.Inputs()
+    sealed interface Inputs {
+        data class ChangeHotListType(val hotListType: HotListType) : Inputs
+        data class FetchHotList(val forceRefresh: Boolean) : Inputs
+        data class HotListUpdated(val bggHotList: Cached<List<BggHotListItem>>) : Inputs
     }
 
-    sealed class Events {
+    sealed interface Events {
     }
 }

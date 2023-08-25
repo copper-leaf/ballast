@@ -8,15 +8,15 @@ public object DispatcherTestContract {
         val actualInterceptorCoroutineScopeInfo: CoroutineScopeInfo? = null,
     )
 
-    public sealed class Inputs {
-        data object Initialize : Inputs()
+    public sealed interface Inputs {
+        data object Initialize : Inputs
 
-        data class SetEventDispatcher(val actualEventCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
-        data class SetSideJobDispatcher(val actualSideJobCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
-        data class SetInterceptorDispatcher(val actualInterceptorCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs()
+        data class SetEventDispatcher(val actualEventCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs
+        data class SetSideJobDispatcher(val actualSideJobCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs
+        data class SetInterceptorDispatcher(val actualInterceptorCoroutineScopeInfo: CoroutineScopeInfo?) : Inputs
     }
 
-    public sealed class Events {
-        data object GetEventDispatcher : Events()
+    public sealed interface Events {
+        data object GetEventDispatcher : Events
     }
 }

@@ -11,7 +11,7 @@ public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContr
 	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/server/vm/DebuggerServerContract;
 }
 
-public abstract class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Events {
+public abstract interface class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Events {
 }
 
 public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Events$ConnectionEstablished : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Events {
@@ -25,7 +25,7 @@ public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContr
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
+public abstract interface class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {
 }
 
 public final class com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs$ClearAll : com/copperleaf/ballast/debugger/server/vm/DebuggerServerContract$Inputs {

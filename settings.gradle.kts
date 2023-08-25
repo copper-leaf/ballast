@@ -49,4 +49,4 @@ include(":examples:android")
 include(":examples:desktop")
 include(":examples:web")
 
-//include(":docs")
+include(":docs")

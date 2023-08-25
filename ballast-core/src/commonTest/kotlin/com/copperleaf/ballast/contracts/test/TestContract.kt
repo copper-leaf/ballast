@@ -7,23 +7,23 @@ object TestContract {
         val intValue: Int = 0,
     )
 
-    sealed class Inputs {
-        data object FilteredValue : Inputs()
-        data object ThrowErrorDuringHandling : Inputs()
-        data class UpdateStringValue(val stringValue: String) : Inputs()
-        data object Increment : Inputs()
-        data object Decrement : Inputs()
-        data object IncrementWithRollback : Inputs()
-        data object MultipleStateUpdates : Inputs()
-        data object EventEmitted : Inputs()
-        data object SideJobStartedNoInputOverride : Inputs()
-        data object SideJobStartedWithInputOverride : Inputs()
-        data object MultipleSideJobs : Inputs()
-        data object SideJobsNotAtEnd : Inputs()
-        data object TestTimeout : Inputs()
+    sealed interface Inputs {
+        data object FilteredValue : Inputs
+        data object ThrowErrorDuringHandling : Inputs
+        data class UpdateStringValue(val stringValue: String) : Inputs
+        data object Increment : Inputs
+        data object Decrement : Inputs
+        data object IncrementWithRollback : Inputs
+        data object MultipleStateUpdates : Inputs
+        data object EventEmitted : Inputs
+        data object SideJobStartedNoInputOverride : Inputs
+        data object SideJobStartedWithInputOverride : Inputs
+        data object MultipleSideJobs : Inputs
+        data object SideJobsNotAtEnd : Inputs
+        data object TestTimeout : Inputs
     }
 
-    sealed class Events {
-        data object Notification : Events()
+    sealed interface Events {
+        data object Notification : Events
     }
 }

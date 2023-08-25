@@ -55,7 +55,7 @@ public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerCon
 	public static final field INSTANCE Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract;
 }
 
-public abstract class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Events {
+public abstract interface class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Events {
 }
 
 public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Events$RestoreState : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Events {
@@ -63,7 +63,7 @@ public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerCon
 	public final fun getStateToRestore ()Ljava/lang/Object;
 }
 
-public abstract class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
+public abstract interface class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {
 }
 
 public final class com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs$CaptureStateNow : com/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs {

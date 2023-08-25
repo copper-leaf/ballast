@@ -21,30 +21,30 @@ public object DebuggerServerContract {
         }
     }
 
-    public sealed class Inputs {
-        public data class StartServer(val settings: BallastDebuggerServerSettings) : Inputs()
+    public sealed interface Inputs {
+        public data class StartServer(val settings: BallastDebuggerServerSettings) : Inputs
 
-        public data class ConnectionEstablished(val connectionId: String, val connectionBallastVersion: String) : Inputs()
+        public data class ConnectionEstablished(val connectionId: String, val connectionBallastVersion: String) : Inputs
 
-        public object ClearAll : Inputs()
+        public object ClearAll : Inputs
 
-        public data class ClearConnection(val connectionId: String) : Inputs()
-        public data class RemoveConnection(val connectionId: String) : Inputs()
+        public data class ClearConnection(val connectionId: String) : Inputs
+        public data class RemoveConnection(val connectionId: String) : Inputs
 
-        public data class ClearViewModel(val connectionId: String, val viewModelName: String) : Inputs()
+        public data class ClearViewModel(val connectionId: String, val viewModelName: String) : Inputs
 
-        public data class DebuggerEventReceived(val message: BallastDebuggerEventV4) : Inputs()
-        public data class SendDebuggerAction(val action: BallastDebuggerActionV4) : Inputs()
+        public data class DebuggerEventReceived(val message: BallastDebuggerEventV4) : Inputs
+        public data class SendDebuggerAction(val action: BallastDebuggerActionV4) : Inputs
 
-        public data object ClearAllConnections : Inputs()
-        public data class ClearAllStates(val connectionId: String, val viewModelName: String) : Inputs()
-        public data class ClearAllInputs(val connectionId: String, val viewModelName: String) : Inputs()
-        public data class ClearAllEvents(val connectionId: String, val viewModelName: String) : Inputs()
-        public data class ClearAllSideJobs(val connectionId: String, val viewModelName: String) : Inputs()
-        public data class ClearAllLogs(val connectionId: String, val viewModelName: String) : Inputs()
+        public data object ClearAllConnections : Inputs
+        public data class ClearAllStates(val connectionId: String, val viewModelName: String) : Inputs
+        public data class ClearAllInputs(val connectionId: String, val viewModelName: String) : Inputs
+        public data class ClearAllEvents(val connectionId: String, val viewModelName: String) : Inputs
+        public data class ClearAllSideJobs(val connectionId: String, val viewModelName: String) : Inputs
+        public data class ClearAllLogs(val connectionId: String, val viewModelName: String) : Inputs
     }
 
-    public sealed class Events {
-        public data class ConnectionEstablished(val connectionId: String): Events()
+    public sealed interface Events {
+        public data class ConnectionEstablished(val connectionId: String): Events
     }
 }

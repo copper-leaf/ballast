@@ -17,10 +17,10 @@ object TodosContract {
     val todos: List<String> = emptyList(),
   )
 
-  sealed class Inputs {
-    data object FetchSavedTodos : Inputs()
-    data class AddTodo(val text: String) : Inputs()
-    data class RemoveTodo(val text: String) : Inputs()
+  sealed interface Inputs {
+    data object FetchSavedTodos : Inputs
+    data class AddTodo(val text: String) : Inputs
+    data class RemoveTodo(val text: String) : Inputs
   }
 }
 
