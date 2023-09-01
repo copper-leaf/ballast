@@ -8,23 +8,15 @@ public final class com/copperleaf/ballast/debugger/BallastDebuggerOutgoingEventW
 }
 
 public final class com/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection {
-	public fun <init> (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
+	public fun <init> (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lcom/copperleaf/ballast/debugger/DebuggerAdapter;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Lkotlinx/coroutines/flow/Flow;
-	public final fun component3 ()Lkotlin/jvm/functions/Function1;
-	public final fun component4 ()Lkotlin/jvm/functions/Function1;
-	public final fun component5 ()Lkotlin/jvm/functions/Function1;
-	public final fun component6 ()Lkotlin/jvm/functions/Function2;
-	public final fun component7 ()Lkotlin/jvm/functions/Function2;
-	public final fun copy (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
+	public final fun component3 ()Lcom/copperleaf/ballast/debugger/DebuggerAdapter;
+	public final fun copy (Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lcom/copperleaf/ballast/debugger/DebuggerAdapter;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;Ljava/lang/String;Lkotlinx/coroutines/flow/Flow;Lcom/copperleaf/ballast/debugger/DebuggerAdapter;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getDeserializeInput ()Lkotlin/jvm/functions/Function2;
-	public final fun getDeserializeState ()Lkotlin/jvm/functions/Function2;
+	public final fun getAdapter ()Lcom/copperleaf/ballast/debugger/DebuggerAdapter;
 	public final fun getNotifications ()Lkotlinx/coroutines/flow/Flow;
-	public final fun getSerializeEvent ()Lkotlin/jvm/functions/Function1;
-	public final fun getSerializeInput ()Lkotlin/jvm/functions/Function1;
-	public final fun getSerializeState ()Lkotlin/jvm/functions/Function1;
 	public final fun getViewModelName ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
@@ -33,6 +25,22 @@ public final class com/copperleaf/ballast/debugger/BallastDebuggerViewModelConne
 public final class com/copperleaf/ballast/debugger/BallastDebuggerViewModelConnectionKt {
 	public static final field BALLAST_VERSION_HEADER Ljava/lang/String;
 	public static final field CONNECTION_ID_HEADER Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/debugger/DebuggerAdapter {
+	public abstract fun deserializeInput (Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun deserializeState (Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun serializeEvent (Ljava/lang/Object;)Lkotlin/Pair;
+	public abstract fun serializeInput (Ljava/lang/Object;)Lkotlin/Pair;
+	public abstract fun serializeState (Ljava/lang/Object;)Lkotlin/Pair;
+}
+
+public final class com/copperleaf/ballast/debugger/DebuggerAdapter$DefaultImpls {
+	public static fun deserializeInput (Lcom/copperleaf/ballast/debugger/DebuggerAdapter;Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public static fun deserializeState (Lcom/copperleaf/ballast/debugger/DebuggerAdapter;Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public static fun serializeEvent (Lcom/copperleaf/ballast/debugger/DebuggerAdapter;Ljava/lang/Object;)Lkotlin/Pair;
+	public static fun serializeInput (Lcom/copperleaf/ballast/debugger/DebuggerAdapter;Ljava/lang/Object;)Lkotlin/Pair;
+	public static fun serializeState (Lcom/copperleaf/ballast/debugger/DebuggerAdapter;Ljava/lang/Object;)Lkotlin/Pair;
 }
 
 public final class com/copperleaf/ballast/debugger/models/BallastApplicationState {

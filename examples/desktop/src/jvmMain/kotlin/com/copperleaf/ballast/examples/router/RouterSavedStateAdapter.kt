@@ -33,16 +33,12 @@ public class RouterSavedStateAdapter<T : Route>(
         RouterContract.Events<T>,
         RouterContract.State<T>> {
 
-    public interface Prefs {
-        var backstackUrls: List<String>
-    }
-
     override suspend fun SaveStateScope<
             RouterContract.Inputs<T>,
             RouterContract.Events<T>,
             RouterContract.State<T>>.save() {
         saveAll { backstack ->
-            prefs.backstack = backstack.map { it.originalDestinationUrl }
+            prefs.backstack = backstack.map { it.originalDestinationUrl }.takeLast(5)
         }
     }
 

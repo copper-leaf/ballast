@@ -3,7 +3,6 @@ package com.copperleaf.ballast.debugger
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.debugger.models.serialize
 import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
-import io.ktor.http.ContentType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 
@@ -13,11 +12,7 @@ public const val BALLAST_VERSION_HEADER: String = "x-ballast-version"
 public data class BallastDebuggerViewModelConnection<Inputs : Any, Events : Any, State : Any>(
     public val viewModelName: String,
     public val notifications: Flow<BallastNotification<Inputs, Events, State>>,
-    public val serializeInput: (Inputs) -> Pair<ContentType, String>,
-    public val serializeEvent: (Events) -> Pair<ContentType, String>,
-    public val serializeState: (State) -> Pair<ContentType, String>,
-    public val deserializeState: ((ContentType, String) -> State)?,
-    public val deserializeInput: ((ContentType, String) -> Inputs)?,
+    public val adapter: DebuggerAdapter<Inputs, Events, State>
 )
 
 public class BallastDebuggerOutgoingEventWrapper<Inputs : Any, Events : Any, State : Any>(

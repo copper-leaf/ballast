@@ -129,7 +129,7 @@ class ComposeWebInjectorImpl(
                     name = "Counter",
                 )
                 .apply {
-                    this += BallastDebuggerInterceptor.withJson(
+                    this += BallastDebuggerInterceptor(
                         debuggerConnection,
                         inputsSerializer = CounterContract.Inputs.serializer(),
                         eventsSerializer = CounterContract.Events.serializer(),

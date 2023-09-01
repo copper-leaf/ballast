@@ -10,11 +10,7 @@ import kotlinx.serialization.json.Json
 
 public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val connection: BallastDebuggerClientConnection<*>,
-    private val serializeInput: (Inputs) -> Pair<ContentType, String> = { ContentType.Text.Any to it.toString() },
-    private val serializeEvent: (Events) -> Pair<ContentType, String> = { ContentType.Text.Any to it.toString() },
-    private val serializeState: (State) -> Pair<ContentType, String> = { ContentType.Text.Any to it.toString() },
-    private val deserializeState: ((ContentType, String) -> State)? = null,
-    private val deserializeInput: ((ContentType, String) -> Inputs)? = null,
+    private val adapter: DebuggerAdapter<Inputs, Events, State> = ToStringDebuggerAdapter(),
 ) : BallastInterceptor<Inputs, Events, State> {
 
     override fun BallastInterceptorScope<Inputs, Events, State>.start(notifications: Flow<BallastNotification<Inputs, Events, State>>) {
@@ -23,11 +19,7 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
                 BallastDebuggerViewModelConnection(
                     notifications = notifications,
                     viewModelName = hostViewModelName,
-                    serializeInput = serializeInput,
-                    serializeEvent = serializeEvent,
-                    serializeState = serializeState,
-                    deserializeState = deserializeState,
-                    deserializeInput = deserializeInput,
+                    adapter = adapter,
                 )
             )
         }
@@ -38,47 +30,38 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
     }
 
     public companion object {
-        public fun <Inputs : Any, Events : Any, State : Any> withJson(
+
+        public operator fun <Inputs : Any, Events : Any, State : Any> invoke(
             connection: BallastDebuggerClientConnection<*>,
-            stateSerializer: KSerializer<State>? = null,
-            inputsSerializer: KSerializer<Inputs>? = null,
-            eventsSerializer: KSerializer<Events>? = null,
+            serializeInput: (Inputs) -> Pair<ContentType, String>,
+            serializeEvent: (Events) -> Pair<ContentType, String>,
+            serializeState: (State) -> Pair<ContentType, String>,
         ): BallastDebuggerInterceptor<Inputs, Events, State> {
-            val json = ContentType.Application.Json
-            val plainText = ContentType.Text.Any
             return BallastDebuggerInterceptor(
                 connection,
-                serializeInput = if (inputsSerializer != null) {
-                    { input -> json to Json.encodeToString(inputsSerializer, input) }
-                } else {
-                    { input -> plainText to input.toString() }
-                },
-                serializeEvent = if (eventsSerializer != null) {
-                    { event -> json to Json.encodeToString(eventsSerializer, event) }
-                } else {
-                    { event -> plainText to event.toString() }
-                },
-                serializeState = if (stateSerializer != null) {
-                    { state -> json to Json.encodeToString(stateSerializer, state) }
-                } else {
-                    { state -> plainText to state.toString() }
-                },
-                deserializeInput = if (inputsSerializer != null) {
-                    { contentType: ContentType, serializedInput: String ->
-                        check(contentType == json)
-                        Json.decodeFromString(inputsSerializer, serializedInput)
-                    }
-                } else {
-                    null
-                },
-                deserializeState = if (stateSerializer != null) {
-                    { contentType: ContentType, serializedState: String ->
-                        check(contentType == json)
-                        Json.decodeFromString(stateSerializer, serializedState)
-                    }
-                } else {
-                    null
-                },
+                LambdaDebuggerAdapter(
+                    serializeInput = serializeInput,
+                    serializeEvent = serializeEvent,
+                    serializeState = serializeState,
+                )
+            )
+        }
+
+        public operator fun <Inputs : Any, Events : Any, State : Any> invoke(
+            connection: BallastDebuggerClientConnection<*>,
+            inputsSerializer: KSerializer<Inputs>? = null,
+            eventsSerializer: KSerializer<Events>? = null,
+            stateSerializer: KSerializer<State>? = null,
+            json: Json = Json,
+        ): BallastDebuggerInterceptor<Inputs, Events, State> {
+            return BallastDebuggerInterceptor(
+                connection,
+                JsonDebuggerAdapter(
+                    inputsSerializer = inputsSerializer,
+                    eventsSerializer = eventsSerializer,
+                    stateSerializer = stateSerializer,
+                    json = json,
+                )
             )
         }
     }

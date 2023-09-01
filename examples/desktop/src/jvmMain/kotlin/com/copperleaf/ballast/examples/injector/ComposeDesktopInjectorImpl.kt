@@ -3,7 +3,9 @@ package com.copperleaf.ballast.examples.injector
 import androidx.compose.material.SnackbarHostState
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
+import com.copperleaf.ballast.core.BootstrapInterceptor
 import com.copperleaf.ballast.core.KillSwitch
+import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.PrintlnLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
@@ -34,6 +36,11 @@ import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperInputHandler
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperSavedStateAdapter
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontContract
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontInputHandler
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontViewModel
+import com.copperleaf.ballast.examples.ui.storefront.api.CoffeeProductsApi
+import com.copperleaf.ballast.examples.ui.storefront.api.CoffeeProductsApiImpl
 import com.copperleaf.ballast.examples.ui.undo.UndoContract
 import com.copperleaf.ballast.examples.ui.undo.UndoEventHandler
 import com.copperleaf.ballast.examples.ui.undo.UndoInputHandler
@@ -156,7 +163,7 @@ class ComposeDesktopInjectorImpl(
                     name = "Counter",
                 )
                 .apply {
-                    this += BallastDebuggerInterceptor.withJson(
+                    this += BallastDebuggerInterceptor(
                         debuggerConnection,
                         inputsSerializer = CounterContract.Inputs.serializer(),
                         eventsSerializer = CounterContract.Events.serializer(),
@@ -297,6 +304,31 @@ class ComposeDesktopInjectorImpl(
         )
     }
 
+// Storefront
+// ---------------------------------------------------------------------------------------------------------------------
+
+    private val coffeeProductsApi: CoffeeProductsApi = CoffeeProductsApiImpl()
+
+    override fun storefrontViewModel(coroutineScope: CoroutineScope): StorefrontViewModel {
+        return StorefrontViewModel(
+            viewModelCoroutineScope = coroutineScope,
+            config = commonBuilder()
+                .apply {
+                    this.inputStrategy = LifoInputStrategy()
+                }
+                .withViewModel(
+                    initialState = StorefrontContract.State(),
+                    inputHandler = StorefrontInputHandler(coffeeProductsApi),
+                    name = "Storefront",
+                )
+                .apply {
+                    this += BootstrapInterceptor {
+                        StorefrontContract.Inputs.Initialize
+                    }
+                }
+                .build(),
+        )
+    }
 
 // configs
 // ---------------------------------------------------------------------------------------------------------------------
@@ -316,9 +348,9 @@ class ComposeDesktopInjectorImpl(
             .apply {
                 this += LoggingInterceptor()
                 logger = ::PrintlnLogger
-                if (debugger) {
-                    this += BallastDebuggerInterceptor(debuggerConnection)
-                }
+//                if (debugger) {
+//                    this += BallastDebuggerInterceptor(debuggerConnection)
+//                }
             }
     }
 }

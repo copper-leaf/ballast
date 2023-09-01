@@ -36,6 +36,9 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.swing)
                 implementation(libs.multiplatformSettings.core)
                 implementation(libs.multiplatformSettings.noArg)
+
+                implementation("io.github.oleksandrbalan:lazytable:1.5.0")
+                implementation("io.github.serpro69:kotlin-faker:1.14.0")
             }
         }
     }

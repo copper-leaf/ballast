@@ -11,15 +11,28 @@ public final class com/copperleaf/ballast/debugger/BallastDebuggerClientConnecti
 
 public final class com/copperleaf/ballast/debugger/BallastDebuggerInterceptor : com/copperleaf/ballast/BallastInterceptor {
 	public static final field Companion Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor$Companion;
-	public fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;)V
-	public synthetic fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/debugger/DebuggerAdapter;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lcom/copperleaf/ballast/debugger/DebuggerAdapter;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/debugger/BallastDebuggerInterceptor$Companion {
-	public final fun withJson (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;)Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor;
-	public static synthetic fun withJson$default (Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor$Companion;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor;
+	public final fun invoke (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor;
+	public final fun invoke (Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor;
+	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor$Companion;Lcom/copperleaf/ballast/debugger/BallastDebuggerClientConnection;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILjava/lang/Object;)Lcom/copperleaf/ballast/debugger/BallastDebuggerInterceptor;
+}
+
+public final class com/copperleaf/ballast/debugger/JsonDebuggerAdapter : com/copperleaf/ballast/debugger/DebuggerAdapter {
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)V
+	public synthetic fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun deserializeInput (Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public fun deserializeState (Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public fun serializeEvent (Ljava/lang/Object;)Lkotlin/Pair;
+	public fun serializeInput (Ljava/lang/Object;)Lkotlin/Pair;
+	public fun serializeState (Ljava/lang/Object;)Lkotlin/Pair;
+	public fun toString ()Ljava/lang/String;
 }
 

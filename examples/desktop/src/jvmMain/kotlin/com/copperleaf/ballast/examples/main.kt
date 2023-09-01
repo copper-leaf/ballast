@@ -19,10 +19,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -37,6 +35,7 @@ import com.copperleaf.ballast.examples.ui.counter.CounterUi
 import com.copperleaf.ballast.examples.ui.kitchensink.InputStrategySelection
 import com.copperleaf.ballast.examples.ui.kitchensink.KitchenSinkUi
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperUi
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontUi
 import com.copperleaf.ballast.examples.ui.sync.SyncUi
 import com.copperleaf.ballast.examples.ui.undo.UndoUi
 import com.copperleaf.ballast.navigation.routing.RouterContract
@@ -45,7 +44,6 @@ import com.copperleaf.ballast.navigation.routing.currentDestinationOrNull
 import com.copperleaf.ballast.navigation.routing.currentRouteOrNull
 import com.copperleaf.ballast.navigation.routing.directions
 import com.copperleaf.ballast.navigation.routing.optionalStringQuery
-import okhttp3.Response
 import org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi
 import org.jetbrains.compose.splitpane.HorizontalSplitPane
 import org.jetbrains.compose.splitpane.rememberSplitPaneState
@@ -135,6 +133,14 @@ fun main() = singleWindowApplication(title = "Ballast Examples") {
                                     router::trySend,
                                 )
                         ) { Text("Kitchen Sink") }
+                        ListItem(
+                            modifier = Modifier
+                                .routeLink(
+                                    BallastExamples.Storefront,
+                                    currentRoute,
+                                    router::trySend,
+                                )
+                        ) { Text("Storefront") }
                     }
                 }
             }
@@ -170,6 +176,10 @@ fun main() = singleWindowApplication(title = "Ballast Examples") {
                                     inputStrategy ?: "Lifo"
                                 )
                                 KitchenSinkUi.Content(injector, inputStrategySelection)
+                            }
+
+                            BallastExamples.Storefront -> {
+                                StorefrontUi.Content(injector)
                             }
 
                             null -> {}

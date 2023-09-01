@@ -388,13 +388,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
             }
 
             is BallastDebuggerActionV4.RequestReplaceState -> {
-                if (viewModelConnection.deserializeState == null) {
-                    logger.info("States cannot be replaced from serialized state.")
-                    return
-                }
-
                 val stateToReplaceResult = runCatching {
-                    viewModelConnection.deserializeState!!(
+                    viewModelConnection.adapter.deserializeState(
                         ContentType.parse(action.stateContentType),
                         action.serializedState,
                     )
@@ -402,7 +397,11 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                 stateToReplaceResult.fold(
                     onSuccess = { state ->
-                        sendToQueue(Queued.RestoreState(null, state))
+                        if (state != null) {
+                            sendToQueue(Queued.RestoreState(null, state))
+                        } else {
+                            logger.info("This ViewModel is not configured to replace States from serialized state.")
+                        }
                     },
                     onFailure = { error ->
                         logger.info("Serialized state is formatted incorrectly")
@@ -420,17 +419,13 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 if (inputToResend != null) {
                     sendToQueue(Queued.HandleInput(null, inputToResend))
                 } else {
+                    logger.info("Could not find requested Input to resend.")
                 }
             }
 
             is BallastDebuggerActionV4.RequestSendInput -> {
-                if (viewModelConnection.deserializeInput == null) {
-                    logger.info("Inputs cannot be replaced from serialized state.")
-                    return
-                }
-
                 val inputToSendResult = runCatching {
-                    viewModelConnection.deserializeInput!!(
+                    viewModelConnection.adapter.deserializeInput(
                         ContentType.parse(action.inputContentType),
                         action.serializedInput,
                     )
@@ -438,7 +433,11 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
                 inputToSendResult.fold(
                     onSuccess = { input ->
-                        sendToQueue(Queued.HandleInput(null, input))
+                        if (input != null) {
+                            sendToQueue(Queued.HandleInput(null, input))
+                        } else {
+                            logger.info("This ViewModel is not configured to send serialized Inputs.")
+                        }
                     },
                     onFailure = { error ->
                         logger.info("Serialized input is formatted incorrectly")

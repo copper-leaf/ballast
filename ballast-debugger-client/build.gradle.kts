@@ -16,7 +16,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-api"))
-                implementation(project(":ballast-debugger-models"))
+                api(project(":ballast-debugger-models"))
 
                 implementation(libs.bundles.ktorClient)
                 implementation(libs.kotlinx.datetime)
