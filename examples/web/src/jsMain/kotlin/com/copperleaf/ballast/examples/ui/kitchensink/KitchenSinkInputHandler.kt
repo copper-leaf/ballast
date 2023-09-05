@@ -49,7 +49,7 @@ class KitchenSinkInputHandler(
         }
 
         is KitchenSinkContract.Inputs.LongRunningEvent -> {
-            postEvent(KitchenSinkContract.Events.LongRunningEvent())
+            postEvent(KitchenSinkContract.Events.LongRunningEvent)
         }
 
         is KitchenSinkContract.Inputs.LongRunningSideJob -> {
@@ -85,7 +85,7 @@ class KitchenSinkInputHandler(
         }
 
         is KitchenSinkContract.Inputs.ErrorRunningEvent -> {
-            postEvent(KitchenSinkContract.Events.ErrorRunningEvent())
+            postEvent(KitchenSinkContract.Events.ErrorRunningEvent)
         }
 
         is KitchenSinkContract.Inputs.ErrorRunningSideJob -> {

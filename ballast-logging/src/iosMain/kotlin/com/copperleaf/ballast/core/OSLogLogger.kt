@@ -15,6 +15,7 @@
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.BallastLogger
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ptr
 import platform.darwin.OS_LOG_DEFAULT
 import platform.darwin.OS_LOG_TYPE_DEBUG
@@ -22,10 +23,13 @@ import platform.darwin.OS_LOG_TYPE_ERROR
 import platform.darwin.OS_LOG_TYPE_INFO
 import platform.darwin.__dso_handle
 import platform.darwin._os_log_internal
+import kotlin.experimental.ExperimentalNativeApi
 
 /**
  * An implementation of a [BallastLogger] which writes log messages to iOS `OSLog`.
  */
+@ExperimentalNativeApi
+@ExperimentalForeignApi
 public class OSLogLogger(private val tag: String? = null) : BallastLogger {
     override fun debug(message: String) {
         _os_log_internal(

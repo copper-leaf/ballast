@@ -1,9 +1,8 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.copperleaf.gradle.projectVersion
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.jetbrains.compose.compose
-import com.copperleaf.gradle.projectVersion
 
 plugins {
     id("copper-leaf-base")
@@ -19,9 +18,9 @@ kotlin {
     // targets
     js(IR) {
         browser {
-            testTask {
+            testTask(Action {
                 enabled = false
-            }
+            })
         }
         binaries.executable()
     }
@@ -39,7 +38,7 @@ kotlin {
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-repository"))
                 implementation(project(":ballast-saved-state"))
-                implementation(project(":ballast-debugger"))
+                implementation(project(":ballast-debugger-client"))
                 implementation(project(":ballast-sync"))
                 implementation(project(":ballast-undo"))
                 implementation(project(":ballast-navigation"))

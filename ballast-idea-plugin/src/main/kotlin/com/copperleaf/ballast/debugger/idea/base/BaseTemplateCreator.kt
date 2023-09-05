@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.debugger.idea.base
 
+import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
+import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.intellij.ide.actions.CreateFileAction
 import com.intellij.ide.actions.CreateFileFromTemplateAction
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
@@ -54,7 +56,11 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
 
     abstract fun parseTemplateName(project: Project, templateName: String): List<T>
 
-    final override fun createFileFromTemplate(name: String?, template: FileTemplate, dir: PsiDirectory): PsiFile? {
+    final override fun createFileFromTemplate(
+        name: String?,
+        template: FileTemplate,
+        dir: PsiDirectory,
+    ): PsiFile? {
         val (actualName, actualDir) = if (name != null) {
             val mkdirs = CreateFileAction.MkDirs(name, dir)
             mkdirs.newName to mkdirs.directory
@@ -65,9 +71,11 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
         val featureName = FileUtilRt.getNameWithoutExtension(actualName!!)
 
         val templateKinds = parseTemplateName(dir.project, template.name)
+        val settingsSnapshot = BallastIdeaPlugin.getSettings(dir.project)
 
         templateKinds.forEach { templateKind ->
             createFileFromTemplate(
+                settings = settingsSnapshot,
                 featureName = featureName,
                 templateKind = templateKind,
                 actualDir = actualDir,
@@ -78,6 +86,7 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
     }
 
     private fun createFileFromTemplate(
+        settings: IntellijPluginSettingsSnapshot,
         featureName: String,
         templateKind: T,
         actualDir: PsiDirectory,
@@ -90,6 +99,9 @@ abstract class BaseTemplateCreator<T : BaseTemplateCreator.TemplateKind>(
                 templateKind.getActualFileName(featureName),
                 Properties(FileTemplateManager.getInstance(project).defaultProperties).apply {
                     this["featureName"] = featureName
+                    this["classVisibility"] = settings.defaultVisibility.classVisibility
+                    this["propertyVisibility"] = settings.defaultVisibility.propertyVisibility
+                    this["dataObjectModifier"] = if(settings.useDataObjects) "data " else ""
                 },
                 actualDir
             )

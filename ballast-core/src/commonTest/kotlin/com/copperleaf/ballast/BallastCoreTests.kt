@@ -5,11 +5,13 @@ import com.copperleaf.ballast.Assertions.assertFalse
 import com.copperleaf.ballast.Assertions.assertTrue
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
+import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.ParallelInputStrategy
-import com.copperleaf.ballast.impl.TestContract
-import com.copperleaf.ballast.impl.TestEventHandler
-import com.copperleaf.ballast.impl.TestInputFilter
-import com.copperleaf.ballast.impl.TestInputHandler
+import com.copperleaf.ballast.core.PrintlnLogger
+import com.copperleaf.ballast.contracts.test.TestContract
+import com.copperleaf.ballast.contracts.test.TestEventHandler
+import com.copperleaf.ballast.contracts.test.TestInputFilter
+import com.copperleaf.ballast.contracts.test.TestInputHandler
 import com.copperleaf.ballast.test.viewModelTest
 import io.kotest.core.spec.style.StringSpec
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,11 +26,12 @@ class BallastCoreTests : StringSpec({
         viewModelTest(
             inputHandler = TestInputHandler(),
             eventHandler = TestEventHandler(),
-            filter = TestInputFilter(),
+//            filter = TestInputFilter(),
         ) {
+            defaultInputStrategy { LifoInputStrategy.typed(TestInputFilter()) }
             defaultInitialState { TestContract.State() }
-//        logger { PrintlnLogger(it) }
-//        addInterceptor { LoggingInterceptor() }
+            logger { PrintlnLogger(it) }
+            addInterceptor { LoggingInterceptor() }
 
             scenario("update string value only") {
                 running {

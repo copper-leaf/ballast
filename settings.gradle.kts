@@ -28,7 +28,6 @@ include(":ballast-core")
 
 include(":ballast-repository")
 include(":ballast-saved-state")
-include(":ballast-debugger")
 include(":ballast-sync")
 include(":ballast-undo")
 include(":ballast-navigation")
@@ -38,7 +37,10 @@ include(":ballast-firebase-crashlytics")
 include(":ballast-analytics")
 include(":ballast-firebase-analytics")
 
+include(":ballast-debugger-models")
+include(":ballast-debugger-client")
 include(":ballast-debugger-server")
+include(":ballast-debugger-ui")
 include(":ballast-idea-plugin")
 
 include(":ballast-test")

@@ -3,7 +3,9 @@ package com.copperleaf.ballast.examples.injector
 import androidx.compose.material.SnackbarHostState
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
+import com.copperleaf.ballast.core.BootstrapInterceptor
 import com.copperleaf.ballast.core.KillSwitch
+import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.PrintlnLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
@@ -15,6 +17,7 @@ import com.copperleaf.ballast.examples.repository.BggRepositoryImpl
 import com.copperleaf.ballast.examples.repository.BggRepositoryInputHandler
 import com.copperleaf.ballast.examples.router.BallastExamples
 import com.copperleaf.ballast.examples.router.BallastExamplesRouter
+import com.copperleaf.ballast.examples.router.RouterSavedStateAdapter
 import com.copperleaf.ballast.examples.ui.bgg.BggContract
 import com.copperleaf.ballast.examples.ui.bgg.BggEventHandler
 import com.copperleaf.ballast.examples.ui.bgg.BggInputHandler
@@ -33,6 +36,11 @@ import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperEventHandler
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperInputHandler
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperSavedStateAdapter
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontContract
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontInputHandler
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontViewModel
+import com.copperleaf.ballast.examples.ui.storefront.api.CoffeeProductsApi
+import com.copperleaf.ballast.examples.ui.storefront.api.CoffeeProductsApiImpl
 import com.copperleaf.ballast.examples.ui.undo.UndoContract
 import com.copperleaf.ballast.examples.ui.undo.UndoEventHandler
 import com.copperleaf.ballast.examples.ui.undo.UndoInputHandler
@@ -60,11 +68,9 @@ import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.http.ContentType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
-import kotlinx.serialization.json.Json
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -98,9 +104,17 @@ class ComposeDesktopInjectorImpl(
         BallastExamplesRouter(
             viewModelCoroutineScope = applicationScope,
             config = commonBuilder()
-                .withRouter(RoutingTable.fromEnum(BallastExamples.values()), BallastExamples.Counter)
+                .withRouter(RoutingTable.fromEnum(BallastExamples.values()), null)
                 .apply {
                     this += BallastUndoInterceptor(routerUndoController)
+                    this += BallastSavedStateInterceptor(
+                        RouterSavedStateAdapter(
+                            routingTable = RoutingTable.fromEnum(BallastExamples.values()),
+                            initialRoute = BallastExamples.Counter,
+                            prefs = preferences,
+                            preserveDiscreteStates = true,
+                        )
+                    )
                 }
                 .build(),
         )
@@ -142,25 +156,20 @@ class ComposeDesktopInjectorImpl(
                             ),
                         )
                     }
-
-                    this += BallastDebuggerInterceptor(
-                        debuggerConnection,
-                        serializeInput = {
-                            ContentType.Application.Json to Json.encodeToString(CounterContract.Inputs.serializer(), it as CounterContract.Inputs)
-                        },
-                        serializeEvent = {
-                            ContentType.Application.Json to Json.encodeToString(CounterContract.Events.serializer(), it as CounterContract.Events)
-                        },
-                        serializeState = {
-                            ContentType.Application.Json to Json.encodeToString(CounterContract.State.serializer(), it as CounterContract.State)
-                        },
-                    )
                 }
                 .withViewModel(
                     initialState = CounterContract.State(),
                     inputHandler = CounterInputHandler(),
                     name = "Counter",
                 )
+                .apply {
+                    this += BallastDebuggerInterceptor(
+                        debuggerConnection,
+                        inputsSerializer = CounterContract.Inputs.serializer(),
+                        eventsSerializer = CounterContract.Events.serializer(),
+                        stateSerializer = CounterContract.State.serializer(),
+                    )
+                }
                 .build(),
             eventHandler = CounterEventHandler(),
         )
@@ -295,6 +304,31 @@ class ComposeDesktopInjectorImpl(
         )
     }
 
+// Storefront
+// ---------------------------------------------------------------------------------------------------------------------
+
+    private val coffeeProductsApi: CoffeeProductsApi = CoffeeProductsApiImpl()
+
+    override fun storefrontViewModel(coroutineScope: CoroutineScope): StorefrontViewModel {
+        return StorefrontViewModel(
+            viewModelCoroutineScope = coroutineScope,
+            config = commonBuilder()
+                .apply {
+                    this.inputStrategy = LifoInputStrategy()
+                }
+                .withViewModel(
+                    initialState = StorefrontContract.State(),
+                    inputHandler = StorefrontInputHandler(coffeeProductsApi),
+                    name = "Storefront",
+                )
+                .apply {
+                    this += BootstrapInterceptor {
+                        StorefrontContract.Inputs.Initialize
+                    }
+                }
+                .build(),
+        )
+    }
 
 // configs
 // ---------------------------------------------------------------------------------------------------------------------
@@ -314,9 +348,9 @@ class ComposeDesktopInjectorImpl(
             .apply {
                 this += LoggingInterceptor()
                 logger = ::PrintlnLogger
-                if (debugger) {
-                    this += BallastDebuggerInterceptor(debuggerConnection)
-                }
+//                if (debugger) {
+//                    this += BallastDebuggerInterceptor(debuggerConnection)
+//                }
             }
     }
 }

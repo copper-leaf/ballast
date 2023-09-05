@@ -12,9 +12,6 @@ import kotlinx.coroutines.launch
  * The entry-point for attaching additional functionality to a ViewModel. As Inputs or other features get processed
  * within the ViewModel, it will emit a stream of [BallastNotification] through a [SharedFlow] to all registered
  * Interceptors.
- *
- * Depending on your needs, you should implement _either_ [onNotify] for simple Interceptors, or [start] for more
- * complex ones, but not both.
  */
 public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
 
@@ -52,23 +49,7 @@ public interface BallastInterceptor<Inputs : Any, Events : Any, State : Any> {
      */
     public fun BallastInterceptorScope<Inputs, Events, State>.start(
         notifications: Flow<BallastNotification<Inputs, Events, State>>,
-    ) {
-        launch(start = CoroutineStart.UNDISPATCHED) {
-            notifications.collect {
-                onNotify(logger, it)
-            }
-        }
-    }
-
-    /**
-     * This callback is provided for convenience only. The default implementation of [start] launched a coroutine to
-     * collect the [BallastNotification] Flow, and emits single notifications to this callback. This should be used if
-     * you only need to process individual Notifications, and don't need any additional functionality like launching
-     * additional coroutines, or sending data back to the ViewModel.
-     */
-    @Deprecated("Implement `BallastInterceptor.start` and launch the job yourself, instead. Deprecated since v3, to be removed in v4.")
-    public suspend fun onNotify(logger: BallastLogger, notification: BallastNotification<Inputs, Events, State>) {}
-
+    )
 
     public val key: Key<BallastInterceptor<*, *, *>>? get() = null
 

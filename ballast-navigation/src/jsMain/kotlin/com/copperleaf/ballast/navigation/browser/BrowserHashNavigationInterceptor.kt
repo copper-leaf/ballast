@@ -1,11 +1,7 @@
 package com.copperleaf.ballast.navigation.browser
 
+import com.copperleaf.ballast.navigation.internal.Uri
 import com.copperleaf.ballast.navigation.routing.Route
-import io.ktor.http.ParametersBuilder
-import io.ktor.http.URLBuilder
-import io.ktor.http.Url
-import io.ktor.http.encodedPath
-import io.ktor.http.parseQueryString
 import kotlinx.browser.window
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +12,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
     initialRoute: T,
 ) : BaseBrowserNavigationInterceptor<T>(initialRoute) {
 
-    override fun getInitialUrl(): Url? {
+    override fun getInitialUrl(): Uri? {
         val hashValue = window.location.hash.trim().trimStart('#').trimStart('/')
         val hashPieces = hashValue.split('?')
 
@@ -33,23 +29,19 @@ public class BrowserHashNavigationInterceptor<T : Route>(
         }
 
         return if (!initialPath.isNullOrBlank() || !initialQueryString.isNullOrBlank()) {
-            URLBuilder()
-                .apply {
-                    encodedPath = "/$initialPath"
-                    encodedParameters = ParametersBuilder().apply {
-                        appendAll(parseQueryString(initialQueryString ?: "", decode = true))
-                    }
-                }
-                .build()
+            Uri.build(
+                encodedPath = "/$initialPath",
+                encodedQueryString = initialQueryString,
+            )
         } else {
             null
         }
     }
 
-    override fun watchForUrlChanges(): Flow<Url> {
-        return callbackFlow<Url> {
+    override fun watchForUrlChanges(): Flow<Uri> {
+        return callbackFlow<Uri> {
             window.onhashchange = { event: HashChangeEvent ->
-                this@callbackFlow.trySend(Url(event.newURL.split("#").last()))
+                this@callbackFlow.trySend(Uri.parse(event.newURL.split("#").last()))
                 Unit
             }
 
@@ -59,7 +51,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
         }
     }
 
-    override fun setDestinationUrl(url: Url) {
+    override fun setDestinationUrl(url: Uri) {
         window.location.hash = url.encodedPathAndQuery
     }
 }

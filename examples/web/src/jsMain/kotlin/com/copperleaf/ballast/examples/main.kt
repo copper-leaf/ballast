@@ -73,7 +73,7 @@ fun NavigationContent(
         headingStart = {
             Text("Ballast Examples")
         },
-        tabs = if(showTabs) {
+        tabs = if (showTabs) {
             {
                 router.NavLink(BallastExamples.Counter) {
                     Text("Counter")

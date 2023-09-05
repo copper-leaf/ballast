@@ -54,6 +54,8 @@ class IntellijPluginPersistentSettings :
     override var baseViewModelType: BallastViewModel.ViewModelTemplate by enum(null, defaults.baseViewModelType, BallastViewModel.ViewModelTemplate::valueOf)
     override var allComponentsIncludesViewModel: Boolean by boolean(null, defaults.allComponentsIncludesViewModel)
     override var allComponentsIncludesSavedStateAdapter: Boolean by boolean(null, defaults.allComponentsIncludesSavedStateAdapter)
+    override var defaultVisibility: BallastViewModel.DefaultVisibility by enum(null, defaults.defaultVisibility, BallastViewModel.DefaultVisibility::valueOf)
+    override var useDataObjects: Boolean by boolean(null, defaults.useDataObjects)
 
     fun applyFromSnapshot(settings: IntellijPluginSettings) {
         // GeneralSettings
@@ -75,5 +77,7 @@ class IntellijPluginPersistentSettings :
         this.baseViewModelType = settings.baseViewModelType
         this.allComponentsIncludesViewModel = settings.allComponentsIncludesViewModel
         this.allComponentsIncludesSavedStateAdapter = settings.allComponentsIncludesSavedStateAdapter
+        this.defaultVisibility = settings.defaultVisibility
+        this.useDataObjects = settings.useDataObjects
     }
 }

@@ -29,4 +29,8 @@ public class BootstrapInterceptor<Inputs : Any, Events : Any, State : Any>(
             )
         }
     }
+
+    override fun toString(): String {
+        return "BootstrapInterceptor"
+    }
 }

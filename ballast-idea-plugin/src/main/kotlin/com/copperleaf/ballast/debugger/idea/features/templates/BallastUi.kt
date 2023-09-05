@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.debugger.idea.features.templates
 
-import com.copperleaf.ballast.debugger.idea.BallastIntellijPluginInjector
+import com.copperleaf.ballast.debugger.idea.BallastIdeaPlugin
 import com.copperleaf.ballast.debugger.idea.base.BaseTemplateCreator
 import com.copperleaf.ballast.debugger.idea.settings.IntellijPluginSettingsSnapshot
 import com.intellij.ide.actions.CreateFileFromTemplateDialog
@@ -44,13 +44,13 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
     }
 
     override fun parseTemplateName(project: Project, templateName: String): List<UiTemplate> {
-        val injector = BallastIntellijPluginInjector.getInstance(project)
-        val persistentSettings = injector.repository.observeStates().value.persistentSettings
-        val settingsSnapshot = IntellijPluginSettingsSnapshot.fromSettings(persistentSettings)
+        val settingsSnapshot = BallastIdeaPlugin.getSettings(project)
 
         return getTemplatesFromName(settingsSnapshot, templateName)
             ?: error("Unknown template type: $templateName")
     }
+
+
 
     private fun getTemplatesFromName(settings: IntellijPluginSettingsSnapshot, templateName: String): List<UiTemplate>? {
         println("templateName: $templateName (${defaultViewModelItem.templateName})")
@@ -84,10 +84,10 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
         override val displayName: String,
         override val icon: Icon,
     ) : BaseTemplateCreator.TemplateKind {
-        object Contract : UiTemplate("UiContract", "Contract", "Contract", KotlinIcons.OBJECT)
-        object InputHandler : UiTemplate("UiInputHandler", "InputHandler", "InputHandler", KotlinIcons.CLASS)
-        object EventHandler : UiTemplate("UiEventHandler", "EventHandler", "EventHandler", KotlinIcons.CLASS)
-        object SavedStateAdapter : UiTemplate("UiSavedStateAdapter", "SavedStateAdapter", "SavedStateAdapter", KotlinIcons.CLASS)
+        data object Contract : UiTemplate("UiContract", "Contract", "Contract", KotlinIcons.OBJECT)
+        data object InputHandler : UiTemplate("UiInputHandler", "InputHandler", "InputHandler", KotlinIcons.CLASS)
+        data object EventHandler : UiTemplate("UiEventHandler", "EventHandler", "EventHandler", KotlinIcons.CLASS)
+        data object SavedStateAdapter : UiTemplate("UiSavedStateAdapter", "SavedStateAdapter", "SavedStateAdapter", KotlinIcons.CLASS)
         class ViewModel(templateName: String) : UiTemplate(templateName, "ViewModel", "ViewModel", KotlinIcons.CLASS)
     }
 }

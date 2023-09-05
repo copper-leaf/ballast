@@ -2,12 +2,13 @@ public final class com/copperleaf/ballast/savedstate/BallastSavedStateIntercepto
 	public fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
-	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class com/copperleaf/ballast/savedstate/RestoreStateScope {
 	public abstract fun getHostViewModelName ()Ljava/lang/String;
+	public abstract fun getInitialState ()Ljava/lang/Object;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public abstract fun postEvent (Ljava/lang/Object;)V
 	public abstract fun postInput (Ljava/lang/Object;)V
@@ -16,6 +17,7 @@ public abstract interface class com/copperleaf/ballast/savedstate/RestoreStateSc
 public final class com/copperleaf/ballast/savedstate/RestoreStateScopeImpl : com/copperleaf/ballast/savedstate/RestoreStateScope {
 	public fun <init> (Lcom/copperleaf/ballast/BallastInterceptorScope;)V
 	public fun getHostViewModelName ()Ljava/lang/String;
+	public fun getInitialState ()Ljava/lang/Object;
 	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public fun postEvent (Ljava/lang/Object;)V
 	public fun postInput (Ljava/lang/Object;)V
@@ -25,16 +27,13 @@ public abstract interface class com/copperleaf/ballast/savedstate/SaveStateScope
 	public abstract fun getHostViewModelName ()Ljava/lang/String;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public abstract fun saveAll (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveAll (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun saveDiff (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun saveDiff (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/copperleaf/ballast/savedstate/SavedStateAdapter {
-	public abstract fun onRestoreComplete (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun restore (Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun save (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-}
-
-public final class com/copperleaf/ballast/savedstate/SavedStateAdapter$DefaultImpls {
-	public static fun onRestoreComplete (Lcom/copperleaf/ballast/savedstate/SavedStateAdapter;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 

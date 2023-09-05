@@ -10,6 +10,7 @@ orchid {
 val orchidServe by tasks
 val orchidBuild by tasks
 val orchidDeploy by tasks
+val processOrchidResources by tasks
 
 val copyExampleComposeWebSources by tasks.registering(Copy::class) {
     from(project.rootDir.resolve("examples/web/build/distributions"))
@@ -18,3 +19,4 @@ val copyExampleComposeWebSources by tasks.registering(Copy::class) {
 orchidServe.dependsOn(copyExampleComposeWebSources)
 orchidBuild.dependsOn(copyExampleComposeWebSources)
 orchidDeploy.dependsOn(copyExampleComposeWebSources)
+processOrchidResources.mustRunAfter(copyExampleComposeWebSources)

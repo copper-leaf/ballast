@@ -7,7 +7,7 @@ import com.copperleaf.ballast.build
 import com.copperleaf.ballast.withViewModel
 
 #parse("File Header.java")
-public class ${featureName}ViewModel(
+${classVisibility}class ${featureName}ViewModel(
     configBuilder: BallastViewModelConfiguration.Builder,
 ) : IosViewModel<
     ${featureName}Contract.Inputs,

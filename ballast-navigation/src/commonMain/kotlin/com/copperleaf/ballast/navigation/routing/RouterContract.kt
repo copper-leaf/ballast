@@ -45,7 +45,7 @@ public object RouterContract {
             val extraAnnotations: Set<RouteAnnotation> = emptySet(),
         ) : Inputs<T>() {
             override fun BackstackNavigator<T>.navigate() {
-                goBack()
+                goBack(1)
                 addToTop(destination, extraAnnotations)
             }
 
@@ -57,16 +57,80 @@ public object RouterContract {
         /**
          * Navigate 1 destination backward in the backstack. See [goBack]
          */
-        public class GoBack<T : Route> : Inputs<T>() {
+        public class GoBack<T : Route>(
+            private val steps: Int = 1,
+        ) : Inputs<T>() {
             override fun BackstackNavigator<T>.navigate() {
-                goBack()
+                goBack(steps)
             }
 
             override fun toString(): String {
-                return "GoBack()"
+                return "GoBack(steps: $steps)"
             }
         }
 
+        /**
+         * Navigate backward, removing the last destinations which have the given [annotation]. If no destinations
+         * have the given [annotation], the backstack will remain unchanged.
+         */
+        public class PopAllWithAnnotation<T : Route>(
+            private val annotation: RouteAnnotation,
+        ) : Inputs<T>() {
+            override fun BackstackNavigator<T>.navigate() {
+                popAllWithAnnotation(annotation)
+            }
+
+            override fun toString(): String {
+                return "PopAllWithAnnotation($annotation)"
+            }
+        }
+
+        /**
+         * Pop destinations off the backstack until the given [route] is found. If [inclusive] is true, that destination
+         * will also be popped off, thus ending at the destination immediately before it. If [inclusive] is false, the
+         * route matching [route] will become the new "current" destination.
+         *
+         * If no destinations in the backstack are at the given [route], the entire backstack will be popeed until it is
+         * empty.
+         */
+        public class PopUntilRoute<T : Route>(
+            private val inclusive: Boolean,
+            private val route: T,
+        ) : Inputs<T>() {
+            override fun BackstackNavigator<T>.navigate() {
+                popUntilRoute(inclusive, route)
+            }
+
+            override fun toString(): String {
+                return "PopUntilRoute($route)"
+            }
+        }
+
+        /**
+         * Pop destinations off the backstack until a route which has the given [annotation] is found. If [inclusive] is
+         * true, that destination will also be popped off, thus ending at the destination immediately before it. If
+         * [inclusive] is false, the route which has the [annotation] will become the new "current" destination.
+         *
+         * If no destinations in the backstack have the given [annotation], the entire backstack will be popeed until it
+         * is empty.
+         */
+        public class PopUntilAnnotation<T : Route>(
+            private val inclusive: Boolean,
+            private val annotation: RouteAnnotation,
+        ) : Inputs<T>() {
+            override fun BackstackNavigator<T>.navigate() {
+                popUntilAnnotation(inclusive, annotation)
+            }
+
+            override fun toString(): String {
+                return "PopUntilAnnotation()"
+            }
+        }
+
+        /**
+         * Completely overwrite the backstack with a new one. Useful saving and restoring the backstack beyond app
+         * launches.
+         */
         public data class RestoreBackstack<T : Route>(
             val destinations: List<String>,
         ) : Inputs<T>() {
@@ -81,14 +145,14 @@ public object RouterContract {
         }
     }
 
-    public sealed class Events<T : Route> {
+    public sealed interface Events<T : Route> {
 
         /**
          * Reports a change that was made to the backstack. []
          */
         public data class BackstackChanged<T : Route>(
             val backstack: Backstack<T>,
-        ) : Events<T>() {
+        ) : Events<T> {
             override fun toString(): String {
                 return "BackstackChanged(${backstack.currentDestinationOrNotFound})"
             }
@@ -98,7 +162,7 @@ public object RouterContract {
          * The router attempted to navigate backward, but the backstack was already empty. Typically, this would be a
          * request to either exit the app, to navigate back to the start destination.
          */
-        public class BackstackEmptied<T : Route> : Events<T>() {
+        public class BackstackEmptied<T : Route> : Events<T> {
             override fun toString(): String {
                 return "OnBackstackEmptied()"
             }
@@ -117,7 +181,7 @@ public object RouterContract {
         /**
          * The router attempted to navigate, but no change was actually made to the backstack.
          */
-        public class NoChange<T : Route> : Events<T>() {
+        public class NoChange<T : Route> : Events<T> {
             override fun toString(): String {
                 return "NoChange()"
             }

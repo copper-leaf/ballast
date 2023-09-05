@@ -14,24 +14,24 @@ public object StateBasedUndoControllerContract {
         val currentState: State? = frames.getOrNull(currentFrame)
     }
 
-    public sealed class Inputs<Inputs : Any, Events : Any, State : Any> {
+    public sealed interface Inputs<Inputs : Any, Events : Any, State : Any> {
         public class ConnectViewModel<_Inputs : Any, Events : Any, State : Any>(
             public val notifications: Flow<BallastNotification<_Inputs, Events, State>>
-        ) : Inputs<_Inputs, Events, State>()
+        ) : Inputs<_Inputs, Events, State>
 
         public class ConnectedStateChanged<_Inputs : Any, Events : Any, State : Any>(
             public val newState: State
-        ) : Inputs<_Inputs, Events, State>()
+        ) : Inputs<_Inputs, Events, State>
 
-        public class CaptureStateNow<_Inputs : Any, Events : Any, State : Any> : Inputs<_Inputs, Events, State>()
+        public class CaptureStateNow<_Inputs : Any, Events : Any, State : Any> : Inputs<_Inputs, Events, State>
 
-        public class Undo<_Inputs : Any, Events : Any, State : Any> : Inputs<_Inputs, Events, State>()
-        public class Redo<_Inputs : Any, Events : Any, State : Any> : Inputs<_Inputs, Events, State>()
+        public class Undo<_Inputs : Any, Events : Any, State : Any> : Inputs<_Inputs, Events, State>
+        public class Redo<_Inputs : Any, Events : Any, State : Any> : Inputs<_Inputs, Events, State>
     }
 
-    public sealed class Events<Inputs : Any, Events : Any, State : Any> {
+    public sealed interface Events<Inputs : Any, Events : Any, State : Any> {
         public class RestoreState<Inputs : Any, _Events : Any, State : Any>(
             public val stateToRestore: State,
-        ) : Events<Inputs, _Events, State>()
+        ) : Events<Inputs, _Events, State>
     }
 }

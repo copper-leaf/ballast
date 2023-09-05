@@ -8,7 +8,7 @@ import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CoroutineScope
 
 #parse("File Header.java")
-public class ${featureName}ViewModel(
+${classVisibility}class ${featureName}ViewModel(
     coroutineScope: CoroutineScope,
     configBuilder: BallastViewModelConfiguration.Builder,
 ) : BasicViewModel<

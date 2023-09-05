@@ -110,7 +110,7 @@ class ComposeWebInjectorImpl(
     ): CounterViewModel {
         return CounterViewModel(
             viewModelCoroutineScope = coroutineScope,
-            config = commonBuilder()
+            config = commonBuilder(debugger = false)
                 .apply {
                     if (syncClientType != null && syncAdapter != null) {
                         this += BallastSyncInterceptor(
@@ -128,6 +128,14 @@ class ComposeWebInjectorImpl(
                     inputHandler = CounterInputHandler(),
                     name = "Counter",
                 )
+                .apply {
+                    this += BallastDebuggerInterceptor(
+                        debuggerConnection,
+                        inputsSerializer = CounterContract.Inputs.serializer(),
+                        eventsSerializer = CounterContract.Events.serializer(),
+                        stateSerializer = CounterContract.State.serializer(),
+                    )
+                }
                 .build(),
             eventHandler = CounterEventHandler(),
         )
@@ -274,12 +282,14 @@ class ComposeWebInjectorImpl(
         }
     }
 
-    private fun commonBuilder(): BallastViewModelConfiguration.Builder {
+    private fun commonBuilder(debugger: Boolean = true): BallastViewModelConfiguration.Builder {
         return BallastViewModelConfiguration.Builder()
             .apply {
                 this += LoggingInterceptor()
-                this += BallastDebuggerInterceptor(debuggerConnection)
                 logger = ::JsConsoleLogger
+                if (debugger) {
+                    this += BallastDebuggerInterceptor(debuggerConnection)
+                }
             }
     }
 }

@@ -14,6 +14,7 @@ enum class BallastExamples(
     Undo("/examples/undo"),
     ApiCall("/examples/api-call"),
     KitchenSink("/examples/kitchen-sink?inputStrategy={?}"),
+    Storefront("/examples/shop"),
     ;
 
     override val matcher: RouteMatcher = RouteMatcher.create(routeFormat)

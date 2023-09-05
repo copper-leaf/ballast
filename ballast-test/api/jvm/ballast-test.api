@@ -22,6 +22,7 @@ public final class com/copperleaf/ballast/test/BallastScenarioInputSequenceScope
 
 public abstract interface class com/copperleaf/ballast/test/BallastScenarioScope {
 	public abstract fun addInterceptor (Lkotlin/jvm/functions/Function0;)V
+	public abstract fun customizeConfiguration (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun getName ()Ljava/lang/String;
 	public abstract fun given (Lkotlin/jvm/functions/Function0;)V
 	public abstract fun inputStrategy (Lkotlin/jvm/functions/Function0;)V
@@ -49,8 +50,7 @@ public final class com/copperleaf/ballast/test/BallastTestSuiteScope$DefaultImpl
 }
 
 public final class com/copperleaf/ballast/test/RunKt {
-	public static final fun viewModelTest (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/EventHandler;Lcom/copperleaf/ballast/InputFilter;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun viewModelTest$default (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/EventHandler;Lcom/copperleaf/ballast/InputFilter;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static final fun viewModelTest (Lcom/copperleaf/ballast/InputHandler;Lcom/copperleaf/ballast/EventHandler;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/test/TestResults {

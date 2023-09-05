@@ -5,13 +5,13 @@ object CounterContract {
         val count: Int = 0
     )
 
-    sealed class Inputs {
-        object GoBack : Inputs()
-        data class Increment(val amount: Int) : Inputs()
-        data class Decrement(val amount: Int) : Inputs()
+    sealed interface Inputs {
+        data object GoBack : Inputs
+        data class Increment(val amount: Int) : Inputs
+        data class Decrement(val amount: Int) : Inputs
     }
 
-    sealed class Events {
-        object GoBack : Events()
+    sealed interface Events {
+        data object GoBack : Events
     }
 }

@@ -1,11 +1,7 @@
 package com.copperleaf.ballast.navigation.browser
 
+import com.copperleaf.ballast.navigation.internal.Uri
 import com.copperleaf.ballast.navigation.routing.Route
-import io.ktor.http.ParametersBuilder
-import io.ktor.http.URLBuilder
-import io.ktor.http.Url
-import io.ktor.http.encodedPath
-import io.ktor.http.parseQueryString
 import kotlinx.browser.window
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -19,7 +15,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
 ) : BaseBrowserNavigationInterceptor<T>(initialRoute) {
     private val basePath: String? = basePath?.trim('/')
 
-    override fun getInitialUrl(): Url? {
+    override fun getInitialUrl(): Uri? {
         val browserPath = window.location.pathname.trimStart('/')
         val initialPath = if (basePath != null) {
             browserPath.removePrefix(basePath).trimStart('/')
@@ -29,23 +25,19 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         val initialQueryString = window.location.search.trimStart('?').takeIf { it.isNotBlank() }
 
         return if (initialPath.isNotBlank() || !initialQueryString.isNullOrBlank()) {
-            URLBuilder()
-                .apply {
-                    encodedPath = initialPath
-                    encodedParameters = ParametersBuilder().apply {
-                        appendAll(parseQueryString(initialQueryString ?: "", decode = true))
-                    }
-                }
-                .build()
+            Uri.build(
+                encodedPath = initialPath,
+                encodedQueryString = initialQueryString,
+            )
         } else {
             null
         }
     }
 
-    override fun watchForUrlChanges(): Flow<Url> {
+    override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow {
             window.onpopstate = { event: PopStateEvent ->
-                this@callbackFlow.trySend(Url(event.state.toString()))
+                this@callbackFlow.trySend(Uri.parse(event.state.toString()))
                 Unit
             }
 
@@ -55,16 +47,15 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         }
     }
 
-    override fun setDestinationUrl(url: Url) {
+    override fun setDestinationUrl(url: Uri) {
         try {
             val previousDestination = getInitialUrl()
             if (previousDestination != url) {
                 val updatedUrl = if(basePath != null) {
-                    URLBuilder(url)
-                        .apply {
-                            encodedPath = "${basePath}/${url.encodedPath.trim('/')}"
-                        }
-                        .build()
+                    Uri.build(
+                        encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
+                        encodedQueryString = url.encodedQueryString,
+                    )
                 } else {
                     url
                 }

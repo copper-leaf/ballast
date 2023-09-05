@@ -13,17 +13,17 @@ object SettingsUiContract {
         val isModified: Boolean = modifiedSettings != originalSettings
     }
 
-    sealed class Inputs {
-        object Initialize : Inputs()
+    sealed interface Inputs {
+        data object Initialize : Inputs
 
-        data class SavedSettingsUpdated(val cachedSettings: Cached<IntellijPluginSettingsSnapshot>) : Inputs()
-        data class UpdateSettings(val value: IntellijPluginSettingsSnapshot.()->IntellijPluginSettingsSnapshot) : Inputs()
-        object DiscardChanges : Inputs()
-        object RestoreDefaultSettings : Inputs()
-        object ApplySettings : Inputs()
-        object CloseGracefully : Inputs()
+        data class SavedSettingsUpdated(val cachedSettings: Cached<IntellijPluginSettingsSnapshot>) : Inputs
+        data class UpdateSettings(val value: IntellijPluginSettingsSnapshot.()->IntellijPluginSettingsSnapshot) : Inputs
+        data object DiscardChanges : Inputs
+        data object RestoreDefaultSettings : Inputs
+        data object ApplySettings : Inputs
+        data object CloseGracefully : Inputs
     }
 
-    sealed class Events {
+    sealed interface Events {
     }
 }

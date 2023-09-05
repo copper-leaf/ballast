@@ -110,7 +110,7 @@ private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
                     .Builder(scenario.name)
                     .apply {
                         this.logger = scenario.logger ?: testSuite.suiteLogger
-                        this.inputStrategy = scenario.inputStrategy ?: testSuite.inputStrategy
+                        this.inputStrategy = scenario.inputStrategy() ?: testSuite.inputStrategy()
 
                         this += (scenario.interceptors + testSuite.interceptors).map { it() }
                         this += TestInterceptor(
@@ -125,8 +125,10 @@ private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
                             ?: testSuite.defaultInitialStateBlock?.invoke()
                             ?: error("No initial state given"),
                         inputHandler = testSuite.inputHandler,
-                        filter = testSuite.filter,
                     )
+                    .let {
+                        scenario.configurationBlock?.invoke(it) ?: it
+                    }
                     .build(),
                 eventHandler = testSuite.eventHandler,
                 coroutineScope = this

@@ -29,6 +29,11 @@ public interface BallastInterceptorScope<Inputs : Any, Events : Any, State : Any
     public val hostViewModelName: String
 
     /**
+     * The initial state set in the [BallastViewModelConfiguration.initialState].
+     */
+    public val initialState: State
+
+    /**
      * Send a [Queued] object back to the ViewModel to be processed. These items are queued just the same as if they
      * were sent to the ViewModel by something else through [BallastViewModel.send],
      * [BallastViewModel.sendAndAwaitCompletion], or [BallastViewModel.trySend].

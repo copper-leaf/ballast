@@ -3,6 +3,7 @@ package com.copperleaf.ballast.debugger.idea.repository
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
 
+@Suppress("UNUSED_EXPRESSION")
 class RepositoryEventHandler : EventHandler<
         RepositoryContract.Inputs,
         RepositoryContract.Events,

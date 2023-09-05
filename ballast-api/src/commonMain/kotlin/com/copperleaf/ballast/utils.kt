@@ -1,8 +1,6 @@
 package com.copperleaf.ballast
 
-import com.copperleaf.ballast.core.DefaultViewModelConfiguration
 import com.copperleaf.ballast.internal.Status
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
@@ -130,115 +128,9 @@ public inline fun <Inputs : Any, Events : Any, State : Any> eventHandler(
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-private fun <T : Any> Any?.requireTyped(name: String): T {
-    if (this == null) error("$name required")
-    return this as T
-}
 
-@Suppress("UNCHECKED_CAST", "UNUSED_PARAMETER")
-private fun <T : Any> Any?.requireTypedIfPresent(name: String): T? {
-    if (this == null) return null
-    return this as T
-}
 
-@Suppress("UNCHECKED_CAST")
-private fun <Inputs : Any, Events : Any, State : Any> List<BallastInterceptor<*, *, *>>.mapAsTyped(
-): List<BallastInterceptor<Inputs, Events, State>> {
-    return this.map { it as BallastInterceptor<Inputs, Events, State> }
-}
 
-/**
- * Create a default [BallastViewModelConfiguration] from a [BallastViewModelConfiguration.Builder].
- */
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.build(
-): BallastViewModelConfiguration<Inputs, Events, State> {
-    val vmName = name ?: "$inputHandler-vm"
-    return DefaultViewModelConfiguration<Inputs, Events, State>(
-        initialState = initialState.requireTyped("initialState"),
-        inputHandler = inputHandler.requireTyped("inputHandler"),
-        filter = filter.requireTypedIfPresent("filter"),
-        interceptors = interceptors.mapAsTyped(),
-        inputStrategy = inputStrategy.requireTyped("inputHandler"),
-        inputsDispatcher = inputsDispatcher,
-        eventsDispatcher = eventsDispatcher,
-        sideJobsDispatcher = sideJobsDispatcher,
-        interceptorDispatcher = interceptorDispatcher,
-        name = vmName,
-        logger = logger(vmName),
-    )
-}
-
-/**
- * Set all [CoroutineDispatcher]s in your ViewModel. For convenience, you can set only the [inputsDispatcher] to use
- * that for all dispatchers, or set the dispatcher for each feature individually.
- */
-public fun BallastViewModelConfiguration.Builder.dispatchers(
-    inputsDispatcher: CoroutineDispatcher,
-    eventsDispatcher: CoroutineDispatcher = inputsDispatcher,
-    sideJobsDispatcher: CoroutineDispatcher = inputsDispatcher,
-    interceptorDispatcher: CoroutineDispatcher = inputsDispatcher,
-): BallastViewModelConfiguration.Builder = apply {
-    this.inputsDispatcher = inputsDispatcher
-    this.eventsDispatcher = eventsDispatcher
-    this.sideJobsDispatcher = sideJobsDispatcher
-    this.interceptorDispatcher = interceptorDispatcher
-}
-
-/**
- * Add a [BallastInterceptor] to the [BallastViewModelConfiguration.Builder].
- */
-public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.plusAssign(
-    interceptor: BallastInterceptor<Inputs, Events, State>
-) {
-    this.interceptors += interceptor
-}
-
-/**
- * Add many [BallastInterceptor]s to the [BallastViewModelConfiguration.Builder].
- */
-public operator fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.plusAssign(
-    interceptors: Iterable<BallastInterceptor<Inputs, Events, State>>
-) {
-    this.interceptors += interceptors
-}
-
-/**
- * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
- * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
- * [BallastViewModelConfiguration].
- */
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
-    initialState: State,
-    inputHandler: InputHandler<Inputs, Events, State>,
-    filter: InputFilter<Inputs, Events, State>? = null,
-    name: String? = this.name,
-): BallastViewModelConfiguration.Builder =
-    this
-        .apply {
-            this.initialState = initialState
-            this.inputHandler = inputHandler
-            this.filter = filter
-            this.name = name
-        }
-
-/**
- * Set the required properties of the Builder in a type-safe way, making sure the relevant features are all
- * type-compatible with each other even though the builder itself is untyped. Returns a fully-built
- * [BallastViewModelConfiguration].
- */
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.withViewModel(
-    initialState: State,
-    inputHandler: FilteredInputHandler<Inputs, Events, State>,
-    name: String? = this.name,
-): BallastViewModelConfiguration.Builder =
-    this
-        .apply {
-            this.initialState = initialState
-            this.inputHandler = inputHandler
-            this.filter = inputHandler
-            this.name = name
-        }
 
 /**
  * Used for keeping track of the state of discrete "subjects" within an Interceptor. For example, a single Input will

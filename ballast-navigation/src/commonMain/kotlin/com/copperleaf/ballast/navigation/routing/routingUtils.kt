@@ -458,47 +458,8 @@ public inline fun <T : Enum<T>> Destination.ParametersProvider.optionalEnumQuery
 // ---------------------------------------------------------------------------------------------------------------------
 
 /**
- * Navigate backwards 1 location in the backstack.
- */
-public fun <T : Route> BackstackNavigator<T>.goBack() {
-    if (backstack.isEmpty()) {
-        // error, backstack was empty. Just ignore it
-    } else {
-        updateBackstack {
-            it.dropLast(1)
-        }
-    }
-}
-
-/**
- * Navigate backward in the backstack, removing all destinations that contain the given [annotation].
- */
-public fun <T : Route> BackstackNavigator<T>.popAllWithAnnotation(
-    annotation: RouteAnnotation,
-) {
-    if (backstack.isEmpty()) {
-        // error, backstack was empty. Just ignore it
-    } else {
-        updateBackstack {
-            it.dropLastWhile { destination ->
-                when (destination) {
-                    is Destination.Match<*> -> {
-                        // drop the latest destination if it contains the given annotation
-                        annotation in destination.annotations
-                    }
-
-                    is Destination.Mismatch<*> -> {
-                        // drop the mismatches, regardless
-                        true
-                    }
-                }
-            }
-        }
-    }
-}
-
-/**
- * Attempt to navigate forward to the route matching [destinationUrl].
+ * Attempt to navigate forward to the route matching [destinationUrl]. If no matching route can be found,
+ * [Destination.Mismatch] will be pushed onto the backstack instead.
  */
 public fun <T : Route> BackstackNavigator<T>.addToTop(
     destinationUrl: String,
@@ -514,6 +475,116 @@ public fun <T : Route> BackstackNavigator<T>.addToTop(
     }
 }
 
+/**
+ * Navigate backwards 1 location in the backstack.
+ */
+public fun <T : Route> BackstackNavigator<T>.goBack(steps: Int) {
+    if (backstack.isEmpty()) {
+        // error, backstack was empty. Just ignore it
+    } else {
+        updateBackstack {
+            it.dropLast(steps)
+        }
+    }
+}
+
+/**
+ * Navigate backward in the backstack, removing all destinations for which the predicate [shouldPop] returns true.
+ */
+public fun <T : Route> BackstackNavigator<T>.popWith(
+    shouldPop: (Destination.Match<T>) -> Boolean,
+) {
+    if (backstack.isEmpty()) {
+        // error, backstack was empty. Just ignore it
+    } else {
+        updateBackstack {
+            it.dropLastWhile { destination ->
+                when (destination) {
+                    is Destination.Match<T> -> {
+                        shouldPop(destination)
+                    }
+
+                    is Destination.Mismatch<T> -> {
+                        // drop the mismatches, regardless
+                        true
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Navigate backward in the backstack, removing all destinations that contain the given [annotation].
+ */
+public fun <T : Route> BackstackNavigator<T>.popAllWithAnnotation(
+    annotation: RouteAnnotation,
+) {
+    popWith {
+        annotation in it.annotations
+    }
+}
+
+/**
+ * Navigate backward in the backstack, removing all destinations for which the predicate [shouldPop] returns true.
+ */
+public fun <T : Route> BackstackNavigator<T>.popUntil(
+    inclusive: Boolean,
+    shouldPop: (Destination.Match<T>) -> Boolean,
+) {
+    if (backstack.isEmpty()) {
+        // error, backstack was empty. Just ignore it
+    } else {
+        updateBackstack { backstack ->
+            val index = backstack.indexOfLast { destination ->
+                when (destination) {
+                    is Destination.Match<T> -> {
+                        shouldPop(destination)
+                    }
+
+                    is Destination.Mismatch<T> -> {
+                        // drop the mismatches, regardless
+                        false
+                    }
+                }
+            }
+
+            if (index == -1) {
+                // error, no matching routes in the backstack. return an empty backstack.
+                emptyList()
+            } else if (inclusive) {
+                backstack.subList(0, index)
+            } else {
+                backstack.subList(0, index + 1)
+            }
+        }
+    }
+}
+
+/**
+ * Navigate backward in the backstack, removing all destinations that contain the given [annotation].
+ */
+public fun <T : Route> BackstackNavigator<T>.popUntilRoute(
+    inclusive: Boolean,
+    route: T,
+) {
+    popUntil(inclusive) {
+        it.originalRoute == route
+    }
+}
+
+
+/**
+ * Navigate backward in the backstack, removing all destinations that contain the given [annotation].
+ */
+public fun <T : Route> BackstackNavigator<T>.popUntilAnnotation(
+    inclusive: Boolean,
+    annotation: RouteAnnotation,
+) {
+    popUntil(inclusive) {
+        annotation in it.annotations
+    }
+}
 
 // Additional matcher methods
 // ---------------------------------------------------------------------------------------------------------------------

@@ -138,7 +138,7 @@ object KitchenSinkUi {
 
                 Text("Inputs", style = MaterialTheme.typography.h6)
                 Button(
-                    onClick = { postInput(KitchenSinkContract.Inputs.LongRunningInput()) },
+                    onClick = { postInput(KitchenSinkContract.Inputs.LongRunningInput) },
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     Text("LongRunningInput")

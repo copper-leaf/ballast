@@ -20,12 +20,13 @@ kotlin {
                 // Ballast, to manage its own UI state (with debugger artifact to share serialization models between the client and server)
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-saved-state"))
-                implementation(project(":ballast-debugger"))
+                implementation(project(":ballast-debugger-models"))
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(project(":ballast-test"))
+                implementation(libs.kotlinx.datetime)
             }
         }
     }

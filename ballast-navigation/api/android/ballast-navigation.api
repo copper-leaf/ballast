@@ -1,10 +1,3 @@
-public final class com/copperleaf/ballast/navigation/BuildConfig {
-	public static final field BUILD_TYPE Ljava/lang/String;
-	public static final field DEBUG Z
-	public static final field LIBRARY_PACKAGE_NAME Ljava/lang/String;
-	public fun <init> ()V
-}
-
 public final class com/copperleaf/ballast/navigation/BundleHelpersKt {
 	public static final fun toBundle (Lcom/copperleaf/ballast/navigation/routing/Destination$Parameters;)Landroid/os/Bundle;
 	public static final fun toDestinationParameters (Landroid/os/Bundle;)Lcom/copperleaf/ballast/navigation/routing/Destination$Parameters;
@@ -379,7 +372,7 @@ public final class com/copperleaf/ballast/navigation/routing/RouterContract {
 	public static final field INSTANCE Lcom/copperleaf/ballast/navigation/routing/RouterContract;
 }
 
-public abstract class com/copperleaf/ballast/navigation/routing/RouterContract$Events {
+public abstract interface class com/copperleaf/ballast/navigation/routing/RouterContract$Events {
 }
 
 public final class com/copperleaf/ballast/navigation/routing/RouterContract$Events$BackstackChanged : com/copperleaf/ballast/navigation/routing/RouterContract$Events {
@@ -414,6 +407,8 @@ public abstract class com/copperleaf/ballast/navigation/routing/RouterContract$I
 
 public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$GoBack : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
 	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
 	public fun toString ()Ljava/lang/String;
 }
@@ -429,6 +424,24 @@ public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inpu
 	public final fun getDestination ()Ljava/lang/String;
 	public final fun getExtraAnnotations ()Ljava/util/Set;
 	public fun hashCode ()I
+	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$PopAllWithAnnotation : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> (Lcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)V
+	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$PopUntilAnnotation : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> (ZLcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)V
+	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/navigation/routing/RouterContract$Inputs$PopUntilRoute : com/copperleaf/ballast/navigation/routing/RouterContract$Inputs {
+	public fun <init> (ZLcom/copperleaf/ballast/navigation/routing/Route;)V
 	public fun navigate (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
 	public fun toString ()Ljava/lang/String;
 }
@@ -546,7 +559,7 @@ public final class com/copperleaf/ballast/navigation/routing/RoutingUtilsKt {
 	public static final fun getCurrentRouteOrThrow (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Route;
 	public static final fun getTopDestinationWithoutAnnotation (Lcom/copperleaf/ballast/navigation/routing/RouterContract$State;Lcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
 	public static final fun getTopDestinationsWithAnnotation (Ljava/util/List;Lcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)Ljava/util/List;
-	public static final fun goBack (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;)V
+	public static final fun goBack (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;I)V
 	public static final fun intPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
 	public static synthetic fun intPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
 	public static final fun intQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
@@ -593,6 +606,10 @@ public final class com/copperleaf/ballast/navigation/routing/RoutingUtilsKt {
 	public static final fun pathParameter (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/lang/String;[Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
 	public static final fun pathParameters (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
 	public static final fun popAllWithAnnotation (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;Lcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)V
+	public static final fun popUntil (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;ZLkotlin/jvm/functions/Function1;)V
+	public static final fun popUntilAnnotation (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;ZLcom/copperleaf/ballast/navigation/routing/RouteAnnotation;)V
+	public static final fun popUntilRoute (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;ZLcom/copperleaf/ballast/navigation/routing/Route;)V
+	public static final fun popWith (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;Lkotlin/jvm/functions/Function1;)V
 	public static final fun provideLazyPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
 	public static final fun provideLazyQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
 	public static final fun provideOptionalLazyPath (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lkotlin/properties/PropertyDelegateProvider;
@@ -642,7 +659,7 @@ public final class com/copperleaf/ballast/navigation/routing/UnmatchedDestinatio
 }
 
 public final class com/copperleaf/ballast/navigation/vm/BallastUtilsKt {
-	public static final fun withRouter (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;
+	public static final fun withRouter (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 }
 
 public final class com/copperleaf/ballast/navigation/vm/RouterInputHandlerImpl : com/copperleaf/ballast/InputHandler {

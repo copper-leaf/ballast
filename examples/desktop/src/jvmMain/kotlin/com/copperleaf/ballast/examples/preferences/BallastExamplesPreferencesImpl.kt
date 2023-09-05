@@ -52,4 +52,19 @@ class BallastExamplesPreferencesImpl(
             val buttonValuesJsonString = Json.encodeToString(scorekeeperScoresheetStateSerializer, value)
             settings[scorekeeperScoresheetStateKey] = buttonValuesJsonString
         }
+
+// Router
+// ---------------------------------------------------------------------------------------------------------------------
+
+    private val backstackStateKey = "Router.backstack"
+    private val backstackStateSerializer = ListSerializer(String.serializer())
+    override var backstack: List<String>
+        get() {
+            val backstackUrlsString: String = settings[backstackStateKey] ?: "[]"
+            return Json.decodeFromString(backstackStateSerializer, backstackUrlsString)
+        }
+        set(value) {
+            val backstackUrlsString = Json.encodeToString(backstackStateSerializer, value)
+            settings[backstackStateKey] = backstackUrlsString
+        }
 }

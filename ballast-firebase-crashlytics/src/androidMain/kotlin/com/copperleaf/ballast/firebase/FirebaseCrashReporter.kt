@@ -1,9 +1,7 @@
 package com.copperleaf.ballast.firebase
 
-import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.crashreporting.CrashReporter
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.crashlytics.internal.common.CrashlyticsCore
 import com.google.firebase.crashlytics.ktx.KeyValueBuilder
 import com.google.firebase.crashlytics.ktx.setCustomKeys
 
@@ -58,6 +56,10 @@ public class FirebaseCrashReporter(
             extraKeys()
         }
         crashlytics.recordException(BallastCrashlyticsException(throwable, handled))
+    }
+
+    override fun toString(): String {
+        return "FirebaseCrashReporter"
     }
 
     internal object Keys {

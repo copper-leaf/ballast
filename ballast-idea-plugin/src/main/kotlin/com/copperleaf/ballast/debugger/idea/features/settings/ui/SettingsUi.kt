@@ -23,8 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.CheckboxArea
-import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.DropdownSelector
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.ProvideTime
+import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.RadioGroup
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.Section
 import com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets.ToolBarActionIconButton
 import com.copperleaf.ballast.debugger.idea.features.settings.injector.SettingsPanelInjector
@@ -39,7 +39,7 @@ object SettingsUi {
         val debuggerUiViewModel = remember(injector) { injector.settingsPanelViewModel }
         val debuggerUiState by debuggerUiViewModel.observeStates().collectAsState()
 
-        IdeaPluginTheme(injector.project, debuggerUiState.cachedSettings) {
+        IdeaPluginTheme(injector.project) {
             ProvideTime {
                 Content(
                     debuggerUiState,
@@ -162,7 +162,7 @@ object SettingsUi {
             Section(
                 title = { Text("Templates") }
             ) {
-                DropdownSelector(
+                RadioGroup(
                     items = BallastViewModel.ViewModelTemplate.values().toList(),
                     value = uiState.modifiedSettings.baseViewModelType,
                     onValueChange = {
@@ -172,6 +172,18 @@ object SettingsUi {
                     },
                     valueRender = { it.displayName },
                     label = { Text("Base ViewModel Type") }
+                )
+
+                RadioGroup(
+                    items = BallastViewModel.DefaultVisibility.values().toList(),
+                    value = uiState.modifiedSettings.defaultVisibility,
+                    onValueChange = {
+                        postInput(
+                            SettingsUiContract.Inputs.UpdateSettings { copy(defaultVisibility = it) }
+                        )
+                    },
+                    valueRender = { it.displayName },
+                    label = { Text("Visibility") }
                 )
 
                 CheckboxArea(
@@ -194,6 +206,17 @@ object SettingsUi {
                     },
                 ) {
                     Text("All Components - Include SavedStateAdapter")
+                }
+
+                CheckboxArea(
+                    checked = uiState.modifiedSettings.useDataObjects,
+                    onCheckedChange = {
+                        postInput(
+                            SettingsUiContract.Inputs.UpdateSettings { copy(useDataObjects = it) }
+                        )
+                    },
+                ) {
+                    Text("Use Data Objects for Inputs and Events")
                 }
             }
 

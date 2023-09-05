@@ -11,5 +11,7 @@ interface TemplatesSettings {
     val baseViewModelType: BallastViewModel.ViewModelTemplate
     val allComponentsIncludesViewModel: Boolean
     val allComponentsIncludesSavedStateAdapter: Boolean
+    val defaultVisibility: BallastViewModel.DefaultVisibility
+    val useDataObjects: Boolean
 }
 

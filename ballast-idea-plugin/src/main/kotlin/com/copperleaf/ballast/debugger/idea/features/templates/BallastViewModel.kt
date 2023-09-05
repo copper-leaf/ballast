@@ -45,4 +45,14 @@ class BallastViewModel : BaseTemplateCreator<BallastViewModel.ViewModelTemplate>
         Ios("IosViewModel", "ViewModel", "IosViewModel", KotlinIcons.CLASS),
         Typealias("TypealiasViewModel", "ViewModel", "Typealias", KotlinIcons.TYPE_ALIAS),
     }
+
+    enum class DefaultVisibility(
+        val displayName: String,
+        val classVisibility: String,
+        val propertyVisibility: String,
+    ) {
+        Public("Public", "public ", "public "),
+        Internal("Internal", "internal ", ""),
+        Default("Default (no modifier)", "", ""),
+    }
 }

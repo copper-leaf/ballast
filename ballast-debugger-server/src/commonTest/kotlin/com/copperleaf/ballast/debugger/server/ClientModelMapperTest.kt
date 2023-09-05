@@ -2,10 +2,9 @@ package com.copperleaf.ballast.debugger.server
 
 import com.copperleaf.ballast.debugger.server.Assertions.assertEquals
 import com.copperleaf.ballast.debugger.versions.ClientVersion
+import com.copperleaf.ballast.debugger.versions.CompositeModelSerializer
 import com.copperleaf.ballast.debugger.versions.unsupported.ClientModelMapperUnsupportedVersion
-import com.copperleaf.ballast.debugger.versions.v3.ClientModelSerializerV1ToV3
-import com.copperleaf.ballast.debugger.versions.v3.ClientModelSerializerV2ToV3
-import com.copperleaf.ballast.debugger.versions.v3.ClientModelSerializerV3
+import com.copperleaf.ballast.debugger.versions.v4.ClientModelSerializerV4
 import io.kotest.core.spec.style.StringSpec
 
 class ClientModelMapperTest : StringSpec({
@@ -19,6 +18,7 @@ class ClientModelMapperTest : StringSpec({
         assertEquals(ClientVersion(2, 3, 0), ClientVersion.parse("2.3.0"))
         assertEquals(ClientVersion(2, 3, 1), ClientVersion.parse("2.3.1"))
         assertEquals(ClientVersion(3, 0, 0), ClientVersion.parse("3.0.0"))
+        assertEquals(ClientVersion(4, 0, 0), ClientVersion.parse("4.0.0"))
 
         assertEquals(ClientVersion(0, 0, 0), ClientVersion.parse("0.0.0-SNAPSHOT"))
         assertEquals(ClientVersion(0, 1, 0), ClientVersion.parse("0.1.0-SNAPSHOT"))
@@ -27,6 +27,7 @@ class ClientModelMapperTest : StringSpec({
         assertEquals(ClientVersion(2, 3, 0), ClientVersion.parse("2.3.0-SNAPSHOT"))
         assertEquals(ClientVersion(2, 3, 1), ClientVersion.parse("2.3.1-SNAPSHOT"))
         assertEquals(ClientVersion(3, 0, 0), ClientVersion.parse("3.0.0-SNAPSHOT"))
+        assertEquals(ClientVersion(4, 0, 0), ClientVersion.parse("4.0.0-SNAPSHOT"))
     }
 
     "testIsSupported" {
@@ -40,7 +41,11 @@ class ClientModelMapperTest : StringSpec({
         assertEquals(true, ClientVersion.getSerializer("3.0.0").supported)
         assertEquals(true, ClientVersion.getSerializer("3.2.0").supported)
         assertEquals(true, ClientVersion.getSerializer("3.2.2").supported)
-        assertEquals(false, ClientVersion.getSerializer("4.0.0").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.0.0").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.0.1").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.1.0").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.1.1").supported)
+        assertEquals(false, ClientVersion.getSerializer("5.0.0").supported)
 
         assertEquals(false, ClientVersion.getSerializer("0.1.0-SNAPSHOT").supported)
         assertEquals(false, ClientVersion.getSerializer("0.1.1-SNAPSHOT").supported)
@@ -50,7 +55,11 @@ class ClientModelMapperTest : StringSpec({
         assertEquals(true, ClientVersion.getSerializer("3.0.0-SNAPSHOT").supported)
         assertEquals(true, ClientVersion.getSerializer("3.2.0-SNAPSHOT").supported)
         assertEquals(true, ClientVersion.getSerializer("3.2.2-SNAPSHOT").supported)
-        assertEquals(false, ClientVersion.getSerializer("4.0.0-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.0.0-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.0.1-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.1.0-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("4.1.1-SNAPSHOT").supported)
+        assertEquals(false, ClientVersion.getSerializer("5.0.0-SNAPSHOT").supported)
     }
 
     "testMatchingClientVersionsToMappers" {
@@ -58,19 +67,21 @@ class ClientModelMapperTest : StringSpec({
         assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("some unsupported format")::class)
         assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("0.1.0")::class)
         assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("0.1.1")::class)
-        assertEquals(ClientModelSerializerV1ToV3::class, ClientVersion.getSerializer("1.1.0")::class)
-        assertEquals(ClientModelSerializerV2ToV3::class, ClientVersion.getSerializer("2.3.0")::class)
-        assertEquals(ClientModelSerializerV2ToV3::class, ClientVersion.getSerializer("2.3.1")::class)
-        assertEquals(ClientModelSerializerV3::class, ClientVersion.getSerializer("3.0.0")::class)
-        assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("4.0.0")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("1.1.0")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.0")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.1")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("3.0.0")::class)
+        assertEquals(ClientModelSerializerV4::class, ClientVersion.getSerializer("4.0.0")::class)
+        assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("5.0.0")::class)
 
         assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("0.1.0-SNAPSHOT")::class)
         assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("0.1.1-SNAPSHOT")::class)
-        assertEquals(ClientModelSerializerV1ToV3::class, ClientVersion.getSerializer("1.1.0-SNAPSHOT")::class)
-        assertEquals(ClientModelSerializerV2ToV3::class, ClientVersion.getSerializer("2.3.0-SNAPSHOT")::class)
-        assertEquals(ClientModelSerializerV2ToV3::class, ClientVersion.getSerializer("2.3.1-SNAPSHOT")::class)
-        assertEquals(ClientModelSerializerV3::class, ClientVersion.getSerializer("3.0.0-SNAPSHOT")::class)
-        assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("4.0.0-SNAPSHOT")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("1.1.0-SNAPSHOT")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.0-SNAPSHOT")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.1-SNAPSHOT")::class)
+        assertEquals(CompositeModelSerializer::class, ClientVersion.getSerializer("3.0.0-SNAPSHOT")::class)
+        assertEquals(ClientModelSerializerV4::class, ClientVersion.getSerializer("4.0.0-SNAPSHOT")::class)
+        assertEquals(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("5.0.0-SNAPSHOT")::class)
     }
 
     "testVersionMatching" {

@@ -6,15 +6,15 @@ import com.copperleaf.ballast.savedstate.SaveStateScope
 import com.copperleaf.ballast.savedstate.SavedStateAdapter
 
 #parse("File Header.java")
-public class ${featureName}SavedStateAdapter(
+${classVisibility}class ${featureName}SavedStateAdapter(
     private val prefs: ${featureName}SavedStateAdapter.Prefs
 ) : SavedStateAdapter<
     ${featureName}Contract.Inputs,
     ${featureName}Contract.Events,
     ${featureName}Contract.State> {
     
-    public interface Prefs {
-        var loading: Boolean
+    ${classVisibility}interface Prefs {
+        ${propertyVisibility}var loading: Boolean
     }
 
     override suspend fun SaveStateScope<

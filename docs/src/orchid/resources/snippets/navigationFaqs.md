@@ -155,7 +155,7 @@ and avoid bloat in its API.
 [1]: {{ 'Ballast Debugger' | link }}
 [2]: {{ 'Ballast Undo' | link }}
 [3]: {{ 'Ballast Sync' | link }}
-[4]: {{ 'Ballast Firebase' | link }}
+[4]: {{ 'Ballast Analytics' | link }}
 [5]: {{ 'Usage Guide' | link }}
 [6]: {{ 'Navigation' | link }}
 [7]: https://ktor.io/docs/routing-in-ktor.html#match_url
@@ -164,3 +164,4 @@ and avoid bloat in its API.
 [10]: https://developer.mozilla.org/en-US/docs/Web/API/History_API
 [11]: https://github.com/gmazzo/gradle-buildconfig-plugin
 [12]: https://github.com/hfhbd/routing-compose#development-usage
+

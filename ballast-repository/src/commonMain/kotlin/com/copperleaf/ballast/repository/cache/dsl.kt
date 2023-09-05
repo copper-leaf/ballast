@@ -132,6 +132,15 @@ public fun <T> Cached<T>.isLoading(): Boolean {
 }
 
 /**
+ * Returns true if all Cached properties are not in the "Loading" state
+ */
+public fun isReady(vararg cached: Cached<*>): Boolean {
+    return cached
+        .map { !it.isLoading() }
+        .all { it }
+}
+
+/**
  * Returns true if the Repository has not started fetching from the remote source yet, or if it has started fetching and
  * did not have a prior value (thus, is the first time attempting to load this value).
  */

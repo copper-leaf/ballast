@@ -107,6 +107,10 @@ public class DefaultSyncConnection<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
+    override fun toString(): String {
+        return "DefaultSyncConnection(clientType=${clientType.name}, adapter=$adapter)"
+    }
+
     /**
      * Defines the type of client connecting to the synchronization service. Typically, there is a single Source ViewModel,
      * and an unspecified number of Replicas or Spectators

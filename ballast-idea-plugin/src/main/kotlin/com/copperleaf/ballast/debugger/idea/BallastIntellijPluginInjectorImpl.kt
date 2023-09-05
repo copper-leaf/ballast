@@ -7,6 +7,8 @@ import com.copperleaf.ballast.core.BootstrapInterceptor
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.idea.base.IntellijPluginBallastLogger
+import com.copperleaf.ballast.debugger.idea.features.debugger.DebuggerUseCaseImpl
+import com.copperleaf.ballast.debugger.idea.features.debugger.repository.DebuggerUseCase
 import com.copperleaf.ballast.debugger.idea.repository.RepositoryContract
 import com.copperleaf.ballast.debugger.idea.repository.RepositoryEventHandler
 import com.copperleaf.ballast.debugger.idea.repository.RepositoryInputHandler
@@ -73,4 +75,7 @@ class BallastIntellijPluginInjectorImpl(
             .build(),
         eventHandler = RepositoryEventHandler(),
     )
+
+    override val debuggerUseCase: DebuggerUseCase
+        get() = DebuggerUseCaseImpl(repository)
 }

@@ -29,4 +29,6 @@ data class IntellijPluginSettingsDefaults(
     override val baseViewModelType: BallastViewModel.ViewModelTemplate = BallastViewModel.ViewModelTemplate.Basic,
     override val allComponentsIncludesViewModel: Boolean = true,
     override val allComponentsIncludesSavedStateAdapter: Boolean = false,
+    override val defaultVisibility: BallastViewModel.DefaultVisibility = BallastViewModel.DefaultVisibility.Default,
+    override val useDataObjects: Boolean = false,
 ) : IntellijPluginSettings

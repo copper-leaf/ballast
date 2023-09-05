@@ -4,6 +4,7 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.core.BootstrapInterceptor
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.RoutingTable
+import com.copperleaf.ballast.navigation.vm.RouterBuilder
 import com.copperleaf.ballast.navigation.vm.withRouter
 import com.copperleaf.ballast.plusAssign
 
@@ -21,7 +22,7 @@ public fun <T : Route> BallastViewModelConfiguration.Builder.withBrowserHistoryR
     routingTable: RoutingTable<T>,
     basePath: String? = null,
     initialRoute: T,
-): BallastViewModelConfiguration.Builder {
+): RouterBuilder<T> {
     return this
         .withRouter(routingTable, initialRoute = null)
         .apply {
@@ -37,7 +38,7 @@ public fun <T : Route> BallastViewModelConfiguration.Builder.withBrowserHistoryR
 public fun <T : Route> BallastViewModelConfiguration.Builder.withBrowserHashRouter(
     routingTable: RoutingTable<T>,
     initialRoute: T,
-): BallastViewModelConfiguration.Builder {
+): RouterBuilder<T> {
     return this
         .withRouter(routingTable, initialRoute = null)
         .apply {

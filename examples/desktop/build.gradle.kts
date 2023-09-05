@@ -26,7 +26,7 @@ kotlin {
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-repository"))
                 implementation(project(":ballast-saved-state"))
-                implementation(project(":ballast-debugger"))
+                implementation(project(":ballast-debugger-client"))
                 implementation(project(":ballast-sync"))
                 implementation(project(":ballast-undo"))
                 implementation(project(":ballast-navigation"))
@@ -36,6 +36,9 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.swing)
                 implementation(libs.multiplatformSettings.core)
                 implementation(libs.multiplatformSettings.noArg)
+
+                implementation("io.github.oleksandrbalan:lazytable:1.5.0")
+                implementation("io.github.serpro69:kotlin-faker:1.14.0")
             }
         }
     }

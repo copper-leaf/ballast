@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.core
 
-import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.InputStrategyScope
 import com.copperleaf.ballast.Queued
 import kotlinx.coroutines.channels.BufferOverflow
@@ -29,13 +28,12 @@ import kotlinx.coroutines.launch
  * Because multiple inputs may be processed at once, if an input is cancelled there is no meaningful way to know what
  * state should be rolled-back to. Cancelled inputs may leave the ViewModel in a bad state.
  */
-public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor(): InputStrategy<Inputs, Events, State> {
-
-    override fun createQueue(): Channel<Queued<Inputs, Events, State>> {
-        return Channel(Channel.BUFFERED, BufferOverflow.SUSPEND)
-    }
-
-    override val rollbackOnCancellation: Boolean = false
+public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor(
+) : ChannelInputStrategy<Inputs, Events, State>(
+    capacity = Channel.BUFFERED,
+    onBufferOverflow = BufferOverflow.SUSPEND,
+    filter = null,
+) {
 
     override suspend fun InputStrategyScope<Inputs, Events, State>.processInputs(
         filteredQueue: Flow<Queued<Inputs, Events, State>>,
@@ -46,7 +44,9 @@ public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> priv
             filteredQueue
                 .collect { queued ->
                     viewModelScope.launch {
-                        acceptQueued(queued, Guardian())
+                        acceptQueued(queued, Guardian()) {
+                            // do nothing, we cannot rollback in Parallel without creating race conditions in other jobs
+                        }
                     }
                 }
         }
@@ -56,7 +56,7 @@ public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> priv
         private fun performStateAccessCheck() {
             check(!stateAccessed) {
                 "ParallelInputStrategy requires that inputs only access or update the state at most once as a " +
-                    "safeguard against race conditions."
+                        "safeguard against race conditions."
             }
         }
 
@@ -72,7 +72,7 @@ public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> priv
     }
 
     public companion object {
-        public operator fun invoke() : ParallelInputStrategy<Any, Any, Any> {
+        public operator fun invoke(): ParallelInputStrategy<Any, Any, Any> {
             return ParallelInputStrategy()
         }
 

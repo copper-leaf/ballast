@@ -70,4 +70,8 @@ public class CrashReportingInterceptor<Inputs : Any, Events : Any, State : Any>(
                 .collect()
         }
     }
+
+    override fun toString(): String {
+        return "CrashReportingInterceptor(crashReporter=$crashReporter)"
+    }
 }

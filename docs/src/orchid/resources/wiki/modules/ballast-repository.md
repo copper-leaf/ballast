@@ -96,13 +96,13 @@ object ExampleRepositoryContract {
         val exampleProperty: Cached<ExampleValue> = Cached.NotLoaded(),
     )
 
-    sealed class Inputs {
-        object ClearCaches : Inputs()
-        object Initialize : Inputs()
-        object RefreshAllCaches : Inputs()
+    sealed interface Inputs {
+        data object ClearCaches : Inputs
+        data object Initialize : Inputs
+        data object RefreshAllCaches : Inputs
 
-        data class RefreshExampleProperty(val forceRefresh: Boolean) : Inputs()
-        data class ExamplePropertyUpdated(val value: Cached<ExampleValue>) : Inputs()
+        data class RefreshExampleProperty(val forceRefresh: Boolean) : Inputs
+        data class ExamplePropertyUpdated(val value: Cached<ExampleValue>) : Inputs
     }
 }
 ```

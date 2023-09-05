@@ -7,16 +7,16 @@ object UndoContract {
         val text: String = ""
     )
 
-    sealed class Inputs {
-        object Undo : Inputs()
-        object Redo : Inputs()
-        object CaptureStateNow : Inputs()
-        data class UpdateText(val value: String) : Inputs()
+    sealed interface Inputs {
+        data object Undo : Inputs
+        data object Redo : Inputs
+        data object CaptureStateNow : Inputs
+        data class UpdateText(val value: String) : Inputs
     }
 
-    sealed class Events {
+    sealed interface Events {
         class HandleUndoAction(
             val action: StateBasedUndoControllerContract.Inputs<UndoContract.Inputs, UndoContract.Events, UndoContract.State>
-        ) : Events()
+        ) : Events
     }
 }

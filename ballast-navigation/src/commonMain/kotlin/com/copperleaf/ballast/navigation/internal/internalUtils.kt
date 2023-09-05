@@ -4,8 +4,6 @@ import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.PathSegment
 import com.copperleaf.ballast.navigation.routing.QueryParameter
 import com.copperleaf.ballast.navigation.routing.Route
-import io.ktor.http.encodeURLPathPart
-import io.ktor.http.encodeURLQueryComponent
 
 // Directions
 // ---------------------------------------------------------------------------------------------------------------------
@@ -56,7 +54,7 @@ internal fun Route.directionsForPath(
         Result.success(
             successResults
                 .flatMap { it.toAppend }
-                .joinToString(separator = "/", prefix = "/") { it.encodeURLPathPart() }
+                .joinToString(separator = "/", prefix = "/") { Uri.encodeUrlPathSegment(it) }
         )
     }
 }
@@ -105,8 +103,8 @@ internal fun Route.directionsForQuery(
                         }
                     }
                     .joinToString(separator = "&", prefix = "?") { (key, value) ->
-                        val encodedKey = key.encodeURLQueryComponent(encodeFull = true, spaceToPlus = true)
-                        val encodedValue = value.encodeURLQueryComponent(encodeFull = true, spaceToPlus = true)
+                        val encodedKey = Uri.encodeUrlQueryComponent(key, spaceToPlus = true)
+                        val encodedValue = Uri.encodeUrlQueryComponent(value, spaceToPlus = true)
                         "$encodedKey=$encodedValue"
                     }
             }

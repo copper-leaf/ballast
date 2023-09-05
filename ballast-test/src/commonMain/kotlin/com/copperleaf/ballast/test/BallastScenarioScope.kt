@@ -2,6 +2,7 @@ package com.copperleaf.ballast.test
 
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
+import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import kotlin.time.Duration
@@ -40,6 +41,12 @@ public interface BallastScenarioScope<Inputs : Any, Events : Any, State : Any> {
      * Adds the Interceptor to this scenario
      */
     public fun addInterceptor(interceptor: () -> BallastInterceptor<Inputs, Events, State>)
+
+    /**
+     * Customize and override any value in the [BallastViewModelConfiguration.Builder] for this test case. This is a
+     * dangerous feature and could break the test machinery, make sure you know what you're doing!
+     */
+    public fun customizeConfiguration(configure: (BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>) -> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>)
 
     /**
      * Provide an alternative starting state for this scenario. Overrides the default starting state provided to the

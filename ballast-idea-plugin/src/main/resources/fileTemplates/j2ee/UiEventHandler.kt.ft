@@ -5,7 +5,7 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
 
 #parse("File Header.java")
-public class ${featureName}EventHandler : EventHandler<
+${classVisibility}class ${featureName}EventHandler : EventHandler<
     ${featureName}Contract.Inputs,
     ${featureName}Contract.Events,
     ${featureName}Contract.State> {
@@ -14,7 +14,7 @@ public class ${featureName}EventHandler : EventHandler<
         ${featureName}Contract.Events,
         ${featureName}Contract.State>.handleEvent(
         event: ${featureName}Contract.Events
-    ) = when (event) {
+    ): Unit = when (event) {
         is ${featureName}Contract.Events.NavigateUp -> {
 
         }

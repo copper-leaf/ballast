@@ -35,6 +35,7 @@ import com.copperleaf.ballast.examples.ui.counter.CounterUi
 import com.copperleaf.ballast.examples.ui.kitchensink.InputStrategySelection
 import com.copperleaf.ballast.examples.ui.kitchensink.KitchenSinkUi
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperUi
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontUi
 import com.copperleaf.ballast.examples.ui.sync.SyncUi
 import com.copperleaf.ballast.examples.ui.undo.UndoUi
 import com.copperleaf.ballast.navigation.routing.RouterContract
@@ -132,6 +133,14 @@ fun main() = singleWindowApplication(title = "Ballast Examples") {
                                     router::trySend,
                                 )
                         ) { Text("Kitchen Sink") }
+                        ListItem(
+                            modifier = Modifier
+                                .routeLink(
+                                    BallastExamples.Storefront,
+                                    currentRoute,
+                                    router::trySend,
+                                )
+                        ) { Text("Storefront") }
                     }
                 }
             }
@@ -167,6 +176,10 @@ fun main() = singleWindowApplication(title = "Ballast Examples") {
                                     inputStrategy ?: "Lifo"
                                 )
                                 KitchenSinkUi.Content(injector, inputStrategySelection)
+                            }
+
+                            BallastExamples.Storefront -> {
+                                StorefrontUi.Content(injector)
                             }
 
                             null -> {}

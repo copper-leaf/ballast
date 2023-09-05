@@ -9,7 +9,7 @@ public abstract interface class com/copperleaf/ballast/crashreporting/CrashRepor
 public final class com/copperleaf/ballast/crashreporting/CrashReportingInterceptor : com/copperleaf/ballast/BallastInterceptor {
 	public fun <init> (Lcom/copperleaf/ballast/crashreporting/CrashReporter;Lkotlin/jvm/functions/Function1;)V
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
-	public fun onNotify (Lcom/copperleaf/ballast/BallastLogger;Lcom/copperleaf/ballast/BallastNotification;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
 }
 

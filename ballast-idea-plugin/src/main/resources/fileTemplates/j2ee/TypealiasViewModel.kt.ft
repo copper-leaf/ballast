@@ -4,7 +4,7 @@
 import com.copperleaf.ballast.BallastViewModel
 
 #parse("File Header.java")
-public typealias ${featureName}ViewModel = BallastViewModel<
+${classVisibility}typealias ${featureName}ViewModel = BallastViewModel<
     ${featureName}Contract.Inputs,
     ${featureName}Contract.Events,
     ${featureName}Contract.State>

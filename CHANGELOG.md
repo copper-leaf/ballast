@@ -1,12 +1,20 @@
-## 3.0.2 - 2022-06-08
+## 4.0.0 - 2023-09-05
+
+- Updates to Kotlin 1.9.10
+- The Debugger IntelliJ plugin now has functionality to send States and Inputs to connected ViewModels as JSON, which
+  gets parsed and handled on the device.
+- Several API improvements, including some breaking changes. See [v4 Migration Guide](https://copper-leaf.github.io/ballast/wiki/usage/migration/v4)
+    for full list of changes and instructions for updating your project.
+
+## 3.0.2 - 2023-06-08
 
 - Fixes regression where `awaitViewModelStart()` never calls a terminal Flow operator and doesn't actually suspend.
 
-## 3.0.1 - 2022-05-13
+## 3.0.1 - 2023-05-13
 
 - Fixes regression in BallastSavedStateInterceptor
 
-## 3.0.0 - 2022-05-07
+## 3.0.0 - 2023-05-07
 
 - Updates to Kotlin 1.8.20
 - Drops support for deprecated KMPP targets:

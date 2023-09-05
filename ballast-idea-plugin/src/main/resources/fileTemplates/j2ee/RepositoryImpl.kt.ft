@@ -2,6 +2,7 @@
 #end
 
 import com.copperleaf.ballast.BallastViewModelConfiguration
+import com.copperleaf.ballast.build
 import com.copperleaf.ballast.repository.BallastRepository
 import com.copperleaf.ballast.repository.bus.EventBus
 import com.copperleaf.ballast.repository.cache.Cached
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 #parse("File Header.java")
-public class ${featureName}RepositoryImpl(
+${classVisibility}class ${featureName}RepositoryImpl(
     coroutineScope: CoroutineScope,
     eventBus: EventBus,
     configBuilder: BallastViewModelConfiguration.Builder,
@@ -19,12 +20,13 @@ public class ${featureName}RepositoryImpl(
     ${featureName}RepositoryContract.State>(
     coroutineScope = coroutineScope,
     eventBus = eventBus,
-    configBuilder = configBuilder
+    config = configBuilder
         .apply {
             this.inputHandler = ${featureName}RepositoryInputHandler(eventBus)
             this.initialState = ${featureName}RepositoryContract.State()
             this.name = "${featureName} Repository"
-        },
+        }
+        .build(),
 ), ${featureName}Repository {
     override fun clearAllCaches() {
         trySend(${featureName}RepositoryContract.Inputs.ClearCaches)

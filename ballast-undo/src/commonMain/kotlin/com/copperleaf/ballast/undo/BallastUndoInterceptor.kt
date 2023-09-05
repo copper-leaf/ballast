@@ -28,4 +28,8 @@ public class BallastUndoInterceptor<Inputs : Any, Events : Any, State : Any>(
             }
         }
     }
+
+    override fun toString(): String {
+        return "BallastUndoInterceptor(controller=$controller)"
+    }
 }

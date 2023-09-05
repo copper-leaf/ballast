@@ -8,6 +8,7 @@ import com.copperleaf.ballast.examples.ui.counter.CounterViewModel
 import com.copperleaf.ballast.examples.ui.kitchensink.InputStrategySelection
 import com.copperleaf.ballast.examples.ui.kitchensink.KitchenSinkViewModel
 import com.copperleaf.ballast.examples.ui.scorekeeper.ScorekeeperViewModel
+import com.copperleaf.ballast.examples.ui.storefront.StorefrontViewModel
 import com.copperleaf.ballast.examples.ui.undo.UndoContract
 import com.copperleaf.ballast.examples.ui.undo.UndoViewModel
 import com.copperleaf.ballast.navigation.routing.RouterContract
@@ -75,4 +76,11 @@ interface ComposeDesktopInjector {
         coroutineScope: CoroutineScope,
         inputStrategy: InputStrategySelection,
     ): KitchenSinkViewModel
+
+// Storefront
+// ---------------------------------------------------------------------------------------------------------------------
+
+    fun storefrontViewModel(
+        coroutineScope: CoroutineScope,
+    ): StorefrontViewModel
 }

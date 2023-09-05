@@ -35,4 +35,6 @@ interface IntellijPluginMutableSettings : IntellijPluginSettings {
     override var baseViewModelType: BallastViewModel.ViewModelTemplate
     override var allComponentsIncludesViewModel: Boolean
     override var allComponentsIncludesSavedStateAdapter: Boolean
+    override var defaultVisibility: BallastViewModel.DefaultVisibility
+    override var useDataObjects: Boolean
 }

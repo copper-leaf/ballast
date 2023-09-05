@@ -10,11 +10,11 @@ object RepositoryContract {
         val settings: Cached<IntellijPluginSettingsSnapshot> = Cached.NotLoaded(),
     )
 
-    sealed class Inputs {
-        object Initialize : Inputs()
+    sealed interface Inputs {
+        data object Initialize : Inputs
 
-        data class SaveUpdatedSettings(val settings: IntellijPluginSettingsSnapshot) : Inputs()
+        data class SaveUpdatedSettings(val settings: IntellijPluginSettingsSnapshot) : Inputs
     }
 
-    sealed class Events
+    sealed interface Events
 }
