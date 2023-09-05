@@ -18,10 +18,7 @@ kotlin {
             dependencies { }
         }
         val androidMain by getting {
-            dependencies {
-                implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation(libs.firebase.analytics)
-            }
+            dependencies { }
         }
         val jsMain by getting {
             dependencies { }
