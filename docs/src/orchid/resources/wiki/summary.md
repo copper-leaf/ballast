@@ -8,6 +8,7 @@
   - [Project Architecture](usage/architecture.md)
   - [Migration Guide](usage/migration/index.md)
     - [v2 to v3](usage/migration/v3.md)
+    - [v3 to v4](usage/migration/v4.md)
 - [Platforms](platforms/index.md)
   - [Android](platforms/android.md)
   - [iOS](platforms/ios.md)
