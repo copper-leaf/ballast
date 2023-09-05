@@ -1,4 +1,4 @@
-## 4.0.0 - 2023-08-25
+## 4.0.0 - 2023-09-05
 
 - Updates to Kotlin 1.9.10
 - The Debugger IntelliJ plugin now has functionality to send States and Inputs to connected ViewModels as JSON, which

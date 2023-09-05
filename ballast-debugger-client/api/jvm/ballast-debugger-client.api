@@ -36,3 +36,13 @@ public final class com/copperleaf/ballast/debugger/JsonDebuggerAdapter : com/cop
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/copperleaf/ballast/debugger/ToStringDebuggerAdapter : com/copperleaf/ballast/debugger/DebuggerAdapter {
+	public fun <init> ()V
+	public fun deserializeInput (Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public fun deserializeState (Lio/ktor/http/ContentType;Ljava/lang/String;)Ljava/lang/Object;
+	public fun serializeEvent (Ljava/lang/Object;)Lkotlin/Pair;
+	public fun serializeInput (Ljava/lang/Object;)Lkotlin/Pair;
+	public fun serializeState (Ljava/lang/Object;)Lkotlin/Pair;
+	public fun toString ()Ljava/lang/String;
+}
+
