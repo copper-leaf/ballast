@@ -7,10 +7,13 @@ plugins {
 apiValidation {
     ignoredProjects.addAll(
         listOf(
-//            "docs",
+            "docs",
             "android",
             "desktop",
             "web",
+            "counter",
+            "navigationWithCustomRoutes",
+            "navigationWithEnumRoutes",
             "ballast-idea-plugin",
         )
     )

@@ -48,5 +48,8 @@ include(":ballast-test")
 include(":examples:android")
 include(":examples:desktop")
 include(":examples:web")
+include(":examples:counter")
+include(":examples:navigationWithEnumRoutes")
+include(":examples:navigationWithCustomRoutes")
 
 include(":docs")

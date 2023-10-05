@@ -28,6 +28,7 @@ data class IntellijPluginSettingsSnapshot(
     override val baseViewModelType: BallastViewModel.ViewModelTemplate,
     override val allComponentsIncludesViewModel: Boolean,
     override val allComponentsIncludesSavedStateAdapter: Boolean,
+    override val allComponentsIncludesComposeUi: Boolean,
     override val defaultVisibility: BallastViewModel.DefaultVisibility,
     override val useDataObjects: Boolean,
 ) : IntellijPluginSettings {
@@ -58,6 +59,7 @@ data class IntellijPluginSettingsSnapshot(
                 baseViewModelType = settings.baseViewModelType,
                 allComponentsIncludesViewModel = settings.allComponentsIncludesViewModel,
                 allComponentsIncludesSavedStateAdapter = settings.allComponentsIncludesSavedStateAdapter,
+                allComponentsIncludesComposeUi = settings.allComponentsIncludesComposeUi,
                 defaultVisibility = settings.defaultVisibility,
                 useDataObjects = settings.useDataObjects,
             )

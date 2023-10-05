@@ -31,6 +31,7 @@ kotlin {
                 implementation(project(":ballast-undo"))
                 implementation(project(":ballast-navigation"))
 
+                implementation(compose.materialIconsExtended)
                 implementation(libs.bundles.ktorClient)
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.kotlinx.coroutines.swing)

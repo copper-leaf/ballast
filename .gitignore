@@ -82,4 +82,4 @@ build/
 .DS_Store
 
 examples/web/src/jsMain/resources/bgg/hot/*
-docs/src/orchid/resources/assets/example/distributions/**/*
+docs/src/orchid/resources/assets/examples/**/*

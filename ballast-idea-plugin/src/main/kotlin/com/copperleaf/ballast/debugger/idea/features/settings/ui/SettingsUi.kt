@@ -209,6 +209,17 @@ object SettingsUi {
                 }
 
                 CheckboxArea(
+                    checked = uiState.modifiedSettings.allComponentsIncludesComposeUi,
+                    onCheckedChange = {
+                        postInput(
+                            SettingsUiContract.Inputs.UpdateSettings { copy(allComponentsIncludesComposeUi = it) }
+                        )
+                    },
+                ) {
+                    Text("All Components - Include Compose UI")
+                }
+
+                CheckboxArea(
                     checked = uiState.modifiedSettings.useDataObjects,
                     onCheckedChange = {
                         postInput(

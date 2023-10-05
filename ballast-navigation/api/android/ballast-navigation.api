@@ -551,6 +551,7 @@ public final class com/copperleaf/ballast/navigation/routing/RoutingUtilsKt {
 	public static synthetic fun floatPath$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
 	public static final fun floatQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
 	public static synthetic fun floatQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
+	public static final fun fromEnum (Lcom/copperleaf/ballast/navigation/routing/RoutingTable$Companion;Lkotlin/enums/EnumEntries;)Lcom/copperleaf/ballast/navigation/routing/RoutingTable;
 	public static final fun fromEnum (Lcom/copperleaf/ballast/navigation/routing/RoutingTable$Companion;[Ljava/lang/Enum;)Lcom/copperleaf/ballast/navigation/routing/RoutingTable;
 	public static final fun getCurrentDestinationOrNotFound (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Destination;
 	public static final fun getCurrentDestinationOrNull (Ljava/util/List;)Lcom/copperleaf/ballast/navigation/routing/Destination$Match;
@@ -660,6 +661,8 @@ public final class com/copperleaf/ballast/navigation/routing/UnmatchedDestinatio
 
 public final class com/copperleaf/ballast/navigation/vm/BallastUtilsKt {
 	public static final fun withRouter (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static final fun withRouter (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;Lkotlin/jvm/functions/Function0;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static synthetic fun withRouter$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 }
 
 public final class com/copperleaf/ballast/navigation/vm/RouterInputHandlerImpl : com/copperleaf/ballast/InputHandler {

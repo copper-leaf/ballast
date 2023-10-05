@@ -20,6 +20,8 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
+                implementation(compose.materialIconsExtended)
+
                 // Ktor websocket server
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.bundles.ktorEmbeddedServer)

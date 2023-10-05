@@ -77,9 +77,9 @@ platform as long as it works with Coroutines and Flows. However, the following t
 that they have been tested and are known to work there, or have specific features for that platform
 
 - {{ 'Android' | anchor }}
-- {{ 'iOS' | anchor }} (requires new Kotlin Native Memory Model)
-- {{ 'Compose Desktop' | anchor }}
-- {{ 'Compose JS/DOM' | anchor }}
+- {{ 'Compose' | anchor }}
+- {{ 'SwiftUI' | anchor }}
+- {{ 'KVision' | anchor }}
 
 # Installation
 
