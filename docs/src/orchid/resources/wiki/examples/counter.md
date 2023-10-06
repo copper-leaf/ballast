@@ -19,4 +19,4 @@ This example is just a simple counter to demonstrate the bare basics of sending 
 </p>
 <br> 
 
-- [Sources](https://github.com/copper-leaf/ballast/tree/main/examples/counter)
+- [Sources](https://github.com/copper-leaf/ballast/tree/dev/examples/counter)
