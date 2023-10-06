@@ -1,6 +1,9 @@
 package com.copperleaf.ballast.examples.navigation
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -25,14 +28,26 @@ object NavigationUi {
         val routerState: Backstack<AppScreenRoute> by router.observeStates().collectAsState()
 
         CompositionLocalProvider(LocalRouter provides router) {
-            routerState.renderCurrentDestination(
-                route = { appScreen: AppScreenRoute ->
-                    matchRoute<AppScreen>(appScreen)?.let {
-                        it.Content()
+            Column {
+                routerState.renderCurrentDestination(
+                    route = { appScreen: AppScreenRoute ->
+                        matchRoute<AppScreen>(appScreen)?.let {
+                            it.Content()
+                        }
+                    },
+                    notFound = { },
+                )
+
+                Divider()
+                Text("Backstack")
+
+                routerState
+                    .withIndex()
+                    .reversed()
+                    .forEach { (index, destination) ->
+                        Text("- [$index] ${destination.originalDestinationUrl}")
                     }
-                },
-                notFound = { },
-            )
+            }
         }
     }
 }

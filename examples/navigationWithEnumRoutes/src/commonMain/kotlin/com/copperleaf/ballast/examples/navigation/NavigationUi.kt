@@ -2,6 +2,7 @@ package com.copperleaf.ballast.examples.navigation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,71 +31,83 @@ object NavigationUi {
 
         val routerState: Backstack<AppScreen> by router.observeStates().collectAsState()
 
-        routerState.renderCurrentDestination(
-            route = { appScreen: AppScreen ->
-                when (appScreen) {
-                    AppScreen.Home -> {
-                        Home(
-                            goToPostList = {
-                                router.trySend(
-                                    RouterContract.Inputs.GoToDestination(
-                                        AppScreen.PostList.directions().build()
+        Column {
+            routerState.renderCurrentDestination(
+                route = { appScreen: AppScreen ->
+                    when (appScreen) {
+                        AppScreen.Home -> {
+                            Home(
+                                goToPostList = {
+                                    router.trySend(
+                                        RouterContract.Inputs.GoToDestination(
+                                            AppScreen.PostList.directions().build()
+                                        )
                                     )
-                                )
-                            },
-                            goToPost = { postId ->
-                                router.trySend(
-                                    RouterContract.Inputs.GoToDestination(
-                                        AppScreen.PostDetails.directions().pathParameter("postId", postId.toString())
-                                            .build()
+                                },
+                                goToPost = { postId ->
+                                    router.trySend(
+                                        RouterContract.Inputs.GoToDestination(
+                                            AppScreen.PostDetails.directions().pathParameter("postId", postId.toString())
+                                                .build()
+                                        )
                                     )
-                                )
-                            }
-                        )
-                    }
+                                }
+                            )
+                        }
 
-                    AppScreen.PostList -> {
-                        val sort by optionalStringQuery()
-                        PostList(
-                            sortDirection = sort,
-                            changeSort = { sortDirection ->
-                                router.trySend(
-                                    RouterContract.Inputs.ReplaceTopDestination(
-                                        AppScreen.PostList.directions().queryParameter("sort", sortDirection).build()
+                        AppScreen.PostList -> {
+                            val sort by optionalStringQuery()
+                            PostList(
+                                sortDirection = sort,
+                                changeSort = { sortDirection ->
+                                    router.trySend(
+                                        RouterContract.Inputs.ReplaceTopDestination(
+                                            AppScreen.PostList.directions().queryParameter("sort", sortDirection).build()
+                                        )
                                     )
-                                )
-                            },
-                            goBack = {
-                                router.trySend(
-                                    RouterContract.Inputs.GoBack()
-                                )
-                            },
-                            goToPost = { postId ->
-                                router.trySend(
-                                    RouterContract.Inputs.GoToDestination(
-                                        AppScreen.PostDetails.directions().pathParameter("postId", postId.toString())
-                                            .build()
+                                },
+                                goBack = {
+                                    router.trySend(
+                                        RouterContract.Inputs.GoBack()
                                     )
-                                )
-                            },
-                        )
-                    }
+                                },
+                                goToPost = { postId ->
+                                    router.trySend(
+                                        RouterContract.Inputs.GoToDestination(
+                                            AppScreen.PostDetails.directions().pathParameter("postId", postId.toString())
+                                                .build()
+                                        )
+                                    )
+                                },
+                            )
+                        }
 
-                    AppScreen.PostDetails -> {
-                        val postId by intPath()
-                        PostDetails(
-                            postId = postId,
-                            goBack = {
-                                router.trySend(
-                                    RouterContract.Inputs.GoBack()
-                                )
-                            },
-                        )
+                        AppScreen.PostDetails -> {
+                            val postId by intPath()
+                            PostDetails(
+                                postId = postId,
+                                goBack = {
+                                    router.trySend(
+                                        RouterContract.Inputs.GoBack()
+                                    )
+                                },
+                            )
+                        }
                     }
+                },
+                notFound = { },
+            )
+
+            Divider()
+            Text("Backstack")
+
+            routerState
+                .withIndex()
+                .reversed()
+                .forEach { (index, destination) ->
+                    Text("- [$index] ${destination.originalDestinationUrl}")
                 }
-            },
-            notFound = { },
-        )
+        }
     }
 
     @Composable

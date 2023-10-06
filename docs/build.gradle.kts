@@ -15,11 +15,12 @@ val processOrchidResources by tasks
 val exampleProjects = listOf(
     "web",
     "counter",
+    "navigationWithEnumRoutes",
 )
 
 exampleProjects.forEach { exampleProjectName ->
     tasks.register("copyExample${exampleProjectName.capitalize()}Sources", Copy::class) {
-        val sourceDir = project.rootDir.resolve("examples/$exampleProjectName/build/dist/js/productionExecutable")
+        val sourceDir = project.rootDir.resolve("examples/$exampleProjectName/build/dist/js/developmentExecutable")
         val destinationDir = project.projectDir.resolve("src/orchid/resources/assets/examples/$exampleProjectName")
 
         onlyIf { sourceDir.exists() }

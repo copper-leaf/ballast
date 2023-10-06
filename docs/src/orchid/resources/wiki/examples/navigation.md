@@ -1,26 +1,22 @@
 ---
 extraJs:
-  - 'assets/examples/web/web.js'
+  - 'assets/js/skiko.js'
+  - 'assets/examples/navigationWithEnumRoutes/navigationWithEnumRoutes.js'
 ---
 
 # {{ page.title }}
 
-This example demonstrates Ballast Navigation, with all the other examples shown in a tabbed view. It also uses the 
-`BrowserHashNavigationInterceptor` to synchronize the Router state with the browser's address bar. Changes to the app 
-state will update the URL hash, and you may manually edit or hyperlink to a page at a given hash to load that tab.
+This example shows basic navigation and backstack management with Compose and Ballast Navigation.
 
-The Router also integrates with all other Ballast features, such as Sync, Undo, or the Debugger. Try opening the 
-Debugger to watch the Router state get updated!
+<p style="
+    display: block;
+    z-index: 10000;
+    position: relative;
+    overflow: scroll;
+    border: thin solid black;
+    ">
+<canvas id="ComposeTarget"></canvas>
+</p>
+<br> 
 
-<div id="examples_navigation"></div>
-<br>
-
-#### Sources:
-
-- [Android](https://github.com/copper-leaf/ballast/tree/main/examples/android/src/androidMain/java/com/copperleaf/ballast/examples/router)
-- [Compose Desktop](https://github.com/copper-leaf/ballast/tree/main/examples/desktop/src/jvmMain/kotlin/com/copperleaf/ballast/examples/router)
-- [Compose Web](https://github.com/copper-leaf/ballast/tree/main/examples/web/src/jsMain/kotlin/com/copperleaf/ballast/examples/router)
-
-{% snippet 'debuggerProTip' %}
-
-[1]: {{ 'Ballast Undo' | link }}
+- [Sources](https://github.com/copper-leaf/ballast/tree/main/examples/navigationWithEnumRoutes)
