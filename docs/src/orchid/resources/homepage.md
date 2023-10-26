@@ -95,7 +95,7 @@ dependencies {
   implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
   implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
   implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
-  implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
+  implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
   testImplementation("io.github.copper-leaf:ballast-test:{{site.version}}")
 }
 
@@ -109,7 +109,7 @@ kotlin {
         implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
         implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
         implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
-        implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
+        implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
       }
     }
     val commonTest by getting {
