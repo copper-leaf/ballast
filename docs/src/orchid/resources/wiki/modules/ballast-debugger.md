@@ -86,6 +86,31 @@ class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
 )
 ```
 
+## Android
+
+On Android you need to add a clear text traffic permission for `10.0.2.2` to your network security configuration.
+
+To do that you need to create the file `network_security_config.xml` at `src/main/res/xml` in your Android module. The content should look like this:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">10.0.2.2</domain>
+    </domain-config>
+</network-security-config>
+```
+
+Then, in your `AndroidManifest.xml` add the following line to your `application` configuration:
+
+```xml
+<application
+  ...
+  android:networkSecurityConfig="@xml/network_security_config" >
+    ...
+</application>
+```
+
 ## State/Input Serialization (v4+)
 
 Since version 4.0.0, the Debugger allows you to send JSON (or other serialized content) from the graphical UI back to 
