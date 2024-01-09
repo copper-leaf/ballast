@@ -818,7 +818,7 @@ of experiencing these behaviors to get an intuition for when to use each one.
 A first-in-first-out (FIFO) strategy is the simplest to work with, and is recommended if you're just starting out with
 Ballast. It's the typical way one would think about writing code for single-threaded applications, where something that
 blocks the thread blocks it for everyone, but this makes it very predictable. You know that if you start running some
-block of code, it will always run into it's finished, and anything else that wants to run must wait for its turn.
+block of code, it will always run until it's finished, and anything else that wants to run must wait for its turn.
 The first Input that is sent to the ViewModel will be the first that will be processed, even if others get sent
 afterward.
 
