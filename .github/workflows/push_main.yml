@@ -66,6 +66,6 @@ jobs:
       - name: 'Build example Compose Web site'
         run: './gradlew :examples:web:build --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Publish Documentation'
-        run: './gradlew :docs:publish --stacktrace -Prelease -PorchidEnvironment=prod'
+        run: './gradlew :docs:publish --stacktrace --no-configuration-cache -Prelease -PorchidEnvironment=prod'
       - name: 'Close Sonatype Staging Repository'
         run: './gradlew closeSonatypeStagingRepository --stacktrace -Prelease -PorchidEnvironment=prod'

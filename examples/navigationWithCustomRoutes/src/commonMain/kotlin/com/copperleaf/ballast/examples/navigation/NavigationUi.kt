@@ -23,7 +23,7 @@ object NavigationUi {
     @Composable
     fun Content() {
         val applicationScope = rememberCoroutineScope()
-        val router: Router<AppScreenRoute> = remember(applicationScope) { RouterViewModel(applicationScope) }
+        val router: Router<AppScreenRoute> = remember(applicationScope) { createRouter(applicationScope) }
 
         val routerState: Backstack<AppScreenRoute> by router.observeStates().collectAsState()
 

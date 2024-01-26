@@ -19,7 +19,11 @@ public sealed class Queued<Inputs : Any, Events : Any, State : Any> {
     public class RestoreState<Inputs : Any, Events : Any, State : Any>(
         public override val deferred: CompletableDeferred<Unit>?,
         public val state: State,
-    ) : Queued<Inputs, Events, State>()
+    ) : Queued<Inputs, Events, State>() {
+        override fun toString(): String {
+            return "RestoreState(state=$state)"
+        }
+    }
 
     /**
      * A request to handle an Input by sending it to the [InputHandler].
@@ -27,7 +31,11 @@ public sealed class Queued<Inputs : Any, Events : Any, State : Any> {
     public class HandleInput<Inputs : Any, Events : Any, State : Any>(
         public override val deferred: CompletableDeferred<Unit>?,
         public val input: Inputs,
-    ) : Queued<Inputs, Events, State>()
+    ) : Queued<Inputs, Events, State>() {
+        override fun toString(): String {
+            return "HandleInput(input=$input)"
+        }
+    }
 
     /**
      * A request to gracefully shut down the ViewModel. This will attempt to let it finish processing any Inputs
@@ -42,5 +50,9 @@ public sealed class Queued<Inputs : Any, Events : Any, State : Any> {
     public class ShutDownGracefully<Inputs : Any, Events : Any, State : Any>(
         public override val deferred: CompletableDeferred<Unit>?,
         public val gracePeriod: Duration,
-    ) : Queued<Inputs, Events, State>()
+    ) : Queued<Inputs, Events, State>() {
+        override fun toString(): String {
+            return "ShutDownGracefully(gracePeriod=$gracePeriod)"
+        }
+    }
 }

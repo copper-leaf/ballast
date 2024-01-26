@@ -23,6 +23,7 @@
   - [Ballast Saved State](modules/ballast-saved-state.md)
   - [Ballast Sync](modules/ballast-sync.md)
   - [Ballast Undo](modules/ballast-undo.md)
+  - [Ballast Schedules](modules/ballast-schedules.md)
   - [Ballast Repository](modules/ballast-repository.md)
   - [Ballast Debugger](modules/ballast-debugger.md)
   - [Ballast Intellij Plugin](modules/ballast-intellij-plugin.md)

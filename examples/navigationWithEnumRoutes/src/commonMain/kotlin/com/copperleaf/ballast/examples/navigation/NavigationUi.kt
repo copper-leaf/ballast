@@ -11,9 +11,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.copperleaf.ballast.navigation.routing.Backstack
+import com.copperleaf.ballast.navigation.routing.Destination
+import com.copperleaf.ballast.navigation.routing.Route
+import com.copperleaf.ballast.navigation.routing.RouteAnnotation
+import com.copperleaf.ballast.navigation.routing.RouteMatcher
 import com.copperleaf.ballast.navigation.routing.RouterContract
+import com.copperleaf.ballast.navigation.routing.RoutingTable
+import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
+import com.copperleaf.ballast.navigation.routing.fromEnum
 import com.copperleaf.ballast.navigation.routing.intPath
 import com.copperleaf.ballast.navigation.routing.optionalStringQuery
 import com.copperleaf.ballast.navigation.routing.pathParameter
@@ -27,7 +34,7 @@ object NavigationUi {
     @Composable
     fun Content() {
         val applicationScope = rememberCoroutineScope()
-        val router: Router<AppScreen> = remember(applicationScope) { RouterViewModel(applicationScope) }
+        val router: Router<AppScreen> = remember(applicationScope) { createRouter(applicationScope) }
 
         val routerState: Backstack<AppScreen> by router.observeStates().collectAsState()
 
@@ -40,18 +47,19 @@ object NavigationUi {
                                 goToPostList = {
                                     router.trySend(
                                         RouterContract.Inputs.GoToDestination(
-                                            AppScreen.PostList.directions().build()
-                                        )
+                                            AppScreen.PostList.directions().build(),
+                                        ),
                                     )
                                 },
                                 goToPost = { postId ->
                                     router.trySend(
                                         RouterContract.Inputs.GoToDestination(
-                                            AppScreen.PostDetails.directions().pathParameter("postId", postId.toString())
-                                                .build()
-                                        )
+                                            AppScreen.PostDetails.directions()
+                                                .pathParameter("postId", postId.toString())
+                                                .build(),
+                                        ),
                                     )
-                                }
+                                },
                             )
                         }
 
@@ -62,21 +70,23 @@ object NavigationUi {
                                 changeSort = { sortDirection ->
                                     router.trySend(
                                         RouterContract.Inputs.ReplaceTopDestination(
-                                            AppScreen.PostList.directions().queryParameter("sort", sortDirection).build()
-                                        )
+                                            AppScreen.PostList.directions().queryParameter("sort", sortDirection)
+                                                .build(),
+                                        ),
                                     )
                                 },
                                 goBack = {
                                     router.trySend(
-                                        RouterContract.Inputs.GoBack()
+                                        RouterContract.Inputs.GoBack(),
                                     )
                                 },
                                 goToPost = { postId ->
                                     router.trySend(
                                         RouterContract.Inputs.GoToDestination(
-                                            AppScreen.PostDetails.directions().pathParameter("postId", postId.toString())
-                                                .build()
-                                        )
+                                            AppScreen.PostDetails.directions()
+                                                .pathParameter("postId", postId.toString())
+                                                .build(),
+                                        ),
                                     )
                                 },
                             )
@@ -88,7 +98,7 @@ object NavigationUi {
                                 postId = postId,
                                 goBack = {
                                     router.trySend(
-                                        RouterContract.Inputs.GoBack()
+                                        RouterContract.Inputs.GoBack(),
                                     )
                                 },
                             )
@@ -176,6 +186,45 @@ object NavigationUi {
 
             Button({ goBack() }) {
                 Text("Go Back")
+            }
+        }
+    }
+}
+
+enum class AppScreens(
+    routeFormat: String,
+    override val annotations: Set<RouteAnnotation> = emptySet(),
+) : Route {
+    Home("/app/home"),
+    PostList("/app/posts?sort={?}"),
+    PostDetails("/app/posts/{postId}"),
+    ;
+
+    override val matcher: RouteMatcher = RouteMatcher.create(routeFormat)
+
+    companion object {
+        fun handleDeepLink(deepLinkUrl: String) {
+            val routingTable = RoutingTable.fromEnum(AppScreens.values())
+
+            val destination: Destination<AppScreens> = routingTable.findMatch(
+                UnmatchedDestination.parse(deepLinkUrl),
+            )
+
+            if (destination is Destination.Match<AppScreens>) {
+                when (destination.originalRoute) {
+                    Home -> {
+                    }
+
+                    PostList -> {
+                        val sort: String? by destination.optionalStringQuery()
+                        // do something with the sort parameter in the PostList route query string, if it was provided
+                    }
+
+                    PostDetails -> {
+                        val postId: Int by destination.intPath()
+                        // do something with the postId in the PostDetails route path
+                    }
+                }
             }
         }
     }

@@ -3,8 +3,6 @@
 import com.copperleaf.gradle.projectVersion
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
 plugins {
     id("copper-leaf-base")
@@ -92,14 +90,4 @@ fun executeAndGetXmlResponse(type: String) {
     responseFile.outputStream().write(
         response.body!!.bytes()
     )
-}
-
-rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin::class.java) {
-    rootProject.the<YarnRootExtension>().yarnLockMismatchReport = YarnLockMismatchReport.NONE
-    rootProject.the<YarnRootExtension>().reportNewYarnLock = false
-    rootProject.the<YarnRootExtension>().yarnLockAutoReplace = true
-}
-
-tasks.named("jsBrowserProductionWebpack").configure {
-    enabled = false
 }

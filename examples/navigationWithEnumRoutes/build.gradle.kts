@@ -1,9 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
-import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
-
-
 plugins {
     id("copper-leaf-base")
     id("copper-leaf-android-application")
@@ -28,6 +24,7 @@ kotlin {
             dependencies {
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-navigation"))
+                implementation(project(":ballast-debugger-client"))
             }
         }
 
@@ -40,6 +37,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(libs.kotlinx.coroutines.swing)
+                implementation(libs.ktor.client.cio)
             }
         }
 
@@ -47,11 +45,19 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.material)
                 implementation(libs.androidx.activityCompose)
+                implementation(libs.ktor.client.cio)
+            }
+        }
+
+        val iosMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.darwin)
             }
         }
 
         val jsMain by getting {
             dependencies {
+                implementation(libs.ktor.client.js)
             }
         }
     }
@@ -72,14 +78,4 @@ compose {
             }
         }
     }
-}
-
-rootProject.plugins.withType(org.jetbrains.kotlin.gradle.targets.js.yarn.YarnPlugin::class.java) {
-    rootProject.the<YarnRootExtension>().yarnLockMismatchReport = YarnLockMismatchReport.NONE
-    rootProject.the<YarnRootExtension>().reportNewYarnLock = false
-    rootProject.the<YarnRootExtension>().yarnLockAutoReplace = true
-}
-
-tasks.named("jsBrowserProductionWebpack").configure {
-    enabled = false
 }

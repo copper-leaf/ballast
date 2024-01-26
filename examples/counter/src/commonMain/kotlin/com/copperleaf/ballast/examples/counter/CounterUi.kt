@@ -21,10 +21,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.build
-import com.copperleaf.ballast.core.BasicViewModel
-import com.copperleaf.ballast.withViewModel
 
 @ExperimentalMaterial3Api
 object CounterUi {
@@ -34,15 +30,9 @@ object CounterUi {
         val snackbarHostState = remember { SnackbarHostState() }
         val viewModelCoroutineScope = rememberCoroutineScope()
         val vm: CounterViewModel = remember(viewModelCoroutineScope, snackbarHostState) {
-            BasicViewModel(
-                coroutineScope = viewModelCoroutineScope,
-                config = BallastViewModelConfiguration.Builder()
-                    .withViewModel(
-                        initialState = CounterContract.State(),
-                        inputHandler = CounterInputHandler(),
-                    )
-                    .build(),
-                eventHandler = CounterEventHandler(snackbarHostState),
+            createViewModel(
+                viewModelCoroutineScope,
+                snackbarHostState
             )
         }
         val uiState by vm.observeStates().collectAsState()

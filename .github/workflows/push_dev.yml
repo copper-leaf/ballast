@@ -57,6 +57,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: 'Assemble Artifacts'
-        run: './gradlew build --stacktrace'
+        run: './gradlew build -x orchidBuild --stacktrace'
       - name: 'Publish Artifacts to MavenCentral Snapshots Repository'
         run: './gradlew publishAllPublicationsToMavenCentralSnapshotsRepository --stacktrace'

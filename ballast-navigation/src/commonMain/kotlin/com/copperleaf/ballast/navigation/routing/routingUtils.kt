@@ -672,7 +672,6 @@ public fun <T> RoutingTable.Companion.fromEnum(
     )
 }
 
-
 public fun <T> RoutingTable.Companion.fromEnum(
     enumValues: EnumEntries<T>,
 ): RoutingTable<T> where T : Enum<T>, T : Route {

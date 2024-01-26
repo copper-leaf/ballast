@@ -5,7 +5,7 @@
 
 > Opinionated Application State Management framework for Kotlin Multiplatform
 
-![Kotlin Version](https://img.shields.io/badge/Kotlin-1.9.0-orange)
+![Kotlin Version](https://img.shields.io/badge/Kotlin-1.9.22-orange)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/copper-leaf/ballast)](https://github.com/copper-leaf/ballast/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.copper-leaf/ballast-core)](https://search.maven.org/artifact/io.github.copper-leaf/ballast-core)
 [![Intellij Plugin Version](https://img.shields.io/jetbrains/plugin/v/18702-ballast)](https://plugins.jetbrains.com/plugin/18702-ballast)
@@ -100,6 +100,7 @@ dependencies {
     implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
     implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
     implementation("io.github.copper-leaf:ballast-navigation:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-schedules:{{site.version}}")
     testImplementation("io.github.copper-leaf:ballast-test:{{site.version}}")
 }
 
@@ -115,6 +116,7 @@ kotlin {
               implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
               implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
               implementation("io.github.copper-leaf:ballast-navigation:{{site.version}}")
+              implementation("io.github.copper-leaf:ballast-schedules:{{site.version}}")
             }
         }
         val commonTest by getting {
