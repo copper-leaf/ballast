@@ -37,7 +37,9 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
     override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow {
             window.onpopstate = { event: PopStateEvent ->
-                this@callbackFlow.trySend(Uri.parse(event.state.toString()))
+                if(event.state != null) {
+                    this@callbackFlow.trySend(Uri.parse(event.state.toString()))
+                }
                 Unit
             }
 

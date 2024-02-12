@@ -16,7 +16,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
         val hashValue = window.location.hash.trim().trimStart('#').trimStart('/')
         val hashPieces = hashValue.split('?')
 
-        val (initialPath: String?, initialQueryString: String?) = if(hashPieces.size == 2) {
+        val (initialPath: String?, initialQueryString: String?) = if (hashPieces.size == 2) {
             // we have path and query in the hash value
             val path = hashPieces[0].takeIf { it.isNotBlank() }
             val query = hashPieces[1].takeIf { it.isNotBlank() }
@@ -41,7 +41,10 @@ public class BrowserHashNavigationInterceptor<T : Route>(
     override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow<Uri> {
             window.onhashchange = { event: HashChangeEvent ->
-                this@callbackFlow.trySend(Uri.parse(event.newURL.split("#").last()))
+                val partAfterHash = event.newURL?.split("#")?.last()
+                if (!partAfterHash.isNullOrBlank()) {
+                    this@callbackFlow.trySend(Uri.parse(partAfterHash))
+                }
                 Unit
             }
 
