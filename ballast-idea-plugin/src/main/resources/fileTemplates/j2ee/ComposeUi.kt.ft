@@ -1,0 +1,44 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
+#end
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import com.copperleaf.ballast.BallastViewModelConfiguration
+import com.copperleaf.ballast.build
+import com.copperleaf.ballast.core.BasicViewModel
+import com.copperleaf.ballast.withViewModel
+
+#parse("File Header.java")
+${classVisibility}object ${featureName}Ui {
+
+    @Composable
+    ${classVisibility}fun Content() {
+        val viewModelCoroutineScope = rememberCoroutineScope()
+        val vm: ${featureName}ViewModel = remember(viewModelCoroutineScope) {
+            BasicViewModel(
+                coroutineScope = viewModelCoroutineScope,
+                config = BallastViewModelConfiguration.Builder()
+                    .withViewModel(
+                        initialState = ${featureName}Contract.State(),
+                        inputHandler = ${featureName}InputHandler(),
+                    )
+                    .build(),
+                eventHandler = ${featureName}EventHandler(),
+            )
+        }
+        val uiState by remember { vm.observeStates() }.collectAsState()
+
+        Content(uiState) { vm.trySend(it) }
+    }
+
+    @Composable
+    ${classVisibility}fun Content(
+        uiState: ${featureName}Contract.State,
+        postInput: (${featureName}Contract.Inputs) -> Unit,
+    ) {
+
+    }
+}

@@ -4,6 +4,7 @@ package com.copperleaf.ballast.navigation.routing
 
 import com.copperleaf.ballast.navigation.internal.EnumRoutingTable
 import com.copperleaf.ballast.navigation.internal.directionsInternal
+import kotlin.enums.EnumEntries
 import kotlin.properties.PropertyDelegateProvider
 
 public typealias Backstack<T> = List<Destination<T>>
@@ -660,6 +661,19 @@ public fun <T : Route> UnmatchedDestination.asMismatchedDestination(): Destinati
 
 public fun <T> RoutingTable.Companion.fromEnum(
     enumValues: Array<T>,
+): RoutingTable<T> where T : Enum<T>, T : Route {
+    check(enumValues.isNotEmpty()) { "RoutingTable enum values cannot be empty" }
+
+    val routesSortedByWeight: List<T> = enumValues
+        .sortedByDescending { it.matcher.weight }
+
+    return EnumRoutingTable(
+        routes = routesSortedByWeight,
+    )
+}
+
+public fun <T> RoutingTable.Companion.fromEnum(
+    enumValues: EnumEntries<T>,
 ): RoutingTable<T> where T : Enum<T>, T : Route {
     check(enumValues.isNotEmpty()) { "RoutingTable enum values cannot be empty" }
 

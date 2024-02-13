@@ -5,7 +5,7 @@
 
 > Opinionated Application State Management framework for Kotlin Multiplatform
 
-![Kotlin Version](https://img.shields.io/badge/Kotlin-1.8.20-orange)
+![Kotlin Version](https://img.shields.io/badge/Kotlin-1.9.22-orange)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/copper-leaf/ballast)](https://github.com/copper-leaf/ballast/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.copper-leaf/ballast-core)](https://search.maven.org/artifact/io.github.copper-leaf/ballast-core)
 [![Intellij Plugin Version](https://img.shields.io/jetbrains/plugin/v/18702-ballast)](https://plugins.jetbrains.com/plugin/18702-ballast)
@@ -77,9 +77,9 @@ platform as long as it works with Coroutines and Flows. However, the following t
 that they have been tested and are known to work there, or have specific features for that platform
 
 - {{ 'Android' | anchor }}
-- {{ 'iOS' | anchor }} (requires new Kotlin Native Memory Model)
-- {{ 'Compose Desktop' | anchor }}
-- {{ 'Compose JS/DOM' | anchor }}
+- {{ 'Compose' | anchor }}
+- {{ 'SwiftUI' | anchor }}
+- {{ 'KVision' | anchor }}
 
 # Installation
 
@@ -95,7 +95,7 @@ dependencies {
   implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
   implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
   implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
-  implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
+  implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
   testImplementation("io.github.copper-leaf:ballast-test:{{site.version}}")
 }
 
@@ -109,7 +109,7 @@ kotlin {
         implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
         implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
         implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
-        implementation("io.github.copper-leaf:ballast-debugger:{{site.version}}")
+        implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
       }
     }
     val commonTest by getting {

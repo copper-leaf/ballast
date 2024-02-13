@@ -39,6 +39,7 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
             .addTemplate(UiTemplate.InputHandler)
             .addTemplate(UiTemplate.EventHandler)
             .addTemplate(UiTemplate.SavedStateAdapter)
+            .addTemplate(UiTemplate.ComposeUi)
             .addTemplate(defaultViewModelItem)
             .addKind("All components", KotlinIcons.SCRIPT, "Internal_Ui_All")
     }
@@ -71,6 +72,9 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
                     if (settings.allComponentsIncludesSavedStateAdapter) {
                         this += UiTemplate.SavedStateAdapter
                     }
+                    if (settings.allComponentsIncludesComposeUi) {
+                        this += UiTemplate.ComposeUi
+                    }
                 }
             }
             else -> null
@@ -88,6 +92,7 @@ class BallastUi : BaseTemplateCreator<BallastUi.UiTemplate>(
         data object InputHandler : UiTemplate("UiInputHandler", "InputHandler", "InputHandler", KotlinIcons.CLASS)
         data object EventHandler : UiTemplate("UiEventHandler", "EventHandler", "EventHandler", KotlinIcons.CLASS)
         data object SavedStateAdapter : UiTemplate("UiSavedStateAdapter", "SavedStateAdapter", "SavedStateAdapter", KotlinIcons.CLASS)
+        data object ComposeUi : UiTemplate("ComposeUi", "ComposeUi", "ComposeUi", KotlinIcons.OBJECT)
         class ViewModel(templateName: String) : UiTemplate(templateName, "ViewModel", "ViewModel", KotlinIcons.CLASS)
     }
 }

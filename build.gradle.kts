@@ -11,6 +11,9 @@ apiValidation {
             "android",
             "desktop",
             "web",
+            "counter",
+            "navigationWithCustomRoutes",
+            "navigationWithEnumRoutes",
             "ballast-idea-plugin",
         )
     )

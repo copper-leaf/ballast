@@ -55,6 +55,47 @@ public fun <T : Route> BallastViewModelConfiguration.Builder.withRouter(
         }
 }
 
+/**
+ * Configure a ViewModel to be used as a Router. If [initialRoute] is provided, it will be automatically set as the
+ * initial route using a [BootstrapInterceptor]. You may wish to keep this value as `null` to load the initial route
+ * from some other means.
+ */
+public fun <T : Route> BallastViewModelConfiguration.Builder.withRouter(
+    routingTable: RoutingTable<T>,
+    initialRoute: T?,
+    deepLinkUrl: (() -> String?)? = null,
+): RouterBuilder<T> {
+    return this
+        .withViewModel(
+            initialState = RouterContract.State(routingTable = routingTable),
+            inputHandler = RouterInputHandlerImpl(),
+            name = "Router",
+        )
+        .apply {
+            this.inputStrategy = FifoInputStrategy.typed()
+
+            val initialDeepLinkUrl: String? = deepLinkUrl?.invoke()
+            val initialRouteUrl: String? = initialRoute
+                ?.let {
+                    check(it.isStatic()) {
+                        "For a Route to be used as a Start Destination, it must be fully static. All path segments and " +
+                                "declared query parameters must either be static or optional."
+                    }
+
+                    it.directions().build()
+                }
+
+            val initialDestinationUrl = initialDeepLinkUrl
+                ?: initialRouteUrl
+
+            if (initialDestinationUrl != null) {
+                this += BootstrapInterceptor {
+                    RouterContract.Inputs.GoToDestination<T>(initialDestinationUrl)
+                }
+            }
+        }
+}
+
 // Aliases to Ballast classes
 // ---------------------------------------------------------------------------------------------------------------------
 

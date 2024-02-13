@@ -1,3 +1,11 @@
+## 4.1.0 - 2024-02-12
+
+- Updates to Kotlin 1.9.22
+- Adds custom `toString()` implementations for many classes
+- `ballast-navigation`: Adds override of `RoutingTable.fromEnum` which accepts `EnumEntries<T>`
+- `ballast-navigation`: Adds override of `BallastViewModelConfiguration.Builder.withRouter` which accepts a deepLink URL
+- Adds `ballast-schedules` module, for sending Inputs at regularly-scheduled intervals. 
+
 ## 4.0.0 - 2023-09-05
 
 - Updates to Kotlin 1.9.10

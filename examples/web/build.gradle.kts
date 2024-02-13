@@ -15,16 +15,6 @@ plugins {
 }
 
 kotlin {
-    // targets
-    js(IR) {
-        browser {
-            testTask(Action {
-                enabled = false
-            })
-        }
-        binaries.executable()
-    }
-
     // sourcesets
     sourceSets {
         all {
@@ -43,6 +33,7 @@ kotlin {
                 implementation(project(":ballast-undo"))
                 implementation(project(":ballast-navigation"))
 
+                implementation(compose.html.core)
                 implementation(libs.bundles.ktorClient)
                 implementation(libs.ktor.client.js)
                 implementation(libs.multiplatformSettings.core)

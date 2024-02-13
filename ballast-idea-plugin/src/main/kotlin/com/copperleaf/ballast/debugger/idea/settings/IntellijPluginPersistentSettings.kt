@@ -54,6 +54,7 @@ class IntellijPluginPersistentSettings :
     override var baseViewModelType: BallastViewModel.ViewModelTemplate by enum(null, defaults.baseViewModelType, BallastViewModel.ViewModelTemplate::valueOf)
     override var allComponentsIncludesViewModel: Boolean by boolean(null, defaults.allComponentsIncludesViewModel)
     override var allComponentsIncludesSavedStateAdapter: Boolean by boolean(null, defaults.allComponentsIncludesSavedStateAdapter)
+    override var allComponentsIncludesComposeUi: Boolean by boolean(null, defaults.allComponentsIncludesComposeUi)
     override var defaultVisibility: BallastViewModel.DefaultVisibility by enum(null, defaults.defaultVisibility, BallastViewModel.DefaultVisibility::valueOf)
     override var useDataObjects: Boolean by boolean(null, defaults.useDataObjects)
 
@@ -77,6 +78,7 @@ class IntellijPluginPersistentSettings :
         this.baseViewModelType = settings.baseViewModelType
         this.allComponentsIncludesViewModel = settings.allComponentsIncludesViewModel
         this.allComponentsIncludesSavedStateAdapter = settings.allComponentsIncludesSavedStateAdapter
+        this.allComponentsIncludesComposeUi = settings.allComponentsIncludesComposeUi
         this.defaultVisibility = settings.defaultVisibility
         this.useDataObjects = settings.useDataObjects
     }

@@ -391,18 +391,21 @@ public final class com/copperleaf/ballast/Queued$HandleInput : com/copperleaf/ba
 	public fun <init> (Lkotlinx/coroutines/CompletableDeferred;Ljava/lang/Object;)V
 	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 	public final fun getInput ()Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/Queued$RestoreState : com/copperleaf/ballast/Queued {
 	public fun <init> (Lkotlinx/coroutines/CompletableDeferred;Ljava/lang/Object;)V
 	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 	public final fun getState ()Ljava/lang/Object;
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/Queued$ShutDownGracefully : com/copperleaf/ballast/Queued {
 	public synthetic fun <init> (Lkotlinx/coroutines/CompletableDeferred;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getDeferred ()Lkotlinx/coroutines/CompletableDeferred;
 	public final fun getGracePeriod-UwyO8pc ()J
+	public fun toString ()Ljava/lang/String;
 }
 
 public abstract interface class com/copperleaf/ballast/SideJobScope : kotlinx/coroutines/CoroutineScope {
@@ -595,6 +598,23 @@ public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/co
 	public final fun setViewModelScope (Lkotlinx/coroutines/CoroutineScope;)V
 	public final fun start (Lkotlinx/coroutines/CoroutineScope;)V
 	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface class com/copperleaf/ballast/internal/RestartableJob : kotlinx/coroutines/Job {
+	public abstract fun restart (Ljava/lang/Object;)V
+}
+
+public final class com/copperleaf/ballast/internal/RestartableJob$DefaultImpls {
+	public static synthetic fun cancel (Lcom/copperleaf/ballast/internal/RestartableJob;)V
+	public static fun fold (Lcom/copperleaf/ballast/internal/RestartableJob;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;
+	public static fun get (Lcom/copperleaf/ballast/internal/RestartableJob;Lkotlin/coroutines/CoroutineContext$Key;)Lkotlin/coroutines/CoroutineContext$Element;
+	public static fun minusKey (Lcom/copperleaf/ballast/internal/RestartableJob;Lkotlin/coroutines/CoroutineContext$Key;)Lkotlin/coroutines/CoroutineContext;
+	public static fun plus (Lcom/copperleaf/ballast/internal/RestartableJob;Lkotlin/coroutines/CoroutineContext;)Lkotlin/coroutines/CoroutineContext;
+	public static fun plus (Lcom/copperleaf/ballast/internal/RestartableJob;Lkotlinx/coroutines/Job;)Lkotlinx/coroutines/Job;
+}
+
+public final class com/copperleaf/ballast/internal/RestartableJobKt {
+	public static final fun restartableJob (Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function3;)Lcom/copperleaf/ballast/internal/RestartableJob;
 }
 
 public abstract interface class com/copperleaf/ballast/internal/Status {

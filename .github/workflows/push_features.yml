@@ -56,7 +56,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: 'Assemble Artifacts'
-        run: './gradlew build --stacktrace'
+        run: './gradlew -x orchidBuild build --stacktrace'
       - name: 'Build IDEA Plugin'
         run: './gradlew :ballast-idea-plugin:buildPlugin --stacktrace'
       - name: 'Build example Compose Web site'

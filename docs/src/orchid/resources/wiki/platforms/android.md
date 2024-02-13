@@ -91,6 +91,11 @@ class ExampleFragment : ComposeFragment() {
 
 ### Compose
 
+If you're writing a pure Compose Android application, see the [Compose][3] page for integration with using 
+`BasicViewModel`. But if you're developing a hybrid app which uses Activities or Fragments for navigation and Compose
+views within them, you'll probably want to use `AndroidViewModel` and inject the ViewModels with Hilt, and the 
+integration process will need to handle some additional features like dynamically attaching/removing the EventHandler.
+
 ```kotlin
 @AndroidEntryPoint
 class ExampleFragment : ComposeFragment() {
@@ -127,16 +132,14 @@ class ExampleFragment : ComposeFragment() {
 
     @Composable
     fun ExampleContent(
-        uiState: ExampleContract.State = ExampleContract.State(),
-        postInput: (ExampleContract.Inputs) -> Unit = {},
+        uiState: ExampleContract.State,
+        postInput: (ExampleContract.Inputs) -> Unit,
     ) {
         // ...
     }
 }
 ```
 
-
-
 [1]: https://dagger.dev/hilt/view-model.html
 [2]: https://developer.android.com/reference/kotlin/androidx/lifecycle/package-summary#(androidx.lifecycle.Lifecycle).repeatOnLifecycle(androidx.lifecycle.Lifecycle.State,kotlin.coroutines.SuspendFunction1)
-
+[3]: {{ 'Compose' | link }}
