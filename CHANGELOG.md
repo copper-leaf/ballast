@@ -1,3 +1,7 @@
+## 4.2.1 - 2024-05-17
+
+- Adds `BrowserHashNavigationInterceptor` and `BrowserHistoryNavigationInterceptor` to `wasmJs` target
+
 ## 4.2.0 - 2024-05-09
 
 - Increased Kotlin version to 1.9.23

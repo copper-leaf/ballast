@@ -45,7 +45,6 @@ jobs:
         config:
           - { target: 'testDebugUnitTest',     os: 'ubuntu-latest', java: 17 }
           - { target: 'testReleaseUnitTest',   os: 'ubuntu-latest', java: 17 }
-          - { target: 'iosArm64Test',          os: 'macos-latest',  java: 17 }
           - { target: 'iosSimulatorArm64Test', os: 'macos-latest',  java: 17 }
           - { target: 'iosX64Test',            os: 'macos-latest',  java: 17 }
           - { target: 'jsTest',                os: 'ubuntu-latest', java: 17 }
