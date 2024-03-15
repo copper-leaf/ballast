@@ -467,7 +467,7 @@ enum class AppScreen(
 ) : Route {
     Home("/app/home"),
     PostList("/app/posts?sort={?}"),
-    PostDetails("/app/posts/{postId}", annotations = listOf(Floating())), // request this route to be displayed in a floating window
+    PostDetails("/app/posts/{postId}", annotations = setOf(Floating)), // request this route to be displayed in a floating window
     ;
 
     override val matcher: RouteMatcher = RouteMatcher.create(routeFormat)
@@ -480,7 +480,7 @@ You can also provide Route Annotations directly to the navigation request:
 router.trySend(
     RouterContract.Inputs.GoToDestination(
         destination = "/app/posts/12345",
-        extraAnnotations = setOf(Floating()), // normally this destination is displayed fullscreen, but this time only display it in a floating window
+        extraAnnotations = setOf(Floating), // normally this destination is displayed fullscreen, but this time only display it in a floating window
     )
 )
 ```
