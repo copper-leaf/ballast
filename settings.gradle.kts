@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 
-val conventionDir = "./gradle-convention-plugins"
+val conventionDir = "./../gradle-convention-plugins"
 
 dependencyResolutionManagement {
     versionCatalogs {
@@ -46,12 +46,12 @@ include(":ballast-idea-plugin")
 
 include(":ballast-test")
 
-include(":examples:android")
-include(":examples:desktop")
-include(":examples:web")
-include(":examples:counter")
-include(":examples:schedules")
-include(":examples:navigationWithEnumRoutes")
-include(":examples:navigationWithCustomRoutes")
+//include(":examples:android")
+//include(":examples:desktop")
+//include(":examples:web")
+//include(":examples:counter")
+//include(":examples:schedules")
+//include(":examples:navigationWithEnumRoutes")
+//include(":examples:navigationWithCustomRoutes")
 
-include(":docs")
+//include(":docs")

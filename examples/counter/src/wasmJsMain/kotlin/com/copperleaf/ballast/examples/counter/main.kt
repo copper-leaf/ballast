@@ -6,22 +6,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 public fun main() {
-    MainScope().launch {
-//        suspendCancellableCoroutine<Unit> { cont ->
-//            onWasmReady {
-//                cont.resume(Unit)
-//            }
-//        }
-
-        CanvasBasedWindow("Ballast Examples > Counter") {
-            Box(Modifier.requiredWidth(400.dp)) {
-                CounterUi.Content()
-            }
+    CanvasBasedWindow("Ballast Examples > Counter") {
+        Box(Modifier.requiredWidth(400.dp)) {
+            CounterUi.Content()
         }
     }
 }

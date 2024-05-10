@@ -1,0 +1,112 @@
+public final class com/copperleaf/ballast/examples/counter/ComposableSingletons$CounterUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/ComposableSingletons$CounterUiKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public static field lambda-2 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$counter_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda-2$counter_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/counter/ComposableSingletons$MainActivityKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/ComposableSingletons$MainActivityKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function2;
+	public fun <init> ()V
+	public final fun getLambda-1$counter_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/CounterContract;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/counter/CounterContract$Events {
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterContract$Events$OnTenReached : com/copperleaf/ballast/examples/counter/CounterContract$Events {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/CounterContract$Events$OnTenReached;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/counter/CounterContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterContract$Inputs$Decrement : com/copperleaf/ballast/examples/counter/CounterContract$Inputs {
+	public static final field $stable I
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs$Decrement;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs$Decrement;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs$Decrement;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterContract$Inputs$Increment : com/copperleaf/ballast/examples/counter/CounterContract$Inputs {
+	public static final field $stable I
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs$Increment;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs$Increment;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs$Increment;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterContract$Inputs$Reset : com/copperleaf/ballast/examples/counter/CounterContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs$Reset;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/counter/CounterContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/counter/CounterContract$State;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/counter/CounterContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> (Landroidx/compose/material3/SnackbarHostState;)V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/examples/counter/CounterContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/counter/CounterContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/counter/CounterUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/CounterUi;
+	public final fun Content (Landroidx/compose/material3/SnackbarHostState;Lcom/copperleaf/ballast/examples/counter/CounterContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/counter/IconsKt {
+	public static final fun getAdd (Landroidx/compose/material/icons/Icons$Filled;)Landroidx/compose/ui/graphics/vector/ImageVector;
+	public static final fun getRemove (Landroidx/compose/material/icons/Icons$Filled;)Landroidx/compose/ui/graphics/vector/ImageVector;
+}
+
+public final class com/copperleaf/ballast/examples/counter/MainActivity : androidx/activity/ComponentActivity {
+	public static final field $stable I
+	public fun <init> ()V
+}
+

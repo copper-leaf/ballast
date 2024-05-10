@@ -2,7 +2,9 @@
 
 - Kotlin -> 1.9.23
 - Compose -> 1.6.1
-- Added `wasmJs` target. `wasmWasi` is not currently supported due to lack of support from kotlinx.coroutines
+- Added experimental WASM target. Please note the following limitations:  
+  - Only `wasmJs` is supported. `wasmWasi` is not currently supported due to lack of support from kotlinx.coroutines
+  - `:ballast-debugger-client` does not support `wasmJs`, because stable builds of Ktor Client don't support `wasmJs` yet.
 
 ## 4.1.0 - 2024-02-12
 

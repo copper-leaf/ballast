@@ -6,7 +6,6 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
 import com.copperleaf.ballast.core.LoggingInterceptor
-import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +42,6 @@ private fun BallastViewModelConfiguration.Builder.logging(): BallastViewModelCon
     this += LoggingInterceptor()
 }
 
-private fun BallastViewModelConfiguration.Builder.debugging(): BallastViewModelConfiguration.Builder = apply {
-    this += BallastDebuggerInterceptor(platformDebuggerConnection())
+private fun BallastViewModelConfiguration.Builder.debugging(): BallastViewModelConfiguration.Builder {
+    return installDebugger()
 }

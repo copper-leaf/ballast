@@ -8,13 +8,15 @@ apiValidation {
     ignoredProjects.addAll(
         listOf(
 //            "docs",
-            "android",
-            "desktop",
-            "web",
-            "counter",
-            "navigationWithCustomRoutes",
-            "navigationWithEnumRoutes",
-            "ballast-idea-plugin",
+//            "android",
+//            "compose_sharedui_kmm",
+//            "counter",
+//            "desktop",
+//            "navigationWithCustomRoutes",
+//            "navigationWithEnumRoutes",
+//            "schedules",
+//            "web",
+//            "ballast-idea-plugin",
         )
     )
 }
