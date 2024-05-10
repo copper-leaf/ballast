@@ -1,3 +1,9 @@
+## 4.2.0 - 2024-05-09
+
+- Kotlin -> 1.9.23
+- Compose -> 1.6.1
+- Added `wasmJs` target. `wasmWasi` is not currently supported due to lack of support from kotlinx.coroutines
+
 ## 4.1.0 - 2024-02-12
 
 - Updates to Kotlin 1.9.22
