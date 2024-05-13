@@ -54,7 +54,7 @@ internal fun Route.directionsForPath(
         Result.success(
             successResults
                 .flatMap { it.toAppend }
-                .joinToString(separator = "/", prefix = "/") { Uri.encodeUrlPathSegment(it) }
+                .joinToString(separator = "/", prefix = "/") { UriEncoder.encodeUrlPathSegment(it) }
         )
     }
 }
@@ -103,8 +103,8 @@ internal fun Route.directionsForQuery(
                         }
                     }
                     .joinToString(separator = "&", prefix = "?") { (key, value) ->
-                        val encodedKey = Uri.encodeUrlQueryComponent(key, spaceToPlus = true)
-                        val encodedValue = Uri.encodeUrlQueryComponent(value, spaceToPlus = true)
+                        val encodedKey = UriEncoder.encodeUrlQueryComponent(key, spaceToPlus = true)
+                        val encodedValue = UriEncoder.encodeUrlQueryComponent(value, spaceToPlus = true)
                         "$encodedKey=$encodedValue"
                     }
             }

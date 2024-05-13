@@ -16,7 +16,7 @@ apiValidation {
 //            "navigationWithEnumRoutes",
 //            "schedules",
 //            "web",
-//            "ballast-idea-plugin",
+            "ballast-idea-plugin",
         )
     )
 }

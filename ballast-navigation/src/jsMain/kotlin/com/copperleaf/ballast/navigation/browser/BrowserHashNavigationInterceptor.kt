@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.navigation.browser
 
 import com.copperleaf.ballast.navigation.internal.Uri
+import com.copperleaf.ballast.navigation.internal.UriBuilder
 import com.copperleaf.ballast.navigation.routing.Route
 import kotlinx.browser.window
 import kotlinx.coroutines.channels.awaitClose
@@ -29,7 +30,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
         }
 
         return if (!initialPath.isNullOrBlank() || !initialQueryString.isNullOrBlank()) {
-            Uri.build(
+            UriBuilder.build(
                 encodedPath = "/$initialPath",
                 encodedQueryString = initialQueryString,
             )
@@ -43,7 +44,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
             window.onhashchange = { event: HashChangeEvent ->
                 val partAfterHash = event.newURL?.split("#")?.last()
                 if (!partAfterHash.isNullOrBlank()) {
-                    this@callbackFlow.trySend(Uri.parse(partAfterHash))
+                    this@callbackFlow.trySend(UriBuilder.parse(partAfterHash))
                 }
                 Unit
             }

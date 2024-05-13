@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.navigation.browser
 
 import com.copperleaf.ballast.navigation.internal.Uri
+import com.copperleaf.ballast.navigation.internal.UriBuilder
 import com.copperleaf.ballast.navigation.routing.Route
 import kotlinx.browser.window
 import kotlinx.coroutines.channels.awaitClose
@@ -25,7 +26,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         val initialQueryString = window.location.search.trimStart('?').takeIf { it.isNotBlank() }
 
         return if (initialPath.isNotBlank() || !initialQueryString.isNullOrBlank()) {
-            Uri.build(
+            UriBuilder.build(
                 encodedPath = initialPath,
                 encodedQueryString = initialQueryString,
             )
@@ -38,7 +39,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         return callbackFlow {
             window.onpopstate = { event: PopStateEvent ->
                 if(event.state != null) {
-                    this@callbackFlow.trySend(Uri.parse(event.state.toString()))
+                    this@callbackFlow.trySend(UriBuilder.parse(event.state.toString()))
                 }
                 Unit
             }
@@ -54,7 +55,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
             val previousDestination = getInitialUrl()
             if (previousDestination != url) {
                 val updatedUrl = if(basePath != null) {
-                    Uri.build(
+                    UriBuilder.build(
                         encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
                         encodedQueryString = url.encodedQueryString,
                     )

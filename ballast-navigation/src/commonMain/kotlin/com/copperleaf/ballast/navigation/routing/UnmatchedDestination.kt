@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.navigation.routing
 
-import com.copperleaf.ballast.navigation.internal.Uri
+import com.copperleaf.ballast.navigation.internal.UriBuilder
 
 /**
  * Represents a URL that was parsed, and can be used to match against a [Route] in a [RoutingTable].
@@ -18,7 +18,7 @@ public data class UnmatchedDestination(
             destinationUrl: String,
             extraAnnotations: Set<RouteAnnotation> = emptySet(),
         ): UnmatchedDestination {
-            val url = Uri.parse(destinationUrl)
+            val url = UriBuilder.parse(destinationUrl)
 
             return UnmatchedDestination(
                 originalDestinationUrl = destinationUrl,

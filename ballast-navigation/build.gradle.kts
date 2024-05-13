@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 implementation(project(":ballast-core"))
                 implementation(libs.kudzu.core)
-                implementation(libs.ktor.http.utils)
+                implementation(libs.uri)
             }
         }
         val commonTest by getting {

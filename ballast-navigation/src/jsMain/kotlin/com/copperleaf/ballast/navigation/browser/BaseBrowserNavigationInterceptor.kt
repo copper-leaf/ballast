@@ -4,6 +4,7 @@ import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.awaitViewModelStart
 import com.copperleaf.ballast.events
 import com.copperleaf.ballast.navigation.internal.Uri
+import com.copperleaf.ballast.navigation.internal.UriBuilder
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.build
@@ -85,10 +86,10 @@ public abstract class BaseBrowserNavigationInterceptor<T : Route> internal const
                             // ignore this request
                             null
                         } else {
-                            Uri.parse(originalDestinationUrl)
+                            UriBuilder.parse(originalDestinationUrl)
                         }
                     },
-                    notFound = { Uri.parse(it) },
+                    notFound = { UriBuilder.parse(it) },
                 )
             }
             .distinctUntilChanged()
