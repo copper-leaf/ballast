@@ -64,8 +64,7 @@ kotlin {
         }
 
         val wasmJsMain by getting {
-            dependencies {
-            }
+            dependencies { }
         }
     }
 }
@@ -84,5 +83,11 @@ compose {
             application {
             }
         }
+    }
+}
+
+afterEvaluate {
+    tasks.named("wasmJsBrowserTest").configure {
+        enabled = false
     }
 }

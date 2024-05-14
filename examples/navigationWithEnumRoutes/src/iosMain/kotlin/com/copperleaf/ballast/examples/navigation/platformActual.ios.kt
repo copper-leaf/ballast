@@ -1,8 +1,11 @@
 package com.copperleaf.ballast.examples.navigation
 
 import com.copperleaf.ballast.BallastLogger
+import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.core.OSLogLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
+import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
+import com.copperleaf.ballast.plusAssign
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
@@ -20,9 +23,10 @@ private val lazyConnection by lazy {
     }.also { it.connect() }
 }
 
-internal actual fun platformDebuggerConnection(): BallastDebuggerClientConnection<*> {
-    return lazyConnection
-}
+internal actual fun BallastViewModelConfiguration.Builder.installDebugger(): BallastViewModelConfiguration.Builder =
+    apply {
+        this += BallastDebuggerInterceptor(lazyConnection)
+    }
 
 @OptIn(ExperimentalForeignApi::class, ExperimentalNativeApi::class)
 internal actual fun platformLogger(loggerName: String): BallastLogger {

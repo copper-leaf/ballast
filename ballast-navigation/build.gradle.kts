@@ -25,16 +25,20 @@ kotlin {
         val jvmMain by getting {
             dependencies { }
         }
+
         val androidMain by getting {
             dependencies { }
         }
+
         val jsMain by getting {
             dependencies { }
         }
+
         val iosMain by getting {
             dependencies { }
         }
-        val iosTest by getting {
+
+        val wasmJsMain by getting {
             dependencies { }
         }
     }
