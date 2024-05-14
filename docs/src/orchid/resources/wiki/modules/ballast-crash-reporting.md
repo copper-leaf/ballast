@@ -84,6 +84,10 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("io.github.copper-leaf:ballast-crash-reporting:{{site.version}}")
+            }
+        }
+        val androidMain by getting {
+            dependencies {
                 implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
             }
         }

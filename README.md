@@ -77,9 +77,10 @@ platform as long as it works with Coroutines and Flows. However, the following t
 that they have been tested and are known to work there, or have specific features for that platform
 
 - [Android](https://copper-leaf.github.io/ballast/wiki/platforms/android)
-- [iOS](https://copper-leaf.github.io/ballast/wiki/platforms/ios) (requires new Kotlin Native Memory Model)
-- [Compose Desktop](https://copper-leaf.github.io/ballast/wiki/platforms/compose-desktop)
-- [Compose Web](https://copper-leaf.github.io/ballast/wiki/platforms/compose-web)
+- [iOS](https://copper-leaf.github.io/ballast/wiki/platforms/ios)
+- [WasmJS](https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs)
+- [Compose](https://copper-leaf.github.io/ballast/wiki/platforms/compose)
+- [KVision](https://copper-leaf.github.io/ballast/wiki/platforms/kvision)
 
 # Installation
 
@@ -94,13 +95,17 @@ repositories {
 // for plain JVM or Android projects
 dependencies {
     implementation("io.github.copper-leaf:ballast-core:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
+    
     implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-sync:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-undo:{{site.version}}")
     implementation("io.github.copper-leaf:ballast-navigation:{{site.version}}")
     implementation("io.github.copper-leaf:ballast-schedules:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-crash-reporting:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-analytics:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
+    
     testImplementation("io.github.copper-leaf:ballast-test:{{site.version}}")
 }
 
@@ -109,19 +114,28 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-              implementation("io.github.copper-leaf:ballast-core:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-navigation:{{site.version}}")
-              implementation("io.github.copper-leaf:ballast-schedules:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-core:{{site.version}}")
+
+                implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-sync:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-undo:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-navigation:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-schedules:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-crash-reporting:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-analytics:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")=
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation("io.github.copper-leaf:ballast-test:{{site.version}}")
+            }
+        }
+        val androidMain by getting {
+            dependencies {
+                implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
             }
         }
     }

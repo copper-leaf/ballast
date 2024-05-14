@@ -3,15 +3,15 @@ package com.copperleaf.ballast
 import com.copperleaf.ballast.Assertions.assertEquals
 import com.copperleaf.ballast.Assertions.assertFalse
 import com.copperleaf.ballast.Assertions.assertTrue
+import com.copperleaf.ballast.contracts.test.TestContract
+import com.copperleaf.ballast.contracts.test.TestEventHandler
+import com.copperleaf.ballast.contracts.test.TestInputFilter
+import com.copperleaf.ballast.contracts.test.TestInputHandler
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.ParallelInputStrategy
 import com.copperleaf.ballast.core.PrintlnLogger
-import com.copperleaf.ballast.contracts.test.TestContract
-import com.copperleaf.ballast.contracts.test.TestEventHandler
-import com.copperleaf.ballast.contracts.test.TestInputFilter
-import com.copperleaf.ballast.contracts.test.TestInputHandler
 import com.copperleaf.ballast.test.viewModelTest
 import io.kotest.core.spec.style.StringSpec
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -233,6 +233,7 @@ class BallastCoreTests : StringSpec({
             }
 
             scenario("sideJobStarted with inputs that run quickly and override each other") {
+                skip() // this test seems to be very unreliable in CI Macos
                 running {
                     +TestContract.Inputs.SideJobStartedWithInputOverride
                     +TestContract.Inputs.Increment

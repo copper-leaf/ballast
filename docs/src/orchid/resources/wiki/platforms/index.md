@@ -15,4 +15,5 @@ that they have been tested and are known to work there, or have specific feature
 - {{ 'Android' | anchor }}
 - {{ 'Compose' | anchor }}
 - {{ 'SwiftUI' | anchor }}
+- {{ 'WasmJS' | anchor }}
 - {{ 'KVision' | anchor }}
