@@ -4,7 +4,7 @@
 # {{ page.title }}
 
 There is no special support needed to use Ballast in [Compose][1] applications, and it works on Android, Desktop, iOS, 
-and JS targets (WASM support coming soon). For JS, it can also be used with both Canvas and [Compose HTML][3] 
+JS, and WasmJS targets. For JS, it can also be used with both Canvas and [Compose HTML][3] 
 applications. The integration process for all of these use-cases is the same. 
 
 ## Example

@@ -13,7 +13,7 @@ kotlin {
             dependencies {
                 implementation(project(":ballast-core"))
                 implementation(libs.kudzu.core)
-                implementation(libs.ktor.http.utils)
+                implementation(libs.uri)
             }
         }
         val commonTest by getting {
@@ -25,16 +25,20 @@ kotlin {
         val jvmMain by getting {
             dependencies { }
         }
+
         val androidMain by getting {
             dependencies { }
         }
+
         val jsMain by getting {
             dependencies { }
         }
+
         val iosMain by getting {
             dependencies { }
         }
-        val iosTest by getting {
+
+        val wasmJsMain by getting {
             dependencies { }
         }
     }

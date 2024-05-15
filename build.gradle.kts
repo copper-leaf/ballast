@@ -9,11 +9,12 @@ apiValidation {
         listOf(
 //            "docs",
             "android",
-            "desktop",
-            "web",
             "counter",
+            "desktop",
             "navigationWithCustomRoutes",
             "navigationWithEnumRoutes",
+            "schedules",
+            "web",
             "ballast-idea-plugin",
         )
     )

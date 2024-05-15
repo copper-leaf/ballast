@@ -24,7 +24,6 @@ kotlin {
             dependencies {
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-schedules"))
-                implementation(project(":ballast-debugger-client"))
             }
         }
 
@@ -37,6 +36,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(libs.kotlinx.coroutines.swing)
+                implementation(project(":ballast-debugger-client"))
                 implementation(libs.ktor.client.cio)
             }
         }
@@ -45,6 +45,7 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.material)
                 implementation(libs.androidx.activityCompose)
+                implementation(project(":ballast-debugger-client"))
                 implementation(libs.ktor.client.cio)
                 implementation("androidx.work:work-runtime-ktx:2.8.1")
                 implementation("androidx.core:core:1.12.0")
@@ -53,14 +54,20 @@ kotlin {
 
         val iosMain by getting {
             dependencies {
+                implementation(project(":ballast-debugger-client"))
                 implementation(libs.ktor.client.darwin)
             }
         }
 
         val jsMain by getting {
             dependencies {
+                implementation(project(":ballast-debugger-client"))
                 implementation(libs.ktor.client.js)
             }
+        }
+
+        val wasmJsMain by getting {
+            dependencies { }
         }
     }
 }
@@ -79,5 +86,11 @@ compose {
             application {
             }
         }
+    }
+}
+
+afterEvaluate {
+    tasks.named("wasmJsBrowserTest").configure {
+        enabled = false
     }
 }

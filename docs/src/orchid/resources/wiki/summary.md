@@ -13,6 +13,7 @@
   - [Android](platforms/android.md)
   - [Compose](platforms/compose.md)
   - [SwiftUI](platforms/ios.md)
+  - [WasmJS](platforms/wasmjs.md)
   - [KVision](platforms/kvision.md)
 - [Modules](modules/index.md)
   - [Ballast Core](modules/ballast-core.md)

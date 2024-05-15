@@ -1,3 +1,27 @@
+## 4.2.0 - 2024-05-09
+
+- Increased Kotlin version to 1.9.23
+- Increased Compose version to 1.6.1
+- Updated other libraries to latest versions:
+  - Kotlinx.Coroutines -> 1.8.1
+  - Kotlinx.Serialization -> 1.6.3
+  - Ktor -> 2.3.11
+- Added experimental WASM target, fixing [Issue #54](https://github.com/copper-leaf/ballast/issues/54). Please note the 
+  following limitations:  
+  - Only `wasmJs` is supported. `wasmWasi` target is not currently supported due to lack of support from kotlinx.coroutines
+  - `:ballast-debugger-client` does not support `wasmJs`, because stable builds of Ktor Client don't support `wasmJs` yet.
+  - `:ballast-firebase-analytics` and `:ballast-firebase-crashlytics` do not support any targets other than Android, 
+    thus these modules are not available on `wasmJs`. However, the more generic version of those modules, 
+    `:ballast-analytics` and `:ballast-crash-reporting` are supported on `wasmJs`.
+  - All other Ballast modules do support `wasmJs` targets, including `:ballast-navigation`. 
+- `:ballast-navigation` no longer depends on the `ktor-http` library. It was previously using this library for parsing
+  URIs, but because that library includes a lot of extra stuff related to HTTP that wasn't needed in Ballast Navigation, 
+  it increased binary size considerably. URI parsing is now handled by [eygraber/uri-kmp](https://github.com/eygraber/uri-kmp).
+  This fixes [Issue #35](https://github.com/copper-leaf/ballast/issues/35).
+- [ballast-schedules]: Slight improvement for using Android WorkManager with BallastScheduler. A new method has been 
+  added, `SchedulerCallback.configureWorkRequest()`, which allows you to configure the `OneTimeWorkRequest.Builder`. 
+  This can be used to apply constraints, mark the job as expedited, etc.
+
 ## 4.1.0 - 2024-02-12
 
 - Updates to Kotlin 1.9.22

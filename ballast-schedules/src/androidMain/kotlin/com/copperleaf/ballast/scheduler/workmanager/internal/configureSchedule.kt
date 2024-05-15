@@ -76,6 +76,7 @@ internal suspend fun WorkManager.createNewSchedule(
         /* uniqueWorkName = */ "${scheduleData.workManagerData.adapterClassName}::${scheduleData.key}",
         /* existingWorkPolicy = */ ExistingWorkPolicy.REPLACE,
         /* work = */ OneTimeWorkRequestBuilder<BallastWorkManagerScheduleWorker>()
+            .let { workData.callback.configureWorkRequest(it) }
             .addTag("ballast")
             .addTag("schedule")
             .also { workData.applyToWorkRequestBuilder(it) }
@@ -103,10 +104,12 @@ internal suspend fun WorkManager.updateExistingSchedule(
         "BallastWorkManager",
         "Scheduling next periodic work at '${scheduleData.key}' (to trigger at in $delayAmount at ${scheduleData.nextInstant})"
     )
+
     beginUniqueWork(
         /* uniqueWorkName = */ "${scheduleData.workManagerData.adapterClassName}::${scheduleData.key}",
         /* existingWorkPolicy = */ ExistingWorkPolicy.REPLACE,
         /* work = */ OneTimeWorkRequestBuilder<BallastWorkManagerScheduleWorker>()
+            .let { scheduleData.workManagerData.callback.configureWorkRequest(it) }
             .addTag("ballast")
             .addTag("schedule")
             .also { scheduleData.workManagerData.applyToWorkRequestBuilder(it) }

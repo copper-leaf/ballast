@@ -302,6 +302,11 @@ public final class com/copperleaf/ballast/scheduler/workmanager/ScheduleWorkKt {
 }
 
 public abstract interface class com/copperleaf/ballast/scheduler/workmanager/SchedulerCallback {
+	public abstract fun configureWorkRequest (Landroidx/work/OneTimeWorkRequest$Builder;)Landroidx/work/OneTimeWorkRequest$Builder;
 	public abstract fun dispatchInput (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/scheduler/workmanager/SchedulerCallback$DefaultImpls {
+	public static fun configureWorkRequest (Lcom/copperleaf/ballast/scheduler/workmanager/SchedulerCallback;Landroidx/work/OneTimeWorkRequest$Builder;)Landroidx/work/OneTimeWorkRequest$Builder;
 }
 
