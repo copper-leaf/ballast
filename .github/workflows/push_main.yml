@@ -10,7 +10,6 @@ on:
 jobs:
   publishArtifactsOnMacOs:
     runs-on: 'macos-latest'
-    needs: ['testOnAll']
     env:
       GITHUB_ACTOR: '${{ github.actor }}'
       GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
