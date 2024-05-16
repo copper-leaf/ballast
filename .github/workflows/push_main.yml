@@ -7,22 +7,25 @@ on:
   push:
     branches: ['main']
 
+env:
+  GITHUB_ACTOR: '${{ github.actor }}'
+  GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+  OSSRH_USERNAME: '${{ secrets.OSSRH_USERNAME }}'
+  OSSRH_PASSWORD: '${{ secrets.OSSRH_PASSWORD }}'
+  STAGING_PROFILE_ID: '${{ secrets.STAGING_PROFILE_ID }}'
+  SIGNING_KEY_ID: '${{ secrets.SIGNING_KEY_ID }}'
+  SIGNING_KEY: '${{ secrets.SIGNING_KEY }}'
+  SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
+  JB_SIGNING_KEY: '${{ secrets.JB_SIGNING_KEY }}'
+  JB_CHAIN: '${{ secrets.JB_CHAIN }}'
+  JB_PASSPHRASE: '${{ secrets.JB_PASSPHRASE }}'
+  JB_MARKETPLACE_TOKEN: '${{ secrets.JB_MARKETPLACE_TOKEN }}'
+
 jobs:
-  publishArtifactsOnMacOs:
-    runs-on: 'macos-latest'
-    env:
-      GITHUB_ACTOR: '${{ github.actor }}'
-      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      OSSRH_USERNAME: '${{ secrets.OSSRH_USERNAME }}'
-      OSSRH_PASSWORD: '${{ secrets.OSSRH_PASSWORD }}'
-      STAGING_PROFILE_ID: '${{ secrets.STAGING_PROFILE_ID }}'
-      SIGNING_KEY_ID: '${{ secrets.SIGNING_KEY_ID }}'
-      SIGNING_KEY: '${{ secrets.SIGNING_KEY }}'
-      SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
-      JB_SIGNING_KEY: '${{ secrets.JB_SIGNING_KEY }}'
-      JB_CHAIN: '${{ secrets.JB_CHAIN }}'
-      JB_PASSPHRASE: '${{ secrets.JB_PASSPHRASE }}'
-      JB_MARKETPLACE_TOKEN: '${{ secrets.JB_MARKETPLACE_TOKEN }}'
+  openStagingRepo:
+    runs-on: 'ubuntu-latest'
+    outputs:
+      stagingRepositoryId: ${{ steps.outputStagingRepositoryId.outputs.stagingRepositoryId }}
     steps:
       - uses: 'actions/checkout@v3'
         with:
@@ -33,17 +36,101 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - name: 'Assemble Artifacts'
-        run: './gradlew assemble --stacktrace -Prelease -PorchidEnvironment=prod'
-      - name: 'Publish IDEA Plugin'
-        run: './gradlew :ballast-idea-plugin:buildPlugin :ballast-idea-plugin:publishPlugin --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Open Sonatype Staging Repository'
         run: './gradlew openSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
-      - name: 'Publish Artifacts'
-        run: './gradlew publishAllPublicationsToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
+      - id: 'outputStagingRepositoryId'
+        run: 'echo "stagingRepositoryId=$(cat ./build/export/stagingRepositoryId)" && echo "stagingRepositoryId=$(cat ./build/export/stagingRepositoryId)" >> "$GITHUB_OUTPUT"'
+
+  publishIntellijPlugin:
+    runs-on: 'ubuntu-latest'
+    needs: ['openStagingRepo']
+    steps:
+      - uses: 'actions/checkout@v3'
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0 # all commit history and tags
+      - name: 'Set up JDK 17'
+        uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: 'Publish IDEA Plugin'
+        run: './gradlew :ballast-idea-plugin:buildPlugin :ballast-idea-plugin:publishPlugin --stacktrace -Prelease -PorchidEnvironment=prod'
+  publishArtifacts:
+    strategy:
+      matrix:
+        java: [17]
+        os: ['ubuntu-latest', 'macos-latest']
+        target: [
+          'AndroidDebug',
+          'AndroidRelease',
+          'IosArm64',
+          'IosSimulatorArm64',
+          'IosX64',
+          'Js',
+          'Jvm',
+          'KotlinMultiplatform',
+          'WasmJs',
+        ]
+        exclude: # only publish ios targets from macos, everything else should be ubuntu
+          - { os: 'macos-latest', target: 'AndroidDebug' }
+          - { os: 'macos-latest', target: 'AndroidRelease' }
+          - { os: 'ubuntu-latest', target: 'IosArm64' }
+          - { os: 'ubuntu-latest', target: 'IosSimulatorArm64' }
+          - { os: 'ubuntu-latest', target: 'IosX64' }
+          - { os: 'macos-latest', target: 'Js' }
+          - { os: 'macos-latest', target: 'Jvm' }
+          - { os: 'macos-latest', target: 'KotlinMultiplatform' }
+          - { os: 'macos-latest', target: 'WasmJs' }
+    name: 'Publish ${{ matrix.target }} artifacts on ${{ matrix.os }} JDK ${{ matrix.java }}'
+    runs-on: '${{ matrix.os }}'
+    needs: ['openStagingRepo']
+    env:
+      stagingRepositoryId: ${{needs.openStagingRepo.outputs.stagingRepositoryId}}
+    steps:
+      - uses: 'actions/checkout@v3'
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0 # all commit history and tags
+      - uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - run: 'echo "stagingRepositoryId=$(echo $stagingRepositoryId)"'
+      - run: './gradlew publish${{ matrix.target }}PublicationToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
+
+  closeStagingRepo:
+    runs-on: 'ubuntu-latest'
+    needs: ['openStagingRepo', 'publishArtifacts']
+    env:
+      stagingRepositoryId: ${{needs.openStagingRepo.outputs.stagingRepositoryId}}
+    steps:
+      - uses: 'actions/checkout@v3'
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0 # all commit history and tags
+      - name: 'Set up JDK 17'
+        uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - run: 'echo "stagingRepositoryId=$(echo $stagingRepositoryId)"'
+      - name: 'Close Sonatype Staging Repository'
+        run: './gradlew closeSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
+  publishDocs:
+    runs-on: 'ubuntu-latest'
+    needs: ['closeStagingRepo']
+    steps:
+      - uses: 'actions/checkout@v3'
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0 # all commit history and tags
+      - name: 'Set up JDK 17'
+        uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: 17
       - name: 'Build example Compose Web site'
         run: './gradlew :examples:web:build --stacktrace -Prelease -PorchidEnvironment=prod'
       - name: 'Publish Documentation'
         run: './gradlew :docs:publish --stacktrace --no-configuration-cache -Prelease -PorchidEnvironment=prod'
-      - name: 'Close Sonatype Staging Repository'
-        run: './gradlew closeSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
