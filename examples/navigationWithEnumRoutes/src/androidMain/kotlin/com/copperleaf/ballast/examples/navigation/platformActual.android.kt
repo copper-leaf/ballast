@@ -1,10 +1,13 @@
 package com.copperleaf.ballast.examples.navigation
 
-import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.core.AndroidLogger
+import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
+import com.copperleaf.ballast.navigation.routing.RoutingTable
+import com.copperleaf.ballast.navigation.vm.RouterBuilder
+import com.copperleaf.ballast.navigation.vm.withRouter
 import com.copperleaf.ballast.plusAssign
 import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.CoroutineScope
@@ -21,11 +24,22 @@ private val lazyConnection by lazy {
     }.also { it.connect() }
 }
 
-internal actual fun BallastViewModelConfiguration.Builder.installDebugger(): BallastViewModelConfiguration.Builder =
-    apply {
+internal actual fun BallastViewModelConfiguration.Builder.installLogging(): BallastViewModelConfiguration.Builder {
+    return apply {
+        logger = ::AndroidLogger
+        this += LoggingInterceptor()
+    }
+}
+
+internal actual fun BallastViewModelConfiguration.Builder.installDebugger(): BallastViewModelConfiguration.Builder {
+    return apply {
         this += BallastDebuggerInterceptor(lazyConnection)
     }
+}
 
-internal actual fun platformLogger(loggerName: String): BallastLogger {
-    return AndroidLogger(loggerName)
+internal actual fun BallastViewModelConfiguration.Builder.installRouting(
+    routingTable: RoutingTable<AppScreen>,
+    initialRoute: AppScreen,
+): RouterBuilder<AppScreen> {
+    return withRouter(routingTable, initialRoute)
 }
