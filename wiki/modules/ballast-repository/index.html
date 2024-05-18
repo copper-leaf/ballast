@@ -1,0 +1,2117 @@
+
+
+<!DOCTYPE html>
+<html class="">
+<head>
+
+
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.21.1"/>
+<link rel="icon" href="https://copper-leaf.github.io/ballast/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Ballast Repository</title>
+
+
+<meta name="description" content="Opinionated Application State Management framework for Kotlin Multiplatform">
+
+
+
+<link rel="prev" href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules">
+
+
+<link rel="next" href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger">
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/extraCss.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-tooltip.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-accordion.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/PrismJS/prism-themes/master/themes/prism-duotone-light.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/mermaid_bulma.css"  />
+<!-- end:inject styles -->
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.21.1","baseUrl":"https://copper-leaf.github.io/ballast","environment":"prod","version":"4.2.1"};
+</script>
+
+
+    <!-- start:inject meta-components [head] -->
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+    <!-- start:inject meta-components [head] -->
+    
+
+        
+            
+        
+
+        
+            
+        
+            
+        
+            
+        
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+
+
+<div class="columns is-marginless is-desktop">
+
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-mobile is-hidden-touch">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold is-fullheight">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="is-active">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-desktop">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold ">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="is-active">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+
+  <div class="column is-two-thirds-desktop is-three-quarters-widescreen is-four-fifths-fullhd is-paddingless column-main-right">
+  
+
+<nav
+  class="navbar is-white border-bottom"
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="container">
+    <div class="navbar-brand is-marginless">
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu is-marginless" id="navbarMain">
+      <div class="navbar-start">
+      
+<div class="navbar-item">
+  <form id="search-input" data-orchid-search>
+    <div class="field is-marginless" id="search">
+      <div class="control has-icons-left input-control">
+        <input class="input" type="text" name="query" placeholder="Search Ballast">
+
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div id="search-results" data-orchid-search-results style="display: none;">
+      <div class="carat"></div>
+      <b>
+        Search Results
+        <i class="fa fa-times" aria-hidden="true" onclick="$('[data-orchid-search-results]').hide()"></i>
+      </b>
+      <ul></ul>
+    </div>
+  </form>
+</div>
+
+      
+
+  
+  
+    
+
+<a class="navbar-item " href="https://github.com/orchidhq/Orchid">
+Orchid
+</a>
+
+
+  
+
+  
+  
+    
+<div class="navbar-item has-dropdown is-hoverable">
+
+
+<a class="navbar-item " href="">
+Copper Leaf
+</a>
+
+
+  <div class="navbar-dropdown">
+  
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/common">
+Common
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/clog">
+Clog
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kudzu">
+Kudzu
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/trellis">
+Trellis
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/thistle">
+Thistle
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/ballast">
+Ballast
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kodiak">
+Kodiak
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/krow">
+Krow
+</a>
+
+
+    
+  </div>
+</div>
+
+  
+
+
+      </div>
+
+      <div class="navbar-end">
+      
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf" title="Copper Leaf Home">
+    <i class="fas fa-home"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf/ballast" title="Github">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://twitter.com/OrchidSSG" title="Twitter">
+    <i class="fab fa-twitter"></i>
+  </a>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <div class="textured container" style="width: 100%;">
+    
+    
+
+    
+    
+      <article style="position: relative; margin-top: 60px; margin-bottom: 60px;" role="main">
+      
+      
+        <div class="box">
+        
+
+<div class="columns">
+  <div class="column is-three-quarters-desktop">
+  
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <div class="content is-medium-tablet is-large-fullhd">
+<h1 id="ballast-repository"><a href="#ballast-repository" id="ballast-repository" class="anchor"></a>Ballast Repository</h1>
+<h2 id="overview"><a href="#overview" id="overview" class="anchor"></a>Overview</h2>
+<p>MVI has been known for a while as a great option for managing UI state, but most applications will also need to manage
+some state that lives longer than a single screen. This would be things like account management, or caching of expensive
+computations or API calls, and MVI can actually be a great fit for this Repository Layer, too. The <a href="https://docs.microsoft.com/en-us/previous-versions/msp-n-p/ff649690(v=pandp.10)?redirectedfrom=MSDN">Repository Layer</a>
+has a lifetime that is longer than any single screen, and acts as a liaison between your UI code (the typical MVI area)
+and the domain objects that make the UI work.</p>
+<p>On Android, it's recommended to have a <a href="https://developer.android.com/jetpack/guide#data-layer">Data Layer</a>, but exactly how to build it is not well known, and there really
+aren't any recommendations from Google, either. <a href="https://github.com/dropbox/Store">Dropbox Store</a> attempted to step in and create a library to
+implement this Data or Repository layer, but in practice it works more like a persistent cache than a true solution for
+app-wide State management.</p>
+<p>Ballast Repository aims to fill that gap, and provide an opinionated way to manage the data in your application layer,
+using the same MVI model you're used to with your UI code. One huge benefit of using Ballast as your repository layer
+vs other solutions, is that you can approach both UI and non-UI development with the same mindset; you don't have to
+&quot;context switch&quot; when moving between layers!</p>
+<p>Ballast Repository is built around 3 core concepts: the MVI model as implemented with a special <code>BallastRepository</code>
+ViewModel, the <code>Cached&lt;T&gt;</code> interface to hold and update data within the Repository, and the <code>EventBus</code> to facilitate
+communication between Repository instances throughout the entire layer.</p>
+<h2 id="example-use-case"><a href="#example-use-case" id="example-use-case" class="anchor"></a>Example Use-Case</h2>
+<p>Before diving into the usage of the Repository module, it may be helpful to get a basic intuition for when you might
+need it, and how this layer of your application is intended to work. Consider the following situation:</p>
+<p>You have an app where users can log on and view how much they've used your service, and how much it costs them. The
+users may have multiple linked accounts and switch between the accounts freely. Viewing their usage is tied to the
+individual account, but billing is aggregated among all accounts to simplify paying the bill.</p>
+<p>We want to minimize the number of API calls for a snappy user-experience, so we cache every API response. Whenever the
+user changes the current account, we want to refresh their usage data, but not the billing info, since we want to show
+the new usage data for the new account, but the billing data does not need to be changed.</p>
+<p>In this model, using a <a href="#BallastRepository">BallastRepository</a>, we would hold the user account info in an
+<code>AccountRepository</code>, the usage data in <code>UsageRepository</code>, and billing info in <code>BillingRepository</code>. All the cached data
+is held within a <a href="#Cached"><code>Cached&lt;T&gt;</code></a> property of each Repository's State. Changing accounts involves sending an Input
+to <code>AccountRepository</code>, which then makes its own changes and then sends the relevant Input through the
+<a href="#EventBus"><code>EventBus</code></a> to the <code>BillingRepository</code>. The UI layer does not need to know any specifics of what's going on
+in the Repository layer, as it just passively observes the <code>Cached</code> properties. Furthermore, it also does not need to
+know anything about the specific organization of data in it, when changing one property needs to clear the cache of
+another, etc. You can easily wire up any screen to change the account or fetch the usage/billing info, trust that it
+will be fetched only once if needed or else returned from the cache, and know that the relevant UI will be updated
+automatically whenever the repository finished updating its cached without having to do any specific UI handling for
+that.</p>
+<h2 id="usage"><a href="#usage" id="usage" class="anchor"></a>Usage</h2>
+<h3 id="ballastrepository"><a href="#ballastrepository" id="ballastrepository" class="anchor"></a>BallastRepository</h3>
+<p><code>BallastRepository</code> is a special <code>BallastViewModel</code> implementation that is intended to be used as the &quot;ViewModel&quot; of
+your Repository layer. Unlike UI ViewModels, the Repositories do not have <code>EventHandlers</code>, as Events sent from the
+Repository InputHandler are sent to the EventBus instead (which is simply a SharedFlow). It also uses the
+<code>FifoInputStrategy</code> to ensure that all Inputs are handled, rather than being dropped or cancelled, though they're still
+processed one-at-a-time.</p>
+<p>Repositories need a <code>CoroutineScope</code> to control their lifetime (commonly a single, glogal Application CoroutineScope),
+and the <code>EventBus</code> instance, which should be shared among all Repositories. There also exists a
+<code>AndroidBallastRepository</code> which implements the same semantics, but is an instance of <code>androidx.lifecycle.ViewModel</code> and
+so can be scoped to a Navigation sub-graph.</p>
+<pre><code class="language-kotlin">class ExampleRepositoryImpl(
+    coroutineScope: CoroutineScope,
+    eventBus: EventBus,
+) : BallastRepository&lt;
+        ExampleRepositoryContract.Inputs,
+        ExampleRepositoryContract.State&gt;(
+    coroutineScope = coroutineScope,
+    eventBus = eventBus,
+    config = BallastViewModelConfiguration.Builder()
+        .apply {
+            initialState = ExampleRepositoryContract.State()
+            inputHandler = ExampleRepositoryInputHandler()
+            name = &quot;Example Repository&quot;
+        }.build()
+)
+</code></pre>
+<p>The <code>Contract</code> for a Repository can be anything you need it to be, but a common implementation based around Ballast's
+own <code>Cached&lt;T&gt;</code> interface looks like the example below. You can add as many cached properties to the same Repository as
+needed, but they should typically be related by domain.</p>
+<pre><code class="language-kotlin">object ExampleRepositoryContract {
+    data class State(
+        val initialized: Boolean = false,
+        
+        val examplePropertyInitialized: Boolean = false,
+        val exampleProperty: Cached&lt;ExampleValue&gt; = Cached.NotLoaded(),
+    )
+
+    sealed interface Inputs {
+        data object ClearCaches : Inputs
+        data object Initialize : Inputs
+        data object RefreshAllCaches : Inputs
+
+        data class RefreshExampleProperty(val forceRefresh: Boolean) : Inputs
+        data class ExamplePropertyUpdated(val value: Cached&lt;ExampleValue&gt;) : Inputs
+    }
+}
+</code></pre>
+<p>The corresponding InputHandler is also very much templated, using the <code>fetchWithCache()</code> function to determine when to
+update the cached value:</p>
+<pre><code class="language-kotlin">class ExampleRepositoryInputHandler(
+    private val exampleApi: ExampleApi,
+) : InputHandler&lt;
+    ExampleRepositoryContract.Inputs,
+    Any,
+    ExampleRepositoryContract.State&gt; {
+
+    override suspend fun InputHandlerScope&lt;
+        ExampleRepositoryContract.Inputs,
+        Any,
+        ExampleRepositoryContract.State&gt;.handleInput(
+        input: ExampleRepositoryContract.Inputs
+    ) = when (input) {
+        is ExampleRepositoryContract.Inputs.ClearCaches -&gt; {
+            updateState { ExampleRepositoryContract.State() }
+        }
+        is ExampleRepositoryContract.Inputs.Initialize -&gt; {
+            val previousState = getCurrentState()
+
+            if (!previousState.initialized) {
+                updateState { it.copy(initialized = true) }
+                // start observing flows here
+                logger.debug(&quot;initializing&quot;)
+                observeFlows(
+                    key = &quot;Observe account changes&quot;,
+                    params.eventBus
+                        .observeInputsFromBus&lt;ExampleRepositoryContract.Inputs&gt;(),
+                )
+            } else {
+                logger.debug(&quot;already initialized&quot;)
+                noOp()
+            }
+        }
+
+        is ExampleRepositoryContract.Inputs.RefreshAllCaches -&gt; {
+            // refresh all the caches in this repository
+            val currentState = getCurrentState()
+            if (currentState.examplePropertyInitialized) {
+                postInput(ExampleRepositoryContract.Inputs.RefreshExampleProperty(true))
+            }
+
+            Unit
+        }
+        
+        is ExampleRepositoryContract.Inputs.RefreshExampleProperty -&gt; {
+            updateState { it.copy(examplePropertyInitialized = true) }
+            fetchWithCache(
+                input = input,
+                forceRefresh = input.forceRefresh,
+                getValue = { it.exampleProperty },
+                updateState = { ExampleRepositoryContract.Inputs.ExamplePropertyUpdated(it) },
+                doFetch = {
+                    exampleApi.fetchValue()
+                },
+            )
+        }
+        is ExampleRepositoryContract.Inputs.ExamplePropertyUpdated -&gt; {
+            updateState { it.copy(value = input.value) }
+        }
+    }
+}
+</code></pre>
+<p>The final piece of the puzzle is where things start to look a bit different from normal UI MVI usage. A Ballast
+Repository typically shouldn't be directly exposed to the UI, but instead hidden behind an interface so the UI layers
+don't need to worry about sending the right Inputs and the right time to clear the caches, etc. Instead the UI just
+requests data from the Repository interface as normal and receives the data it needs as a flow, while the Ballast
+Repository does all the work in the background to fetch or return cached data.</p>
+<pre><code class="language-kotlin">public interface ExampleRepository { 
+    fun getExampleValue(refreshCache: Boolean): Flow&lt;Cached&lt;ExampleValue&gt;&gt;
+}
+</code></pre>
+<p>The class that extends <code>BallastRepository</code> should then also implement the interface, and send the correct Inputs as the
+UI requests data. This makes the actual fetches of data lazy.</p>
+<pre><code class="language-kotlin">class ExampleRepositoryImpl(
+    coroutineScope: CoroutineScope,
+    eventBus: EventBus,
+) : BallastRepository&lt;
+        ExampleRepositoryContract.Inputs,
+        ExampleRepositoryContract.State&gt;(
+    coroutineScope = coroutineScope,
+    eventBus = eventBus,
+    config = BallastViewModelConfiguration.Builder()
+        .apply {
+            initialState = ExampleRepositoryContract.State()
+            inputHandler = ExampleRepositoryInputHandler()
+            name = &quot;Example Repository&quot;
+        }.build()
+), ExampleRepository {
+
+    override fun getExampleValue(refreshCache: Boolean): Flow&lt;Cached&lt;ExampleValue&gt;&gt; { 
+        trySend(ExampleRepositoryContract.Inputs.Initialize)
+        trySend(ExampleRepositoryContract.Inputs.RefreshExampleProperty(refreshCache))
+        return observeStates()
+            .map { it.exampleProperty }
+    }
+    
+}
+</code></pre>
+<p>There is a lot of boilerplate to this method, and eventually there may be a generic Caching Repository to do all this
+for you. But for now, it's best to just be explicit, so you can easily track what data is being changed and at what time
+within each Repository.</p>
+<h3 id="eventbus"><a href="#eventbus" id="eventbus" class="anchor"></a>EventBus</h3>
+<p>The <code>EventBus</code> class is basically just a wrapper around a <code>SharedFlow</code>. It should share the same instance among all
+Repositories, so that one Repository can post an event to the bus, and it will be delivered to another Repository.</p>
+<p>Each Repository should typically observe values of its own type from the EventBus, using
+<code>eventBus.observeInputsFromBus&lt;ExampleRepositoryContract.Inputs&gt;()</code>, but you're free to observe values of any type. An
+example is using a generic &quot;ClearCache&quot; token sent to the bus, and all repositories can watch for that token and clear
+themselves.</p>
+<p>Values can be sent from one Repository to another with the normal <code>InputHandlerScope.postEvent()</code>. You can post any
+non-null value, as the <code>Events</code> type is <code>Any</code>.</p>
+<h3 id="cached"><a href="#cached" id="cached" class="anchor"></a>Cached</h3>
+<p><code>Cached</code> is a sealed class which holds the data in your Repository and notifies observers of all changes to that value
+as it is loaded. It can be one of 4 states: <code>NotLoaded</code>, <code>Fetching</code>, <code>Value</code>, or <code>FetchingFailed</code>.</p>
+<p>For values that need to be loaded once from some remote source or expensive computation, use <code>fetchWithCache()</code> within
+your InputHandler in response to a <code>Refresh*</code> Inputs. That function takes care of determining when to fetch new values
+and capturing errors from the fetcher. But one particular feature of it is that when a hard refresh is requested, the
+state will change the previously-cached value will be carried through those states until a new value finally returns,
+which can be used to show a progress indicator in the UI with the old values, rather than clearing the entire screen
+while loading. The <code>Cached&lt;T&gt;</code> value has a number of extension functions to help in displaying the right things in the
+UI according to the status of that cached value.</p>
+<p>When a UI ViewModel is observing a <code>Cached&lt;T&gt;</code> property from a Repository, you should think of it as if the UI ViewModel
+simply observes a &quot;view&quot; of the repository. Technically, the cached values will be copied into the UI ViewModel, but
+there shouldn't be any reason to change the value directly in the UI ViewModel. Instead, send those changes back to the
+Repository and wait for it to get changed there, at which point the updated value will flow back into the UI ViewModel.
+Also, do not unwrap the Cached value in the UI ViewModel, continue to hold onto it as the wrapped <code>Cached&lt;T&gt;</code> value so
+that the UI can use the Cached DSL to optimize its display of the inner value.</p>
+<h2 id="installation"><a href="#installation" id="installation" class="anchor"></a>Installation</h2>
+<pre><code class="language-kotlin">repositories {
+    mavenCentral()
+}
+
+// for plain JVM or Android projects
+dependencies {
+    implementation(&quot;io.github.copper-leaf:ballast-repository:4.2.1&quot;)
+}
+
+// for multiplatform projects
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(&quot;io.github.copper-leaf:ballast-repository:4.2.1&quot;)
+            }
+        }
+    }
+}
+</code></pre>
+
+</div>
+
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+  </div>
+  
+    <div class="column is-one-quarter is-hidden-touch">
+      <div class="sticky-menu" style="position: sticky; top: 30px;">
+  
+  
+    
+<p class="menu-label">In This Page</p>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=  -->
+  <a href="#overview" class="">
+  
+  Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=  -->
+  <a href="#example-use-case" class="">
+  
+  Example Use-Case
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=  -->
+  <a href="#usage" class="">
+  
+  Usage
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=  -->
+  <a href="#ballastrepository" class="">
+  
+  BallastRepository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=  -->
+  <a href="#eventbus" class="">
+  
+  EventBus
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=  -->
+  <a href="#cached" class="">
+  
+  Cached
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <!-- menuItem.page=  -->
+  <a href="#installation" class="">
+  
+  Installation
+  </a>
+</li>
+
+</ul>
+  
+
+</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+      
+      </article>
+    
+      <div class="grow"></div>
+      <div class="page-footer">
+      
+        <nav class="pagination is-rounded footer-pagination" role="navigation" aria-label="pagination">
+
+  <a class="pagination-previous" href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules">
+    <span class="icon"><i class="fas fa-chevron-left"></i></span>
+    Ballast Schedules
+  </a>
+
+
+
+  <a class="pagination-next" href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger">
+    Ballast Debugger
+    <span class="icon"><i class="fas fa-chevron-right"></i></span>
+  </a>
+
+</nav>
+
+<footer class="footer border-top">
+  <div class="content is-small">
+  <p>
+  Site proudly built with <a href="https://orchid.run/">Orchid</a>.<br>
+</p>
+
+  </div>
+</footer>
+
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+
+<!-- start:inject scripts -->
+<script defer data-search-pseudo-elements="true" src="https://copper-leaf.github.io/ballast/Copper/6f592938/releases/v5.4.0/js/all.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-accordion.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-tabs.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/lunr/lunr.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/assets/js/orchidSearch.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-groovy.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/mermaid/8.13.9/mermaid.min.js"></script>
+<script >
+;
+
+document.addEventListener('DOMContentLoaded', function() {
+    mermaid.init({}, "code.language-mermaid");
+});
+</script>
+<script  src="https://copper-leaf.github.io/ballast/assets/scripts/mp-widget.js"></script>
+<script >
+
+if(document.getElementById("intellij-plugin-button") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('install', 18702, "#intellij-plugin-button");
+}
+if(document.getElementById("intellij-plugin-card") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('card', 18702, "#intellij-plugin-card");
+}
+</script>
+<!-- end:inject scripts -->
+
+
+</body>
+</html>

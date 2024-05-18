@@ -1,0 +1,1775 @@
+
+
+<!DOCTYPE html>
+<html class="">
+<head>
+
+
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.21.1"/>
+<link rel="icon" href="https://copper-leaf.github.io/ballast/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>KVision TODOMVC</title>
+
+
+<meta name="description" content="Opinionated Application State Management framework for Kotlin Multiplatform">
+
+
+
+<link rel="prev" href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit">
+
+
+<link rel="next" href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform">
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/extraCss.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-tooltip.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-accordion.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/PrismJS/prism-themes/master/themes/prism-duotone-light.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/mermaid_bulma.css"  />
+<!-- end:inject styles -->
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.21.1","baseUrl":"https://copper-leaf.github.io/ballast","environment":"prod","version":"4.2.1"};
+</script>
+
+
+    <!-- start:inject meta-components [head] -->
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+    <!-- start:inject meta-components [head] -->
+    
+
+        
+            
+        
+
+        
+            
+        
+            
+        
+            
+        
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+
+
+<div class="columns is-marginless is-desktop">
+
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-mobile is-hidden-touch">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold is-fullheight">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="is-active">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-desktop">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold ">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="is-active">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+
+  <div class="column is-two-thirds-desktop is-three-quarters-widescreen is-four-fifths-fullhd is-paddingless column-main-right">
+  
+
+<nav
+  class="navbar is-white border-bottom"
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="container">
+    <div class="navbar-brand is-marginless">
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu is-marginless" id="navbarMain">
+      <div class="navbar-start">
+      
+<div class="navbar-item">
+  <form id="search-input" data-orchid-search>
+    <div class="field is-marginless" id="search">
+      <div class="control has-icons-left input-control">
+        <input class="input" type="text" name="query" placeholder="Search Ballast">
+
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div id="search-results" data-orchid-search-results style="display: none;">
+      <div class="carat"></div>
+      <b>
+        Search Results
+        <i class="fa fa-times" aria-hidden="true" onclick="$('[data-orchid-search-results]').hide()"></i>
+      </b>
+      <ul></ul>
+    </div>
+  </form>
+</div>
+
+      
+
+  
+  
+    
+
+<a class="navbar-item " href="https://github.com/orchidhq/Orchid">
+Orchid
+</a>
+
+
+  
+
+  
+  
+    
+<div class="navbar-item has-dropdown is-hoverable">
+
+
+<a class="navbar-item " href="">
+Copper Leaf
+</a>
+
+
+  <div class="navbar-dropdown">
+  
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/common">
+Common
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/clog">
+Clog
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kudzu">
+Kudzu
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/trellis">
+Trellis
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/thistle">
+Thistle
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/ballast">
+Ballast
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kodiak">
+Kodiak
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/krow">
+Krow
+</a>
+
+
+    
+  </div>
+</div>
+
+  
+
+
+      </div>
+
+      <div class="navbar-end">
+      
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf" title="Copper Leaf Home">
+    <i class="fas fa-home"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf/ballast" title="Github">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://twitter.com/OrchidSSG" title="Twitter">
+    <i class="fab fa-twitter"></i>
+  </a>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <div class="textured container" style="width: 100%;">
+    
+    
+
+    
+    
+      <article style="position: relative; margin-top: 60px; margin-bottom: 60px;" role="main">
+      
+      
+        <div class="box">
+        
+
+<div class="columns">
+  <div class="column is-three-quarters-desktop">
+  
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <div class="content is-medium-tablet is-large-fullhd">
+<h1 id="kvision-todomvc"><a href="#kvision-todomvc" id="kvision-todomvc" class="anchor"></a>KVision TODOMVC</h1>
+<p><a href="https://kvision.io/">KVision</a> is an object-oriented web framework for Kotlin/JS, providing a more traditional MVC approach to building
+Kotlin web applications as compared to Compose. KVision has modules to support binding Ballast ViewModels to KVision
+UIs.</p>
+<p>The <a href="https://github.com/rjaros/kvision-examples/tree/master/todomvc-ballast">todomvc-ballast</a> example includes a complete KVision application built with Ballast state management. This
+example project is built and maintained by the KVision community.</p>
+<p><a href="https://github.com/rjaros/kvision-examples/tree/master/todomvc-ballast"><img src="https://gh-card.dev/repos/rjaros/kvision-examples.svg?fullname=" alt="rjaros/kvision-examples - GitHub" /></a></p>
+
+</div>
+
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+  </div>
+  
+    <div class="column is-one-quarter is-hidden-touch">
+      <div class="sticky-menu" style="position: sticky; top: 30px;">
+  
+  
+    
+<p class="menu-label">In This Page</p>
+  
+
+</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+      
+      </article>
+    
+      <div class="grow"></div>
+      <div class="page-footer">
+      
+        <nav class="pagination is-rounded footer-pagination" role="navigation" aria-label="pagination">
+
+  <a class="pagination-previous" href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit">
+    <span class="icon"><i class="fas fa-chevron-left"></i></span>
+    KaMPKit
+  </a>
+
+
+
+  <a class="pagination-next" href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform">
+    Shared Compose Multiplatform
+    <span class="icon"><i class="fas fa-chevron-right"></i></span>
+  </a>
+
+</nav>
+
+<footer class="footer border-top">
+  <div class="content is-small">
+  <p>
+  Site proudly built with <a href="https://orchid.run/">Orchid</a>.<br>
+</p>
+
+  </div>
+</footer>
+
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+
+<!-- start:inject scripts -->
+<script defer data-search-pseudo-elements="true" src="https://copper-leaf.github.io/ballast/Copper/6f592938/releases/v5.4.0/js/all.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-accordion.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-tabs.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/lunr/lunr.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/assets/js/orchidSearch.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-groovy.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/mermaid/8.13.9/mermaid.min.js"></script>
+<script >
+;
+
+document.addEventListener('DOMContentLoaded', function() {
+    mermaid.init({}, "code.language-mermaid");
+});
+</script>
+<script  src="https://copper-leaf.github.io/ballast/assets/scripts/mp-widget.js"></script>
+<script >
+
+if(document.getElementById("intellij-plugin-button") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('install', 18702, "#intellij-plugin-button");
+}
+if(document.getElementById("intellij-plugin-card") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('card', 18702, "#intellij-plugin-card");
+}
+</script>
+<!-- end:inject scripts -->
+
+
+</body>
+</html>

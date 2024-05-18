@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-assets.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-external.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-changelog.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-forms.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-home.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-pages.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-snippets.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-wiki.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+    <sitemap>
+        <loc>https://copper-leaf.github.io/ballast/sitemap-sitemap.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+    </sitemap>
+</sitemapindex>

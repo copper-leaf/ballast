@@ -1,0 +1,2235 @@
+
+
+<!DOCTYPE html>
+<html class="">
+<head>
+
+
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.21.1"/>
+<link rel="icon" href="https://copper-leaf.github.io/ballast/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Ballast Navigation FAQs</title>
+
+
+<meta name="description" content="Opinionated Application State Management framework for Kotlin Multiplatform">
+
+
+
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/extraCss.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-tooltip.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-accordion.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/PrismJS/prism-themes/master/themes/prism-duotone-light.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/mermaid_bulma.css"  />
+<!-- end:inject styles -->
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.21.1","baseUrl":"https://copper-leaf.github.io/ballast","environment":"prod","version":"4.2.1"};
+</script>
+
+
+    <!-- start:inject meta-components [head] -->
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+    <!-- start:inject meta-components [head] -->
+    
+
+        
+            
+        
+
+        
+            
+        
+            
+        
+            
+        
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+
+
+<div class="columns is-marginless is-desktop">
+
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-mobile is-hidden-touch">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold is-fullheight">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-desktop">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold ">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+
+  <div class="column is-two-thirds-desktop is-three-quarters-widescreen is-four-fifths-fullhd is-paddingless column-main-right">
+  
+
+<nav
+  class="navbar is-white border-bottom"
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="container">
+    <div class="navbar-brand is-marginless">
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu is-marginless" id="navbarMain">
+      <div class="navbar-start">
+      
+<div class="navbar-item">
+  <form id="search-input" data-orchid-search>
+    <div class="field is-marginless" id="search">
+      <div class="control has-icons-left input-control">
+        <input class="input" type="text" name="query" placeholder="Search Ballast">
+
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div id="search-results" data-orchid-search-results style="display: none;">
+      <div class="carat"></div>
+      <b>
+        Search Results
+        <i class="fa fa-times" aria-hidden="true" onclick="$('[data-orchid-search-results]').hide()"></i>
+      </b>
+      <ul></ul>
+    </div>
+  </form>
+</div>
+
+      
+
+  
+  
+    
+
+<a class="navbar-item " href="https://github.com/orchidhq/Orchid">
+Orchid
+</a>
+
+
+  
+
+  
+  
+    
+<div class="navbar-item has-dropdown is-hoverable">
+
+
+<a class="navbar-item " href="">
+Copper Leaf
+</a>
+
+
+  <div class="navbar-dropdown">
+  
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/common">
+Common
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/clog">
+Clog
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kudzu">
+Kudzu
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/trellis">
+Trellis
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/thistle">
+Thistle
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/ballast">
+Ballast
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kodiak">
+Kodiak
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/krow">
+Krow
+</a>
+
+
+    
+  </div>
+</div>
+
+  
+
+
+      </div>
+
+      <div class="navbar-end">
+      
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf" title="Copper Leaf Home">
+    <i class="fas fa-home"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf/ballast" title="Github">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://twitter.com/OrchidSSG" title="Twitter">
+    <i class="fab fa-twitter"></i>
+  </a>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <div class="textured container" style="width: 100%;">
+    
+    
+
+    
+    
+      <article style="position: relative; margin-top: 60px; margin-bottom: 60px;" role="main">
+      
+      
+        <div class="box">
+        
+
+<div class="columns">
+  <div class="column is-three-quarters-desktop">
+  
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <div class="content is-medium-tablet is-large-fullhd">
+<h1 id="ballast-navigation-faqs"><a href="#ballast-navigation-faqs" id="ballast-navigation-faqs" class="anchor"></a>Ballast Navigation FAQs</h1>
+<h3 id="why-make-yet-another-routing-library"><a href="#why-make-yet-another-routing-library" id="why-make-yet-another-routing-library" class="anchor"></a>Why make yet another routing library?</h3>
+<p>The first reason, and why most people create new libraries, is that I was not happy with any of the existing solutions
+out there. It's my opinion that Android's official navigation patterns (both the old, manual navigation, and the newer
+Androidx Navigation library) encourage patterns in navigation that tend to lead to bad application architecture. And
+unfortunately, most of the recent routing libraries I've tried seem to be copying that similar navigation patterns,
+bringing Android's anti-patterns with them into the KMPP and Compose world. Compose and MVI as an ecosystem work because
+they're not trying to copy old UIs patterns, so why are we still thinking that the old style of Navigation works?</p>
+<p>Most notably, Android's navigation system encourages a pattern of navigating to one screen, and then to another, loading
+specific data on those screens as you go. Whether this is done with navigation from Activity-to-Activity,
+Fragment-to-Fragment, or by defining a specific navigation order through a declarative NavGraph explicitly linking
+destinations to one another, this style of navigation usually leads to data being loaded on a specific screen vs being
+loaded when requested, regardless of the screen requesting it. This becomes problematic when trying to implement
+deep-links, when one needs to add explicit handling of the deep-link case to load the data that would have been loaded
+on an earlier screen with the &quot;happy path&quot; navigation. Instead, I believe the web's pattern of every screen being
+defined by a URL and the user may jump directly to any given screen encourages a better pattern where you cannot assume
+any given sequence of screens was visited, and thus you must push the loading of data out of the UI and into the
+Repository layer, where it belongs.</p>
+<p>The second reason that I created this library is that I realized routing is really just an exercise in state management,
+and Ballast is already very good at that. Routing libraries typically build up a subsystem for managing updates to the
+state, and then build their routing logic within that, but because they're fundamentally <em>routing</em> libraries and not
+<em>state management</em> libraries, the actual state management aspects of them are lacking.</p>
+<p>But Ballast is already proven to be a stable, robust, and predicable state management library, and it was relatively
+simple to add navigation on top of what already exists here. And in the process, Ballast Navigation gains all the
+features of the other Ballast extension libraries for free (like logging, debugging, or undo/redo), both current and
+future, which would otherwise either be hardcoded in hacky ways into those other libraries, or else completely absent.</p>
+<h3 id="is-this-library-type-safe"><a href="#is-this-library-type-safe" id="is-this-library-type-safe" class="anchor"></a>Is this library type-safe?</h3>
+<p>It depends on what you mean by type-safe. If, by that, you mean that routing is done with data classes that are just
+passed around, then no, this library is not type-safe. It works by parsing a URL to extract data from the path and query
+parameters, and those values are ultimately passed around as Strings, not as strongly-typed objects.</p>
+<p>But if by type-safe you mean that when loading a route, you can easily ensure that the parameters exist and are of a
+certain type, then yes, this library does support that. Route matching is strict and you manually define which
+parameters must be present, and it offers a set of delegate functions to make it easy to extract those parameters in a
+type-safe manner, preventing you to navigating to a route if the value is of an incorrect type. This style of routing is
+not checked at compile time, unlike passing around a data class, but it actually has some other advantages that the
+data-class argument-passing lacks:</p>
+<ul>
+<li>By forcing you to represent the data passed between routes as a URL, it encourages the best-practice of only passing
+the minimal amount of data needed for the new route to load the full objects it needs. Quoting from the documentation
+of <a href="https://developer.android.com/guide/navigation/navigation-pass-data">Androidx Navigation</a>, <em>&quot;In general, you should strongly prefer passing only the minimal amount of data between
+destinations. For example, you should pass a key to retrieve an object rather than passing the object itself...If you
+need to pass large amounts of data, consider using a ViewModel as described in 'Share data between fragments'.&quot;</em></li>
+<li>You get deep-linking for free, since effectively <em>every</em> navigation request is a deep-link. If you have to pass
+configuration/argument objects, you would have to manually parse a deep-link URL to that object before attempting to
+navigate with it, which can cause problems if your URL-parsing logic differs from the rest of your application's
+navigation logic.</li>
+<li>KSP and Code Generation, or type-safe wrapper functions, can be easily added on top of this library, while it's more
+difficult to take a library built with strong type-safety/code generation in mind and use it in any other way. This
+eases the burden of evaluation or incremental adoption. For example, generating type-safe Directions functions and
+arguments delegates could be done fairly easily, and the core routing APIs were intentionally designed to allow that
+possibility, though it is not on the current roadmap for this library. This would be a very welcome addition from the
+community, if someone wanted to create this as a KSP plugin!</li>
+</ul>
+<h3 id="does-this-library-integrate-with-compose"><a href="#does-this-library-integrate-with-compose" id="does-this-library-integrate-with-compose" class="anchor"></a>Does this library integrate with Compose?</h3>
+<p>Yes! Everything you need to integrate Ballast Navigation into Compose is provided in the core artifact, without any need
+for a special Compose integration library. Ballast Navigation ultimately just manages a backstack of URLs and emits it
+to the UI as a <code>StateFlow</code>, which can be easily collected from Compose. Anything else that you would typically want from
+a &quot;Compose integration&quot; is almost certainly too specific to your use-case to be included within the core Ballast
+Navigation library, but is easy enough for you to implement yourself.</p>
+<p>But when people typically ask this question, what they really are asking is, &quot;does it live entirely within Compose code,
+and give me automatic transition animations and stuff like that&quot;. And the answer to this question is no, Ballast
+Navigation is intentionally kept outside the UI. A community-designed library to connect Ballast Navigation to Compose
+for things like Animations would be a very welcome addition, however!</p>
+<p>For now, you can achieve basic transition animations with existing Compose UI APIs like <code>AnimatedContent</code>. Or if someone
+wanted to help bring <a href="https://github.com/rjrjr/compose-backstack">rjrjr/compose-backstack</a> up-to-date with the latest Compose version and make it work with
+Desktop, that would be the perfect companion library to Ballast Navigation!</p>
+<h3 id="how-do-i-sync-destinations-with-the-browser-address-bar"><a href="#how-do-i-sync-destinations-with-the-browser-address-bar" id="how-do-i-sync-destinations-with-the-browser-address-bar" class="anchor"></a>How do I sync destinations with the browser address bar?</h3>
+<p>When using Ballast Navigation in the browser, you may wish to show the current destination URL in the browser's address
+bar to help the user understand the structure of your application, as well as allowing them to edit the URL to jump to
+a specific screen, or save it as a bookmark.</p>
+<p>This is included as built-in functionality, for synchronizing the router state with the browser's address bar in both
+directions: applying router state to the address bar, and passing changes made by the user back into the router. It will
+also take care of reading the current URL when the page first loads, and navigating directly to that route.</p>
+<p>All that's needed to support this functionality is to add an Interceptor to the Router during creation. Both hash-based
+routing and the <a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API">History API</a> are supported.</p>
+<h4 id="browser-hash"><a href="#browser-hash" id="browser-hash" class="anchor"></a>Browser Hash</h4>
+<p>Hash-based routing is the &quot;older&quot; mechanism for routing in a Single Page Application (SPA), though it should not be
+considered obselete. In particular, one would have to set up server-side redirects to make the History API work, which
+may not be feasible, in which case Hash-based routing is the only option left.</p>
+<p>Hash-based routing can be added with the <code>BrowserHashNavigationInterceptor</code>, or with the <code>withBrowserHashRouter</code> helper
+function.</p>
+<pre><code class="language-kotlin">class RouterViewModel(
+    viewModelCoroutineScope: CoroutineScope
+) : BasicRouter&lt;AppScreens&gt;(
+    config = BallastViewModelConfiguration.Builder()
+        .withBrowserHashRouter(RoutingTable.fromEnum(AppScreens.values()), AppScreens.Home)
+        .build(),
+    eventHandler = eventHandler { },
+    coroutineScope = viewModelCoroutineScope,
+)
+</code></pre>
+<h4 id="browser-history"><a href="#browser-history" id="browser-history" class="anchor"></a>Browser History</h4>
+<p>Hash-based routing is done with the <code>#</code> portion of the URL, and isn't as user-friendly to read and share as with just
+a normal URL path. The <a href="https://developer.mozilla.org/en-US/docs/Web/API/History_API">Browser History API</a> allows websites to edit the entire URL shown in the address bar
+and navigate forward and backward through the screens of your SPA with the browser's native buttons, so users wouldn't
+even know that you'ure doing front-end routing.</p>
+<p>The caveat is that using the history API requires your hosting server to redirect all URLs to the SPA's main page. There
+are plenty of tutorials online for configuring your server to do this, so I will not cover these details here.</p>
+<p>Routing with the History API can be added with the <code>BrowserHistoryNavigationInterceptor</code>, or with the
+<code>withBrowserHistoryRouter</code> helper function. Unlike the Hash interceptor, the History interceptor needs to know which
+portion of the URL path is just the page itself, and which is used for routing within the application, so you must pass
+the base path for this page into the interceptor.</p>
+<pre><code class="language-kotlin">class RouterViewModel(
+    viewModelCoroutineScope: CoroutineScope
+) : BasicRouter&lt;AppScreens&gt;(
+    config = BallastViewModelConfiguration.Builder()
+        .withBrowserHistoryRouter(RoutingTable.fromEnum(AppScreens.values()), basePath = &quot;/app&quot;, initialRoute = AppScreens.Home)
+        .build(),
+    eventHandler = eventHandler { },
+    coroutineScope = viewModelCoroutineScope,
+)
+</code></pre>
+<p>I would recommend using the <code>BrowserHashNavigationInterceptor</code> when developing locally and switch it out for
+<code>BrowserHistoryNavigationInterceptor</code> when deploying to production, so you don't have to mess with your Webpack dev
+server configuration. There are several ways to determine if your running in production, such as checking the value of
+<code>window.location.host</code>, setting a property as a hidden element in the page's HTML, or using something like
+<a href="https://github.com/gmazzo/gradle-buildconfig-plugin">Gradle BuildConfig plugin</a> to inject a value from the build pipeline into the Kotlin code. But if you do want to
+use the <code>BrowserHistoryNavigationInterceptor</code> in development, <a href="https://github.com/hfhbd/routing-compose#development-usage">routing-compose</a> has instructions for getting your
+environment set up.</p>
+<h3 id="how-does-this-library-handle-transition-animations"><a href="#how-does-this-library-handle-transition-animations" id="how-does-this-library-handle-transition-animations" class="anchor"></a>How does this library handle transition animations?</h3>
+<p>It doesn't. Ballast Navigation just manages the backstack, but you can apply transition animations yourself when
+handling route changes. Ballast Navigation intentionally keeps itself separate from the UI to allow maximum flexibility
+and avoid bloat in its API.</p>
+<h3 id="how-do-i-do-nested-sub-graphs"><a href="#how-do-i-do-nested-sub-graphs" id="how-do-i-do-nested-sub-graphs" class="anchor"></a>How do I do nested sub-graphs?</h3>
+<p>&quot;Nested sub-graphs&quot; in terms of pure navigation really aren't necessary, and is something of an anti-pattern that has
+become popularized by the Androidx Navigation library. There's not really a good reason to group a bunch of destinations
+and set up a hierarchy of routers/navControllers, which just adds unnecessary complexity without much benefit.</p>
+<p>One useful feature of Android's Nested NavGraphs, however, is the ability to scope a ViewModel to the sub-graph rather
+than to an individual screen. This allows you to carry information between multiple screens in a &quot;flow&quot; without needing
+to serialize it all in the Repository layer and manage when it should be reused/cleared. If the ViewModel data is
+ephemeral and the ViewModel is discarded once the sub-graph is exited, then scoped ViewModels automatically clean up
+that data after use.</p>
+<p>Right now, this feature is not supported in Ballast, and I'm still exploring possible options for handling this kind of
+&quot;sub-graph&quot; scoping. You can use <code>RouteAnnotations</code> to define the bounds of a &quot;sub-graph&quot; and handle the purely
+navigational use-case, but it's left up to you to determine how to manage the scope of ViewModels within those graphs.
+Scoping ViewModels to the backstack (or anything else, really) is probably more appropriately handled by your DI
+library's scope functionality, anyway, rather than Ballast itself.</p>
+<h3 id="how-do-i-saverestore-the-backstack"><a href="#how-do-i-saverestore-the-backstack" id="how-do-i-saverestore-the-backstack" class="anchor"></a>How do I save/restore the backstack?</h3>
+<p>Automatic state restoration is intentionally left out of this library, because I did not want to tie it directly to any
+serialization mechanism or library. But this is easy enough to achieve on your own, all you need to do is persist the
+original destination URLs and then restore them within an Input. This example shows how it might be done (if you are
+using <code>RouteAnnotations</code>, you'll want to (de)serialize those as well).</p>
+<pre><code class="language-kotlin">fun saveBackstack(router: Router&lt;AppScreen&gt;) {
+    val backstackUrls: List&lt;String&gt; = router.observeStates().value.map { it.originalDestinationUrl }
+    saveUrlsToSavedState(backstackUrls)
+}
+
+fun restoreBackstack(router: Router&lt;AppScreen&gt;) {
+    val backstackUrls: List&lt;String&gt; = getUrlsFromSavedState()
+    router.trySend(RouterContract.Inputs.RestoreBackstack(backstackUrls))
+}
+</code></pre>
+<p>Automatically saving/restoring the state can be done with the help of the <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state">Ballast Saved State module</a>, by creating an
+adapter like this:</p>
+<pre><code class="language-kotlin">/**
+ * Automatically save and restore the state of the Router with any route changes. Do not pass an initial route to the
+ * BallastViewModelConfiguration.Builder.withRouter()` when using this adapter, as it will handle setting the initial
+ * route instead, and may conflict with the initial route set through that function.
+ *
+ * The actual serialization and persistence of the backstack is delegated through [prefs].
+ *
+ * If you are also using the Ballast Undo/Redo module for forward/backward navigation, set [preserveDiscreteStates] to
+ * true so the backstack is restored through individual [RouterContract.Inputs.GoToDestination] Inputs to capture each
+ * intermediate state. If not, it can be set to false so that a single [RouterContract.Inputs.RestoreBackstack] is used
+ * instead.
+ */
+public class RouterSavedStateAdapter&lt;T : Route&gt;(
+    private val routingTable: RoutingTable&lt;T&gt;,
+    private val initialRoute: T?,
+    private val prefs: Prefs,
+    private val preserveDiscreteStates: Boolean = false,
+) : SavedStateAdapter&lt;
+        RouterContract.Inputs&lt;T&gt;,
+        RouterContract.Events&lt;T&gt;,
+        RouterContract.State&lt;T&gt;&gt; {
+
+    public interface Prefs {
+        var backstackUrls: List&lt;String&gt;
+    }
+
+    override suspend fun SaveStateScope&lt;
+            RouterContract.Inputs&lt;T&gt;,
+            RouterContract.Events&lt;T&gt;,
+            RouterContract.State&lt;T&gt;&gt;.save() {
+        saveAll { backstack -&gt;
+            prefs.backstackUrls = backstack.map { it.originalDestinationUrl }
+        }
+    }
+
+    override suspend fun RestoreStateScope&lt;
+            RouterContract.Inputs&lt;T&gt;,
+            RouterContract.Events&lt;T&gt;,
+            RouterContract.State&lt;T&gt;
+            &gt;.restore(): RouterContract.State&lt;T&gt; {
+        val savedBackstack = prefs.backstackUrls
+        if(savedBackstack.isEmpty()) {
+            initialRoute?.let { initialRoute -&gt;
+                check(initialRoute.isStatic()) {
+                    &quot;For a Route to be used as a Start Destination, it must be fully static. All path segments and &quot; +
+                            &quot;declared query parameters must either be static or optional.&quot;
+                }
+                postInput(
+                    RouterContract.Inputs.GoToDestination(initialRoute.directions().build())
+                )
+            }
+        } else if(preserveDiscreteStates) {
+            savedBackstack.forEach { destinationUrl -&gt;
+                postInput(
+                    RouterContract.Inputs.GoToDestination(destinationUrl)
+                )
+            }
+        } else {
+            postInput(
+                RouterContract.Inputs.RestoreBackstack(savedBackstack)
+            )
+        }
+
+        return RouterContract.State(routingTable = routingTable)
+    }
+}
+</code></pre>
+<h3 id="why-does-this-library-force-ballast-mvi-state-management"><a href="#why-does-this-library-force-ballast-mvi-state-management" id="why-does-this-library-force-ballast-mvi-state-management" class="anchor"></a>Why does this library force Ballast MVI state management?</h3>
+<p>The technical implementation of this library actually does allow one to use a different mechanism for managing state.
+All Navigation classes and features are completely separate from any core Ballast APIs, and it's entirely possible to
+lift the Navigation code and place it into another State Management library.</p>
+<p>But if that is true, why is it coupled to the Ballast library?</p>
+<p>The main reason is that Routing needs some kind of state management solution in order to work properly. Things could end
+up very poorly if your app attempts to make multiple navigation attempts quickly and the Router state gets corrupted,
+and you users will be very unhappy with their experience using that app. The Router state needs to be protected from
+unwanted changes and ensure things are being processed safely, so the options for building the routing library then
+become:</p>
+<ol>
+<li>Keep the Navigation library completely separate from any State Management library</li>
+<li>Couple it to a specific State Management library</li>
+<li>Provide adapters to all the popular State Management libraries, so developers can choose which one they want to use</li>
+</ol>
+<p>If I went with option 1), then the reality is that I would need to build some minimal state-management system specific
+to that library in order to allow its usage without pulling in a larger State Management library. It cannot simply exist
+without state management, so it would need to be shipped with a minimal (and probably poorly-implemented solution)
+instead to avoid any external dependencies. This would then mean it is lacking in features one might expect (like
+logging, or browser-like forward/back buttons), or else have those features hardcoded into that minimal system to
+support those core use-cases that are beyond the base Navigation system. This minimal solution is simply not going to be
+a robust, extensible platform for state management that one would find in a dedicated State Management library like
+Ballast. And having built Ballast already, if I were to build a State Management solution just to ship with the
+navigation library, then I would basically just create Ballast again for it. Ballast is a pretty lightweight library, so
+it just makes more sense to couple this navigation library to Ballast.</p>
+<p>And as for the question of why not provide adapters to other libraries, the answer is that this is a maintenance burden
+that I do not want to support. I do not use any other State Management libraries, myself, so I am not the best person to
+maintain an adapter using Ballast Navigation with those other libraries. I also intentionally crafted this library to
+work well with the other Ballast modules, providing that additional functionality that I do not want to hardcode into
+the navigation system itself. Using Ballast Navigation with those other solutions loses those features, and would
+require a lot of extra documentation and testing to ensure everything's working properly with each library. It also
+makes it more difficult for users to get started, as they could easily be overwhelmed at the thought of choosing a State
+Management library that they may never interact with outside of Navigation. If I keep this Navigation library coupled to
+Ballast, it's easy enough for users to get started without needing to know any of the intricacies of State Management or
+specific libraries, they can just use the snippets in the documentation and focus on the Navigation library itself,
+trusting that it is tested and known to work as they expect.</p>
+<p>If you would like to use Ballast Navigation without the core Ballast State Management library, you should be able to
+exclude the <code>ballast-core</code> dependency from Gradle and wire it up to your own state management solution, as long as you
+do not reference anything from the <code>com.copperleaf.ballast.navigation.vm</code> package. While this is not an
+officially-supported way to use this library and I do not intend to keep any documentation for this use-case, I do
+intend to keep the Navigation APIs free from any core Ballast APIs, so please let me know if something does not work if
+you try this. At a high-level, <a href="https://kotlinlang.slack.com/archives/C03GTEJ9Y3E/p1669248216885769?thread_ts=1669053916.840399&amp;cid=C03GTEJ9Y3E">this snippet</a>
+posted to the Ballast Slack channel might help you get started.</p>
+<h3 id="how-do-i-do-up-navigation"><a href="#how-do-i-do-up-navigation" id="how-do-i-do-up-navigation" class="anchor"></a>How do I do &quot;up&quot; navigation?</h3>
+<p>Most UI platforms have a distinction between &quot;backward&quot; and &quot;upward&quot; navigation. In a nutshell, &quot;backward&quot; navigation
+refers to going back to where you just came from, popping an entry off the backstack. &quot;Upward&quot; navigation means
+navigating to a specific Route that is considered the &quot;parent&quot; of the current destination. In terms of URLs, if you were
+previously at <code>/users/me</code> and navigated to your last post <code>/post/1234</code> backward navigation (Android's hardware back
+button/gesture) brings you to <code>/users/me</code>, while upward navigation (the arrow in the toolbar) brings you to <code>/posts</code>.
+Put in another way, a &quot;backward&quot; navigation is dynamic and determined by the history of screens you've already visited.
+Upward navigation is static, navigating to a predefined destination. In most apps, the flow of navigation through the
+application should match the route hierarchy, so a &quot;back&quot; and &quot;up&quot; action should do the same thing, but deep-links could
+cause them to behave differently.</p>
+<p>Ballast Navigation does not explicitly handle the use-case of &quot;upward&quot; navigation. Because the upward navigation is
+statically determined, one would have to explicitly describe the hierarchical structure of your routes if you wanted to
+have a single <code>RouterContract.Inputs.NavigateUp()</code> action, which not only becomes cumbersome, but may not be entirely
+possible within the Kotlin type system (for example, with recursive routes or cycles in the graph). It also becomes a
+huge maintenance burden with the introduction of graph algorithms into the Navigation library, and something that is
+easy to mess up or get wrong for the end user.</p>
+<p>But why do we need an <code>RouterContract.Inputs.NavigateUp()</code> action at all? The main idea is to navigate from one screen
+to its parent screen, and with a statically-defined graph, that parent route would also be statically determined. So
+rather than including a <code>NavigateUp</code> action and massively complicating this library, it's recommended to instead just
+set the action on the toolbar back button to <code>RouterContract.Inputs.ReplaceTopDestination()</code> with the intended parent
+route. This actually makes it easier to understand your application's navigational flows, while keeping the core Routing
+mechanism simple and easy to work with.</p>
+
+</div>
+
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+  </div>
+  
+    <div class="column is-one-quarter is-hidden-touch">
+      <div class="sticky-menu" style="position: sticky; top: 30px;">
+  
+  
+    
+<p class="menu-label">In This Page</p>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#why-make-yet-another-routing-library" class="">
+  
+  Why make yet another routing library?
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#is-this-library-type-safe" class="">
+  
+  Is this library type-safe?
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#does-this-library-integrate-with-compose" class="">
+  
+  Does this library integrate with Compose?
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#how-do-i-sync-destinations-with-the-browser-address-bar" class="">
+  
+  How do I sync destinations with the browser address bar?
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#browser-hash" class="">
+  
+  Browser Hash
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#browser-history" class="">
+  
+  Browser History
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#how-does-this-library-handle-transition-animations" class="">
+  
+  How does this library handle transition animations?
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#how-do-i-do-nested-sub-graphs" class="">
+  
+  How do I do nested sub-graphs?
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#how-do-i-saverestore-the-backstack" class="">
+  
+  How do I save/restore the backstack?
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#why-does-this-library-force-ballast-mvi-state-management" class="">
+  
+  Why does this library force Ballast MVI state management?
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation/faq 1713999849 -->
+  <!-- menuItem.page=  -->
+  <a href="#how-do-i-do-up-navigation" class="">
+  
+  How do I do &quot;up&quot; navigation?
+  </a>
+</li>
+
+</ul>
+  
+
+</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+      
+      </article>
+    
+      <div class="grow"></div>
+      <div class="page-footer">
+      
+        <nav class="pagination is-rounded footer-pagination" role="navigation" aria-label="pagination">
+
+  <a class="pagination-previous" disabled>
+    <span class="inner">
+      <span class="icon"><i class="fas fa-chevron-left"></i></span>
+      Previous
+    </span>
+  </a>
+
+
+
+  <a class="pagination-next" disabled>
+    <span class="inner">
+      Next
+      <span class="icon"><i class="fas fa-chevron-right"></i></span>
+    </span>
+  </a>
+
+</nav>
+
+<footer class="footer border-top">
+  <div class="content is-small">
+  <p>
+  Site proudly built with <a href="https://orchid.run/">Orchid</a>.<br>
+</p>
+
+  </div>
+</footer>
+
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+
+<!-- start:inject scripts -->
+<script defer data-search-pseudo-elements="true" src="https://copper-leaf.github.io/ballast/Copper/6f592938/releases/v5.4.0/js/all.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-accordion.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-tabs.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/lunr/lunr.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/assets/js/orchidSearch.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-groovy.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/mermaid/8.13.9/mermaid.min.js"></script>
+<script >
+;
+
+document.addEventListener('DOMContentLoaded', function() {
+    mermaid.init({}, "code.language-mermaid");
+});
+</script>
+<script  src="https://copper-leaf.github.io/ballast/assets/scripts/mp-widget.js"></script>
+<script >
+
+if(document.getElementById("intellij-plugin-button") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('install', 18702, "#intellij-plugin-button");
+}
+if(document.getElementById("intellij-plugin-card") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('card', 18702, "#intellij-plugin-card");
+}
+</script>
+<!-- end:inject scripts -->
+
+
+</body>
+</html>

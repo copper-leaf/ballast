@@ -1,0 +1,25 @@
+.language-mermaid .label {
+  color: #363636 !important;
+  display: block !important;
+  font-size: 16px !important;
+  font-weight: initial !important; }
+
+.panel.is-primary .panel-heading {
+  background-color: #a2abba;
+  color: #fff; }
+
+code[class*="language-"] .token.number {
+  font-size: 1em !important;
+  height: initial !important; }
+
+pre[class*="language-"] *::selection,
+code[class*="language-"] *::selection,
+code[class*="language-"] .token::selection {
+  color: initial !important;
+  background: #a2abba !important; }
+
+#intellij-plugin-card > div {
+  width: 100% !important; }
+
+#intellij-plugin-card > div > iframe {
+  width: 100% !important; }

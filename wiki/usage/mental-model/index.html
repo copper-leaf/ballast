@@ -1,0 +1,3118 @@
+
+
+<!DOCTYPE html>
+<html class="">
+<head>
+
+
+
+
+
+
+<meta charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+<meta name="generator" content="Orchid 0.21.1"/>
+<link rel="icon" href="https://copper-leaf.github.io/ballast/favicon.ico">
+
+
+<meta name="robots" content="index, follow">
+
+
+
+<title>Thinking in Ballast MVI</title>
+
+
+<meta name="description" content="Opinionated Application State Management framework for Kotlin Multiplatform">
+
+
+
+<link rel="prev" href="https://copper-leaf.github.io/ballast/wiki/usage">
+
+
+<link rel="next" href="https://copper-leaf.github.io/ballast/wiki/usage/workflow">
+
+
+<!-- start:inject styles -->
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/extraCss.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-tooltip.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/css/bulma-accordion.min.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/orchidSearch.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/PrismJS/prism-themes/master/themes/prism-duotone-light.css"  />
+<link rel="stylesheet" type="text/css" href="https://copper-leaf.github.io/ballast/assets/css/mermaid_bulma.css"  />
+<!-- end:inject styles -->
+
+
+
+<script>
+    window.site = {"orchidVersion":"0.21.1","baseUrl":"https://copper-leaf.github.io/ballast","environment":"prod","version":"4.2.1"};
+</script>
+
+
+    <!-- start:inject meta-components [head] -->
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+    <!-- start:inject meta-components [head] -->
+    
+
+        
+            
+        
+
+        
+            
+        
+            
+        
+            
+        
+    
+    <!-- end:inject meta-components [head] -->
+
+
+
+
+
+
+
+</head>
+<body class="">
+
+
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+    <!-- start:inject meta-components [bodyStart] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyStart] -->
+
+
+
+
+
+<div class="columns is-marginless is-desktop">
+
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-mobile is-hidden-touch">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold is-fullheight">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="is-active">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+  <div class="column is-one-third-desktop is-one-quarter-widescreen is-one-fifth-fullhd is-paddingless column-main-left is-hidden-desktop">
+  
+
+
+    
+
+
+<section class="hero is-primary is-bold ">
+
+
+<!-- Hero header: will stick at the top -->
+<div class="hero-head" style="padding: 0 1.5rem">
+  <p class="title is-1 has-text-centered" style="margin-top: 3.5rem; margin-bottom: 2.5rem;">Ballast</p>
+  <p class="subtitle is-4 has-text-centered">Opinionated Application State Management framework for Kotlin Multiplatform</p>
+
+  <div id="intellij-plugin-card"></div>
+
+  <div class="columns is-mobile has-text-centered">
+  
+
+
+  
+
+
+  </div>
+</div>
+
+
+
+
+<!-- Hero content: will be in the middle -->
+<div class="hero-body">
+  <div class="container sidebar-menu">
+    <details class="is-hidden-desktop">
+      <summary>
+        Menu
+      </summary>
+      <div id="mobile-sidebar-menu"></div>
+    </details>
+    <div class="is-hidden-touch">
+      <aside class="menu" id="responsive-menu-content">
+      
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast 1389865849 -->
+  <a href="https://copper-leaf.github.io/ballast" class="">
+  
+  Home
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-overview 2017959723 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview" class="">
+  
+  Feature Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage 659906939 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage" class="">
+  
+  Usage Guide
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/mental-model" class="is-active">
+  
+  Thinking in Ballast MVI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/workflow 228548558 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/workflow" class="">
+  
+  Workflow
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/architecture 1231370129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/architecture" class="">
+  
+  Project Architecture
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/usage/migration 1169672575 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/usage/migration" class="">
+  
+  Migration Guide
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms 1314688755 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms" class="">
+  
+  Platforms
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/android 134708375 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/android" class="">
+  
+  Android
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/compose 579227762 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/compose" class="">
+  
+  Compose
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/ios 1446188993 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/ios" class="">
+  
+  SwiftUI
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs 1566390876 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs" class="">
+  
+  WasmJS
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/platforms/kvision 1846351524 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/platforms/kvision" class="">
+  
+  KVision
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules 2115555031 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules" class="">
+  
+  Modules
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-core 811287498 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-core" class="">
+  
+  Ballast Core
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-test 73404487 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-test" class="">
+  
+  Ballast Test
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation 849922566 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-navigation" class="">
+  
+  Ballast Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics 1854873748 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-analytics" class="">
+  
+  Ballast Analytics
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting 391333725 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-crash-reporting" class="">
+  
+  Ballast Crash Reporting
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state 219186182 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-saved-state" class="">
+  
+  Ballast Saved State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync 2040301400 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-sync" class="">
+  
+  Ballast Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo 1845527423 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-undo" class="">
+  
+  Ballast Undo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules 1675905101 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-schedules" class="">
+  
+  Ballast Schedules
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository 1784533123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository" class="">
+  
+  Ballast Repository
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger 2003188951 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger" class="">
+  
+  Ballast Debugger
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin 488063551 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-intellij-plugin" class="">
+  
+  Ballast Intellij Plugin
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/modules/community 1550899184 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/modules/community" class="">
+  
+  Community Libraries
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples 1479396661 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples" class="">
+  
+  Examples
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/counter 510382691 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/counter" class="">
+  
+  Counter
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper 961178923 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/scorekeeper" class="">
+  
+  Scorekeeper
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/sync 1667232421 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/sync" class="">
+  
+  Sync
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/undo 1437454238 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/undo" class="">
+  
+  Undo/Redo
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/bgg-api 353761154 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/bgg-api" class="">
+  
+  API Call &amp; Cache
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kitchensink 2136793918 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink" class="">
+  
+  Kitchen Sink
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/navigation 1670053034 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation" class="">
+  
+  Navigation
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit 1482694266 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kamp-kit" class="">
+  
+  KaMPKit
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc 1651727123 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/kvision-todomvc" class="">
+  
+  KVision TODOMVC
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform 2058228080 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/examples/shared-compose-multiplatform" class="">
+  
+  Shared Compose Multiplatform
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/feature-comparison 1324735779 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/feature-comparison" class="">
+  
+  MVI Library Comparison
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/roadmap 373197129 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/roadmap" class="">
+  
+  Roadmap
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=https://copper-leaf.github.io/ballast/wiki/changelog 1861083998 -->
+  <a href="https://copper-leaf.github.io/ballast/wiki/changelog" class="">
+  
+  Changelog
+  </a>
+</li>
+
+</ul>
+  
+
+
+      </aside>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function copyElem(fromId, toId) {
+    var fromElementContent = document.getElementById(fromId);
+    var toElementContent = document.getElementById(toId);
+    toElementContent.outerHTML = fromElementContent.outerHTML;
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    copyElem('responsive-menu-content', 'mobile-sidebar-menu');
+  });
+</script>
+
+
+</section>
+
+  </div>
+
+  <div class="column is-two-thirds-desktop is-three-quarters-widescreen is-four-fifths-fullhd is-paddingless column-main-right">
+  
+
+<nav
+  class="navbar is-white border-bottom"
+  role="navigation"
+  aria-label="main navigation"
+>
+  <div class="container">
+    <div class="navbar-brand is-marginless">
+
+      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu is-marginless" id="navbarMain">
+      <div class="navbar-start">
+      
+<div class="navbar-item">
+  <form id="search-input" data-orchid-search>
+    <div class="field is-marginless" id="search">
+      <div class="control has-icons-left input-control">
+        <input class="input" type="text" name="query" placeholder="Search Ballast">
+
+        <span class="icon is-small is-left">
+          <i class="fas fa-search"></i>
+        </span>
+
+        <div id="search-progress" data-orchid-search-progress style="display: none;">
+          <div class="loader">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div id="search-results" data-orchid-search-results style="display: none;">
+      <div class="carat"></div>
+      <b>
+        Search Results
+        <i class="fa fa-times" aria-hidden="true" onclick="$('[data-orchid-search-results]').hide()"></i>
+      </b>
+      <ul></ul>
+    </div>
+  </form>
+</div>
+
+      
+
+  
+  
+    
+
+<a class="navbar-item " href="https://github.com/orchidhq/Orchid">
+Orchid
+</a>
+
+
+  
+
+  
+  
+    
+<div class="navbar-item has-dropdown is-hoverable">
+
+
+<a class="navbar-item " href="">
+Copper Leaf
+</a>
+
+
+  <div class="navbar-dropdown">
+  
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/common">
+Common
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/clog">
+Clog
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kudzu">
+Kudzu
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/trellis">
+Trellis
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/thistle">
+Thistle
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/ballast">
+Ballast
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/kodiak">
+Kodiak
+</a>
+
+
+    
+      
+
+<a class="navbar-item " href="https://github.com/copper-leaf/krow">
+Krow
+</a>
+
+
+    
+  </div>
+</div>
+
+  
+
+
+      </div>
+
+      <div class="navbar-end">
+      
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf" title="Copper Leaf Home">
+    <i class="fas fa-home"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://github.com/copper-leaf/ballast" title="Github">
+    <i class="fab fa-github"></i>
+  </a>
+</div>
+
+<div class="navbar-item social-item">
+  <a class="icon" href="https://twitter.com/OrchidSSG" title="Twitter">
+    <i class="fab fa-twitter"></i>
+  </a>
+</div>
+
+
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+    <div class="textured container" style="width: 100%;">
+    
+    
+
+    
+    
+      <article style="position: relative; margin-top: 60px; margin-bottom: 60px;" role="main">
+      
+      
+        <div class="box">
+        
+
+<div class="columns">
+  <div class="column is-three-quarters-desktop">
+  
+    <!-- start:inject components -->
+    
+        
+            
+                
+                    
+                        <div class="content is-medium-tablet is-large-fullhd">
+<h1 id="thinking-in-ballast-mvi"><a href="#thinking-in-ballast-mvi" id="thinking-in-ballast-mvi" class="anchor"></a>Thinking in Ballast MVI</h1>
+<p>The <a href="https://copper-leaf.github.io/ballast/wiki/feature-overview">Feature Overview</a> highlights the main features and APIs of the Ballast library, and is a good place to start
+for understanding the use-case of this library. This page digs deeper into some of those concepts to more fully explore
+the motivation behind this library and the reasoning behind it's opinionated structures, and the mechanics of some of
+its more advanced features.</p>
+<h2 id="ballast-overview"><a href="#ballast-overview" id="ballast-overview" class="anchor"></a>Ballast Overview</h2>
+<p>Ballast is a library implementing an opinionated structure of the MVI state management architecture pattern, based on
+the concept Unidirectional Data Flow. This pattern has been used and implemented by a variety of libraries across many
+languages and under a variety of names, such as <a href="https://facebook.github.io/flux/">Flux</a>, <a href="https://redux.js.org/">Redux</a>, <a href="https://vuex.vuejs.org/">Vuex</a>, <a href="https://guide.elm-lang.org/architecture/">The Elm Architecture</a>, <a href="https://www.raywenderlich.com/817602-mvi-architecture-for-android-tutorial-getting-started">MVI</a>,
+<a href="https://developer.android.com/jetpack/compose/architecture">UDF</a>, etc. The idea behind all these libraries is sound and leads to clean UI architecture, and Ballast is just one
+particular way to do it. The above links are also good sources for understanding this pattern more generally, as well.</p>
+<p>The core idea is to model your UI not as discrete UI elements with click listeners, changing text, local state, etc.
+that all needs to be synced and updated manually, but instead to lift that state into a ViewModel and update the entire
+UI whenever the ViewModel state changes. This idea of &quot;lifting state&quot; naturally forms a loop in your UI, where:</p>
+<ul>
+<li>the <strong>ViewModel</strong> holds <strong>State</strong>, which gets pushed to the UI with every change</li>
+<li>the UI updates itself to match the current <strong>State</strong></li>
+<li>The user interacts with the UI, producing <strong>Inputs</strong>, or their &quot;intent&quot; to change the UI state.</li>
+<li>The <strong>Inputs</strong> get sent back to the <strong>ViewModel</strong>, where it processes the <strong>Inputs</strong> to change the State</li>
+</ul>
+<p>Notably, in this loop, the UI is never responsible for updating the <strong>State</strong> itself, and there is no business logic
+code that depends on any data held anywhere but the <strong>State</strong>. The UI only dispatches <strong>Inputs</strong> directing the ViewModel
+to update the state, and all processing is done within the <strong>ViewModel</strong>, asynchronously, and any changes to the
+<strong>State</strong> as a result of processing an <strong>Input</strong> will be pushed back to the UI automatically. You can visualize the loop
+like so:</p>
+<pre><code class="language-mermaid">graph
+    ViewModel--State--&gt;UI
+    UI--Inputs--&gt;ViewModel
+</code></pre>
+<p>This diagram is the simplest form of MVI, but Ballast adds a bit more structure and more features to this core loop,
+which are needed to build a fully-functional and <em>safe</em> UI &quot;state machine&quot;. Ballast itself is built around Kotlin
+<a href="https://kotlinlang.org/docs/coroutines-overview.html">Coroutines</a>,
+<a href="https://elizarov.medium.com/structured-concurrency-722d765aa952">Structured Concurrency</a>,
+and <a href="https://kotlinlang.org/docs/flow.html">Flows</a>, though familiarity with them is not strictly necessary to use
+Ballast. A more complete diagram of the Ballast MVI model looks more like the diagram below. See
+<a href="https://copper-leaf.github.io/ballast/wiki/feature-overview">Features</a> for more information on the features described in this diagram.</p>
+<pre><code class="language-mermaid">flowchart TD
+    subgraph UI
+        View
+        EventHandler
+    end
+    subgraph ViewModel
+        InputChannel
+        EventChannel
+        InputFilter
+        InputHandler
+        SideJob
+
+        InputChannel--Inputs--&gt;InputFilter
+        InputFilter--Reject--&gt;id1{Rejected}
+        InputFilter--Accept--&gt;InputHandler
+
+        InputHandler--postEvent--&gt;EventChannel
+        InputHandler--updateState--&gt;StateFlow
+        InputHandler--sideJob--&gt;SideJob
+        EventChannel--Events--&gt;EventHandler
+        EventHandler--postInput--&gt;InputChannel
+
+        SideJob--postInput--&gt;InputChannel
+        SideJob--postEvent--&gt;EventChannel
+    end
+
+    View--trySend--&gt;InputChannel
+    StateFlow--ObserveState--&gt;View
+</code></pre>
+<h2 id="ui-programming-through-the-years"><a href="#ui-programming-through-the-years" id="ui-programming-through-the-years" class="anchor"></a>UI Programming Through the Years</h2>
+<p>To better understand the MVI pattern, how Ballast implements it, and why certain things are done in this way, let's go
+back in time and walk through the evolution of UI programming through the years to understand how MVI came to be the
+favored pattern that it is today.</p>
+<p>Note that this brief history is based on my personal experiences and observations over the last ~10 years of software
+development, and draws heavily from a native Android and web dev perspective. You may have a different opinion on the
+exact timelines, descriptions, pros, or cons of certain patterns, but I'm not looking to start an argument. I'm simply
+wanting to show the evolution that I have observed, that ultimately led to the Ballast MVI library as it stands today.</p>
+<h3 id="traditional-ui-programming"><a href="#traditional-ui-programming" id="traditional-ui-programming" class="anchor"></a>Traditional UI programming</h3>
+<p>In traditional UI programming, there is no separation (or only superficial separation) between the UI elements and the
+code that is run when interacting with those elements. Take the following snippet, which is something you might see in a
+traditional Android Activity's UI implementing a simple counter:</p>
+<pre><code class="language-kotlin">override fun onCreate() {
+    setContentView(R.layout.activity_main)
+    val button: Buttoon = findViewById(R.id.button)
+    val counterText: TextView = findViewById(R.id.counter_text)
+
+    button.setOnClickListener {
+        val currentCount = counterText.text.toString().toInt()
+        val incrementedCount = currentCount + 1
+        counterText.setText(&quot;$incrementedCount&quot;)
+    }
+}
+</code></pre>
+<p>For comparison, here's the same thing in HTML/JS.</p>
+<pre><code class="language-js">var button = document.getElementById(&quot;button&quot;);
+var counterText = document.getElementById(&quot;counter_text&quot;);
+
+function handleClick() {
+    var currentCount = parseInt(counterText.textContent)
+    var incrementedCount = currentCount + 1
+    counterText.innerHTML = incrementedCount
+}
+button.onclick = handleClick
+</code></pre>
+<p>This approach, so common in many older applications, has a number of problems:</p>
+<ul>
+<li>How do we get the current counter value?
+<ul>
+<li>Answer: get the text directly from the UI element, and parse it to a String</li>
+</ul>
+</li>
+<li>What happens if the text in the UI element is not a valid number?
+<ul>
+<li>Answer: <code>¯\_(ツ)_/¯</code></li>
+</ul>
+</li>
+<li>What happens if the button is clicked many times very quickly?
+<ul>
+<li>Answer: Clicks must be handled on the main UI thread, to make sure there are no race conditions</li>
+</ul>
+</li>
+<li>Ok, but what if it does get called quickly from many different threads?
+<ul>
+<li>Answer: <code>¯\_(ツ)_/¯</code></li>
+</ul>
+</li>
+<li>How do I test this code?
+<ul>
+<li>Answer: You'll need to run your tests in a real device/browser or emulated environment</li>
+</ul>
+</li>
+<li>What if that button click needs to make an API call?
+<ul>
+<li>Answer: You'll need to run that code in the background, receive the callback on the main thread, and update the UI in that
+callback</li>
+</ul>
+</li>
+<li>What if the data stored in the UI changes by the time the API call returns?
+<ul>
+<li>Answer: <code>¯\_(ツ)_/¯</code></li>
+</ul>
+</li>
+<li>I saw a really strange bug report. How can I reproduce that bug?
+<ul>
+<li>Answer: Manually follow the exact series of steps that put the user in that scenario</li>
+</ul>
+</li>
+<li>How do I figure out those steps that the user did?
+<ul>
+<li>Answer: <code>¯\_(ツ)_/¯</code></li>
+</ul>
+</li>
+<li>What if the UI state is a result of parallelism and was a freak occurrence?
+<ul>
+<li>Answer: <code>¯\_(ツ)_/¯</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="mvp"><a href="#mvp" id="mvp" class="anchor"></a>MVP</h3>
+<ul>
+<li><em>Not really used on Web</em></li>
+<li><em>2013 to 2019 on Android</em></li>
+</ul>
+<p>Early attempts to solve these problems started to spring up, especially with the <strong>MVP</strong> pattern on Android. The main
+idea here was to move all the &quot;business logic&quot; code out of the &quot;view&quot; and into a &quot;presenter&quot; class. The View connects
+all its clicks and other interactions to call methods on the Presenter, and the Presenter acts as fake &quot;view&quot; so the
+code isn't directly tied to the Android View or Browser.</p>
+<pre><code class="language-kotlin">class CounterPresenter(private val view: CounterView) {
+    private var currentCount = 0
+    fun onButtonClick() {
+        val incrementedCount = currentCount + 1
+        view.setCounterText(&quot;$incrementedCount&quot;)
+        currentCount = incrementedCount
+    }
+}
+
+interface CounterView {
+    fun setCounterText(text: String)
+}
+
+class CounterActivity : AppCompatActivity(), CounterView {
+
+    override fun onCreate() {
+        setContentView(R.layout.activity_main)
+        val button: Buttoon = findViewById(R.id.button)
+        val presenter = CounterPresenter(this)
+
+        button.setOnClickListener {
+            presenter.onButtonClick()
+        }
+    }
+
+    override fun setCounterText(text: String) {
+        val counterText: TextView = findViewById(R.id.counter_text)
+        counterText.setText(&quot;$incrementedCount&quot;)
+    }
+}
+</code></pre>
+<p>This approach gained a lot of popularity because it allowed one to test the busisness logic in a normal unit test,
+without needing a full real or emulated environment. But this approach has a number of flaws, some of which are inherent
+in its design, and some are just problems with the real-world implementation of it.</p>
+<ul>
+<li>The Presenter had to add a <code>currentCount</code> variable, since it no longer has direct access to the View to read the
+current text in the UI element. We now have the same value in 2 separate places.</li>
+<li>What if we want to change the <code>currentCount</code> variable from multiple places?
+<ul>
+<li>Answer: We need to make sure that code updates both the internal variable and the UI element</li>
+</ul>
+</li>
+<li>What's the value shown in the UI before clicking the button?
+<ul>
+<li>Answer: We need to make sure the default value in the UI matches that of the Presenter's value.</li>
+</ul>
+</li>
+<li>What if I need to make a really quick addition to the UI. Do I really have to jump through all these hoops?
+<ul>
+<li>Answer: Yes. The MVP pattern means you need to add all the boilerplate for it.</li>
+</ul>
+</li>
+<li>But this really needs to go out quickly. I'm just going to do it the normal way.
+<ul>
+<li>Answer: I mean, I can't really stop you, but you really shouldn't...</li>
+</ul>
+</li>
+</ul>
+<p>And this is the main reason why I personally don't think MVP is a very good design pattern. It is really only a
+superficial separation, but you're basically writing the same code you would normally but with much more boilerplate.
+There is nothing in the pattern itself that requires you to follow it, and in practice, it's likely you'll run into
+portions of code that do not follow the pattern strictly, giving you a frankenstein mix of code split between
+programming styles, and state being held all over the place, leaving you worse off than not having the MVP pattern at
+all.</p>
+<p>MVP: Good in theory, but rarely implemented well in practice.</p>
+<h3 id="mvvm"><a href="#mvvm" id="mvvm" class="anchor"></a>MVVM</h3>
+<ul>
+<li><em>2010 to 2016 on web with Angular.JS</em></li>
+<li><em>2016 to 2019 on Android with Databinding, but never became too popular</em></li>
+</ul>
+<p>Once everyone started noticing the problems inherent in traditional- and MVP-style UI programming, the natural fix
+became pretty apparent: rather than the interactions driving the UI, let's use a state model to drive the UI. One starts
+by creating a model of the screen's state, and then builds a UI that is assembled or synchronized to match that model.</p>
+<p>These are the early days of reactive programming, when Angular.JS was king, React was just starting to be developed,
+and all the UI toolkits started creating their own &quot;MVVM&quot; frameworks. The main idea with these is that you take
+something like a &quot;Presenter&quot; or &quot;Controller&quot; class, declare the state that lives within that Controller, and let a
+framework worry about applying that state to the UI for you. Additionally, the MVVM frameworks bind in the other
+direction, too, automatically wiring up click listeners and such so that they always run code in the Controller.</p>
+<p>This was a huge improvement over the previous attempts. We now have a way to make sure any changes to the state will
+always be present in the UI, even changes made from other threads, and the framework enforces that all changes to the
+UI must go through the Controller and the MVVM framework.</p>
+<p>MVVM started with Angular.JS and we started seeing MVVM frameworks popping up everywhere: Android, Xamarin, a thousand
+different Javascript frameworks, etc. But MVVM is not without its issues: most notably being that the MVVM framework
+needs to have intimate knowledge of both the View and your Controller. The framework itself would have to be updated
+anytime the underlying Views changed, as well as knowing about all container types that might hold data in the
+Controller, to know how to convert those values into something displayed in the UI.</p>
+<p>As a result, MVVM frameworks tended to lag behind the actual frameworks themselves, the frameworks themselves were
+pretty large and might not always have the best performance, and especially for things like displaying lists of content,
+it was just more difficult than it needed to be.</p>
+<h3 id="mvi"><a href="#mvi" id="mvi" class="anchor"></a>MVI</h3>
+<ul>
+<li><em>2013 and later on web, with React</em></li>
+<li><em>2019 and later on Android, with Compose</em></li>
+<li><em>2019 and later on iOS, with Swift UI</em></li>
+<li><em>2017 and later with Flutter</em></li>
+</ul>
+<p>MVI was the next iteration of UI programming, and by all accounts it seems to be the one that will stick around. It
+solves many of the problems outlined with traditional programming, but does it in a much more lightweight and
+unobtrusive way than MVVM, giving all the power back into the hands of the programmer and allowing them to write the
+same code they would expect when working with a UI toolkit, but providing structure around the state and interactions
+required of the UI.</p>
+<p>The core difference between MVVM and MVI is this: MVVM uses an automated middle-man to apply state to UI and send
+change requests from the UI to the Controller (or ViewModel). MVI forgoes that middleman and implements a more
+transparent mechanism for moving State and Inputs between the UI and ViewModel, and asks the programmer to be that
+middle-man. Instead of automatically applying the State to the UI, the MVI pattern gives the programmer the State that
+should be applied to the UI, and allows the programmer to pick their UI toolkit and programming style to apply the
+State themselves.</p>
+<p>This idea is what Facebook started with the Flux architecture and React, and soon afterwards you started seeing more and
+more platforms rewriting their UI toolkits around this exact philosophy. Flutter, Swift UI, Jetpack Compose, all based
+around this idea that the UI shouldn't have to manage anything itself, but should be driven entirely by some model of
+State and applied to the UI with hand-written code.</p>
+<p>This MVI model has proven itself over the last few years to be incredibly durable and robust, even useful outside of
+pure UI applications. And the more I work on Ballast and really figure out how this pattern works, the more flexible and
+powerful I find it to be, enabling all sorts of incredible use-cases that are simply impossible with traditional
+programming techniques, like time-travel debugging, undo/redo, multi-user synchronization, and many others.</p>
+<p>Hopefully this brief history of UI programming has given you some things to think about which will help you understand
+more about the specific design choices of Ballast, as outlined throughout the rest of this document.</p>
+<h2 id="kinds-of-state"><a href="#kinds-of-state" id="kinds-of-state" class="anchor"></a>Kinds of State</h2>
+<p>When thinking about how to structure your application, it's necessary to consider the different kinds of state you may
+need to manage. <a href="https://developer.android.com/topic/architecture/ui-layer/stateholders">State Holders and UI State</a> in the Android documentation does a great job of exploring some of the
+kinds of state you will need to manage, and is a great read that is broadly applicable to all UI programming, not just
+Android.</p>
+<p>Here's a summary of the different kinds of state your app will need to manage.</p>
+<h3 id="screen-ui-state"><a href="#screen-ui-state" id="screen-ui-state" class="anchor"></a>Screen UI State</h3>
+<blockquote>
+<p>Screen UI state is <em>what</em> you need to display on the screen.</p>
+</blockquote>
+<p>Screen UI state is <em>what</em> you need to display on the screen. It is typically the kind of data that is loaded from some
+local or remote data source. This is the state the user intends to interact with or change, and is the real data that
+they care about and what drives them to use your application. Screen UI state is also usually independent of the
+application lifecycle, meaning that the actual subscriptions to the data sources may be paused when the app goes into
+the background, but the data itself doesn't need to be cleared, reset, or refreshed upon returning to the app. Simply
+re-subscribing to the data source is sufficient to restore the screen to the proper state.</p>
+<p>Screen UI state is the primary use-case for using Ballast, which gives a clean and predictable mechanism for loading and
+updating the data that the user cares about. The explicit modeling of this data also makes it easy for developers to
+immediately understand the use-case of a given screen, but showing which data can be changed.</p>
+<h3 id="ui-element-state"><a href="#ui-element-state" id="ui-element-state" class="anchor"></a>UI Element State</h3>
+<blockquote>
+<p>UI element state refers to properties intrinsic to UI elements that influence how they are rendered.</p>
+</blockquote>
+<p>UI element state refers to properties intrinsic to UI elements that influence how they are rendered. This is the data
+that the user doesn't consciously or intentionally interact with, but is necessary to present the Screen UI state in a
+way that is pleasant to the end-user. UI element states are usually tied to the application lifecycle. You may need to
+do some extra work to ensure the data is saved/restored (or cleared/reset) when the app goes into the background and
+then resumes.</p>
+<p>UI Element state is usually better managed within the UI itself, rather than within your screen's ViewModel. In Compose,
+these are values you'd rather manage as <code>remember { mutableStateOf() }</code>. Since they're not important enough to manage
+at the ViewModel level, they are ephemeral and reset each time you view the screen, but also avoid cluttering the
+ViewModel state with properties that aren't important to the end-user.</p>
+<h3 id="global-application-state"><a href="#global-application-state" id="global-application-state" class="anchor"></a>Global Application State</h3>
+<p>Global application state is the data that must be shared across multiple screens. It's usually a mix of data that the
+user cares about and is displayed to them as Screen UI State, but also data they aren't aware of but is necessary to
+load their data properly, such as an API session token. Broadly-speaking, global application state lives at a layer
+above the UI and thus should be independent of the application lifecycle, and we typically call this the&quot;Repository
+Layer&quot;.</p>
+<p>The structure of your app's global state can be quite complicated, and may be further broken down into several other
+layers or modules, such as Use-Cases, Repositories, Caching Layer, and Data Sources. The specifics of how these layers
+work together can be very complex, but if you think of this layer less as a series of interconnected modules, and more
+like you would with your UI state, then it can be a bit easier to manage. That is, consider all your data sources as the
+source of truth for the global state, but shouldn't be directly subscribed to by the UI. Rather, subscribe and cache the
+latest values in memory, in a Ballast ViewModel, so that the combination of states from the various sources works much
+like the State in the UI, which itself comes from multiple sources like the Repository layer or entered by the user.</p>
+<h2 id="kinds-of-state-classes"><a href="#kinds-of-state-classes" id="kinds-of-state-classes" class="anchor"></a>Kinds of State Classes</h2>
+<p>The section above talks generally about how to think about different kinds of state in your app, but at some point that
+state needs to be realized into concrete classes in your Kotlin code. The biggest question here is what kind of class to
+use, with the typical options being either a <code>sealed class</code> or a <code>data class</code>. Other options, historically, were to use
+and Androidx <code>ViewModel</code> with <code>LiveData&lt;T&gt;</code> properties, or more recently a class with many <code>StateFlow&lt;T&gt;</code> or Compose
+<code>State&lt;T&gt;</code> properties.</p>
+<p>I firmly believe that a <code>data class</code> is the best way to start modeling your UI state vs those other two options, and
+this is the form that is encouraged throughout the Ballast library and documentation. While Ballast enforces no
+restrictions on what kind of class you use for your State, this section aims to show you why I believe this to be
+the best starting point. That's not to say it's the best for all situations, but I do believe it will give you the best
+result while causing the fewest difficulties in the majority of use-cases.</p>
+<h3 id="sealed-class"><a href="#sealed-class" id="sealed-class" class="anchor"></a>Sealed Class</h3>
+<p>Using a <code>sealed class</code> seems to be the most popular solution if you go by the articles you find on a quick web search.
+And it's clear to understand why: compared to the traditional way of building UIs, a sealed class gives you a way to
+ensure that the data on your screen is consistent with itself.</p>
+<p>Take the following example from the article <a href="https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9">Modelling UI State on Android</a>:</p>
+<blockquote>
+<p>The Challenge: Build an app that calls a traffic light endpoint and shows the color of the traffic light (red, yellow
+or green). During the network call show a ProgressBar. On success show a View with the color and in case of an error
+show a TextView with a generic text. Only one view is visible at a time and there is no possibility to retry errors**.</p>
+</blockquote>
+<p><em>**we will relax this qualifier later to explore how it affects the resulting states</em></p>
+<pre><code class="language-kotlin">sealed class TrafficLightState {
+    data object Loading : TrafficLightState()
+    data object Error : TrafficLightState()
+    data class Success(val color: Color) : TrafficLightState()
+}
+</code></pre>
+<p>This assumes that you visit a screen, it immediately starts loading data from a remote source, and then returns a
+result. The result may have been the data you're looking for, or maybe something went wrong like a network failure, and
+this form gives a clear indication of what exactly to show in the UI. You can also easily translate this into a UML
+state diagram:</p>
+<pre><code class="language-mermaid">stateDiagram-v2
+    [*] --&gt; Loading
+    Loading --&gt; Error
+    Loading --&gt; Success
+</code></pre>
+<p>But what happens if the error was an intermittent network failure, and you want to refresh the data? Then, it will move
+from <code>Error</code> back to <code>Loading</code>, and whatever error message you displayed is now hidden as the progress indicator is
+shown again. That's not an issue, this is probably what the user would expect. Here's the change needed to model this
+action in the state diagram:</p>
+<pre><code class="language-mermaid">stateDiagram-v2
+    [*] --&gt; Loading
+    Loading --&gt; Error
+    Loading --&gt; Success
+    Error --&gt; Loading
+</code></pre>
+<p>But what if you added a pull-to-refresh action, so that the user can request the state update? The screen displayed the
+data with the <code>Success</code> state, but then hides it all to display the progress indicator in the <code>Loading</code> state. Not great
+UX. Well, we can fix that by adding a new state to the UI, such as
+<code>data class Refreshing(val color: Color) : TrafficLightState()</code>, that can signal to the UI to display the progress
+indicator and the traffic light color at the same time. The state diagram now looks like this:</p>
+<pre><code class="language-mermaid">stateDiagram-v2
+    [*] --&gt; Loading
+    Loading --&gt; Error
+    Loading --&gt; Success
+    Success --&gt; Refreshing
+    Refreshing --&gt; Error
+    Refreshing --&gt; Success
+</code></pre>
+<p>Or if we wanted to update the error refreshing state so that the error is still shown with the progress indicator over
+it, well that's yet another discrete state we need to model:</p>
+<pre><code class="language-mermaid">stateDiagram-v2
+    [*] --&gt; Loading
+    Loading --&gt; Error
+    Loading --&gt; Success
+    Error --&gt; RefreshingFromError
+    RefreshingFromError --&gt; Error
+    RefreshingFromError --&gt; Success
+    Success --&gt; RefreshingFromSuccess
+    RefreshingFromSuccess --&gt; Error
+    RefreshingFromSuccess --&gt; Success
+</code></pre>
+<p>I hope you see where I'm going with this.</p>
+<p>The idea that a state is so easily mapped 1-1 to discrete values sounds great in theory, but doesn't hold up so well to
+real-world, non-trivial use-cases. It's difficult to extend, leads to repetition, and you end up with a combinatorial
+matrix of states that can quickly grow overwhelmingly complex. And while the sealed subclasses themselves model the
+discrete states well, they actually do nothing to model the <em>transitions</em> between states. You can't use the type system
+to ensure you don't move from one state to another, and if you need to move between states and carry the data with it
+(such as from <code>Success</code> to <code>RefreshingFromSuccess</code>), then you have to abuse the type system to perform type-checks or
+type-casts to actually make that transition.</p>
+<p>And finally, to drive the point home, let's consider what the actual UI code looks like here in this final case.
+Assuming we want to share the UI widgets whenever possible we get this:</p>
+<pre><code class="language-kotlin">@Composable
+fun TrafficLight(state: TrafficLightState) {
+    // display progress bar in Loading or Refreshing states
+    if(state is Loading || state is RefreshingFromSuccess || state is RefreshingFromError) {
+        CircularProgressIndicator()
+    }
+
+    // display the traffic light color when it's available
+    val trafficLightColor: Color? = when(state) {
+        is Success -&gt; state.color
+        is RefreshingFromSuccess -&gt; state.color
+        else -&gt; null
+    }
+    if(trafficLightColor != null) {
+        TrafficLightColor(trafficLightColor)
+    }
+
+    // and a similar thing happens with the error text, except we just check types directly
+    if(state is Error || state is RefreshingFromError) {
+        TrafficLightError()
+    }
+}
+</code></pre>
+<p>Alternatively, you could have discrete <code>@Composable</code> functions for each discrete state, but then there's no UI
+consistency between those states. If you make a change to one, you'd have to duplicate that change everywhere. Or if you
+keep it in one function, as in the example above, you have to put in a ton of logic in the UI portion just to
+accommodate the discrete UI types, while still not really having discrete UIs for it.</p>
+<p>The linked article suggests that the sealed class is best because its cardinality (number of possible states) is 5 vs
+16 with a data class. But actually, if you expand the use-case to allow pull-to-refresh, the cardinality actually
+becomes:</p>
+<pre><code>   1 Loading
+   1 Error
+   3 Success
+   1 RefreshingFromError
+ + 3 RefreshingFromSuccess
+--------------------------
+   9 Total
+</code></pre>
+<p>Cardinality of 9 is still better than 16, but this is really broken up into 5 discrete cases, each of which must be
+handled explicitly. In contrast, there's only 3 &quot;cases&quot; that need to be considered with the data class, and the implicit
+combinations of those cases account for all 16 cardinal states. Additionally, you'd have to explicitly account for the
+transitions between states, of which there are 8. So in all, there are 17 pieces of data that need to be managed
+explicitly between the states and the transitions, versus 16 that are managed implicitly with a data class. Again, with
+small numbers of discrete states, this isn't necessarily a deal-breaker, but with larger complex screens it absolutely
+is. And making changes to the state of a data class will implicitly make the update everywhere needed, while those same
+changes to sealed classes would need an exponentially large number of code updates to accommodate them with each
+successive change.</p>
+<p>So again, while this style sounds great in theory, it really just doesn't hold up when put into real-world code.</p>
+<h3 id="data-class"><a href="#data-class" id="data-class" class="anchor"></a>Data Class</h3>
+<p>Whereas a <code>sealed class</code> maps well to discrete states but causes complexity when it comes to actually applying that to
+the UI and its interactions, a <code>data class</code> does the opposite: you first think about the data you want to display on the
+UI, and you write your code to enforce the consistency of it. For example, the <a href="https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9">Modelling UI State on Android</a>
+article uses the following as an example of what not to do (and what I think you <em>should</em> do):</p>
+<pre><code class="language-kotlin">data class TrafficLightState(
+    val isLoading: Boolean,
+    val isError: Boolean,
+    val color: Color?
+)
+</code></pre>
+<p>That article's argument against this state is that it has invalid states. For example, you could have <code>isError</code> true at
+the same time that <code>color</code> is non-null, and what do you show in the UI at that point?</p>
+<p>The answer is pretty simple: just don't let that happen. Since it's a single immutable object, you have full control
+over every property of it, and you can put that kind of logic directly within the class to ensure we never get a state
+that has both data and an error:</p>
+<pre><code class="language-kotlin">data class TrafficLightState(
+    val isLoading: Boolean,
+    val isError: Boolean,
+    val color: Color?
+) {
+    init {
+        if(isError &amp;&amp; color != null) {
+            throw IllegalStateException(&quot;error: cannot have both an error and color at the same time&quot;)
+        }
+    }
+}
+</code></pre>
+<p>Notice that with this 1 change, we can now model all potential use-cases from the <code>sealed class</code> scenario, even the
+complex transitions of pull-to-refresh:</p>
+<pre><code class="language-kotlin">val Loading = TrafficLightState(
+    isLoading = true,
+    isError = false,
+    color = null,
+)
+val Error = TrafficLightState(
+    isLoading = false,
+    isError = true,
+    color = null,
+)
+val Success = TrafficLightState(
+    isLoading = false,
+    isError = false,
+    color = Color.Green,
+)
+val RefreshingAfterSuccess = TrafficLightState(
+    isLoading = true,
+    isError = false,
+    color = Color.Green,
+)
+val RefreshingAfterError = TrafficLightState(
+    isLoading = true,
+    isError = true,
+    color = null,
+)
+</code></pre>
+<p>Without making any changes to the state class itself, we were able to extend it to support the additional use-cases
+without adding any complexity to the screen. Furthermore, modeling the additional use-cases in the UI comes for free:
+by adding the code to do pull-to-refresh, all we need to do is <code>state.copy(isLoading = true)</code>, and whatever state we were
+previously in, be it error or success, will be displayed properly in the UI. For example:</p>
+<pre><code class="language-kotlin">@Composable
+fun TrafficLight(state: TrafficLightState) {
+    if(state.isLoading) {
+        CircularProgressIndicator()
+    }
+
+    if(state.color != null) {
+        TrafficLightColor(state.color)
+    }
+
+    if(state.isError) {
+        TrafficLightError()
+    }
+}
+</code></pre>
+<p>So much cleaner than the version using a <code>sealed class</code>! When it comes down to it, it's the same exact UI, using the
+same <code>if</code>-statements, but this is so much more readable. It's much easier to look at this code and figure out which
+properties we need to set to get the UI to look a certain way, than if we were to model it with the sealed class. In
+reality, we don't care as much as having discrete UI states as we do <em>consistent</em> UI states. While the sealed class
+approach does give us incredibly consistent data models for the state, it doesn't actually produce a very consistent UI
+unless we do a lot of work to make it so. In contrast, data classes aren't as great as making a consistent model, but
+make for a much more consistent UI, which is what the user is actually looking at and interacting with. And when using
+an MVI approach like Ballast to protect updates to the state, you can enforce the consistency of the state yourself just
+in how your make updates to it.</p>
+<p>Furthermore, this style is actually not completely divorced from sealed classes! You can use the <code>data class</code> as the
+main state holder, and still define individual mutually-exlusive properties within that state as <code>sealed classes</code>, to
+get the same kind of benefit! These intermediary classes can be modeled with the built-in <code>Result</code> type, or you can
+write your own wrapper for a more domain-specific result. For example:</p>
+<pre><code class="language-kotlin">data class TrafficLightState(
+    val isLoading: Boolean,
+    val color: Result&lt;Color&gt;?,
+)
+@Composable
+fun TrafficLight(state: TrafficLightState) {
+    if(state.isLoading) {
+        CircularProgressIndicator()
+    }
+
+    // state.color is null until loading hs completed, at which point it is either Success or Failure
+    state.color?.fold(
+        onSuccess = {
+            TrafficLightColor(it)
+        },
+        onFailure = {
+            TrafficLightError()
+        }
+    )
+}
+</code></pre>
+<h3 id="multiple-streams"><a href="#multiple-streams" id="multiple-streams" class="anchor"></a>Multiple Streams</h3>
+<p>The final approach to modeling a UI state isn't really even compatible with Ballast, but it's a pattern that
+historically has been very popular. It's really an evolution of the <a href="#mvvm">MVVM</a> pattern, where you write code to apply
+these properties selectively to the UI rather than letting an automated framework do it. I see this pattern less now
+than I used to, as folks tend to use a single State Holder class as described above in a <code>StateFlow</code> rather than
+multiple <code>LiveData</code>, ReactiveX <code>Observable</code>, or single-property <code>StateFlow</code>. However, this pattern does seem to remain
+popular with Compose, especially when folks want to use <code>State</code> properties within a <code>ViewModel</code>.</p>
+<p>In this approach the <code>ViewModel</code> itself is considered the UI state, rather than being the thing that holds onto the UI
+state. Each property you want to expose to the UI is a separate reactive property, so that anything you want to update
+in the UI just needs to observe the appropriate property and react in kind:</p>
+<p>Also taking the example from <a href="https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9">Modelling UI State on Android</a> (but replacing <code>LiveData</code> with <code>StateFlow</code>):</p>
+<pre><code class="language-kotlin">class TrafficLightViewModel : ViewModel() {
+    private val _loading = mutableStateFlow&lt;Boolean&gt;(false)
+    private val _error = mutableStateFlow&lt;Boolean&gt;(false)
+    private val _color = mutableStateFlow&lt;Color?&gt;(null)
+
+    val loading: StateFlow&lt;Boolean&gt; get() = _loading.asStateFlow()
+    val error: StateFlow&lt;Boolean&gt; get() = _error.asStateFlow()
+    val color: StateFlow&lt;Color?&gt; get() = _color.asStateFlow()
+}
+</code></pre>
+<p>This effectively gives us the same type of UI code as with the <code>data class</code>, but we have lost control of any kind of
+combination of values from within the data holder itself. We would have to combine the 3 values into a single stream
+in order to actually check that we don't get ourselves into an invalid state, which gets real ugly really quickly:</p>
+<pre><code class="language-kotlin">class TrafficLightViewModel : ViewModel() {
+    private val _loading = mutableStateFlow&lt;Boolean&gt;(false)
+    private val _error = mutableStateFlow&lt;Boolean&gt;(false)
+    private val _color = mutableStateFlow&lt;Color?&gt;(null)
+
+    val loading: StateFlow&lt;Boolean&gt; get() = _loading.asStateFlow()
+    val error: StateFlow&lt;Boolean&gt; get() = _error.asStateFlow()
+    val color: StateFlow&lt;Color?&gt; get() = _color.asStateFlow()
+
+    init {
+        combine(error, color) { errorValue, colorValue -&gt; errorValue to colorValue }
+            .onEach { errorValue, colorValue -&gt;
+                if(errorValue &amp;&amp; colorValue != null) {
+                    throw IllegalStateException(&quot;error: cannot have both an error and color at the same time&quot;)
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+}
+</code></pre>
+<p>Not only is this a lot of code needed to combine the values to check for illegal combinations, but we are forced to
+observe those flows in a coroutine to check. This means that if we ever detect an invalid scenario, the stacktrace will
+only point us to the flow itself, and really gives us no indication of which portion of our code actually set those
+properties in an invalid way.</p>
+<p>In addition, there's not really any consistency between these values when we set them. If the code making the updates
+happens to be a bit slow, the <code>combine</code> function may collect a pair of values that are invalid, without us actually
+intending to create an invalid UI state. The state just happened to be invalid as it transitioned. Having to update the
+flows independently means there's no kind of &quot;transation&quot; that could be applied to ensure there's no ephemeral invalid
+states. But with a <code>data class</code>, a single <code>.update { it.copy() }</code> can freely change multiple properties at once without
+causing there to be any invalid intermediate states.</p>
+<h2 id="ballast-contract"><a href="#ballast-contract" id="ballast-contract" class="anchor"></a>Ballast Contract</h2>
+<p>With the basic understanding of different types of state, and how to write Kotlin classes that effectively manage that
+State, we can now begin modeling our application using the Ballast convention. The full MVI model is a combination of
+both the State, and the <code>Inputs</code> that describe how to make changes to that State.</p>
+<p>The convention with Ballast is to use one Ballast ViewModel for each screen in your application, and to create a
+&quot;contract&quot; for interfacing your UI to the screen's ViewModel. Note that Ballast works well with Compose or other
+declarative UI frameworks, but the model will still hold true even with standard Android Views as long as you make sure
+to manually update the UI widgets' state to match the ViewModel state. Anyway, start by defining the &quot;contract&quot;, for
+example, a login screen.</p>
+<pre><code class="language-kotlin">object LoginScreenContract {
+    data class State(
+        ...
+    )
+
+    sealed interface Inputs {
+        ...
+    }
+
+    sealed interface Events {
+        ...
+    }
+}
+</code></pre>
+<p>Each Contract is a top-level <code>object</code> with a nested <code>State</code> <code>data class</code>, and <code>sealed class</code>es for <code>Inputs</code> and <code>Events</code>.</p>
+<p><code>State</code> is the in-memory state of the ViewModel, which will get pushed to the UI anytime it changes. The UI should
+update itself to display what's in that <code>State</code>, and in doing so will always be kept consistent with that State.</p>
+<p><code>Inputs</code> are how the UI communicates back to the ViewModel. Each discrete action in the UI, each click listener, text
+changed listener, etc. should be separate classes within the <code>Input</code> sealed class. Each <code>Inputs</code> subclass is should be
+an <code>object</code> if the UI element doesn't directly deliver data to the ViewModel (a click listener), or a <code>data class</code> if
+it does need to deliver data (text changed). Don't worry about what to do with those yet, the Contract just defines the
+&quot;what&quot;.</p>
+<p><code>Events</code> are modeled similar to Inputs, but in the other direction; Events are sent from the ViewModel to be processed
+exactly once by the UI. This would typically be things like requests to navigate to another screen.</p>
+<p>Filling out the above contract for a Login Screen might end up looking like this:</p>
+<pre><code class="language-kotlin">object LoginScreenContract {
+    data class State(
+        val username: String,
+        val password: String,
+    )
+
+    sealed interface Inputs {
+        data class UsernameChanged(val newValue: String) : Inputs
+        data class PasswordChanged(val newValue: String) : Inputs
+        data object LoginButtonClicked : Inputs
+        data object RegisterButtonClicked : Inputs
+    }
+
+    sealed interface Events {
+        data object NavigateToDashboard : Events
+        data object NavigateToRegistration : Events
+    }
+}
+</code></pre>
+<p>Once the Contract is defined, it's time to create and InputHandler which processes the Inputs and generates new States,
+which might look like this:</p>
+<pre><code class="language-kotlin">import LoginScreenContract.*
+
+class LoginScreenInputHandler(
+    val router: Router&lt;AppScreen&gt;
+) : InputHandler&lt;Inputs, Events, State&gt; {
+    override suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(
+        input: Inputs
+    ) = when (input) {
+        is UsernameChanged -&gt; {
+            updateState { it.copy(username = input.newValue) }
+        }
+        is PasswordChanged -&gt; {
+            updateState { it.copy(password = input.newValue) }
+        }
+        is LoginButtonClicked -&gt; {
+            val currentState = getCurrentState()
+            val loginSuccessful = attemptLogin(currentState.username, currentState.password)
+            if(loginSuccessful) {
+                postEvent(NavigateToDashboard)
+            } else {
+                noOp()
+            }
+        }
+        is RegisterButtonClicked -&gt; {
+            postEvent(NavigateToRegistration)
+        }
+    }
+}
+</code></pre>
+<p>There are a few other things to consider when working with Ballast to help you craft the best UI for your users and
+ease the readability and maintainability for your developers, which are described below.</p>
+<h2 id="input-strategies"><a href="#input-strategies" id="input-strategies" class="anchor"></a>Input Strategies</h2>
+<p>How Inputs are handled within Ballast depends a bit on your specific needs, and will impact how Ballast requires you
+to write your code so that it is always handled safely. Ballast has several ways to configure how Inputs are processed,
+called <code>InputStrategies</code>, and understanding how and why to pick one over the other can help you build UIs that users
+love, while also avoiding some sutble issues in your implementation.</p>
+<p>At a high level, when working with Ballast and deciding how to process inputs, you should have the following things
+in mind:</p>
+<ol>
+<li>Inputs are processed atomically, and at most 1 Input should be processing at any given time.</li>
+<li>Inputs are processed asynchronously, in parallel to the UI.</li>
+<li>Inputs may take a long time to process, as their running on Kotlin Coroutines and may call suspending functions.</li>
+</ol>
+<p>The process of deciding which strategy to use ultimately comes down to what should happen to one running Input is
+another is sent at the same time.</p>
+<article class="message is-info">
+
+  <div class="message-body">
+  <p><strong>Info</strong></p>
+<p>Pro Tip: The text descriptions of these InputStrategies can be a bit confusing, but seeing them play out in real-time
+should make it obvious how they work. Playing with the <a href="https://copper-leaf.github.io/ballast/wiki/examples/kitchensink">Kitchen Sink</a> with the <a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-debugger">Debugger</a> gives you a simple way
+of experiencing these behaviors to get an intuition for when to use each one.</p>
+  </div>
+</article>
+<h3 id="fifo"><a href="#fifo" id="fifo" class="anchor"></a>FIFO</h3>
+<p>A first-in-first-out (FIFO) strategy is the simplest to work with, and is recommended if you're just starting out with
+Ballast. It's the typical way one would think about writing code for single-threaded applications, where something that
+blocks the thread blocks it for everyone, but this makes it very predictable. You know that if you start running some
+block of code, it will always run until it's finished, and anything else that wants to run must wait for its turn.
+The first Input that is sent to the ViewModel will be the first that will be processed, even if others get sent
+afterward.</p>
+<p>As an example, take the following snippet, which needs to make 2 separate API calls to fetch all the data for a screen:</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.LoadPosts -&gt; {
+        updateState { it.copy(loading = true) }
+        val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+        updateState { it.copy(loading = false, posts = posts) }
+    }
+    is Inputs.LoadLatestPostContent -&gt; {
+        updateState { it.copy(loading = true) }
+        val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+        updateState { it.copy(loading = false, latestPost = latestPost) }
+    }
+}
+
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
+</code></pre>
+<p>In this scenario, since each Input will wait its turn to run, it will first take 2 seconds from <code>LoadPosts</code> and then
+another 1 second from <code>LoadLatestPostContent</code>, so it will take a total of 3 seconds to load the data for this screen.</p>
+<p>You can play with an interactive example <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Fifo">here</a>.</p>
+<article class="message is-danger">
+
+  <div class="message-body">
+  <p><strong>Danger</strong></p>
+<p>For historical reasons, <code>FifoInputStrategy</code> is not the default, so you should manually choose to use
+<code>FifoInputStrategy</code> if you aren't sure which you need.</p>
+<p>This default input strategy will likely be changed to <code>FifoInputStrategy</code> in a future version, so it would be best to
+start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default.</p>
+  </div>
+</article>
+<h3 id="lifo"><a href="#lifo" id="lifo" class="anchor"></a>LIFO</h3>
+<p>A last-in-first-out (LIFO) strategy optimizes the experience for responsiveness rather than correctness. Instead of
+ensuring that each Input sent to the ViewModel can be executed completely, LIFO ensures that each Input is processed
+immediately, cancelling anything that's taking too long to process if it needs to. This means that any given Input might
+get cancelled part-way through its execution, which can be unintuitive if you're not expecting it, but it also means
+that the user is always able to do what they want without being made to wait.</p>
+<p>Take the same snippet from the FIFO section:</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.LoadPosts -&gt; {
+        updateState { it.copy(loading = true) }
+        val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+        updateState { it.copy(loading = false, posts = posts) }
+    }
+    is Inputs.LoadLatestPostContent -&gt; {
+        updateState { it.copy(loading = true) }
+        val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+        updateState { it.copy(loading = false, latestPost = latestPost) }
+    }
+}
+
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
+</code></pre>
+<p>When using <code>LifoInputStrategy</code> here, the <code>LoadPosts</code> will start making its API call, but while it is suspended, it will
+get cancelled so that <code>LoadLatestPostContent</code> can run. So in this situation, your screen will finish loading in only 1
+second, but you will only have loaded the latest post, but not the full list of posts.</p>
+<p>You can play with an interactive example <a href="https://copper-leaf.github.io/ballast/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Lifo">here</a>.</p>
+<p>Clearly, this is not a great use case for LIFO, but let's consider some other situations where LIFO does make more
+sense.</p>
+<ul>
+<li>You have an app that makes a long API call on the dashboard to load its data. But the user may not actually want to
+view the data on the dashboard, and instead intended to make a change in their acount settings. By using LIFO, you can
+allow the user to click the &quot;Settings&quot; button and be taken there immediately, without being forced to wait for the
+dashboard to finish loading before they can navigate.</li>
+<li>You have an ecommerce app, with the main store listing able to be searched by text, and filtered/sorted by price. The
+results of the search requires an API call to get new results. By using LIFO, when the user changes the price filter,
+they don't need to wait for the API call to finish to keep making other changes to their search query. The API call
+will be cancelled each time they type or change the filter/sort data, and only when they've finished making all
+changes does the API call actually get executed and the results loaded from the server.</li>
+</ul>
+<article class="message is-danger">
+
+  <div class="message-body">
+  <p><strong>Danger</strong></p>
+<p>For historical reasons, <code>LifoInputStrategy</code> is the default, but can be unintuitive to work with and cause subtle issues
+in your application. For this reason, it is recommended to manually choose to use <code>FifoInputStrategy</code> unless you are
+familiar enough with Ballast and it's workflow to understand the full implications <code>LifoInputStrategy</code>.</p>
+<p>This default input strategy will likely be changed to <code>FifoInputStrategy</code> in a future version, so it would be best to
+start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default or
+having your application start behaving differently in a future version of Ballast.</p>
+  </div>
+</article>
+<h2 id="side-jobs"><a href="#side-jobs" id="side-jobs" class="anchor"></a>Side-jobs</h2>
+<p>The above section on Async Logic works when you have individual &quot;resources&quot; you are loading, and are reasonably sure the
+only way it could get cancelled is if the user intends for it to be cancelled, such as by navigating to another screen
+where we do not need those resources.</p>
+<p>But real-world applications aren't always that simple. One use-case is observing a stream of events (a Kotlin <code>Flow</code>) of
+some data source, rather than a discrete suspending value. For example, rather than the respository directly delivering
+the results of an API call, it may cache it, and send multiple emissions to notify of the cache status (see
+<a href="https://copper-leaf.github.io/ballast/wiki/modules/ballast-repository">Ballast Repository</a> module). Or you connect to the phone's GPS and receive an endless stream of GPS
+coordinates you need to display on a map. We need a new strategy to handle this kind of use-case: a &quot;side-job&quot;.</p>
+<p>Until this point, we've been working with the notion that the InputHandler will suspend until the async work completes,
+and we considered what would happen if a new Input arrived while one was already suspended. But if we have a
+potentially-infinite data source, we obviously cannot connect to that directly within the InputHandler. Similarly, maybe
+we have a situation where we need to load multiple APIs in parallel but do not wish to use <code>LifoInputStrategy</code>. Both
+these situations can be accomplished by moving the work to run in the &quot;background&quot; into a <code>sideJob { }</code> block.</p>
+<p>Side-jobs work kind-of like a &quot;thunk&quot; in Redux; they move async logic outside of the normal data flow of the
+ViewModel, running fully parallel to it, but provide a handle back to the ViewModel where it can post one or more
+additional Inputs with the results of its data. Since they're running parallel to the ViewModel, we cannot allow a
+sideJob to modify the <code>State</code>, otherwise we'd run into the same problem we had initially of race conditions, so instead
+it needs to just send requests back into the proper Input stream to be processed as any other Input, applying the
+results to the state when they are processed themselves.</p>
+<h3 id="basic-side-job-usage"><a href="#basic-side-job-usage" id="basic-side-job-usage" class="anchor"></a>Basic Side-job Usage</h3>
+<p>Rewriting the original snippet to load both posts in a sideJob would look like this:</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.LoadPosts -&gt; {
+        sideJob {
+            val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+            postInput(Inputs.PostsLoaded(posts))
+        }
+    }
+    is Inputs.PostsLoaded -&gt; { 
+        updateState { it.copy(posts = input.posts) } 
+    }
+
+    
+    is Inputs.LoadLatestPostContent -&gt; {
+        sideJob {
+            val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+            postInput(Inputs.LatestPostContentLoaded(latestPost))
+        }
+    }
+    is Inputs.LatestPostContentLoaded -&gt; { 
+        updateState { it.copy(latestPost = input.latestPost) } 
+    }
+}
+
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
+</code></pre>
+<p>(I've gone ahead and removed the <code>loading</code> flag from these examples, as they will just get in the way of the intent of
+these snippets from here on out.)</p>
+<p>This snippet <em>almost</em> works, but it's ignoring a small, but very important detail of sideJobs: they are restartable.
+The lifecycle of each <code>sideJob { }</code> block still needs to be managed by Ballast, cancelled when the ViewModel is
+cancelled. However, since MVI is a declarative design pattern, it's reasonable to assume that one could &quot;force a
+refresh&quot; simply by sending the same Input back to Ballast. With normal Input processing rules, that would cancel the
+current Input and run the new one. But sideJobs break out of that cycle, and so Ballast requires each sideJob to
+have a different &quot;key&quot;. If any Input tries to launch a sideJob with the same key, the old sideJob will be
+cancelled to accept the new one. This prevents multiple instances of the same block of code being run all in parallel if
+the same Input is sent multiple times. This is similar in principle to the keys passed to Compose's <code>remember() { }</code>
+function.</p>
+<p>So the fix is to just provide a key to the <code>sideJob</code> function:</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.LoadPosts -&gt; {
+        sideJob(&quot;LoadPosts&quot;) {
+            val posts = postsRepository.getPosts() // suspending function, takes 2 seconds
+            postInput(Inputs.PostsLoaded(posts))
+        }
+    }
+    is Inputs.PostsLoaded -&gt; { 
+        updateState { it.copy(posts = input.posts) } 
+    }
+    
+    is Inputs.LoadLatestPostContent -&gt; {
+        sideJob(&quot;LoadLatestPostContent&quot;) {
+            val latestPost = postsRepository.getLatestPost() // suspending function, takes 1 second
+            postInput(Inputs.LatestPostContentLoaded(latestPost))
+        }
+    }
+    is Inputs.LatestPostContentLoaded -&gt; { 
+        updateState { it.copy(latestPost = input.latestPost) } 
+    }
+}
+
+viewModel.trySend(Inputs.LoadPosts)
+viewModel.trySend(Inputs.LoadLatestPostContent)
+
+refreshButton.setOnClickListener {
+    viewModel.trySend(Inputs.LoadPosts)
+    viewModel.trySend(Inputs.LoadLatestPostContent)
+}
+</code></pre>
+<h3 id="observing-flows"><a href="#observing-flows" id="observing-flows" class="anchor"></a>Observing Flows</h3>
+<p>Now that we have a basic idea of sideJobs, let's apply it to the use-case of observing GPS coordinates from your
+phone's sensor. Since sideJobs do not block the normal Input stream, there's nothing wrong with observing an infinite
+stream of events in it, so it becomes a simple matter of collecting from the <code>Flow</code> and posting all those changes back
+to the ViewModel.</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.ObserveGpsSignal -&gt; {
+        sideJob(&quot;ObserveGpsSignal&quot;) {
+            gpsRepository
+                .observeLocation() // returns a Flow
+                .map { Inputs.GpsCoordinatesUpdated(it) }
+                .onEach { postInput(it) }
+                .launchIn(this)
+        }
+    }
+    is Inputs.GpsCoordinatesUpdated -&gt; { 
+        updateState { it.copy(coordinates = input.coordinates) } 
+    }
+}
+
+viewModel.trySend(Inputs.ObserveGpsSignal)
+</code></pre>
+<p>As this is one of the primary use-cases for sideJobs, Ballast offers a convenient shorthand for you:</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.ObserveGpsSignal -&gt; {
+        observeFlows(
+            gpsRepository
+                .observeLocation() // returns a Flow
+                .map { Inputs.GpsCoordinatesUpdated(it) },
+            key = &quot;ObserveGpsSignal&quot;
+        )
+    }
+    is Inputs.GpsCoordinatesUpdated -&gt; { 
+        updateState { it.copy(coordinates = input.coordinates) } 
+    }
+}
+
+viewModel.trySend(Inputs.ObserveGpsSignal)
+</code></pre>
+<h3 id="sending-follow-up-inputs"><a href="#sending-follow-up-inputs" id="sending-follow-up-inputs" class="anchor"></a>Sending Follow-up Inputs</h3>
+<p>One final use-case for sideJobs that I haven't yet touched on is sending Inputs, without any further logic.</p>
+<p>Consider a pub-sub type architecture, where one Input needs to do some processing, and then dispatch another Input after
+it has finished. Attempting to send a new Input directly from another Input is bad for 2 potential reasons: immediate
+cancellation, or deadlock.</p>
+<p>The most likely scenario is that the Input Channel to the ViewModel is buffered. If we allowed an Input to directly send
+another Input, then it will immediately get accepted, and thus cancel the current (sending) Input. But if the Channel
+was configured to be <code>RENDEZVOUS</code> and running in a single-threaded coroutineContext, then the sender would suspend until
+that Input is read from the channel, but the ViewModel will not able to receive the Input from that channel until the
+sender has finished, which is a deadlock. These are both hypothetical scenarios, but the danger is certainly there,
+which is why Ballast simply forbids sending an Input directly from another Input. Instead, Inputs can only be sent back
+to the ViewModel from a sideJob or an Event.</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.RequestLogout -&gt; {
+        loginRepository.logOut()
+        sideJob(&quot;RequestLogOut&quot;) {
+            postInput(Inputs.ClearCache)
+        }
+    }
+    is Inputs.ClearCache -&gt; {
+        updateState { it.copy(user = null) }
+    }
+}
+
+viewModel.trySend(Inputs.RequestLogout)
+</code></pre>
+<p>Like <code>observeFlows</code>, this too, has a convenient helper method which makes it look like you are sending an Input directly
+from another Input, but is in fact sending it from a sideJob block. Since it's a simple sideJob, it will also
+derive a key for you based on the Input (it's <code>.toString()</code>), so that calling <code>postInput()</code> does not accidentally cancel
+any other sideJobs.</p>
+<pre><code class="language-kotlin">suspend fun InputHandlerScope&lt;Inputs, Events, State&gt;.handleInput(input: Inputs) = when(input) {
+    is Inputs.RequestLogout -&gt; {
+        loginRepository.logOut()
+        postInput(Inputs.ClearCache)
+    }
+    is Inputs.ClearCache -&gt; {
+        updateState { it.copy(user = null) }
+    }
+}
+
+viewModel.trySend(Inputs.RequestLogout)
+</code></pre>
+
+</div>
+
+                    
+                
+            
+        
+    
+    <!-- end:inject components -->
+
+
+  </div>
+  
+    <div class="column is-one-quarter is-hidden-touch">
+      <div class="sticky-menu" style="position: sticky; top: 30px;">
+  
+  
+    
+<p class="menu-label">In This Page</p>
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#ballast-overview" class="">
+  
+  Ballast Overview
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#ui-programming-through-the-years" class="">
+  
+  UI Programming Through the Years
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#traditional-ui-programming" class="">
+  
+  Traditional UI programming
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#mvp" class="">
+  
+  MVP
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#mvvm" class="">
+  
+  MVVM
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#mvi" class="">
+  
+  MVI
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#kinds-of-state" class="">
+  
+  Kinds of State
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#screen-ui-state" class="">
+  
+  Screen UI State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#ui-element-state" class="">
+  
+  UI Element State
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#global-application-state" class="">
+  
+  Global Application State
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#kinds-of-state-classes" class="">
+  
+  Kinds of State Classes
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#sealed-class" class="">
+  
+  Sealed Class
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#data-class" class="">
+  
+  Data Class
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#multiple-streams" class="">
+  
+  Multiple Streams
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    <ul class="menu-list">
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#ballast-contract" class="">
+  
+  Ballast Contract
+  </a>
+</li>
+
+</ul>
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#input-strategies" class="">
+  
+  Input Strategies
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#fifo" class="">
+  
+  FIFO
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#lifo" class="">
+  
+  LIFO
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+  
+  
+    
+<ul class="menu-list">
+
+  
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#side-jobs" class="">
+  
+  Side-jobs
+  </a>
+</li>
+
+
+
+  <li>
+    <ul>
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#basic-side-job-usage" class="">
+  
+  Basic Side-job Usage
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#observing-flows" class="">
+  
+  Observing Flows
+  </a>
+</li>
+
+
+    
+      
+
+<li>
+  <!-- page=https://copper-leaf.github.io/ballast/wiki/usage/mental-model 1703254852 -->
+  <!-- menuItem.page=  -->
+  <a href="#sending-follow-up-inputs" class="">
+  
+  Sending Follow-up Inputs
+  </a>
+</li>
+
+
+    
+    </ul>
+  </li>
+</ul>
+
+  
+
+</div>
+    </div>
+  
+</div>
+
+        </div>
+      
+      
+      </article>
+    
+      <div class="grow"></div>
+      <div class="page-footer">
+      
+        <nav class="pagination is-rounded footer-pagination" role="navigation" aria-label="pagination">
+
+  <a class="pagination-previous" href="https://copper-leaf.github.io/ballast/wiki/usage">
+    <span class="icon"><i class="fas fa-chevron-left"></i></span>
+    Usage Guide
+  </a>
+
+
+
+  <a class="pagination-next" href="https://copper-leaf.github.io/ballast/wiki/usage/workflow">
+    Workflow
+    <span class="icon"><i class="fas fa-chevron-right"></i></span>
+  </a>
+
+</nav>
+
+<footer class="footer border-top">
+  <div class="content is-small">
+  <p>
+  Site proudly built with <a href="https://orchid.run/">Orchid</a>.<br>
+</p>
+
+  </div>
+</footer>
+
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+    <!-- start:inject meta-components [bodyEnd] -->
+    
+
+        
+            
+        
+
+        
+    
+    <!-- end:inject meta-components [bodyEnd] -->
+
+
+
+
+<!-- start:inject scripts -->
+<script defer data-search-pseudo-elements="true" src="https://copper-leaf.github.io/ballast/Copper/6f592938/releases/v5.4.0/js/all.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-accordion.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/Copper/6f592938/assets/js/bulma-tabs.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/lunr/lunr.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/assets/js/orchidSearch.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/prism.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-kotlin.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-java.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/prism/1.17.1/components/prism-groovy.min.js"></script>
+<script  src="https://copper-leaf.github.io/ballast/ajax/libs/mermaid/8.13.9/mermaid.min.js"></script>
+<script >
+;
+
+document.addEventListener('DOMContentLoaded', function() {
+    mermaid.init({}, "code.language-mermaid");
+});
+</script>
+<script  src="https://copper-leaf.github.io/ballast/assets/scripts/mp-widget.js"></script>
+<script >
+
+if(document.getElementById("intellij-plugin-button") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('install', 18702, "#intellij-plugin-button");
+}
+if(document.getElementById("intellij-plugin-card") != null) {
+    MarketplaceWidget.setupMarketplaceWidget('card', 18702, "#intellij-plugin-card");
+}
+</script>
+<!-- end:inject scripts -->
+
+
+</body>
+</html>

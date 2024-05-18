@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
+    xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/boardgame.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/boardgamecompany.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/boardgameperson.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/rpg.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/rpgcompany.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/rpgperson.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/videogame.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/examples/web/bgg/hot/videogamecompany.xml</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://copper-leaf.github.io/ballast/assets/skiko/skiko.wasm</loc>
+        <lastmod>2024-05-18</lastmod>
+        <priority>0.5</priority>
+    </url>
+</urlset>
