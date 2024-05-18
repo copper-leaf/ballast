@@ -7,15 +7,24 @@ on:
   push:
     branches: ['dev']
 
+env:
+  GITHUB_ACTOR: '${{ github.actor }}'
+  GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+  OSSRH_USERNAME: '${{ secrets.OSSRH_USERNAME }}'
+  OSSRH_PASSWORD: '${{ secrets.OSSRH_PASSWORD }}'
+  STAGING_PROFILE_ID: '${{ secrets.STAGING_PROFILE_ID }}'
+  SIGNING_KEY_ID: '${{ secrets.SIGNING_KEY_ID }}'
+  SIGNING_KEY: '${{ secrets.SIGNING_KEY }}'
+  SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
+  JB_SIGNING_KEY: '${{ secrets.JB_SIGNING_KEY }}'
+  JB_CHAIN: '${{ secrets.JB_CHAIN }}'
+  JB_PASSPHRASE: '${{ secrets.JB_PASSPHRASE }}'
+  JB_MARKETPLACE_TOKEN: '${{ secrets.JB_MARKETPLACE_TOKEN }}'
+
 jobs:
-  testOnAll:
-    strategy:
-      fail-fast: false
-      matrix:
-        java: [17]
-        os: ['ubuntu-latest', 'windows-latest']
-    name: 'Test on ${{ matrix.os }} JDK ${{ matrix.java }}'
-    runs-on: '${{ matrix.os }}'
+  ktlintCheck:
+    name: 'KtlintCheck on macos-latst'
+    runs-on: 'macos-latest'
     steps:
       - uses: 'actions/checkout@v3'
         with:
@@ -25,38 +34,58 @@ jobs:
         uses: 'actions/setup-java@v2'
         with:
           distribution: 'temurin'
-          java-version: '${{ matrix.java }}'
+          java-version: '17'
       - name: 'Run checks with Gradle'
-        run: './gradlew check --no-daemon --stacktrace'
+        run: './gradlew ktlintCheck --no-daemon --stacktrace'
 
-  publishArtifactsOnMacOs:
-    runs-on: 'macos-latest'
-    needs: ['testOnAll']
-    name: 'Build and publish snapshots'
-    env:
-      GITHUB_ACTOR: '${{ github.actor }}'
-      GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-      OSSRH_USERNAME: '${{ secrets.OSSRH_USERNAME }}'
-      OSSRH_PASSWORD: '${{ secrets.OSSRH_PASSWORD }}'
-      STAGING_PROFILE_ID: '${{ secrets.STAGING_PROFILE_ID }}'
-      SIGNING_KEY_ID: '${{ secrets.SIGNING_KEY_ID }}'
-      SIGNING_KEY: '${{ secrets.SIGNING_KEY }}'
-      SIGNING_PASSWORD: '${{ secrets.SIGNING_PASSWORD }}'
-      JB_SIGNING_KEY: '${{ secrets.JB_SIGNING_KEY }}'
-      JB_CHAIN: '${{ secrets.JB_CHAIN }}'
-      JB_PASSPHRASE: '${{ secrets.JB_PASSPHRASE }}'
-      JB_MARKETPLACE_TOKEN: '${{ secrets.JB_MARKETPLACE_TOKEN }}'
+  unitTest:
+    needs: ['ktlintCheck']
+    strategy:
+      matrix:
+        config:
+          - { target: 'testDebugUnitTest',     os: 'ubuntu-latest', java: 17 }
+          - { target: 'testReleaseUnitTest',   os: 'ubuntu-latest', java: 17 }
+          - { target: 'iosSimulatorArm64Test', os: 'macos-latest',  java: 17 }
+          - { target: 'iosX64Test',            os: 'macos-latest',  java: 17 }
+          - { target: 'jsTest',                os: 'ubuntu-latest', java: 17 }
+          - { target: 'jvmTest',               os: 'ubuntu-latest', java: 17 }
+          - { target: 'wasmJsTest',            os: 'ubuntu-latest', java: 17 }
+    name: 'Run ${{ matrix.config.target }} on ${{ matrix.config.os }} JDK ${{ matrix.config.java }}'
+    runs-on: '${{ matrix.config.os }}'
     steps:
       - uses: 'actions/checkout@v3'
         with:
           submodules: 'recursive'
           fetch-depth: 0 # all commit history and tags
-      - name: 'Set up JDK 17'
-        uses: 'actions/setup-java@v2'
+      - uses: 'actions/setup-java@v2'
         with:
           distribution: 'temurin'
-          java-version: 17
-      - name: 'Assemble Artifacts'
-        run: './gradlew assemble -x orchidBuild --stacktrace'
-      - name: 'Publish Artifacts to MavenCentral Snapshots Repository'
-        run: './gradlew publishAllPublicationsToMavenCentralSnapshotsRepository --stacktrace'
+          java-version: ${{ matrix.config.java }}
+      - run: './gradlew ${{ matrix.config.target }} --stacktrace'
+
+  publishSnapshotArtifacts:
+    needs: ['unitTest']
+    strategy:
+      matrix:
+        config:
+          - { target: 'AndroidDebug',        os: 'ubuntu-latest', java: 17 }
+          - { target: 'AndroidRelease',      os: 'ubuntu-latest', java: 17 }
+          - { target: 'IosArm64',            os: 'macos-latest',  java: 17 }
+          - { target: 'IosSimulatorArm64',   os: 'macos-latest',  java: 17 }
+          - { target: 'IosX64',              os: 'macos-latest',  java: 17 }
+          - { target: 'Js',                  os: 'ubuntu-latest', java: 17 }
+          - { target: 'Jvm',                 os: 'ubuntu-latest', java: 17 }
+          - { target: 'KotlinMultiplatform', os: 'ubuntu-latest', java: 17 }
+          - { target: 'WasmJs',              os: 'ubuntu-latest', java: 17 }
+    name: 'Publish ${{ matrix.config.target }} snapshot artifacts on ${{ matrix.config.os }} JDK ${{ matrix.config.java }}'
+    runs-on: '${{ matrix.config.os }}'
+    steps:
+      - uses: 'actions/checkout@v3'
+        with:
+          submodules: 'recursive'
+          fetch-depth: 0 # all commit history and tags
+      - uses: 'actions/setup-java@v2'
+        with:
+          distribution: 'temurin'
+          java-version: ${{ matrix.config.java }}
+      - run: './gradlew publish${{ matrix.config.target }}PublicationToMavenCentralSnapshotsRepository'

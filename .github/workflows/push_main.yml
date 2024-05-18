@@ -60,30 +60,18 @@ jobs:
     strategy:
       matrix:
         java: [17]
-        os: ['ubuntu-latest', 'macos-latest']
-        target: [
-          'AndroidDebug',
-          'AndroidRelease',
-          'IosArm64',
-          'IosSimulatorArm64',
-          'IosX64',
-          'Js',
-          'Jvm',
-          'KotlinMultiplatform',
-          'WasmJs',
-        ]
-        exclude: # only publish ios targets from macos, everything else should be ubuntu
-          - { os: 'macos-latest', target: 'AndroidDebug' }
-          - { os: 'macos-latest', target: 'AndroidRelease' }
-          - { os: 'ubuntu-latest', target: 'IosArm64' }
-          - { os: 'ubuntu-latest', target: 'IosSimulatorArm64' }
-          - { os: 'ubuntu-latest', target: 'IosX64' }
-          - { os: 'macos-latest', target: 'Js' }
-          - { os: 'macos-latest', target: 'Jvm' }
-          - { os: 'macos-latest', target: 'KotlinMultiplatform' }
-          - { os: 'macos-latest', target: 'WasmJs' }
-    name: 'Publish ${{ matrix.target }} artifacts on ${{ matrix.os }} JDK ${{ matrix.java }}'
-    runs-on: '${{ matrix.os }}'
+        config:
+          - {target: 'AndroidDebug', os: 'ubuntu-latest' }
+          - {target: 'AndroidRelease', os: 'ubuntu-latest' }
+          - {target: 'IosArm64', os: 'macos-latest' }
+          - {target: 'IosSimulatorArm64', os: 'macos-latest' }
+          - {target: 'IosX64', os: 'macos-latest' }
+          - {target: 'Js', os: 'ubuntu-latest' }
+          - {target: 'Jvm', os: 'ubuntu-latest' }
+          - {target: 'KotlinMultiplatform', os: 'ubuntu-latest' }
+          - {target: 'WasmJs', os: 'ubuntu-latest' }
+    name: 'Publish ${{ matrix.config.target }} artifacts on ${{ matrix.config.os }} JDK ${{ matrix.java }}'
+    runs-on: '${{ matrix.config.os }}'
     needs: ['openStagingRepo']
     env:
       stagingRepositoryId: ${{needs.openStagingRepo.outputs.stagingRepositoryId}}
@@ -97,7 +85,7 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - run: 'echo "stagingRepositoryId=$(echo $stagingRepositoryId)"'
-      - run: './gradlew publish${{ matrix.target }}PublicationToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
+      - run: './gradlew publish${{ matrix.config.target }}PublicationToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
 
   closeStagingRepo:
     runs-on: 'ubuntu-latest'
