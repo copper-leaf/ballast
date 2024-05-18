@@ -25,6 +25,7 @@ jobs:
   openStagingRepo:
     runs-on: 'ubuntu-latest'
     outputs:
+      projectVersion: ${{ steps.outputProjectVersion.outputs.projectVersion }}
       stagingRepositoryId: ${{ steps.outputStagingRepositoryId.outputs.stagingRepositoryId }}
     steps:
       - uses: 'actions/checkout@v3'
@@ -37,7 +38,9 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: 'Open Sonatype Staging Repository'
-        run: './gradlew openSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
+        run: './gradlew writeProjectVersion openSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
+      - id: 'outputProjectVersion'
+        run: 'echo "projectVersion=$(cat ./build/export/projectVersion)" && echo "projectVersion=$(cat ./build/export/projectVersion)" >> "$GITHUB_OUTPUT"'
       - id: 'outputStagingRepositoryId'
         run: 'echo "stagingRepositoryId=$(cat ./build/export/stagingRepositoryId)" && echo "stagingRepositoryId=$(cat ./build/export/stagingRepositoryId)" >> "$GITHUB_OUTPUT"'
 
@@ -119,6 +122,6 @@ jobs:
           distribution: 'temurin'
           java-version: 17
       - name: 'Build example Compose Web site'
-        run: './gradlew :examples:web:build --stacktrace -Prelease -PorchidEnvironment=prod'
+        run: './gradlew :examples:web:jsBrowserDevelopmentWebpack :examples:counter:jsBrowserDevelopmentWebpack :examples:navigationWithEnumRoutes:jsBrowserDevelopmentWebpack --stacktrace -PreleaseDocs -PorchidEnvironment=prod'
       - name: 'Publish Documentation'
-        run: './gradlew :docs:publish --stacktrace --no-configuration-cache -Prelease -PorchidEnvironment=prod'
+        run: './gradlew :docs:publish --stacktrace --no-configuration-cache -PreleaseDocs -PorchidEnvironment=prod'
