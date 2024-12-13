@@ -1,7 +1,5 @@
 package com.copperleaf.ballast.debugger
 
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.HttpClientEngineConfig
 import io.ktor.client.engine.HttpClientEngineFactory
@@ -9,15 +7,21 @@ import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.util.InternalAPI
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.test.runTest
 import kotlin.coroutines.CoroutineContext
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class BallastDebuggerTests : StringSpec({
-    "check toString values" {
-        BallastDebuggerInterceptor<Any, Any, Any>(
-            connection = BallastDebuggerClientConnection(TestHttpEngine, this),
-        ).toString() shouldBe "BallastDebuggerInterceptor"
+class BallastDebuggerTests {
+    @Test
+    fun checkToStringValues() = runTest {
+        assertEquals<Any?>(
+            "BallastDebuggerInterceptor", BallastDebuggerInterceptor<Any, Any, Any>(
+                connection = BallastDebuggerClientConnection(TestHttpEngine, this),
+            ).toString()
+        )
     }
-})
+}
 
 private object TestHttpEngine : HttpClientEngineFactory<TestEngineConfig> {
     override fun create(block: TestEngineConfig.() -> Unit): HttpClientEngine {

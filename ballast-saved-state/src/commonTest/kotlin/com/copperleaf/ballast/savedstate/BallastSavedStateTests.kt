@@ -1,15 +1,19 @@
 package com.copperleaf.ballast.savedstate
 
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class BallastSavedStateTests : StringSpec({
-    "check toString values" {
-        BallastSavedStateInterceptor<Any, Any, Any>(
-            adapter = TestSavedStateAdapter()
-        ).toString() shouldBe "BallastSavedStateInterceptor(adapter=TestSavedStateAdapter)"
+class BallastSavedStateTests {
+    @Test
+    fun checkToStringValues() = runTest {
+        assertEquals<Any?>(
+            "BallastSavedStateInterceptor(adapter=TestSavedStateAdapter)", BallastSavedStateInterceptor<Any, Any, Any>(
+                adapter = TestSavedStateAdapter()
+            ).toString()
+        )
     }
-})
+}
 
 private class TestSavedStateAdapter : SavedStateAdapter<Any, Any, Any> {
     override suspend fun SaveStateScope<Any, Any, Any>.save() {

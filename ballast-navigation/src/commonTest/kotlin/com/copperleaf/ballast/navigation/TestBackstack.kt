@@ -10,10 +10,11 @@ import com.copperleaf.ballast.navigation.routing.goBack
 import com.copperleaf.ballast.navigation.routing.popAllWithAnnotation
 import com.copperleaf.ballast.navigation.routing.popUntil
 import com.copperleaf.ballast.navigation.routing.popUntilRoute
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class TestBackstack : StringSpec({
+class TestBackstack {
     fun runBackstackTest(
         originalBackstack: List<String>,
         expectedResult: List<String>,
@@ -31,10 +32,11 @@ class TestBackstack : StringSpec({
             }
         val expectedResultAsMatches = expectedResult.map { Destination.Match(it, SimpleRoute(it)) }
 
-        actualResultWithoutAnnotations shouldBe expectedResultAsMatches
+        assertEquals<Any?>(expectedResultAsMatches, actualResultWithoutAnnotations)
     }
 
-    "no change" {
+    @Test
+    fun noChange() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two", "/three"),
@@ -43,7 +45,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "goBack" {
+    @Test
+    fun goBack() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two"),
@@ -51,7 +54,9 @@ class TestBackstack : StringSpec({
             goBack(1)
         }
     }
-    "goBack multiple calls" {
+
+    @Test
+    fun goBackMultipleCalls() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one"),
@@ -60,7 +65,9 @@ class TestBackstack : StringSpec({
             goBack(1)
         }
     }
-    "goBack 2 steps in one call" {
+
+    @Test
+    fun goBack2StepsInOneCall() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one"),
@@ -69,7 +76,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "addToTop" {
+    @Test
+    fun addToTop() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two", "/three", "/four"),
@@ -77,7 +85,9 @@ class TestBackstack : StringSpec({
             addToTop("/four", emptySet())
         }
     }
-    "replaceTop" {
+
+    @Test
+    fun replaceTop() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two", "/four"),
@@ -86,7 +96,9 @@ class TestBackstack : StringSpec({
             addToTop("/four", emptySet())
         }
     }
-    "popWith annotation" {
+
+    @Test
+    fun popWithAannotation() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two", "/three", "/four"),
@@ -100,7 +112,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "popWith annotation multiple tags" {
+    @Test
+    fun popWithAnnotationMultipleTags() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two", "/three", "/four", "/five"),
@@ -114,7 +127,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "popUntil inclusive" {
+    @Test
+    fun popUntilInclusive() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one"),
@@ -122,7 +136,9 @@ class TestBackstack : StringSpec({
             popUntil(inclusive = true) { it.originalDestinationUrl == "/two" }
         }
     }
-    "popUntil exclusive" {
+
+    @Test
+    fun popUntilExclusive() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two"),
@@ -131,7 +147,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "popUntil inclusive first element" {
+    @Test
+    fun popUntilInclusiveFirstElement() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = emptyList(),
@@ -139,7 +156,9 @@ class TestBackstack : StringSpec({
             popUntil(inclusive = true) { it.originalDestinationUrl == "/one" }
         }
     }
-    "popUntil exclusive first element" {
+
+    @Test
+    fun popUntilExclusiveFirstElement() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one"),
@@ -148,7 +167,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "popUntil inclusive last element" {
+    @Test
+    fun popUntilInclusiveLastElement() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two"),
@@ -156,7 +176,9 @@ class TestBackstack : StringSpec({
             popUntil(inclusive = true) { it.originalDestinationUrl == "/three" }
         }
     }
-    "popUntil exclusive last element" {
+
+    @Test
+    fun popUntilExclusiveLastElement() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two", "/three"),
@@ -165,7 +187,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "popUntil inclusive no match" {
+    @Test
+    fun popUntilInclusiveNoMatch() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = emptyList(),
@@ -173,7 +196,9 @@ class TestBackstack : StringSpec({
             popUntil(inclusive = true) { it.originalDestinationUrl == "/four" }
         }
     }
-    "popUntil exclusive no match" {
+
+    @Test
+    fun popUntilExclusiveNoMatch() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = emptyList(),
@@ -182,7 +207,8 @@ class TestBackstack : StringSpec({
         }
     }
 
-    "popUntilRoute" {
+    @Test
+    fun popUntilRoute() = runTest {
         runBackstackTest(
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two"),
@@ -190,4 +216,4 @@ class TestBackstack : StringSpec({
             popUntilRoute(inclusive = false, route = SimpleRoute("/two"))
         }
     }
-})
+}

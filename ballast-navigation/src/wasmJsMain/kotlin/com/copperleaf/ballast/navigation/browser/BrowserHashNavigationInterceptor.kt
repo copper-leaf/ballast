@@ -39,6 +39,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
         }
     }
 
+    @Suppress("UNNECESSARY_SAFE_CALL")
     override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow<Uri> {
             window.onhashchange = { event: HashChangeEvent ->

@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalStdlibApi::class)
 class DispatcherTestInterceptor : BallastInterceptor<
         DispatcherTestContract.Inputs,
         DispatcherTestContract.Events,

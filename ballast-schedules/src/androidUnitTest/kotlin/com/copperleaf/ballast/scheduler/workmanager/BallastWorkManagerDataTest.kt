@@ -4,8 +4,7 @@ import com.copperleaf.ballast.scheduler.SchedulerAdapter
 import com.copperleaf.ballast.scheduler.SchedulerAdapterScope
 import com.copperleaf.ballast.scheduler.schedule.EveryDaySchedule
 import com.copperleaf.ballast.scheduler.workmanager.internal.getRegisteredSchedules
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -15,19 +14,27 @@ import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.asTimeZone
 import kotlinx.datetime.toInstant
 import java.time.ZoneOffset
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.milliseconds
 
-class BallastWorkManagerDataTest : StringSpec({
-    "Test data classes" {
+class BallastWorkManagerDataTest {
+    @Test fun testDataClasses() = runTest {
         val usaCentralTimeZone = UtcOffset(ZoneOffset.ofHours(-6)).asTimeZone()
         val testAdapter = TestAdapter(usaCentralTimeZone)
         val testCallback = TestCallback()
         val workManagerData = BallastWorkManagerData(testAdapter, testCallback, false)
-        workManagerData.adapter shouldBe testAdapter
-        workManagerData.adapterClassName shouldBe "com.copperleaf.ballast.scheduler.workmanager.BallastWorkManagerDataTest\$TestAdapter"
-        workManagerData.callback shouldBe testCallback
-        workManagerData.callbackClassName shouldBe "com.copperleaf.ballast.scheduler.workmanager.BallastWorkManagerDataTest\$TestCallback"
-        workManagerData.withHistory shouldBe false
+        assertEquals<Any?>(testAdapter, workManagerData.adapter)
+        assertEquals<Any?>(
+            "com.copperleaf.ballast.scheduler.workmanager.BallastWorkManagerDataTest\$TestAdapter",
+            workManagerData.adapterClassName
+        )
+        assertEquals<Any?>(testCallback, workManagerData.callback)
+        assertEquals<Any?>(
+            "com.copperleaf.ballast.scheduler.workmanager.BallastWorkManagerDataTest\$TestCallback",
+            workManagerData.callbackClassName
+        )
+        assertEquals<Any?>(false, workManagerData.withHistory)
 
         val registeredSchedule = workManagerData.adapter.getRegisteredSchedules().single()
 
@@ -46,15 +53,16 @@ class BallastWorkManagerDataTest : StringSpec({
             latestInstant = now,
         )
 
-        scheduleData.workManagerData shouldBe workManagerData
-        scheduleData.registeredSchedule shouldBe registeredSchedule
-        scheduleData.key shouldBe "Daily at 9am"
-        scheduleData.initialInstant shouldBe now
-        scheduleData.latestInstant shouldBe now
-        scheduleData.nextInstant shouldBe expectedNextTrigger
-        scheduleData.getDelayAmount(now) shouldBe 9375000L.milliseconds // (expectedNextTrigger - now)
+        assertEquals<Any?>(workManagerData, scheduleData.workManagerData)
+        assertEquals<Any?>(registeredSchedule, scheduleData.registeredSchedule)
+        assertEquals<Any?>("Daily at 9am", scheduleData.key)
+        assertEquals<Any?>(now, scheduleData.initialInstant)
+        assertEquals<Any?>(now, scheduleData.latestInstant)
+        assertEquals<Any?>(expectedNextTrigger, scheduleData.nextInstant)
+        assertEquals<Any?>(9375000L.milliseconds, scheduleData.getDelayAmount(now))
+        // (expectedNextTrigger - now)
     }
-}) {
+
     class TestAdapter(private val timeZone: TimeZone) : SchedulerAdapter<Unit, Unit, Unit> {
         override suspend fun SchedulerAdapterScope<Unit, Unit, Unit>.configureSchedules() {
             onSchedule(

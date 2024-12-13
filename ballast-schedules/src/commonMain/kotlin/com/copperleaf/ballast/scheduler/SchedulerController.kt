@@ -36,7 +36,7 @@ public fun <I : Any, E : Any, S : Any> BallastViewModelConfiguration.Builder.wit
         }
 }
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "OPT_IN_USAGE")
 public suspend fun <I : Any, E : Any, S : Any> SideJobScope<I, E, S>.scheduler(): SchedulerController<I, E, S> {
     return getInterceptor(SchedulerInterceptor.Key)
         .controller as SchedulerController<I, E, S>

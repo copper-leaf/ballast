@@ -3,7 +3,6 @@ package com.copperleaf.ballast.contracts.dispatcher
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 
-@OptIn(ExperimentalStdlibApi::class)
 public class DispatcherTestInputHandler : InputHandler<
         DispatcherTestContract.Inputs,
         DispatcherTestContract.Events,

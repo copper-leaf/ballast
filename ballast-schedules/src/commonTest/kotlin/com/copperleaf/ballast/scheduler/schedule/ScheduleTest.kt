@@ -1,8 +1,6 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Instant
@@ -15,10 +13,12 @@ import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
-class ScheduleTest : StringSpec({
+class ScheduleTest {
     val timeZone = TimeZone.UTC
     val startDay = LocalDate(2023, Month.DECEMBER, 28)
     val startInstant = startDay.atStartOfDayIn(timeZone)
@@ -29,7 +29,8 @@ class ScheduleTest : StringSpec({
             .toList()
     }
 
-    "Fixed delay schedule test" {
+    @Test
+    fun fixedDelayScheduleTest() = runTest {
         val generatedSchedule =
             FixedDelaySchedule(10.minutes)
                 .generateSchedule(
@@ -37,24 +38,27 @@ class ScheduleTest : StringSpec({
                 )
                 .firstTen()
 
-        generatedSchedule shouldBe listOf(
-            startDay.atTime(1, 11),
-            startDay.atTime(1, 21),
-            startDay.atTime(1, 31),
-            startDay.atTime(1, 41),
-            startDay.atTime(1, 51),
-            startDay.atTime(2, 1),
-            startDay.atTime(2, 11),
-            startDay.atTime(2, 21),
-            startDay.atTime(2, 31),
-            startDay.atTime(2, 41),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(1, 11),
+                startDay.atTime(1, 21),
+                startDay.atTime(1, 31),
+                startDay.atTime(1, 41),
+                startDay.atTime(1, 51),
+                startDay.atTime(2, 1),
+                startDay.atTime(2, 11),
+                startDay.atTime(2, 21),
+                startDay.atTime(2, 31),
+                startDay.atTime(2, 41),
+            ), generatedSchedule
         )
     }
 
 // Once per schedule resolution
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "Once every day test" {
+    @Test
+    fun onceEveryDayTest() = runTest {
         val generatedSchedule =
             EveryDaySchedule(LocalTime(2, 37))
                 .generateSchedule(
@@ -62,21 +66,24 @@ class ScheduleTest : StringSpec({
                 )
                 .firstTen()
 
-        generatedSchedule shouldBe listOf(
-            LocalDate(2023, Month.DECEMBER, 28).atTime(2, 37),
-            LocalDate(2023, Month.DECEMBER, 29).atTime(2, 37),
-            LocalDate(2023, Month.DECEMBER, 30).atTime(2, 37),
-            LocalDate(2023, Month.DECEMBER, 31).atTime(2, 37),
-            LocalDate(2024, Month.JANUARY, 1).atTime(2, 37),
-            LocalDate(2024, Month.JANUARY, 2).atTime(2, 37),
-            LocalDate(2024, Month.JANUARY, 3).atTime(2, 37),
-            LocalDate(2024, Month.JANUARY, 4).atTime(2, 37),
-            LocalDate(2024, Month.JANUARY, 5).atTime(2, 37),
-            LocalDate(2024, Month.JANUARY, 6).atTime(2, 37),
+        assertEquals<Any?>(
+            listOf(
+                LocalDate(2023, Month.DECEMBER, 28).atTime(2, 37),
+                LocalDate(2023, Month.DECEMBER, 29).atTime(2, 37),
+                LocalDate(2023, Month.DECEMBER, 30).atTime(2, 37),
+                LocalDate(2023, Month.DECEMBER, 31).atTime(2, 37),
+                LocalDate(2024, Month.JANUARY, 1).atTime(2, 37),
+                LocalDate(2024, Month.JANUARY, 2).atTime(2, 37),
+                LocalDate(2024, Month.JANUARY, 3).atTime(2, 37),
+                LocalDate(2024, Month.JANUARY, 4).atTime(2, 37),
+                LocalDate(2024, Month.JANUARY, 5).atTime(2, 37),
+                LocalDate(2024, Month.JANUARY, 6).atTime(2, 37),
+            ), generatedSchedule
         )
     }
 
-    "Once every hour test" {
+    @Test
+    fun onceEveryHourTest() = runTest {
         val generatedSchedule =
             EveryHourSchedule(1)
                 .generateSchedule(
@@ -84,63 +91,72 @@ class ScheduleTest : StringSpec({
                 )
                 .firstTen()
 
-        generatedSchedule shouldBe listOf(
-            startDay.atTime(3, 1),
-            startDay.atTime(4, 1),
-            startDay.atTime(5, 1),
-            startDay.atTime(6, 1),
-            startDay.atTime(7, 1),
-            startDay.atTime(8, 1),
-            startDay.atTime(9, 1),
-            startDay.atTime(10, 1),
-            startDay.atTime(11, 1),
-            startDay.atTime(12, 1),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(3, 1),
+                startDay.atTime(4, 1),
+                startDay.atTime(5, 1),
+                startDay.atTime(6, 1),
+                startDay.atTime(7, 1),
+                startDay.atTime(8, 1),
+                startDay.atTime(9, 1),
+                startDay.atTime(10, 1),
+                startDay.atTime(11, 1),
+                startDay.atTime(12, 1),
+            ), generatedSchedule
         )
     }
 
-    "Once every minute test" {
+    @Test
+    fun onceEveryMinuteTest() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .generateSchedule(
                 start = startDay.atTime(2, 37, 0).toInstant(timeZone)
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 12),
-            startDay.atTime(2, 38, 12),
-            startDay.atTime(2, 39, 12),
-            startDay.atTime(2, 40, 12),
-            startDay.atTime(2, 41, 12),
-            startDay.atTime(2, 42, 12),
-            startDay.atTime(2, 43, 12),
-            startDay.atTime(2, 44, 12),
-            startDay.atTime(2, 45, 12),
-            startDay.atTime(2, 46, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 12),
+                startDay.atTime(2, 38, 12),
+                startDay.atTime(2, 39, 12),
+                startDay.atTime(2, 40, 12),
+                startDay.atTime(2, 41, 12),
+                startDay.atTime(2, 42, 12),
+                startDay.atTime(2, 43, 12),
+                startDay.atTime(2, 44, 12),
+                startDay.atTime(2, 45, 12),
+                startDay.atTime(2, 46, 12),
+            ), scheduleSequence
         )
     }
 
-    "Every second test" {
+    @Test
+    fun everySecondTest() = runTest {
         val scheduleSequence = EverySecondSchedule()
             .generateSchedule(
                 start = startDay.atTime(2, 37, 52).toInstant(timeZone)
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 53),
-            startDay.atTime(2, 37, 54),
-            startDay.atTime(2, 37, 55),
-            startDay.atTime(2, 37, 56),
-            startDay.atTime(2, 37, 57),
-            startDay.atTime(2, 37, 58),
-            startDay.atTime(2, 37, 59),
-            startDay.atTime(2, 38, 0),
-            startDay.atTime(2, 38, 1),
-            startDay.atTime(2, 38, 2),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 53),
+                startDay.atTime(2, 37, 54),
+                startDay.atTime(2, 37, 55),
+                startDay.atTime(2, 37, 56),
+                startDay.atTime(2, 37, 57),
+                startDay.atTime(2, 37, 58),
+                startDay.atTime(2, 37, 59),
+                startDay.atTime(2, 38, 0),
+                startDay.atTime(2, 38, 1),
+                startDay.atTime(2, 38, 2),
+            ), scheduleSequence
         )
     }
 
-    "One Fixed Instant" {
+    @Test
+    fun oneFixedInstant() = runTest {
         val clock = object : Clock {
             val instantSequence = mutableListOf(
                 startInstant
@@ -160,15 +176,18 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 45, 0),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 45, 0),
+            ), scheduleSequence
         )
     }
 
 // Multiple times per schedule resolution
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "Multiple times every day test" {
+    @Test
+    fun multipleTimesEveryDayTest() = runTest {
         val generatedSchedule =
             EveryDaySchedule(LocalTime(2, 37), LocalTime(7, 38), LocalTime(23, 58))
                 .generateSchedule(
@@ -176,21 +195,24 @@ class ScheduleTest : StringSpec({
                 )
                 .firstTen()
 
-        generatedSchedule shouldBe listOf(
-            LocalDate(2023, Month.DECEMBER, 28).atTime(2, 37),
-            LocalDate(2023, Month.DECEMBER, 28).atTime(7, 38),
-            LocalDate(2023, Month.DECEMBER, 28).atTime(23, 58),
-            LocalDate(2023, Month.DECEMBER, 29).atTime(2, 37),
-            LocalDate(2023, Month.DECEMBER, 29).atTime(7, 38),
-            LocalDate(2023, Month.DECEMBER, 29).atTime(23, 58),
-            LocalDate(2023, Month.DECEMBER, 30).atTime(2, 37),
-            LocalDate(2023, Month.DECEMBER, 30).atTime(7, 38),
-            LocalDate(2023, Month.DECEMBER, 30).atTime(23, 58),
-            LocalDate(2023, Month.DECEMBER, 31).atTime(2, 37),
+        assertEquals<Any?>(
+            listOf(
+                LocalDate(2023, Month.DECEMBER, 28).atTime(2, 37),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(7, 38),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(23, 58),
+                LocalDate(2023, Month.DECEMBER, 29).atTime(2, 37),
+                LocalDate(2023, Month.DECEMBER, 29).atTime(7, 38),
+                LocalDate(2023, Month.DECEMBER, 29).atTime(23, 58),
+                LocalDate(2023, Month.DECEMBER, 30).atTime(2, 37),
+                LocalDate(2023, Month.DECEMBER, 30).atTime(7, 38),
+                LocalDate(2023, Month.DECEMBER, 30).atTime(23, 58),
+                LocalDate(2023, Month.DECEMBER, 31).atTime(2, 37),
+            ), generatedSchedule
         )
     }
 
-    "Multiple times every hour test" {
+    @Test
+    fun multipleTimesEveryHourTest() = runTest {
         val generatedSchedule =
             EveryHourSchedule(0, 15, 30, 45)
                 .generateSchedule(
@@ -198,42 +220,48 @@ class ScheduleTest : StringSpec({
                 )
                 .firstTen()
 
-        generatedSchedule shouldBe listOf(
-            startDay.atTime(2, 45),
-            startDay.atTime(3, 0),
-            startDay.atTime(3, 15),
-            startDay.atTime(3, 30),
-            startDay.atTime(3, 45),
-            startDay.atTime(4, 0),
-            startDay.atTime(4, 15),
-            startDay.atTime(4, 30),
-            startDay.atTime(4, 45),
-            startDay.atTime(5, 0),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 45),
+                startDay.atTime(3, 0),
+                startDay.atTime(3, 15),
+                startDay.atTime(3, 30),
+                startDay.atTime(3, 45),
+                startDay.atTime(4, 0),
+                startDay.atTime(4, 15),
+                startDay.atTime(4, 30),
+                startDay.atTime(4, 45),
+                startDay.atTime(5, 0),
+            ), generatedSchedule
         )
     }
 
-    "Multiple times every minute test" {
+    @Test
+    fun multipleTimesEveryMinuteTest() = runTest {
         val generatedSchedule = EveryMinuteSchedule(0, 15, 30, 45)
             .generateSchedule(
                 start = startDay.atTime(2, 37, 0).toInstant(timeZone)
             )
             .firstTen()
 
-        generatedSchedule shouldBe listOf(
-            startDay.atTime(2, 37, 15),
-            startDay.atTime(2, 37, 30),
-            startDay.atTime(2, 37, 45),
-            startDay.atTime(2, 38, 0),
-            startDay.atTime(2, 38, 15),
-            startDay.atTime(2, 38, 30),
-            startDay.atTime(2, 38, 45),
-            startDay.atTime(2, 39, 0),
-            startDay.atTime(2, 39, 15),
-            startDay.atTime(2, 39, 30),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 15),
+                startDay.atTime(2, 37, 30),
+                startDay.atTime(2, 37, 45),
+                startDay.atTime(2, 38, 0),
+                startDay.atTime(2, 38, 15),
+                startDay.atTime(2, 38, 30),
+                startDay.atTime(2, 38, 45),
+                startDay.atTime(2, 39, 0),
+                startDay.atTime(2, 39, 15),
+                startDay.atTime(2, 39, 30),
+            ), generatedSchedule
         )
     }
 
-    "Multiple Fixed Instants" {
+    @Test
+    fun multipleFixedInstants() = runTest {
         val clock = object : Clock {
             val instantSequence = mutableListOf(
                 startDay.atTime(2, 44, 0).toInstant(timeZone),
@@ -257,17 +285,20 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 45, 0),
-            startDay.atTime(3, 45, 0),
-            startDay.atTime(3, 56, 44),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 45, 0),
+                startDay.atTime(3, 45, 0),
+                startDay.atTime(3, 56, 44),
+            ), scheduleSequence
         )
     }
 
 // Schedule operators
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "schedule.delayed() test" {
+    @Test
+    fun scheduleDelayedTest() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .delayed(1.hours)
             .take(4)
@@ -276,15 +307,18 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(3, 37, 12),
-            startDay.atTime(3, 38, 12),
-            startDay.atTime(3, 39, 12),
-            startDay.atTime(3, 40, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(3, 37, 12),
+                startDay.atTime(3, 38, 12),
+                startDay.atTime(3, 39, 12),
+                startDay.atTime(3, 40, 12),
+            ), scheduleSequence
         )
     }
 
-    "schedule.delayedUntil() test - earlier than actual start time" {
+    @Test
+    fun scheduleDelayedUntilTest_earlierThanActualStartTime() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .delayedUntil(startDay.atTime(1, 0, 0).toInstant(timeZone))
             .generateSchedule(
@@ -292,21 +326,24 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 12),
-            startDay.atTime(2, 38, 12),
-            startDay.atTime(2, 39, 12),
-            startDay.atTime(2, 40, 12),
-            startDay.atTime(2, 41, 12),
-            startDay.atTime(2, 42, 12),
-            startDay.atTime(2, 43, 12),
-            startDay.atTime(2, 44, 12),
-            startDay.atTime(2, 45, 12),
-            startDay.atTime(2, 46, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 12),
+                startDay.atTime(2, 38, 12),
+                startDay.atTime(2, 39, 12),
+                startDay.atTime(2, 40, 12),
+                startDay.atTime(2, 41, 12),
+                startDay.atTime(2, 42, 12),
+                startDay.atTime(2, 43, 12),
+                startDay.atTime(2, 44, 12),
+                startDay.atTime(2, 45, 12),
+                startDay.atTime(2, 46, 12),
+            ), scheduleSequence
         )
     }
 
-    "schedule.delayedUntil() test - later than actual start time" {
+    @Test
+    fun scheduleDelayedUntilTest_laterThanActualStartTime() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .delayedUntil(startDay.atTime(4, 0, 0).toInstant(timeZone))
             .generateSchedule(
@@ -314,21 +351,24 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(4, 0, 12),
-            startDay.atTime(4, 1, 12),
-            startDay.atTime(4, 2, 12),
-            startDay.atTime(4, 3, 12),
-            startDay.atTime(4, 4, 12),
-            startDay.atTime(4, 5, 12),
-            startDay.atTime(4, 6, 12),
-            startDay.atTime(4, 7, 12),
-            startDay.atTime(4, 8, 12),
-            startDay.atTime(4, 9, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(4, 0, 12),
+                startDay.atTime(4, 1, 12),
+                startDay.atTime(4, 2, 12),
+                startDay.atTime(4, 3, 12),
+                startDay.atTime(4, 4, 12),
+                startDay.atTime(4, 5, 12),
+                startDay.atTime(4, 6, 12),
+                startDay.atTime(4, 7, 12),
+                startDay.atTime(4, 8, 12),
+                startDay.atTime(4, 9, 12),
+            ), scheduleSequence
         )
     }
 
-    "schedule.bounded() test - starts before window" {
+    @Test
+    fun scheduleBoundedTest_startsBeforeWindow() = runTest {
         val startMinute = startDay.atTime(2, 37, 0).toInstant(timeZone)
         val endMinute = startDay.atTime(2, 41, 0).toInstant(timeZone)
 
@@ -339,15 +379,18 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 12),
-            startDay.atTime(2, 38, 12),
-            startDay.atTime(2, 39, 12),
-            startDay.atTime(2, 40, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 12),
+                startDay.atTime(2, 38, 12),
+                startDay.atTime(2, 39, 12),
+                startDay.atTime(2, 40, 12),
+            ), scheduleSequence
         )
     }
 
-    "schedule.bounded() test - starts during window" {
+    @Test
+    fun scheduleBoundedTest_startsDuringWindow() = runTest {
         val startMinute = startDay.atTime(2, 37, 0).toInstant(timeZone)
         val endMinute = startDay.atTime(2, 41, 0).toInstant(timeZone)
 
@@ -358,13 +401,16 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 39, 12),
-            startDay.atTime(2, 40, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 39, 12),
+                startDay.atTime(2, 40, 12),
+            ), scheduleSequence
         )
     }
 
-    "schedule.bounded() test - starts after window" {
+    @Test
+    fun scheduleBoundedTest_startsAfterWindow() = runTest {
         val startMinute = startDay.atTime(2, 37, 0).toInstant(timeZone)
         val endMinute = startDay.atTime(2, 41, 0).toInstant(timeZone)
 
@@ -375,10 +421,11 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence.shouldBeEmpty()
+        assertEquals(0, scheduleSequence.size)
     }
 
-    "schedule.filterByDayOfWeek() test" {
+    @Test
+    fun scheduleFilterByDayOfWeekTest() = runTest {
         val scheduleSequence = EveryDaySchedule(LocalTime(9, 0))
             .filterByDayOfWeek(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY, timeZone = timeZone)
             .generateSchedule(
@@ -386,21 +433,24 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            LocalDate(2023, Month.DECEMBER, 29).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 1).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 3).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 5).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 8).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 10).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 12).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 15).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 17).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 19).atTime(9, 0),
+        assertEquals<Any?>(
+            listOf(
+                LocalDate(2023, Month.DECEMBER, 29).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 1).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 3).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 5).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 8).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 10).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 12).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 15).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 17).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 19).atTime(9, 0),
+            ), scheduleSequence
         )
     }
 
-    "schedule.weekdays() test" {
+    @Test
+    fun scheduleWeekdaysTest() = runTest {
         val scheduleSequence = EveryDaySchedule(LocalTime(9, 0))
             .weekdays(timeZone = timeZone)
             .generateSchedule(
@@ -408,21 +458,24 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            LocalDate(2023, Month.DECEMBER, 28).atTime(9, 0),
-            LocalDate(2023, Month.DECEMBER, 29).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 1).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 2).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 3).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 4).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 5).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 8).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 9).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 10).atTime(9, 0),
+        assertEquals<Any?>(
+            listOf(
+                LocalDate(2023, Month.DECEMBER, 28).atTime(9, 0),
+                LocalDate(2023, Month.DECEMBER, 29).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 1).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 2).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 3).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 4).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 5).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 8).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 9).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 10).atTime(9, 0),
+            ), scheduleSequence
         )
     }
 
-    "schedule.weekends() test" {
+    @Test
+    fun scheduleWeekendsTest() = runTest {
         val scheduleSequence = EveryDaySchedule(LocalTime(9, 0))
             .weekends(timeZone = timeZone)
             .generateSchedule(
@@ -430,21 +483,24 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            LocalDate(2023, Month.DECEMBER, 30).atTime(9, 0),
-            LocalDate(2023, Month.DECEMBER, 31).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 6).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 7).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 13).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 14).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 20).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 21).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 27).atTime(9, 0),
-            LocalDate(2024, Month.JANUARY, 28).atTime(9, 0),
+        assertEquals<Any?>(
+            listOf(
+                LocalDate(2023, Month.DECEMBER, 30).atTime(9, 0),
+                LocalDate(2023, Month.DECEMBER, 31).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 6).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 7).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 13).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 14).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 20).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 21).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 27).atTime(9, 0),
+                LocalDate(2024, Month.JANUARY, 28).atTime(9, 0),
+            ), scheduleSequence
         )
     }
 
-    "schedule.until() test - starts before" {
+    @Test
+    fun scheduleUntilTest_startsBefore() = runTest {
         val endMinute = startDay.atTime(2, 41, 0).toInstant(timeZone)
 
         val scheduleSequence = EveryMinuteSchedule(12)
@@ -454,15 +510,18 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 12),
-            startDay.atTime(2, 38, 12),
-            startDay.atTime(2, 39, 12),
-            startDay.atTime(2, 40, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 12),
+                startDay.atTime(2, 38, 12),
+                startDay.atTime(2, 39, 12),
+                startDay.atTime(2, 40, 12),
+            ), scheduleSequence
         )
     }
 
-    "schedule.until() test - starts after" {
+    @Test
+    fun scheduleUntilTest_startsAfter() = runTest {
         val endMinute = startDay.atTime(2, 41, 0).toInstant(timeZone)
 
         val scheduleSequence = EveryMinuteSchedule(12)
@@ -472,10 +531,11 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence.shouldBeEmpty()
+        assertEquals(0, scheduleSequence.size)
     }
 
-    "schedule.take() test" {
+    @Test
+    fun scheduleTakeTest() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .take(4)
             .generateSchedule(
@@ -483,29 +543,37 @@ class ScheduleTest : StringSpec({
             )
             .firstTen()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 12),
-            startDay.atTime(2, 38, 12),
-            startDay.atTime(2, 39, 12),
-            startDay.atTime(2, 40, 12),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 12),
+                startDay.atTime(2, 38, 12),
+                startDay.atTime(2, 39, 12),
+                startDay.atTime(2, 40, 12),
+            ), scheduleSequence
         )
     }
 
-    "schedule.getNext() test" {
+    @Test
+    fun scheduleGetNextTest() = runTest {
         val clock = object : Clock {
             override fun now(): Instant {
                 return startInstant
             }
         }
 
-        EveryMinuteSchedule(5, timeZone = timeZone).getNext(clock) shouldBe
-                startDay.atTime(0, 0, 5).toInstant(timeZone)
+        assertEquals<Any?>(
+            startDay.atTime(0, 0, 5).toInstant(timeZone),
+            EveryMinuteSchedule(5, timeZone = timeZone).getNext(clock)
+        )
 
-        EveryMinuteSchedule(5, timeZone = timeZone).getNext(startInstant) shouldBe
-                startDay.atTime(0, 0, 5).toInstant(timeZone)
+        assertEquals<Any?>(
+            startDay.atTime(0, 0, 5).toInstant(timeZone),
+            EveryMinuteSchedule(5, timeZone = timeZone).getNext(startInstant)
+        )
     }
 
-    "schedule.getHistory() unbounded test" {
+    @Test
+    fun scheduleGetHistoryUnboundedTest() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .getHistory(
                 startInstant = startDay.atTime(2, 37, 0).toInstant(timeZone),
@@ -513,18 +581,21 @@ class ScheduleTest : StringSpec({
             )
             .toList()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 12).toInstant(timeZone),
-            startDay.atTime(2, 38, 12).toInstant(timeZone),
-            startDay.atTime(2, 39, 12).toInstant(timeZone),
-            startDay.atTime(2, 40, 12).toInstant(timeZone),
-            startDay.atTime(2, 41, 12).toInstant(timeZone),
-            startDay.atTime(2, 42, 12).toInstant(timeZone),
-            startDay.atTime(2, 43, 12).toInstant(timeZone),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 12).toInstant(timeZone),
+                startDay.atTime(2, 38, 12).toInstant(timeZone),
+                startDay.atTime(2, 39, 12).toInstant(timeZone),
+                startDay.atTime(2, 40, 12).toInstant(timeZone),
+                startDay.atTime(2, 41, 12).toInstant(timeZone),
+                startDay.atTime(2, 42, 12).toInstant(timeZone),
+                startDay.atTime(2, 43, 12).toInstant(timeZone),
+            ), scheduleSequence
         )
     }
 
-    "schedule.getHistory() bounded test" {
+    @Test
+    fun scheduleGetHistoryBoundedTest() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .take(3)
             .getHistory(
@@ -533,14 +604,17 @@ class ScheduleTest : StringSpec({
             )
             .toList()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 37, 12).toInstant(timeZone),
-            startDay.atTime(2, 38, 12).toInstant(timeZone),
-            startDay.atTime(2, 39, 12).toInstant(timeZone),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 37, 12).toInstant(timeZone),
+                startDay.atTime(2, 38, 12).toInstant(timeZone),
+                startDay.atTime(2, 39, 12).toInstant(timeZone),
+            ), scheduleSequence
         )
     }
 
-    "schedule.dropHistory() unbounded test" {
+    @Test
+    fun scheduleDropHistoryUnboundedTest() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .dropHistory(
                 startInstant = startDay.atTime(2, 37, 0).toInstant(timeZone),
@@ -549,15 +623,18 @@ class ScheduleTest : StringSpec({
             .take(4)
             .toList()
 
-        scheduleSequence shouldBe listOf(
-            startDay.atTime(2, 44, 12).toInstant(timeZone),
-            startDay.atTime(2, 45, 12).toInstant(timeZone),
-            startDay.atTime(2, 46, 12).toInstant(timeZone),
-            startDay.atTime(2, 47, 12).toInstant(timeZone),
+        assertEquals<Any?>(
+            listOf(
+                startDay.atTime(2, 44, 12).toInstant(timeZone),
+                startDay.atTime(2, 45, 12).toInstant(timeZone),
+                startDay.atTime(2, 46, 12).toInstant(timeZone),
+                startDay.atTime(2, 47, 12).toInstant(timeZone),
+            ), scheduleSequence
         )
     }
 
-    "schedule.dropHistory() bounded test" {
+    @Test
+    fun scheduleDropHistoryBoundedTest() = runTest {
         val scheduleSequence = EveryMinuteSchedule(12)
             .take(3)
             .dropHistory(
@@ -567,6 +644,6 @@ class ScheduleTest : StringSpec({
             .take(4)
             .toList()
 
-        scheduleSequence.shouldBeEmpty()
+        assertEquals(0, scheduleSequence.size)
     }
-})
+}

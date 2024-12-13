@@ -3,10 +3,12 @@ package com.copperleaf.ballast.test.internal
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
+import com.copperleaf.ballast.dispatchers
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -92,6 +94,7 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInSer
     testSuite.suiteLogger("").info("All scenarios completed in $totalTestTime")
 }
 
+@OptIn(ExperimentalStdlibApi::class)
 @ExperimentalTime
 @ExperimentalCoroutinesApi
 private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
@@ -119,6 +122,15 @@ private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
                             scenario = scenario,
                             testSequenceTimeout = scenario.timeout ?: testSuite.defaultTimeout,
                         )
+                    }
+                    .let {
+                        // sets the TestCoroutineDispatcher as the VM's default dispatchers
+                        val testDispatcher = this@coroutineScope.coroutineContext[CoroutineDispatcher.Key]
+                        if (testDispatcher != null) {
+                            it.dispatchers(testDispatcher)
+                        } else {
+                            it
+                        }
                     }
                     .withViewModel(
                         initialState = scenario.givenBlock?.invoke()

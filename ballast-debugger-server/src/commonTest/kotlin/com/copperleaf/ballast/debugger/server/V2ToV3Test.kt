@@ -4,13 +4,14 @@ import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.debugger.versions.v2.BallastDebuggerEventV2
 import com.copperleaf.ballast.debugger.versions.v3.BallastDebuggerEventV3
 import com.copperleaf.ballast.debugger.versions.v3.ClientModelConverterV2ToV3
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDateTime
 import java.time.Month
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
-class V2ToV3Test : StringSpec({
+class V2ToV3Test {
     val converter = ClientModelConverterV2ToV3()
     val inputConnectionId = "asdf"
     val inputConnectionBallastVersion = "1.0.0"
@@ -28,276 +29,435 @@ class V2ToV3Test : StringSpec({
     val restartState = SideJobScope.RestartState.Initial
     val stacktrace = "error at line 12..."
 
-    "Heartbeat" {
+    @Test
+    fun heartbeat() = runTest {
         val input = BallastDebuggerEventV2.Heartbeat(inputConnectionId, inputConnectionBallastVersion)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.Heartbeat>()
-        output.connectionId shouldBe inputConnectionId
-        output.connectionBallastVersion shouldBe inputConnectionBallastVersion
+        assertTrue(output is BallastDebuggerEventV3.Heartbeat)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(inputConnectionBallastVersion, output.connectionBallastVersion)
     }
-    "RefreshViewModelStart" {
+
+    @Test
+    fun refreshViewModelStart() = runTest {
         val input = BallastDebuggerEventV2.RefreshViewModelStart(inputConnectionId, viewModelName)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.RefreshViewModelStart>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
+        assertTrue(output is BallastDebuggerEventV3.RefreshViewModelStart)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
     }
-    "RefreshViewModelComplete" {
+
+    @Test
+    fun refreshViewModelComplete() = runTest {
         val input = BallastDebuggerEventV2.RefreshViewModelComplete(inputConnectionId, viewModelName)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.RefreshViewModelComplete>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
+        assertTrue(output is BallastDebuggerEventV3.RefreshViewModelComplete)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
     }
-    "ViewModelStarted" {
-        val input = BallastDebuggerEventV2.ViewModelStarted(inputConnectionId, viewModelName, viewModelType, uuid, timestamp)
+
+    @Test
+    fun viewModelStarted() = runTest {
+        val input =
+            BallastDebuggerEventV2.ViewModelStarted(inputConnectionId, viewModelName, viewModelType, uuid, timestamp)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.ViewModelStatusChanged>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.viewModelType shouldBe viewModelType
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.status shouldBe BallastDebuggerEventV3.StatusV3.Running
+        assertTrue(output is BallastDebuggerEventV3.ViewModelStatusChanged)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(viewModelType, output.viewModelType)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(BallastDebuggerEventV3.StatusV3.Running, output.status)
     }
-    "ViewModelCleared" {
+
+    @Test
+    fun viewModelCleared() = runTest {
         val input = BallastDebuggerEventV2.ViewModelCleared(inputConnectionId, viewModelName, uuid, timestamp)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.ViewModelStatusChanged>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.viewModelType shouldBe ""
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.status shouldBe BallastDebuggerEventV3.StatusV3.Cleared
+        assertTrue(output is BallastDebuggerEventV3.ViewModelStatusChanged)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>("", output.viewModelType)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(BallastDebuggerEventV3.StatusV3.Cleared, output.status)
     }
-    "InputQueued" {
-        val input = BallastDebuggerEventV2.InputQueued(inputConnectionId, viewModelName, uuid, timestamp, inputType, inputToStringValue)
+
+    @Test
+    fun inputQueued() = runTest {
+        val input = BallastDebuggerEventV2.InputQueued(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            inputType,
+            inputToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.InputQueued>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.inputType shouldBe inputType
-        output.serializedInput shouldBe inputToStringValue
-        output.inputContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.InputQueued)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(inputType, output.inputType)
+        assertEquals<Any?>(inputToStringValue, output.serializedInput)
+        assertEquals<Any?>("text/*", output.inputContentType)
     }
-    "InputAccepted" {
-        val input = BallastDebuggerEventV2.InputAccepted(inputConnectionId, viewModelName, uuid, timestamp, inputType, inputToStringValue)
+
+    @Test
+    fun inputAccepted() = runTest {
+        val input = BallastDebuggerEventV2.InputAccepted(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            inputType,
+            inputToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.InputAccepted>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.inputType shouldBe inputType
-        output.serializedInput shouldBe inputToStringValue
-        output.inputContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.InputAccepted)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(inputType, output.inputType)
+        assertEquals<Any?>(inputToStringValue, output.serializedInput)
+        assertEquals<Any?>("text/*", output.inputContentType)
     }
-    "InputRejected" {
-        val input = BallastDebuggerEventV2.InputRejected(inputConnectionId, viewModelName, uuid, timestamp, inputType, inputToStringValue)
+
+    @Test
+    fun inputRejected() = runTest {
+        val input = BallastDebuggerEventV2.InputRejected(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            inputType,
+            inputToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.InputRejected>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.inputType shouldBe inputType
-        output.serializedInput shouldBe inputToStringValue
-        output.inputContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.InputRejected)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(inputType, output.inputType)
+        assertEquals<Any?>(inputToStringValue, output.serializedInput)
+        assertEquals<Any?>("text/*", output.inputContentType)
     }
-    "InputDropped" {
-        val input = BallastDebuggerEventV2.InputDropped(inputConnectionId, viewModelName, uuid, timestamp, inputType, inputToStringValue)
+
+    @Test
+    fun inputDropped() = runTest {
+        val input = BallastDebuggerEventV2.InputDropped(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            inputType,
+            inputToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.InputDropped>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.inputType shouldBe inputType
-        output.serializedInput shouldBe inputToStringValue
-        output.inputContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.InputDropped)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(inputType, output.inputType)
+        assertEquals<Any?>(inputToStringValue, output.serializedInput)
+        assertEquals<Any?>("text/*", output.inputContentType)
     }
-    "InputHandledSuccessfully" {
-        val input = BallastDebuggerEventV2.InputHandledSuccessfully(inputConnectionId, viewModelName, uuid, timestamp, inputType, inputToStringValue)
+
+    @Test
+    fun inputHandledSuccessfully() = runTest {
+        val input = BallastDebuggerEventV2.InputHandledSuccessfully(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            inputType,
+            inputToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.InputHandledSuccessfully>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.inputType shouldBe inputType
-        output.serializedInput shouldBe inputToStringValue
-        output.inputContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.InputHandledSuccessfully)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(inputType, output.inputType)
+        assertEquals<Any?>(inputToStringValue, output.serializedInput)
+        assertEquals<Any?>("text/*", output.inputContentType)
     }
-    "InputCancelled" {
-        val input = BallastDebuggerEventV2.InputCancelled(inputConnectionId, viewModelName, uuid, timestamp, inputType, inputToStringValue)
+
+    @Test
+    fun inputCancelled() = runTest {
+        val input = BallastDebuggerEventV2.InputCancelled(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            inputType,
+            inputToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.InputCancelled>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.inputType shouldBe inputType
-        output.serializedInput shouldBe inputToStringValue
-        output.inputContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.InputCancelled)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(inputType, output.inputType)
+        assertEquals<Any?>(inputToStringValue, output.serializedInput)
+        assertEquals<Any?>("text/*", output.inputContentType)
     }
-    "InputHandlerError" {
-        val input = BallastDebuggerEventV2.InputHandlerError(inputConnectionId, viewModelName, uuid, timestamp, inputType, inputToStringValue, stacktrace)
+
+    @Test
+    fun inputHandlerError() = runTest {
+        val input = BallastDebuggerEventV2.InputHandlerError(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            inputType,
+            inputToStringValue,
+            stacktrace
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.InputHandlerError>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.inputType shouldBe inputType
-        output.serializedInput shouldBe inputToStringValue
-        output.inputContentType shouldBe "text/*"
-        output.stacktrace shouldBe stacktrace
+        assertTrue(output is BallastDebuggerEventV3.InputHandlerError)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(inputType, output.inputType)
+        assertEquals<Any?>(inputToStringValue, output.serializedInput)
+        assertEquals<Any?>("text/*", output.inputContentType)
+        assertEquals<Any?>(stacktrace, output.stacktrace)
     }
-    "EventQueued" {
-        val input = BallastDebuggerEventV2.EventQueued(inputConnectionId, viewModelName, uuid, timestamp, eventType, eventToStringValue)
+
+    @Test
+    fun eventQueued() = runTest {
+        val input = BallastDebuggerEventV2.EventQueued(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            eventType,
+            eventToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.EventQueued>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.eventType shouldBe eventType
-        output.serializedEvent shouldBe eventToStringValue
-        output.eventContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.EventQueued)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(eventType, output.eventType)
+        assertEquals<Any?>(eventToStringValue, output.serializedEvent)
+        assertEquals<Any?>("text/*", output.eventContentType)
     }
-    "EventEmitted" {
-        val input = BallastDebuggerEventV2.EventEmitted(inputConnectionId, viewModelName, uuid, timestamp, eventType, eventToStringValue)
+
+    @Test
+    fun eventEmitted() = runTest {
+        val input = BallastDebuggerEventV2.EventEmitted(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            eventType,
+            eventToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.EventEmitted>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.eventType shouldBe eventType
-        output.serializedEvent shouldBe eventToStringValue
-        output.eventContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.EventEmitted)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(eventType, output.eventType)
+        assertEquals<Any?>(eventToStringValue, output.serializedEvent)
+        assertEquals<Any?>("text/*", output.eventContentType)
     }
-    "EventHandledSuccessfully" {
-        val input = BallastDebuggerEventV2.EventHandledSuccessfully(inputConnectionId, viewModelName, uuid, timestamp, eventType, eventToStringValue)
+
+    @Test
+    fun eventHandledSuccessfully() = runTest {
+        val input = BallastDebuggerEventV2.EventHandledSuccessfully(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            eventType,
+            eventToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.EventHandledSuccessfully>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.eventType shouldBe eventType
-        output.serializedEvent shouldBe eventToStringValue
-        output.eventContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.EventHandledSuccessfully)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(eventType, output.eventType)
+        assertEquals<Any?>(eventToStringValue, output.serializedEvent)
+        assertEquals<Any?>("text/*", output.eventContentType)
     }
-    "EventHandlerError" {
-        val input = BallastDebuggerEventV2.EventHandlerError(inputConnectionId, viewModelName, uuid, timestamp, eventType, eventToStringValue, stacktrace)
+
+    @Test
+    fun eventHandlerError() = runTest {
+        val input = BallastDebuggerEventV2.EventHandlerError(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            eventType,
+            eventToStringValue,
+            stacktrace
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.EventHandlerError>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.eventType shouldBe eventType
-        output.serializedEvent shouldBe eventToStringValue
-        output.eventContentType shouldBe "text/*"
-        output.stacktrace shouldBe stacktrace
+        assertTrue(output is BallastDebuggerEventV3.EventHandlerError)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(eventType, output.eventType)
+        assertEquals<Any?>(eventToStringValue, output.serializedEvent)
+        assertEquals<Any?>("text/*", output.eventContentType)
+        assertEquals<Any?>(stacktrace, output.stacktrace)
     }
-    "EventProcessingStarted" {
+
+    @Test
+    fun eventProcessingStarted() = runTest {
         val input = BallastDebuggerEventV2.EventProcessingStarted(inputConnectionId, viewModelName, uuid, timestamp)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.EventProcessingStarted>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
+        assertTrue(output is BallastDebuggerEventV3.EventProcessingStarted)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
     }
-    "EventProcessingStopped" {
+
+    @Test
+    fun eventProcessingStopped() = runTest {
         val input = BallastDebuggerEventV2.EventProcessingStopped(inputConnectionId, viewModelName, uuid, timestamp)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.EventProcessingStopped>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
+        assertTrue(output is BallastDebuggerEventV3.EventProcessingStopped)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
     }
-    "StateChanged" {
-        val input = BallastDebuggerEventV2.StateChanged(inputConnectionId, viewModelName, uuid, timestamp, stateType, stateToStringValue)
+
+    @Test
+    fun stateChanged() = runTest {
+        val input = BallastDebuggerEventV2.StateChanged(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            stateType,
+            stateToStringValue
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.StateChanged>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.stateType shouldBe stateType
-        output.serializedState shouldBe stateToStringValue
-        output.stateContentType shouldBe "text/*"
+        assertTrue(output is BallastDebuggerEventV3.StateChanged)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(stateType, output.stateType)
+        assertEquals<Any?>(stateToStringValue, output.serializedState)
+        assertEquals<Any?>("text/*", output.stateContentType)
     }
-    "SideJobQueued" {
+
+    @Test
+    fun sideJobQueued() = runTest {
         val input = BallastDebuggerEventV2.SideJobQueued(inputConnectionId, viewModelName, uuid, timestamp, key)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.SideJobQueued>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.key shouldBe key
+        assertTrue(output is BallastDebuggerEventV3.SideJobQueued)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(key, output.key)
     }
-    "SideJobStarted" {
-        val input = BallastDebuggerEventV2.SideJobStarted(inputConnectionId, viewModelName, uuid, timestamp, key, restartState)
+
+    @Test
+    fun sideJobStarted() = runTest {
+        val input =
+            BallastDebuggerEventV2.SideJobStarted(inputConnectionId, viewModelName, uuid, timestamp, key, restartState)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.SideJobStarted>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.key shouldBe key
-        output.restartState shouldBe restartState
+        assertTrue(output is BallastDebuggerEventV3.SideJobStarted)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(key, output.key)
+        assertEquals<Any?>(restartState, output.restartState)
     }
-    "SideJobCompleted" {
-        val input = BallastDebuggerEventV2.SideJobCompleted(inputConnectionId, viewModelName, uuid, timestamp, key, restartState)
+
+    @Test
+    fun sideJobCompleted() = runTest {
+        val input = BallastDebuggerEventV2.SideJobCompleted(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            key,
+            restartState
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.SideJobCompleted>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.key shouldBe key
-        output.restartState shouldBe restartState
+        assertTrue(output is BallastDebuggerEventV3.SideJobCompleted)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(key, output.key)
+        assertEquals<Any?>(restartState, output.restartState)
     }
-    "SideJobCancelled" {
-        val input = BallastDebuggerEventV2.SideJobCancelled(inputConnectionId, viewModelName, uuid, timestamp, key, restartState)
+
+    @Test
+    fun sideJobCancelled() = runTest {
+        val input = BallastDebuggerEventV2.SideJobCancelled(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            key,
+            restartState
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.SideJobCancelled>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.key shouldBe key
-        output.restartState shouldBe restartState
+        assertTrue(output is BallastDebuggerEventV3.SideJobCancelled)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(key, output.key)
+        assertEquals<Any?>(restartState, output.restartState)
     }
-    "SideJobError" {
-        val input = BallastDebuggerEventV2.SideJobError(inputConnectionId, viewModelName, uuid, timestamp, key, restartState, stacktrace)
+
+    @Test
+    fun sideJobError() = runTest {
+        val input = BallastDebuggerEventV2.SideJobError(
+            inputConnectionId,
+            viewModelName,
+            uuid,
+            timestamp,
+            key,
+            restartState,
+            stacktrace
+        )
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.SideJobError>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.key shouldBe key
-        output.restartState shouldBe restartState
-        output.stacktrace shouldBe stacktrace
+        assertTrue(output is BallastDebuggerEventV3.SideJobError)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(key, output.key)
+        assertEquals<Any?>(restartState, output.restartState)
+        assertEquals<Any?>(stacktrace, output.stacktrace)
     }
-    "UnhandledError" {
+
+    @Test
+    fun unhandledError() = runTest {
         val input = BallastDebuggerEventV2.UnhandledError(inputConnectionId, viewModelName, uuid, timestamp, stacktrace)
         val output = converter.mapEvent(input)
-        output.shouldBeInstanceOf<BallastDebuggerEventV3.UnhandledError>()
-        output.connectionId shouldBe inputConnectionId
-        output.viewModelName shouldBe viewModelName
-        output.uuid shouldBe uuid
-        output.timestamp shouldBe timestamp
-        output.stacktrace shouldBe stacktrace
+        assertTrue(output is BallastDebuggerEventV3.UnhandledError)
+        assertEquals<Any?>(inputConnectionId, output.connectionId)
+        assertEquals<Any?>(viewModelName, output.viewModelName)
+        assertEquals<Any?>(uuid, output.uuid)
+        assertEquals<Any?>(timestamp, output.timestamp)
+        assertEquals<Any?>(stacktrace, output.stacktrace)
     }
-})
+}

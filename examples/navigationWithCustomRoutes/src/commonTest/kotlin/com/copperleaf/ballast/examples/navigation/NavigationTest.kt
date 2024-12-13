@@ -1,3 +1,5 @@
+@file:Suppress("USELESS_IS_CHECK")
+
 package com.copperleaf.ballast.examples.navigation
 
 import com.copperleaf.ballast.eventHandler
@@ -8,13 +10,15 @@ import com.copperleaf.ballast.navigation.routing.currentDestinationOrNull
 import com.copperleaf.ballast.navigation.routing.fromEnum
 import com.copperleaf.ballast.navigation.vm.RouterInputHandlerImpl
 import com.copperleaf.ballast.test.viewModelTest
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.nulls.shouldNotBeNull
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
-class NavigationTest : StringSpec({
-    "doTest" {
+class NavigationTest {
+    @Test
+    fun doTest() = runTest {
         viewModelTest(
             inputHandler = RouterInputHandlerImpl<AppScreenRoute>(),
             eventHandler = eventHandler { },
@@ -29,11 +33,11 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreenRoute>>()
-                    currentRoute.originalRoute.shouldBeInstanceOf<AppScreenRoute>()
-                    currentRoute.originalDestinationUrl shouldBe "/Home"
-                    currentRoute.matchRoute<AppScreenRoute>(currentRoute.originalRoute) shouldBe Home
+                    assertNotNull(currentRoute)
+                    assertTrue(currentRoute is Destination.Match<AppScreenRoute>)
+                    assertTrue(currentRoute.originalRoute is AppScreenRoute)
+                    assertEquals<Any?>("/Home", currentRoute.originalDestinationUrl)
+                    assertEquals(Home, currentRoute.matchRoute<AppScreen>(currentRoute.originalRoute))
                 }
             }
 
@@ -45,11 +49,11 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreenRoute>>()
-                    currentRoute.originalRoute.shouldBeInstanceOf<AppScreenRoute>()
-                    currentRoute.originalDestinationUrl shouldBe "/blog"
-                    currentRoute.matchRoute<AppScreenRoute>(currentRoute.originalRoute) shouldBe PostList(null)
+                    assertNotNull(currentRoute)
+                    assertTrue(currentRoute is Destination.Match<AppScreenRoute>)
+                    assertTrue(currentRoute.originalRoute is AppScreenRoute)
+                    assertEquals<Any?>("/blog", currentRoute.originalDestinationUrl)
+                    assertEquals(PostList(null), currentRoute.matchRoute<AppScreen>(currentRoute.originalRoute))
                 }
             }
 
@@ -61,11 +65,11 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreenRoute>>()
-                    currentRoute.originalRoute.shouldBeInstanceOf<AppScreenRoute>()
-                    currentRoute.originalDestinationUrl shouldBe "/blog?sort=desc"
-                    currentRoute.matchRoute<AppScreenRoute>(currentRoute.originalRoute) shouldBe PostList("desc")
+                    assertNotNull(currentRoute)
+                    assertTrue(currentRoute is Destination.Match<AppScreenRoute>)
+                    assertTrue(currentRoute.originalRoute is AppScreenRoute)
+                    assertEquals<Any?>("/blog?sort=desc", currentRoute.originalDestinationUrl)
+                    assertEquals(PostList("desc"), currentRoute.matchRoute<AppScreen>(currentRoute.originalRoute))
                 }
             }
 
@@ -77,13 +81,13 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreenRoute>>()
-                    currentRoute.originalRoute.shouldBeInstanceOf<AppScreenRoute>()
-                    currentRoute.originalDestinationUrl shouldBe "/blog/5"
-                    currentRoute.matchRoute<AppScreenRoute>(currentRoute.originalRoute) shouldBe PostDetails(5)
+                    assertNotNull(currentRoute)
+                    assertTrue(currentRoute is Destination.Match<AppScreenRoute>)
+                    assertTrue(currentRoute.originalRoute is AppScreenRoute)
+                    assertEquals<Any?>("/blog/5", currentRoute.originalDestinationUrl)
+                    assertEquals(PostDetails(5), currentRoute.matchRoute<AppScreen>(currentRoute.originalRoute))
                 }
             }
         }
     }
-})
+}
