@@ -18,4 +18,8 @@ internal class BallastScenarioInputSequenceScopeImpl<Inputs : Any, Events : Any,
         interceptorScope.sendToQueue(Queued.HandleInput(deferred, input))
         deferred.await()
     }
+
+    override suspend fun postEvent(event: Events) {
+        interceptorScope.postEvent(event)
+    }
 }
