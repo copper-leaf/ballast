@@ -81,12 +81,6 @@ compose {
             mainClass = "com.copperleaf.ballast.examples.scheduler.MainKt"
         }
     }
-    experimental {
-        web {
-            application {
-            }
-        }
-    }
 }
 
 afterEvaluate {

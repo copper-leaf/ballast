@@ -39,7 +39,9 @@ kotlin {
         }
 
         val wasmJsMain by getting {
-            dependencies { }
+            dependencies {
+                implementation(libs.kotlinx.wasm.browser)
+            }
         }
     }
 }
