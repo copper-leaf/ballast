@@ -78,12 +78,6 @@ compose {
             mainClass = "com.copperleaf.ballast.examples.counter.MainKt"
         }
     }
-    experimental {
-        web {
-            application {
-            }
-        }
-    }
 }
 
 afterEvaluate {

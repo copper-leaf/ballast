@@ -1,3 +1,17 @@
+## 4.2.2 - 2025-01-26
+
+- **Kotlin** updated to `2.1.0`.
+- **Compose** updated to `1.7.1`.
+- **Android Gradle Plugin** updated to `8.2.2`.
+- **kotlinx-coroutines-test** updated to `1.10.1`.
+- **kotlinx-serialization** updated to `1.8.0`.
+- **androidx-core** updated to `1.15.0`.
+- **androidx-fragment** updated to `1.8.5`.
+- **androidx-activityCompose** updated to `1.10.0`.
+- Added `kotlinComposeCompiler` dependency.
+- Added `org.jetbrains.kotlin.plugin.compose` plugin to `copper-leaf-compose.gradle.kts` and `copper-leaf-intellij.gradle.kts`.
+- Updated Gradle wrapper versions in `gradle-wrapper.properties`.
+
 ## 4.2.1 - 2024-05-17
 
 - Adds `BrowserHashNavigationInterceptor` and `BrowserHistoryNavigationInterceptor` to `wasmJs` target

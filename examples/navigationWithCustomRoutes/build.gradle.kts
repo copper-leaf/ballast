@@ -79,12 +79,6 @@ compose {
             mainClass = "com.copperleaf.ballast.examples.navigation.MainKt"
         }
     }
-    experimental {
-        web {
-            application {
-            }
-        }
-    }
 }
 
 afterEvaluate {
