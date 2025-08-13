@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.internal
 
+import com.copperleaf.ballast.BallastScopeFactory
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
@@ -10,6 +11,7 @@ import com.copperleaf.ballast.internal.actors.InputActor
 import com.copperleaf.ballast.internal.actors.InterceptorActor
 import com.copperleaf.ballast.internal.actors.SideJobActor
 import com.copperleaf.ballast.internal.actors.StateActor
+import com.copperleaf.ballast.internal.scopes.BallastScopeFactoryImpl
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ChannelResult
@@ -24,11 +26,12 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Internal properties
 // ---------------------------------------------------------------------------------------------------------------------
 
-    internal val inputActor = InputActor(this)
-    internal val eventActor = EventActor(this)
+    internal val scopeFactory: BallastScopeFactory<Inputs, Events, State> = BallastScopeFactoryImpl(this)
+    internal val inputActor = InputActor(this, scopeFactory)
+    internal val eventActor = EventActor(this, scopeFactory)
     internal val stateActor = StateActor(this)
-    internal val sideJobActor = SideJobActor(this)
-    internal val interceptorActor = InterceptorActor(this)
+    internal val sideJobActor = SideJobActor(this, scopeFactory)
+    internal val interceptorActor = InterceptorActor(this, scopeFactory)
 
     internal val coordinator = ActorCoordinator(this)
 

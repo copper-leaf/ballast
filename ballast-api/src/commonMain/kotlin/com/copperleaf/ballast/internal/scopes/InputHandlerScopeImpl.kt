@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.internal.scopes
 
 import com.copperleaf.ballast.BallastLogger
-import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.internal.actors.EventActor
@@ -16,7 +15,7 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val stateActor: StateActor<Inputs, Events, State>,
     private val eventActor: EventActor<Inputs, Events, State>,
     private val sideJobActor: SideJobActor<Inputs, Events, State>,
-) : InputHandlerScope<Inputs, Events, State> {
+) : InternalInputHandlerScope<Inputs, Events, State> {
 
     override suspend fun getCurrentState(): State {
         guardian.checkStateAccess()
@@ -60,7 +59,7 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         guardian.checkNoOp()
     }
 
-    internal fun close() {
+    override fun close() {
         guardian.close()
     }
 }

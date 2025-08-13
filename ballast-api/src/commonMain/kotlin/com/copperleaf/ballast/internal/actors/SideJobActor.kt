@@ -1,10 +1,10 @@
 package com.copperleaf.ballast.internal.actors
 
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.BallastScopeFactory
 import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.internal.Status
-import com.copperleaf.ballast.internal.scopes.SideJobScopeImpl
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -29,7 +29,8 @@ import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration
 
 internal class SideJobActor<Inputs : Any, Events : Any, State : Any>(
-    private val impl: BallastViewModelImpl<Inputs, Events, State>
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+    private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
     private val _sideJobsRequestQueue: Channel<SideJobRequest<Inputs, Events, State>> =
         Channel(BUFFERED, BufferOverflow.SUSPEND)
@@ -115,14 +116,8 @@ internal class SideJobActor<Inputs : Any, Events : Any, State : Any>(
             try {
                 // run the sideJob, which may never complete
                 coroutineScope {
-                    val sideJobScope = SideJobScopeImpl(
+                    val sideJobScope = scopeFactory.createSideJobScope(
                         sideJobCoroutineScope = this,
-                        logger = impl.logger,
-
-                        inputActor = impl.inputActor,
-                        eventActor = impl.eventActor,
-                        interceptorActor = impl.interceptorActor,
-
                         key = latestSideJobForKey.key,
                         restartState = latestSideJobForKey.restartState,
                     )

@@ -1,11 +1,10 @@
 package com.copperleaf.ballast.internal.actors
 
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.BallastScopeFactory
 import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.internal.Status
-import com.copperleaf.ballast.internal.scopes.EventHandlerScopeImpl
-import com.copperleaf.ballast.internal.scopes.EventStrategyScopeImpl
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -17,7 +16,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
 internal class EventActor<Inputs : Any, Events : Any, State : Any>(
-    private val impl: BallastViewModelImpl<Inputs, Events, State>
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+    private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
 
     internal fun attachEventHandler(
@@ -37,10 +37,8 @@ internal class EventActor<Inputs : Any, Events : Any, State : Any>(
                 impl.interceptorActor.notifyImmediate(BallastNotification.EventProcessingStopped(impl.type, impl.name))
             }
 
-            val eventStrategyScope = EventStrategyScopeImpl(
-                logger = impl.logger,
-                eventActor = impl.eventActor,
-                handler = handler,
+            val eventStrategyScope = scopeFactory.createEventStrategyScope(
+                eventHandler = handler,
             )
 
             with(impl.eventStrategy) {
@@ -65,15 +63,11 @@ internal class EventActor<Inputs : Any, Events : Any, State : Any>(
         impl.interceptorActor.notify(BallastNotification.EventEmitted(impl.type, impl.name, event))
         try {
             coroutineScope {
-                val handlerScope = EventHandlerScopeImpl(
-                    logger = impl.logger,
-                    inputActor = impl.inputActor,
-                    interceptorActor = impl.interceptorActor,
-                )
-                with(handler) {
-                    handlerScope.handleEvent(event)
+                scopeFactory.createEventHandlerScope().use { eventHandlerScope ->
+                    with(handler) {
+                        eventHandlerScope.handleEvent(event)
+                    }
                 }
-                handlerScope.ensureUsedCorrectly()
                 impl.interceptorActor.notify(BallastNotification.EventHandledSuccessfully(impl.type, impl.name, event))
             }
         } catch (e: CancellationException) {
