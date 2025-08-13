@@ -1,53 +1,19 @@
 package com.copperleaf.ballast.internal.actors
 
-import com.copperleaf.ballast.BallastNotification
-import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.getAndUpdate
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.flow.updateAndGet
 
-internal class StateActor<Inputs : Any, Events : Any, State : Any>(
-    private val impl: BallastViewModelImpl<Inputs, Events, State>
-) : BallastViewModelConfiguration<Inputs, Events, State> by impl {
-    private val viewModelState: MutableStateFlow<State> = MutableStateFlow(initialState)
+internal interface StateActor<Inputs : Any, Events : Any, State : Any> {
 
-    internal suspend fun getCurrentState(): State {
-        return viewModelState.value
-    }
+     suspend fun getCurrentState(): State
 
-    internal fun observeStates(): StateFlow<State> {
-        return viewModelState.asStateFlow()
-    }
+     fun observeStates(): StateFlow<State>
 
-    internal suspend fun safelySetState(state: State, deferred: CompletableDeferred<Unit>?) {
-        impl.coordinator.coordinatorState.value.checkStateChangeOpen()
-        viewModelState.value = state
-        impl.interceptorActor.notify(BallastNotification.StateChanged(impl.type, impl.name, getCurrentState()))
-        deferred?.complete(Unit)
-    }
+     suspend fun safelySetState(state: State, deferred: CompletableDeferred<Unit>?)
 
-    internal suspend fun safelyUpdateState(block: (State) -> State) {
-        impl.coordinator.coordinatorState.value.checkStateChangeOpen()
-        viewModelState.update(block)
-        impl.interceptorActor.notify(BallastNotification.StateChanged(impl.type, impl.name, getCurrentState()))
-    }
+     suspend fun safelyUpdateState(block: (State) -> State)
 
-    internal suspend fun safelyUpdateStateAndGet(block: (State) -> State): State {
-        impl.coordinator.coordinatorState.value.checkStateChangeOpen()
-        return viewModelState.updateAndGet(block).also {
-            impl.interceptorActor.notify(BallastNotification.StateChanged(impl.type, impl.name, getCurrentState()))
-        }
-    }
+     suspend fun safelyUpdateStateAndGet(block: (State) -> State): State
 
-    internal suspend fun safelyGetAndUpdateState(block: (State) -> State): State {
-        impl.coordinator.coordinatorState.value.checkStateChangeOpen()
-        return viewModelState.getAndUpdate(block).also {
-            impl.interceptorActor.notify(BallastNotification.StateChanged(impl.type, impl.name, getCurrentState()))
-        }
-    }
+     suspend fun safelyGetAndUpdateState(block: (State) -> State): State
 }

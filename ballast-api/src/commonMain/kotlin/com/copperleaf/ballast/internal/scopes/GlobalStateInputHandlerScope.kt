@@ -7,7 +7,7 @@ import com.copperleaf.ballast.internal.actors.EventActor
 import com.copperleaf.ballast.internal.actors.SideJobActor
 import com.copperleaf.ballast.internal.actors.StateActor
 
-internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
+internal class GlobalStateInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
     private val guardian: InputStrategy.Guardian,
 
     override val logger: BallastLogger,
@@ -59,7 +59,7 @@ internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         guardian.checkNoOp()
     }
 
-    override fun close() {
+    override fun markAsCompletedSuccessfully() {
         guardian.close()
     }
 }

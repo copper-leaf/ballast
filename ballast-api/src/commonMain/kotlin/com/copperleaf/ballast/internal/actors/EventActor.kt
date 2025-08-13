@@ -63,11 +63,12 @@ internal class EventActor<Inputs : Any, Events : Any, State : Any>(
         impl.interceptorActor.notify(BallastNotification.EventEmitted(impl.type, impl.name, event))
         try {
             coroutineScope {
-                scopeFactory.createEventHandlerScope().use { eventHandlerScope ->
-                    with(handler) {
-                        eventHandlerScope.handleEvent(event)
-                    }
+                val eventHandlerScope = scopeFactory.createEventHandlerScope()
+                with(handler) {
+                    eventHandlerScope.handleEvent(event)
                 }
+                eventHandlerScope.markAsCompletedSuccessfully()
+
                 impl.interceptorActor.notify(BallastNotification.EventHandledSuccessfully(impl.type, impl.name, event))
             }
         } catch (e: CancellationException) {

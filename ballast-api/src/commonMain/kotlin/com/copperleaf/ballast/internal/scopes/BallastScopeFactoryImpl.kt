@@ -6,6 +6,7 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventStrategyScope
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.InputStrategyScope
+import com.copperleaf.ballast.LocalStateInputStrategy
 import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import kotlinx.coroutines.CoroutineScope
@@ -47,16 +48,27 @@ internal class BallastScopeFactoryImpl<Inputs : Any, Events : Any, State : Any>(
         )
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun createInputHandlerScope(
         guardian: InputStrategy.Guardian,
     ): InternalInputHandlerScope<Inputs, Events, State> = with(impl) {
-        return InputHandlerScopeImpl(
-            guardian = guardian,
-            logger = logger,
-            stateActor = stateActor,
-            eventActor = eventActor,
-            sideJobActor = sideJobActor,
-        )
+        if(guardian is LocalStateInputStrategy.Guardian<*>) {
+            return LocalStateInputHandlerScope(
+                guardian = guardian as LocalStateInputStrategy.Guardian<State>,
+                logger = logger,
+                eventActor = eventActor,
+                sideJobActor = sideJobActor,
+            )
+        } else {
+            return GlobalStateInputHandlerScope(
+                guardian = guardian,
+                logger = logger,
+                stateActor = stateActor,
+                eventActor = eventActor,
+                sideJobActor = sideJobActor,
+            )
+        }
+
     }
 
     override fun createInputStrategyScope(

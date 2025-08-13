@@ -133,11 +133,11 @@ internal class InputActor<Inputs : Any, Events : Any, State : Any>(
         try {
             coroutineScope {
                 // Create a handler scope to handle the input normally
-                scopeFactory.createInputHandlerScope(guardian).use { inputHandlerScope ->
-                    with(impl.inputHandler) {
-                        inputHandlerScope.handleInput(input)
-                    }
+                val inputHandlerScope = scopeFactory.createInputHandlerScope(guardian)
+                with(impl.inputHandler) {
+                    inputHandlerScope.handleInput(input)
                 }
+                inputHandlerScope.markAsCompletedSuccessfully()
 
                 try {
                     impl.interceptorActor.notify(

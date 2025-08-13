@@ -21,7 +21,7 @@ internal class EventHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
         return interceptorActor.getInterceptor(key)
     }
 
-    override fun close() {
+    override fun markAsCompletedSuccessfully() {
         // no-op
     }
 }
