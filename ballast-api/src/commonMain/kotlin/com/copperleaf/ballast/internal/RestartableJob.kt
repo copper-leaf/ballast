@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 
-public interface RestartableJob<T> : Job {
+public interface RestartableJob<T> {
+    public val job: Job
     public fun restart(context: T)
 }
 
@@ -18,7 +19,8 @@ public fun <T> CoroutineScope.restartableJob(
     val job = launch {
         channel.consumeAsFlow().collectLatest { block(it) }
     }
-    return object : RestartableJob<T>, Job by job {
+    return object : RestartableJob<T> {
+        override val job: Job = job
         override fun restart(context: T) {
             channel.trySend(context)
         }
