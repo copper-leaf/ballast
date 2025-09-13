@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.scheduler.vm
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 public data class ScheduleState(
     val key: String,

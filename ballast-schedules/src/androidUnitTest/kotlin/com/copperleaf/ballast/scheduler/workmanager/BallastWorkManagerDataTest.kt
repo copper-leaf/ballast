@@ -63,7 +63,9 @@ class BallastWorkManagerDataTest {
         // (expectedNextTrigger - now)
     }
 
-    class TestAdapter(private val timeZone: TimeZone) : SchedulerAdapter<Unit, Unit, Unit> {
+    class TestAdapter(
+        private val timeZone: TimeZone,
+    ) : SchedulerAdapter<Unit, Unit, Unit> {
         override suspend fun SchedulerAdapterScope<Unit, Unit, Unit>.configureSchedules() {
             onSchedule(
                 key = "Daily at 9am",

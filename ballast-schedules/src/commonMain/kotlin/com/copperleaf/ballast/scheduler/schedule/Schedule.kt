@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * An interface for generating a non-persistent schedule of tasks.

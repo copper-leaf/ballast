@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalWasmJsInterop::class)
+
 /**
  * Taken from https://touchlab.co/wasm-in-kermit
  */

@@ -1,11 +1,12 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.sequences.take
+import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 // Basic schedule transformation functions
 // ---------------------------------------------------------------------------------------------------------------------

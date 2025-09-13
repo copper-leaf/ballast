@@ -9,6 +9,10 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        optIn.add("kotlin.time.ExperimentalTime")
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -28,7 +32,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.work:work-runtime-ktx:2.8.1")
+                api("androidx.work:work-runtime-ktx:2.10.4")
             }
         }
         val jsMain by getting {

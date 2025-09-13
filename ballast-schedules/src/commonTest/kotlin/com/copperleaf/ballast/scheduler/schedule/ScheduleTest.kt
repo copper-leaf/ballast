@@ -1,9 +1,7 @@
 package com.copperleaf.ballast.scheduler.schedule
 
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
@@ -15,8 +13,10 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 
 class ScheduleTest {
     val timeZone = TimeZone.UTC
@@ -158,12 +158,16 @@ class ScheduleTest {
     @Test
     fun oneFixedInstant() = runTest {
         val clock = object : Clock {
-            val instantSequence = mutableListOf(
+            private val instantSequence = mutableListOf(
                 startInstant
             )
 
             override fun now(): Instant {
-                return runCatching { instantSequence.removeFirst() }
+                return runCatching {
+                    val next = instantSequence.first()
+                    instantSequence.removeAt(0)
+                    next
+                }
                     .getOrElse { Instant.DISTANT_FUTURE }
             }
         }
@@ -263,14 +267,18 @@ class ScheduleTest {
     @Test
     fun multipleFixedInstants() = runTest {
         val clock = object : Clock {
-            val instantSequence = mutableListOf(
+            private val instantSequence = mutableListOf(
                 startDay.atTime(2, 44, 0).toInstant(timeZone),
                 startDay.atTime(3, 44, 0).toInstant(timeZone),
                 startDay.atTime(3, 55, 44).toInstant(timeZone),
             )
 
             override fun now(): Instant {
-                return runCatching { instantSequence.removeFirst() }
+                return runCatching {
+                    val next = instantSequence.first()
+                    instantSequence.removeAt(0)
+                    next
+                }
                     .getOrElse { Instant.DISTANT_FUTURE }
             }
         }

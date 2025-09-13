@@ -2,7 +2,7 @@ public abstract interface annotation class com/copperleaf/ballast/BallastDsl : j
 }
 
 public abstract interface class com/copperleaf/ballast/BallastInterceptor {
-	public abstract fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
+	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public abstract fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
 }
 
@@ -23,9 +23,9 @@ public abstract interface class com/copperleaf/ballast/BallastInterceptorScope :
 }
 
 public abstract interface class com/copperleaf/ballast/BallastLogger {
-	public abstract fun debug (Ljava/lang/String;)V
-	public abstract fun error (Ljava/lang/Throwable;)V
-	public abstract fun info (Ljava/lang/String;)V
+	public fun debug (Ljava/lang/String;)V
+	public fun error (Ljava/lang/Throwable;)V
+	public fun info (Ljava/lang/String;)V
 }
 
 public final class com/copperleaf/ballast/BallastLogger$DefaultImpls {
@@ -358,12 +358,12 @@ public abstract interface class com/copperleaf/ballast/InputStrategy {
 }
 
 public abstract interface class com/copperleaf/ballast/InputStrategy$Guardian {
-	public abstract fun checkNoOp ()V
-	public abstract fun checkPostEvent ()V
-	public abstract fun checkSideJob ()V
-	public abstract fun checkStateAccess ()V
-	public abstract fun checkStateUpdate ()V
-	public abstract fun close ()V
+	public fun checkNoOp ()V
+	public fun checkPostEvent ()V
+	public fun checkSideJob ()V
+	public fun checkStateAccess ()V
+	public fun checkStateUpdate ()V
+	public fun close ()V
 }
 
 public final class com/copperleaf/ballast/InputStrategy$Guardian$DefaultImpls {

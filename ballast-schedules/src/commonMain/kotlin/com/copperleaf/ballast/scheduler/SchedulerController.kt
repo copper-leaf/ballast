@@ -10,7 +10,7 @@ import com.copperleaf.ballast.scheduler.vm.SchedulerContract
 import com.copperleaf.ballast.scheduler.vm.SchedulerFifoInputStrategy
 import com.copperleaf.ballast.scheduler.vm.SchedulerInputHandler
 import com.copperleaf.ballast.withViewModel
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 public typealias SchedulerController<I, E, S> = BallastViewModel<
         SchedulerContract.Inputs<I, E, S>,

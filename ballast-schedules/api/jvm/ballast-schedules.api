@@ -4,6 +4,7 @@ public abstract interface class com/copperleaf/ballast/scheduler/SchedulerAdapte
 
 public abstract interface class com/copperleaf/ballast/scheduler/SchedulerAdapterScope {
 	public abstract fun onSchedule (Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lcom/copperleaf/ballast/scheduler/executor/ScheduleExecutor$DelayMode;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun onSchedule$default (Lcom/copperleaf/ballast/scheduler/SchedulerAdapterScope;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lcom/copperleaf/ballast/scheduler/executor/ScheduleExecutor$DelayMode;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 }
 
 public final class com/copperleaf/ballast/scheduler/SchedulerAdapterScope$DefaultImpls {
@@ -12,8 +13,8 @@ public final class com/copperleaf/ballast/scheduler/SchedulerAdapterScope$Defaul
 
 public final class com/copperleaf/ballast/scheduler/SchedulerControllerKt {
 	public static final fun scheduler (Lcom/copperleaf/ballast/SideJobScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static final fun withSchedulerController (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlinx/datetime/Clock;Lcom/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
-	public static synthetic fun withSchedulerController$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlinx/datetime/Clock;Lcom/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static final fun withSchedulerController (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/time/Clock;Lcom/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static synthetic fun withSchedulerController$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/time/Clock;Lcom/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 }
 
 public final class com/copperleaf/ballast/scheduler/SchedulerInterceptor : com/copperleaf/ballast/BallastInterceptor {
@@ -32,13 +33,14 @@ public final class com/copperleaf/ballast/scheduler/SchedulerInterceptor$Key : c
 
 public final class com/copperleaf/ballast/scheduler/executor/CoroutineClockScheduleExecutor : com/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor {
 	public fun <init> ()V
-	public fun <init> (Lkotlinx/datetime/Clock;)V
-	public synthetic fun <init> (Lkotlinx/datetime/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlin/time/Clock;)V
+	public synthetic fun <init> (Lkotlin/time/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun runSchedule (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lcom/copperleaf/ballast/scheduler/executor/ScheduleExecutor$DelayMode;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor : com/copperleaf/ballast/scheduler/executor/ScheduleExecutor {
 	public abstract fun runSchedule (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lcom/copperleaf/ballast/scheduler/executor/ScheduleExecutor$DelayMode;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun runSchedule$default (Lcom/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor;Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lcom/copperleaf/ballast/scheduler/executor/ScheduleExecutor$DelayMode;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/scheduler/executor/CoroutineScheduleExecutor$DefaultImpls {
@@ -62,7 +64,7 @@ public final class com/copperleaf/ballast/scheduler/executor/ScheduleExecutor$De
 public final class com/copperleaf/ballast/scheduler/schedule/EveryDaySchedule : com/copperleaf/ballast/scheduler/schedule/Schedule {
 	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/EveryDaySchedule$Companion;
 	public synthetic fun <init> (Ljava/util/List;Lkotlinx/datetime/TimeZone;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun generateSchedule (Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
+	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/EveryDaySchedule$Companion {
@@ -73,7 +75,7 @@ public final class com/copperleaf/ballast/scheduler/schedule/EveryDaySchedule$Co
 public final class com/copperleaf/ballast/scheduler/schedule/EveryHourSchedule : com/copperleaf/ballast/scheduler/schedule/Schedule {
 	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/EveryHourSchedule$Companion;
 	public synthetic fun <init> (Ljava/util/List;Lkotlinx/datetime/TimeZone;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun generateSchedule (Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
+	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/EveryHourSchedule$Companion {
@@ -84,7 +86,7 @@ public final class com/copperleaf/ballast/scheduler/schedule/EveryHourSchedule$C
 public final class com/copperleaf/ballast/scheduler/schedule/EveryMinuteSchedule : com/copperleaf/ballast/scheduler/schedule/Schedule {
 	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/EveryMinuteSchedule$Companion;
 	public synthetic fun <init> (Ljava/util/List;Lkotlinx/datetime/TimeZone;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun generateSchedule (Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
+	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/EveryMinuteSchedule$Companion {
@@ -95,7 +97,7 @@ public final class com/copperleaf/ballast/scheduler/schedule/EveryMinuteSchedule
 public final class com/copperleaf/ballast/scheduler/schedule/EverySecondSchedule : com/copperleaf/ballast/scheduler/schedule/Schedule {
 	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/EverySecondSchedule$Companion;
 	public synthetic fun <init> (Lkotlinx/datetime/TimeZone;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun generateSchedule (Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
+	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/EverySecondSchedule$Companion {
@@ -106,7 +108,7 @@ public final class com/copperleaf/ballast/scheduler/schedule/EverySecondSchedule
 public final class com/copperleaf/ballast/scheduler/schedule/FixedDelaySchedule : com/copperleaf/ballast/scheduler/schedule/Schedule {
 	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/FixedDelaySchedule$Companion;
 	public synthetic fun <init> (JLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun generateSchedule (Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
+	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/FixedDelaySchedule$Companion {
@@ -115,38 +117,38 @@ public final class com/copperleaf/ballast/scheduler/schedule/FixedDelaySchedule$
 
 public final class com/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule : com/copperleaf/ballast/scheduler/schedule/Schedule {
 	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule$Companion;
-	public synthetic fun <init> (Ljava/util/List;Lkotlinx/datetime/Clock;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun generateSchedule (Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
+	public synthetic fun <init> (Ljava/util/List;Lkotlin/time/Clock;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule$Companion {
-	public final fun invoke (Ljava/util/List;Lkotlinx/datetime/Clock;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
-	public final fun invoke ([Lkotlinx/datetime/Instant;Lkotlinx/datetime/Clock;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
-	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule$Companion;Ljava/util/List;Lkotlinx/datetime/Clock;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
-	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule$Companion;[Lkotlinx/datetime/Instant;Lkotlinx/datetime/Clock;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
+	public final fun invoke (Ljava/util/List;Lkotlin/time/Clock;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
+	public final fun invoke ([Lkotlin/time/Instant;Lkotlin/time/Clock;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
+	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule$Companion;Ljava/util/List;Lkotlin/time/Clock;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
+	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule$Companion;[Lkotlin/time/Instant;Lkotlin/time/Clock;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/FixedInstantSchedule;
 }
 
 public abstract interface class com/copperleaf/ballast/scheduler/schedule/Schedule {
-	public abstract fun generateSchedule (Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
+	public abstract fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/ScheduleUtilsKt {
-	public static final fun adaptive (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Clock;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
-	public static synthetic fun adaptive$default (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Clock;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
+	public static final fun adaptive (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Clock;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
+	public static synthetic fun adaptive$default (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Clock;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
 	public static final fun bounded (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/ranges/ClosedRange;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
 	public static final fun delayed-HG0u8IE (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;J)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
-	public static final fun delayedUntil (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Instant;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
-	public static final fun dropHistory (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Instant;Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
-	public static final fun filterByDayOfWeek (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;[Ljava/time/DayOfWeek;Lkotlinx/datetime/TimeZone;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
-	public static synthetic fun filterByDayOfWeek$default (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;[Ljava/time/DayOfWeek;Lkotlinx/datetime/TimeZone;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
-	public static final fun getHistory (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Instant;Lkotlinx/datetime/Instant;)Lkotlin/sequences/Sequence;
-	public static final fun getNext (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Clock;)Lkotlinx/datetime/Instant;
-	public static final fun getNext (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Instant;)Lkotlinx/datetime/Instant;
-	public static synthetic fun getNext$default (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Clock;ILjava/lang/Object;)Lkotlinx/datetime/Instant;
+	public static final fun delayedUntil (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Instant;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
+	public static final fun dropHistory (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Instant;Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
+	public static final fun filterByDayOfWeek (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;[Lkotlinx/datetime/DayOfWeek;Lkotlinx/datetime/TimeZone;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
+	public static synthetic fun filterByDayOfWeek$default (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;[Lkotlinx/datetime/DayOfWeek;Lkotlinx/datetime/TimeZone;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
+	public static final fun getHistory (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Instant;Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
+	public static final fun getNext (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Clock;)Lkotlin/time/Instant;
+	public static final fun getNext (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Instant;)Lkotlin/time/Instant;
+	public static synthetic fun getNext$default (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Clock;ILjava/lang/Object;)Lkotlin/time/Instant;
 	public static final fun take (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;I)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
 	public static final fun transformSchedule (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
 	public static final fun transformScheduleStart (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
-	public static final fun until (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/Instant;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
+	public static final fun until (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlin/time/Instant;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
 	public static final fun weekdays (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/TimeZone;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
 	public static synthetic fun weekdays$default (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/TimeZone;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
 	public static final fun weekends (Lcom/copperleaf/ballast/scheduler/schedule/Schedule;Lkotlinx/datetime/TimeZone;)Lcom/copperleaf/ballast/scheduler/schedule/Schedule;
@@ -154,27 +156,27 @@ public final class com/copperleaf/ballast/scheduler/schedule/ScheduleUtilsKt {
 }
 
 public final class com/copperleaf/ballast/scheduler/vm/ScheduleState {
-	public fun <init> (Ljava/lang/String;Lkotlinx/datetime/Instant;ZLkotlinx/datetime/Instant;Lkotlinx/datetime/Instant;III)V
-	public synthetic fun <init> (Ljava/lang/String;Lkotlinx/datetime/Instant;ZLkotlinx/datetime/Instant;Lkotlinx/datetime/Instant;IIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;III)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;IIIILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
-	public final fun component2 ()Lkotlinx/datetime/Instant;
+	public final fun component2 ()Lkotlin/time/Instant;
 	public final fun component3 ()Z
-	public final fun component4 ()Lkotlinx/datetime/Instant;
-	public final fun component5 ()Lkotlinx/datetime/Instant;
+	public final fun component4 ()Lkotlin/time/Instant;
+	public final fun component5 ()Lkotlin/time/Instant;
 	public final fun component6 ()I
 	public final fun component7 ()I
 	public final fun component8 ()I
-	public final fun copy (Ljava/lang/String;Lkotlinx/datetime/Instant;ZLkotlinx/datetime/Instant;Lkotlinx/datetime/Instant;III)Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;Ljava/lang/String;Lkotlinx/datetime/Instant;ZLkotlinx/datetime/Instant;Lkotlinx/datetime/Instant;IIIILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;
+	public final fun copy (Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;III)Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;IIIILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getFirstUpdateAt ()Lkotlinx/datetime/Instant;
+	public final fun getFirstUpdateAt ()Lkotlin/time/Instant;
 	public final fun getKey ()Ljava/lang/String;
-	public final fun getLatestUpdateAt ()Lkotlinx/datetime/Instant;
+	public final fun getLatestUpdateAt ()Lkotlin/time/Instant;
 	public final fun getNumberOfDispatchedInputs ()I
 	public final fun getNumberOfDroppedInputs ()I
 	public final fun getNumberOfFailedInputs ()I
 	public final fun getPaused ()Z
-	public final fun getStartedAt ()Lkotlinx/datetime/Instant;
+	public final fun getStartedAt ()Lkotlin/time/Instant;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

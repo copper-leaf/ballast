@@ -45,6 +45,7 @@ kotlin {
                 implementation(libs.multiplatformSettings.core)
                 implementation(libs.multiplatformSettings.noArg)
                 implementation(libs.coil)
+                implementation(libs.coil.ktor3)
             }
         }
     }

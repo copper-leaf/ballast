@@ -11,8 +11,8 @@ public abstract interface class com/copperleaf/ballast/test/BallastIsolatedScena
 public abstract interface class com/copperleaf/ballast/test/BallastScenarioInputSequenceScope {
 	public abstract fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun sendAndAwait (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun unaryMinus (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun unaryPlus (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun unaryMinus (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun unaryPlus (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/test/BallastScenarioInputSequenceScope$DefaultImpls {
@@ -40,6 +40,7 @@ public abstract interface class com/copperleaf/ballast/test/BallastTestSuiteScop
 	public abstract fun defaultInputStrategy (Lkotlin/jvm/functions/Function0;)V
 	public abstract fun defaultTimeout (Lkotlin/jvm/functions/Function0;)V
 	public abstract fun isolatedScenario (Ljava/lang/Object;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun isolatedScenario$default (Lcom/copperleaf/ballast/test/BallastTestSuiteScope;Ljava/lang/Object;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 	public abstract fun logger (Lkotlin/jvm/functions/Function1;)V
 	public abstract fun scenario (Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
 	public abstract fun skip ()V

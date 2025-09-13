@@ -20,7 +20,6 @@ kotlin {
 
                 implementation(libs.bundles.ktorClient)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.benasher44.uuid)
             }
         }
         val jvmMain by getting {

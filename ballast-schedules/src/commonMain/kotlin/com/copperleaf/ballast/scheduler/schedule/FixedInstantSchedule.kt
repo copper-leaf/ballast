@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * A schedule which sends a specific sequence of [instants], rather than computing them. At each emission, the nearest

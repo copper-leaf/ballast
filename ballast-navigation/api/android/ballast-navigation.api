@@ -6,6 +6,7 @@ public final class com/copperleaf/ballast/navigation/BundleHelpersKt {
 public abstract interface class com/copperleaf/ballast/navigation/routing/BackstackNavigator {
 	public abstract fun getBackstack ()Ljava/util/List;
 	public abstract fun matchDestination (Ljava/lang/String;Ljava/util/Set;)Lcom/copperleaf/ballast/navigation/routing/Destination;
+	public static synthetic fun matchDestination$default (Lcom/copperleaf/ballast/navigation/routing/BackstackNavigator;Ljava/lang/String;Ljava/util/Set;ILjava/lang/Object;)Lcom/copperleaf/ballast/navigation/routing/Destination;
 	public abstract fun updateBackstack (Lkotlin/jvm/functions/Function1;)V
 }
 

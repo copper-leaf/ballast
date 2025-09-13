@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.debugger
 
-import com.benasher44.uuid.uuid4
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
@@ -54,6 +53,8 @@ import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     engineFactory: HttpClientEngineFactory<T>,
@@ -65,8 +66,9 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     block: HttpClientConfig<T>.() -> Unit = {}
 ) {
     public companion object {
+        @OptIn(ExperimentalUuidApi::class)
         private fun generateUuid(): String {
-            return uuid4().toString()
+            return Uuid.random().toString()
         }
     }
 

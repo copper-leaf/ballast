@@ -1,11 +1,11 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 
 public class EveryMinuteSchedule private constructor(
     private val secondsOfMinute: List<Int>,
@@ -45,7 +45,7 @@ public class EveryMinuteSchedule private constructor(
         return LocalDateTime(
             year = this.year,
             month = this.month,
-            dayOfMonth = this.dayOfMonth,
+            day = this.day,
             hour = this.hour,
             minute = this.minute,
             second = second,

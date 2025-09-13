@@ -12,13 +12,16 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        optIn.add("kotlin.time.ExperimentalTime")
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-api"))
                 implementation(libs.bundles.ktorClient)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.benasher44.uuid)
             }
         }
         val jvmMain by getting {
