@@ -17,6 +17,11 @@ public interface BallastScenarioInputSequenceScope<Inputs : Any, Events : Any, S
     public suspend fun send(input: Inputs)
 
     /**
+     * Send an event to the ViewModel for processing.
+     */
+    public suspend fun postEvent(event: Events)
+
+    /**
      * An alias for [BallastScenarioInputSequenceScope.sendAndAwait].
      */
     public suspend operator fun Inputs.unaryPlus() {
