@@ -17,8 +17,6 @@ import kotlinx.coroutines.supervisorScope
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) {
@@ -26,8 +24,6 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
 //    runTestSuiteInSeries(testSuite)
 }
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInParallel(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) = supervisorScope {
@@ -62,8 +58,6 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInPar
     testSuite.suiteLogger("").info("All scenarios completed in $totalTestTime")
 }
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInSeries(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) = supervisorScope {
@@ -95,8 +89,6 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInSer
 }
 
 @OptIn(ExperimentalStdlibApi::class)
-@ExperimentalTime
-@ExperimentalCoroutinesApi
 private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
     scenario: BallastScenarioScopeImpl<Inputs, Events, State>

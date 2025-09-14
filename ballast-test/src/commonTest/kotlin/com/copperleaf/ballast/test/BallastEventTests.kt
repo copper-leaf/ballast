@@ -4,10 +4,9 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventHandlerScope
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 private object EventTestContract {
     data class State(val something: Int = 0)
@@ -39,11 +38,10 @@ private object EventTestContract {
 
 private const val TEST_CONSTANT = 1337
 
-@OptIn(ExperimentalTime::class, ExperimentalCoroutinesApi::class)
-class BallastEventTests : StringSpec({
-    coroutineTestScope = true
+class BallastEventTests {
 
-    "confirm event processing" {
+    @Test
+    fun confirmEventProcessing() = runTest {
         viewModelTest(
             inputHandler = EventTestContract.Reducer(),
             eventHandler = EventTestContract.EventProcessor()
@@ -56,11 +54,11 @@ class BallastEventTests : StringSpec({
                 }
 
                 resultsIn {
-                    states.size shouldBe 2
-                    states.first().something shouldBe 0
-                    latestState.something shouldBe TEST_CONSTANT
+                    assertEquals(2, states.size)
+                    assertEquals(0, states.first().something)
+                    assertEquals(TEST_CONSTANT, latestState.something)
                 }
             }
         }
     }
-})
+}
