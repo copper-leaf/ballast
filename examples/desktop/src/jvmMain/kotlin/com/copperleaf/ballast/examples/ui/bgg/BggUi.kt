@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.examples.ui.bgg
 
-import androidx.compose.foundation.ScrollbarAdapter
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.CircularProgressIndicator
@@ -141,7 +141,7 @@ object BggUi {
                         )
                     }
                 }
-                VerticalScrollbar(ScrollbarAdapter(scrollState), Modifier.align(Alignment.CenterEnd))
+                VerticalScrollbar(rememberScrollbarAdapter(scrollState), Modifier.align(Alignment.CenterEnd))
 
                 if (uiState.bggHotList !is Cached.NotLoaded && uiState.bggHotList.isLoading()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

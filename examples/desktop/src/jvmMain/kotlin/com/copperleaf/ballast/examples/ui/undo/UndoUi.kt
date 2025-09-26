@@ -13,9 +13,9 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Redo
+import androidx.compose.material.icons.automirrored.filled.Redo
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.SaveAlt
-import androidx.compose.material.icons.filled.Undo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -78,14 +78,14 @@ object UndoUi {
                         onClick = { postInput(UndoContract.Inputs.Undo) },
                         enabled = isUndoEnabled,
                     ) {
-                        Icon(Icons.Default.Undo, "Undo")
+                        Icon(Icons.AutoMirrored.Filled.Undo, "Undo")
                         Text("Undo")
                     }
                     Button(
                         onClick = { postInput(UndoContract.Inputs.Redo) },
                         enabled = isRedoEnabled,
                     ) {
-                        Icon(Icons.Default.Redo, "Redo")
+                        Icon(Icons.AutoMirrored.Filled.Redo, "Redo")
                         Text("Redo")
                     }
                 }

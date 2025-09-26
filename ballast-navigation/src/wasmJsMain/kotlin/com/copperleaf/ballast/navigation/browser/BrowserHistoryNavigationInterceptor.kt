@@ -35,6 +35,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         }
     }
 
+    @OptIn(ExperimentalWasmJsInterop::class)
     override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow {
             window.onpopstate = { event: PopStateEvent ->
@@ -50,6 +51,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         }
     }
 
+    @OptIn(ExperimentalWasmJsInterop::class)
     override fun setDestinationUrl(url: Uri) {
         try {
             val previousDestination = getInitialUrl()

@@ -3,10 +3,10 @@ package com.copperleaf.ballast.examples.ui.bgg
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.request.Disposable
-import com.copperleaf.ballast.examples.api.models.BggHotListItem
+import coil3.load
+import coil3.request.Disposable
 import com.copperleaf.android.databinding.ListItemBggBinding
+import com.copperleaf.ballast.examples.api.models.BggHotListItem
 
 class BggAdapter(
     private val items: List<BggHotListItem>

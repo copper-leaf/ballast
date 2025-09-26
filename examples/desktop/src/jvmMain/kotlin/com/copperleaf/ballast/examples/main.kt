@@ -17,8 +17,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -73,13 +73,13 @@ fun main() = singleWindowApplication(title = "Ballast Examples") {
                             onClick = { routerUndoController.undo() },
                             enabled = isUndoAvailable,
                         ) {
-                            Icon(Icons.Default.ArrowBack, "Navigate Back")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Navigate Back")
                         }
                         IconButton(
                             onClick = { routerUndoController.redo() },
                             enabled = isRedoAvailable,
                         ) {
-                            Icon(Icons.Default.ArrowForward, "Navigate Forward")
+                            Icon(Icons.AutoMirrored.Filled.ArrowForward, "Navigate Forward")
                         }
                     }
 

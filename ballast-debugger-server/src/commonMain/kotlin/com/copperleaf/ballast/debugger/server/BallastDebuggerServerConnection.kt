@@ -11,11 +11,10 @@ import com.copperleaf.ballast.debugger.versions.ClientVersion
 import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
 import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
 import io.github.copper_leaf.ballast_debugger_server.BALLAST_VERSION
-import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get

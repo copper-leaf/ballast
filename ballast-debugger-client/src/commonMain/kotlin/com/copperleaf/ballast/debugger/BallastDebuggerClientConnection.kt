@@ -53,7 +53,6 @@ import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.ZERO
 import kotlin.time.Duration.Companion.seconds
-import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
@@ -66,7 +65,6 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
     block: HttpClientConfig<T>.() -> Unit = {}
 ) {
     public companion object {
-        @OptIn(ExperimentalUuidApi::class)
         private fun generateUuid(): String {
             return Uuid.random().toString()
         }

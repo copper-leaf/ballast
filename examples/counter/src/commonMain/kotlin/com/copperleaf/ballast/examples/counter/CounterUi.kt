@@ -5,10 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -59,7 +57,7 @@ object CounterUi {
                 FloatingActionButton(
                     onClick = { postInput(CounterContract.Inputs.Decrement(1)) }
                 ) {
-                    Icon(Icons.Default.Remove, "Decrement")
+                    Text("Decrement")
                 }
 
                 Text(
@@ -70,7 +68,7 @@ object CounterUi {
                 FloatingActionButton(
                     onClick = { postInput(CounterContract.Inputs.Increment(1)) }
                 ) {
-                    Icon(Icons.Default.Add, "Increment")
+                    Text("Increment")
                 }
             }
             SnackbarHost(

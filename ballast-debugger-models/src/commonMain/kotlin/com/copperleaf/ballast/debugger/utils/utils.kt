@@ -23,6 +23,7 @@ public operator fun LocalDateTime.minus(other: LocalDateTime): Duration {
     return this.toInstant(TimeZone.currentSystemDefault()) - other.toInstant(TimeZone.currentSystemDefault())
 }
 
+@Suppress("REDUNDANT_ELSE_IN_WHEN")
 public fun Duration.removeFraction(minUnit: DurationUnit): Duration {
     return when(minUnit) {
         DurationUnit.NANOSECONDS -> this.inWholeNanoseconds.nanoseconds

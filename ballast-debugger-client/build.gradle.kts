@@ -12,6 +12,10 @@ plugins {
 }
 
 kotlin {
+    compilerOptions {
+        optIn.add("kotlin.uuid.ExperimentalUuidApi")
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -40,3 +44,19 @@ kotlin {
 buildConfig {
     projectVersion(project, "BALLAST_VERSION")
 }
+
+
+//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+//    compilerOptions {
+////        jvmTarget.set(ConventionConfig.repoInfo(project).javaVersion)
+////        freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
+////        freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+////        freeCompilerArgs.add("-opt-in=androidx.compose.foundation.ExperimentalFoundationApi")
+////        freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalAnimationApi")
+////        freeCompilerArgs.add("-opt-in=androidx.compose.ui.ExperimentalComposeUiApi")
+////        freeCompilerArgs.add("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
+////        freeCompilerArgs.add("-opt-in=org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi")
+////        freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
+//        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
+//    }
+//}
