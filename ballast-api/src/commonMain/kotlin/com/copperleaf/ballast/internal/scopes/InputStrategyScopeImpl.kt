@@ -26,7 +26,7 @@ import kotlinx.coroutines.CoroutineScope
  * @see [FifoInputStrategy]
  * @see [ParallelInputStrategy]
  */
-internal class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
+public class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
     inputStrategyCoroutineScope: CoroutineScope,
 
     override val logger: BallastLogger,

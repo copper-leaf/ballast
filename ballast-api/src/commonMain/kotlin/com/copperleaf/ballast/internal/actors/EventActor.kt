@@ -15,7 +15,7 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-internal class EventActor<Inputs : Any, Events : Any, State : Any>(
+public class EventActor<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
@@ -47,7 +47,7 @@ internal class EventActor<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    internal suspend fun enqueueEvent(event: Events, deferred: CompletableDeferred<Unit>?, await: Boolean) {
+    public suspend fun enqueueEvent(event: Events, deferred: CompletableDeferred<Unit>?, await: Boolean) {
         impl.coordinator.coordinatorState.value.checkEventsOpen()
         impl.interceptorActor.notify(BallastNotification.EventQueued(impl.type, impl.name, event))
         impl.eventStrategy.enqueue(event)

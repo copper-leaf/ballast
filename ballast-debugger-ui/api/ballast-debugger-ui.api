@@ -60,39 +60,39 @@ public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/Deb
 public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$DebuggerPrimaryToolbarKt {
 	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$DebuggerPrimaryToolbarKt;
 	public fun <init> ()V
-	public final fun getLambda-1$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1448715380$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$InputsKt {
 	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$InputsKt;
 	public fun <init> ()V
-	public final fun getLambda-1$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$187604528$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1886747320$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2031952071$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$763170027$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$830107751$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
 }
 
 public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$SpecialRouterToolbarKt {
 	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$SpecialRouterToolbarKt;
 	public fun <init> ()V
-	public final fun getLambda-1$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-502165555$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$StatesKt {
 	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$StatesKt;
 	public fun <init> ()V
-	public final fun getLambda-1$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-2$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
-	public final fun getLambda-3$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-4$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-5$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1222497099$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1289434823$ballast_debugger_ui ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-165857530$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1865000322$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-20652779$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$UtilsKt {
 	public static final field INSTANCE Lcom/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/ComposableSingletons$UtilsKt;
 	public fun <init> ()V
-	public final fun getLambda-1$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1945700988$ballast_debugger_ui ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/debugger/idea/features/debugger/ui/widgets/UtilsKt {

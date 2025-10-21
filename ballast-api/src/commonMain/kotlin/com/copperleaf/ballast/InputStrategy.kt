@@ -3,6 +3,8 @@ package com.copperleaf.ballast
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.ParallelInputStrategy
+import com.copperleaf.ballast.internal.BallastViewModelImpl
+import com.copperleaf.ballast.internal.scopes.DefaultBallastScopeFactory
 import kotlinx.coroutines.channels.ChannelResult
 
 /**
@@ -53,6 +55,10 @@ public interface InputStrategy<Inputs : Any, Events : Any, State : Any> {
      * Suspend until everything in the queue has been fully processed.
      */
     public suspend fun flush()
+
+    public fun getScopeFactory(impl: BallastViewModelImpl<Inputs, Events, State>): BallastScopeFactory<Inputs, Events, State> {
+        return DefaultBallastScopeFactory(impl)
+    }
 
     /**
      * A Guardian protects the integrity of the ViewModel state against potential problems, especially with race

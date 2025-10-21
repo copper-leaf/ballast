@@ -1,0 +1,119 @@
+public abstract interface class com/copperleaf/ballast/examples/navigation/AppScreen {
+	public abstract fun Content (Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/navigation/AppScreenGeneratedKt {
+	public static final fun getRoute (Lcom/copperleaf/ballast/examples/navigation/Home;)Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+	public static final fun getRoute (Lcom/copperleaf/ballast/examples/navigation/PostDetails$Companion;)Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+	public static final fun getRoute (Lcom/copperleaf/ballast/examples/navigation/PostList$Companion;)Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+	public static final fun match (Lcom/copperleaf/ballast/examples/navigation/Home;Lcom/copperleaf/ballast/navigation/routing/Destination$Match;)Lcom/copperleaf/ballast/examples/navigation/Home;
+	public static final fun match (Lcom/copperleaf/ballast/examples/navigation/PostDetails$Companion;Lcom/copperleaf/ballast/navigation/routing/Destination$Match;)Lcom/copperleaf/ballast/examples/navigation/PostDetails;
+	public static final fun match (Lcom/copperleaf/ballast/examples/navigation/PostList$Companion;Lcom/copperleaf/ballast/navigation/routing/Destination$Match;)Lcom/copperleaf/ballast/examples/navigation/PostList;
+	public static final fun matchRoute (Lcom/copperleaf/ballast/navigation/routing/Destination$Match;Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;)Ljava/lang/Object;
+	public static final fun navigate (Lcom/copperleaf/ballast/examples/navigation/Home;)Ljava/lang/String;
+	public static final fun navigate (Lcom/copperleaf/ballast/examples/navigation/PostDetails$Companion;I)Ljava/lang/String;
+	public static final fun navigate (Lcom/copperleaf/ballast/examples/navigation/PostList$Companion;Ljava/lang/String;)Ljava/lang/String;
+	public static final fun withAppScreenRouter (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function0;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static synthetic fun withAppScreenRouter$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+}
+
+public final class com/copperleaf/ballast/examples/navigation/AppScreenRoute : java/lang/Enum, com/copperleaf/ballast/navigation/routing/Route {
+	public static final field Home Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+	public static final field PostDetails Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+	public static final field PostList Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+	public fun getAnnotations ()Ljava/util/Set;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public fun getMatcher ()Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+	public static fun values ()[Lcom/copperleaf/ballast/examples/navigation/AppScreenRoute;
+}
+
+public final class com/copperleaf/ballast/examples/navigation/ComposableSingletons$AppScreenKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/navigation/ComposableSingletons$AppScreenKt;
+	public fun <init> ()V
+	public final fun getLambda$-1912823798$navigationWithCustomRoutes_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-526687316$navigationWithCustomRoutes_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1179846488$navigationWithCustomRoutes_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1314493108$navigationWithCustomRoutes_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$169532175$navigationWithCustomRoutes_release ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$53730387$navigationWithCustomRoutes_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/copperleaf/ballast/examples/navigation/ComposableSingletons$MainActivityKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/navigation/ComposableSingletons$MainActivityKt;
+	public fun <init> ()V
+	public final fun getLambda$1371821822$navigationWithCustomRoutes_release ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/navigation/Home : com/copperleaf/ballast/examples/navigation/AppScreen {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/navigation/Home;
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/copperleaf/ballast/examples/navigation/InitialRoute : java/lang/annotation/Annotation {
+}
+
+public final class com/copperleaf/ballast/examples/navigation/MainActivity : androidx/activity/ComponentActivity {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
+public final class com/copperleaf/ballast/examples/navigation/NavigationUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/navigation/NavigationUi;
+	public final fun Content (Landroidx/compose/runtime/Composer;I)V
+}
+
+public abstract interface annotation class com/copperleaf/ballast/examples/navigation/PathParameter : java/lang/annotation/Annotation {
+}
+
+public final class com/copperleaf/ballast/examples/navigation/PostDetails : com/copperleaf/ballast/examples/navigation/AppScreen {
+	public static final field $stable I
+	public static final field Companion Lcom/copperleaf/ballast/examples/navigation/PostDetails$Companion;
+	public fun <init> (I)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/navigation/PostDetails;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/navigation/PostDetails;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/navigation/PostDetails;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPostId ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/navigation/PostDetails$Companion {
+}
+
+public final class com/copperleaf/ballast/examples/navigation/PostList : com/copperleaf/ballast/examples/navigation/AppScreen {
+	public static final field $stable I
+	public static final field Companion Lcom/copperleaf/ballast/examples/navigation/PostList$Companion;
+	public fun <init> (Ljava/lang/String;)V
+	public fun Content (Landroidx/compose/runtime/Composer;I)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/navigation/PostList;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/navigation/PostList;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/navigation/PostList;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSort ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/navigation/PostList$Companion {
+}
+
+public abstract interface annotation class com/copperleaf/ballast/examples/navigation/QueryParameter : java/lang/annotation/Annotation {
+}
+
+public abstract interface annotation class com/copperleaf/ballast/examples/navigation/Route : java/lang/annotation/Annotation {
+	public abstract fun path ()Ljava/lang/String;
+}
+
+public abstract interface annotation class com/copperleaf/ballast/examples/navigation/With : java/lang/annotation/Annotation {
+	public abstract fun annotationClass ()Ljava/lang/Class;
+	public abstract fun args ()[Ljava/lang/String;
+}
+

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 
-internal class GlobalStateActor<Inputs : Any, Events : Any, State : Any>(
+internal class StateActorImpl<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>
 ) : BallastViewModelConfiguration<Inputs, Events, State> by impl,
     StateActor<Inputs, Events, State> {

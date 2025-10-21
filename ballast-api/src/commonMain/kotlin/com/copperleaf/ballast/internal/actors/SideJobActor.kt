@@ -28,7 +28,7 @@ import kotlinx.coroutines.withTimeout
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.time.Duration
 
-internal class SideJobActor<Inputs : Any, Events : Any, State : Any>(
+public class SideJobActor<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
@@ -61,7 +61,7 @@ internal class SideJobActor<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    internal fun enqueueSideJob(
+    public fun enqueueSideJob(
         key: String,
         block: suspend SideJobScope<Inputs, Events, State>.() -> Unit,
     ) {
@@ -70,7 +70,7 @@ internal class SideJobActor<Inputs : Any, Events : Any, State : Any>(
         _sideJobsRequestQueue.trySend(SideJobRequest.StartOrRestartSideJob(key, block))
     }
 
-    internal fun cancelSideJob(
+    public fun cancelSideJob(
         key: String,
     ) {
         impl.coordinator.coordinatorState.value.checkSideJobCancellationOpen()

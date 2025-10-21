@@ -4,17 +4,14 @@ import com.copperleaf.ballast.BallastScopeFactory
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.EventHandler
-import com.copperleaf.ballast.LocalStateInputStrategy
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.internal.actors.ActorCoordinator
 import com.copperleaf.ballast.internal.actors.EventActor
-import com.copperleaf.ballast.internal.actors.GlobalStateActor
 import com.copperleaf.ballast.internal.actors.InputActor
 import com.copperleaf.ballast.internal.actors.InterceptorActor
-import com.copperleaf.ballast.internal.actors.LocalStateActor
 import com.copperleaf.ballast.internal.actors.SideJobActor
 import com.copperleaf.ballast.internal.actors.StateActor
-import com.copperleaf.ballast.internal.scopes.BallastScopeFactoryImpl
+import com.copperleaf.ballast.internal.scopes.DefaultBallastScopeFactory
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ChannelResult
@@ -29,15 +26,12 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Internal properties
 // ---------------------------------------------------------------------------------------------------------------------
 
-    internal val scopeFactory: BallastScopeFactory<Inputs, Events, State> = BallastScopeFactoryImpl(this)
-    internal val inputActor = InputActor(this, scopeFactory)
-    internal val eventActor = EventActor(this, scopeFactory)
-    internal val stateActor: StateActor<Inputs, Events, State> = if(inputStrategy is LocalStateInputStrategy)
-        LocalStateActor(this)
-    else
-        GlobalStateActor(this)
-    internal val sideJobActor = SideJobActor(this, scopeFactory)
-    internal val interceptorActor = InterceptorActor(this, scopeFactory)
+    internal val scopeFactory: BallastScopeFactory<Inputs, Events, State> = DefaultBallastScopeFactory(this)
+    public val inputActor: InputActor<Inputs, Events, State> = InputActor(this, scopeFactory)
+    public val eventActor: EventActor<Inputs, Events, State> = EventActor(this, scopeFactory)
+    public val stateActor: StateActor<Inputs, Events, State> = scopeFactory.createStateActor(this)
+    public val sideJobActor: SideJobActor<Inputs, Events, State> = SideJobActor(this, scopeFactory)
+    public val interceptorActor: InterceptorActor<Inputs, Events, State> = InterceptorActor(this, scopeFactory)
 
     internal val coordinator = ActorCoordinator(this)
 

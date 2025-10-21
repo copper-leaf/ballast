@@ -13,7 +13,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.plus
 
-internal class InputActor<Inputs : Any, Events : Any, State : Any>(
+public class InputActor<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {

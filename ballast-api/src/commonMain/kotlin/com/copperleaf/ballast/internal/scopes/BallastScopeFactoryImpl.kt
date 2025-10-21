@@ -6,13 +6,14 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.EventStrategyScope
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.InputStrategyScope
-import com.copperleaf.ballast.LocalStateInputStrategy
 import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.internal.BallastViewModelImpl
+import com.copperleaf.ballast.internal.actors.StateActor
+import com.copperleaf.ballast.internal.actors.StateActorImpl
 import kotlinx.coroutines.CoroutineScope
 
-internal class BallastScopeFactoryImpl<Inputs : Any, Events : Any, State : Any>(
-    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+public open class DefaultBallastScopeFactory<Inputs : Any, Events : Any, State : Any>(
+    protected val impl: BallastViewModelImpl<Inputs, Events, State>,
 ) : BallastScopeFactory<Inputs, Events, State> {
 
     override fun createBallastInterceptorScope(
@@ -21,8 +22,8 @@ internal class BallastScopeFactoryImpl<Inputs : Any, Events : Any, State : Any>(
         return BallastInterceptorScopeImpl(
             interceptorCoroutineScope = interceptorCoroutineScope,
             logger = logger,
-            hostViewModelName = impl.name,
-            hostViewModelType = impl.type,
+            hostViewModelName = name,
+            hostViewModelType = type,
             initialState = initialState,
             inputActor = inputActor,
             eventActor = eventActor,
@@ -52,23 +53,13 @@ internal class BallastScopeFactoryImpl<Inputs : Any, Events : Any, State : Any>(
     override fun createInputHandlerScope(
         guardian: InputStrategy.Guardian,
     ): InternalInputHandlerScope<Inputs, Events, State> = with(impl) {
-        if(guardian is LocalStateInputStrategy.Guardian<*>) {
-            return LocalStateInputHandlerScope(
-                guardian = guardian as LocalStateInputStrategy.Guardian<State>,
-                logger = logger,
-                eventActor = eventActor,
-                sideJobActor = sideJobActor,
-            )
-        } else {
-            return GlobalStateInputHandlerScope(
-                guardian = guardian,
-                logger = logger,
-                stateActor = stateActor,
-                eventActor = eventActor,
-                sideJobActor = sideJobActor,
-            )
-        }
-
+        return InputHandlerScopeImpl(
+            guardian = guardian,
+            logger = logger,
+            stateActor = stateActor,
+            eventActor = eventActor,
+            sideJobActor = sideJobActor,
+        )
     }
 
     override fun createInputStrategyScope(
@@ -99,5 +90,11 @@ internal class BallastScopeFactoryImpl<Inputs : Any, Events : Any, State : Any>(
             key = key,
             restartState = restartState,
         )
+    }
+
+    override fun createStateActor(
+        impl: BallastViewModelImpl<Inputs, Events, State>
+    ): StateActor<Inputs, Events, State> {
+        return StateActorImpl(impl)
     }
 }

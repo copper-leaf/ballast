@@ -1,10 +1,12 @@
 package com.copperleaf.ballast
 
+import com.copperleaf.ballast.internal.BallastViewModelImpl
+import com.copperleaf.ballast.internal.actors.StateActor
 import com.copperleaf.ballast.internal.scopes.InternalEventHandlerScope
 import com.copperleaf.ballast.internal.scopes.InternalInputHandlerScope
 import kotlinx.coroutines.CoroutineScope
 
-internal interface BallastScopeFactory<Inputs : Any, Events : Any, State : Any> {
+public interface BallastScopeFactory<Inputs : Any, Events : Any, State : Any> {
 
     public fun createBallastInterceptorScope(
         interceptorCoroutineScope: CoroutineScope,
@@ -30,4 +32,8 @@ internal interface BallastScopeFactory<Inputs : Any, Events : Any, State : Any> 
         key: String,
         restartState: SideJobScope.RestartState,
     ): SideJobScope<Inputs, Events, State>
+
+    public fun createStateActor(
+        impl: BallastViewModelImpl<Inputs, Events, State>
+    ): StateActor<Inputs, Events, State>
 }

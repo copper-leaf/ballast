@@ -23,7 +23,7 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-internal class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
+public class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {

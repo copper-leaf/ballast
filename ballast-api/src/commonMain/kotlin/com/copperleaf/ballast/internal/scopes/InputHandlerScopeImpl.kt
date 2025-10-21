@@ -7,7 +7,7 @@ import com.copperleaf.ballast.internal.actors.EventActor
 import com.copperleaf.ballast.internal.actors.SideJobActor
 import com.copperleaf.ballast.internal.actors.StateActor
 
-internal class GlobalStateInputHandlerScope<Inputs : Any, Events : Any, State : Any>(
+internal class InputHandlerScopeImpl<Inputs : Any, Events : Any, State : Any>(
     private val guardian: InputStrategy.Guardian,
 
     override val logger: BallastLogger,
