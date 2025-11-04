@@ -31,7 +31,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
 
         return if (!initialPath.isNullOrBlank() || !initialQueryString.isNullOrBlank()) {
             UriBuilder.build(
-                encodedPath = "/$initialPath".also { println("initialPath: $it") },
+                encodedPath = "/$initialPath",
                 encodedQueryString = initialQueryString,
             )
         } else {
@@ -39,7 +39,6 @@ public class BrowserHashNavigationInterceptor<T : Route>(
         }
     }
 
-    @Suppress("UNNECESSARY_SAFE_CALL")
     override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow<Uri> {
             window.onhashchange = { event: HashChangeEvent ->

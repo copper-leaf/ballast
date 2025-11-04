@@ -57,7 +57,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
                 val updatedUrl = if(basePath != null) {
                     UriBuilder.build(
                         encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
-                        encodedQueryString = url.encodedQueryString,
+                        encodedQueryString = url.encodedQueryString.trimStart('?'),
                     )
                 } else {
                     url
