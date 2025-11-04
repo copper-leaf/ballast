@@ -3,7 +3,7 @@ package com.copperleaf.ballast.debugger.server
 import com.copperleaf.ballast.debugger.versions.ClientVersion
 import com.copperleaf.ballast.debugger.versions.CompositeModelSerializer
 import com.copperleaf.ballast.debugger.versions.unsupported.ClientModelMapperUnsupportedVersion
-import com.copperleaf.ballast.debugger.versions.v4.ClientModelSerializerV4
+import com.copperleaf.ballast.debugger.versions.v5.ClientModelSerializerV5
 import kotlinx.coroutines.test.runTest
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -49,7 +49,11 @@ class ClientModelMapperTest {
         assertEquals(true, ClientVersion.getSerializer("4.0.1").supported)
         assertEquals(true, ClientVersion.getSerializer("4.1.0").supported)
         assertEquals(true, ClientVersion.getSerializer("4.1.1").supported)
-        assertEquals(false, ClientVersion.getSerializer("5.0.0").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.0.0").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.0.1").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.1.0").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.1.1").supported)
+        assertEquals(false, ClientVersion.getSerializer("6.0.0").supported)
 
         assertEquals(false, ClientVersion.getSerializer("0.1.0-SNAPSHOT").supported)
         assertEquals(false, ClientVersion.getSerializer("0.1.1-SNAPSHOT").supported)
@@ -63,7 +67,11 @@ class ClientModelMapperTest {
         assertEquals(true, ClientVersion.getSerializer("4.0.1-SNAPSHOT").supported)
         assertEquals(true, ClientVersion.getSerializer("4.1.0-SNAPSHOT").supported)
         assertEquals(true, ClientVersion.getSerializer("4.1.1-SNAPSHOT").supported)
-        assertEquals(false, ClientVersion.getSerializer("5.0.0-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.0.0-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.0.1-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.1.0-SNAPSHOT").supported)
+        assertEquals(true, ClientVersion.getSerializer("5.1.1-SNAPSHOT").supported)
+        assertEquals(false, ClientVersion.getSerializer("6.0.0-SNAPSHOT").supported)
     }
 
     @Test
@@ -82,8 +90,9 @@ class ClientModelMapperTest {
         assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.0")::class)
         assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.1")::class)
         assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("3.0.0")::class)
-        assertEquals<KClass<*>>(ClientModelSerializerV4::class, ClientVersion.getSerializer("4.0.0")::class)
-        assertEquals<KClass<*>>(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("5.0.0")::class)
+        assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("4.0.0")::class)
+        assertEquals<KClass<*>>(ClientModelSerializerV5::class, ClientVersion.getSerializer("5.0.0")::class)
+        assertEquals<KClass<*>>(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("6.0.0")::class)
 
         assertEquals<KClass<*>>(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("0.1.0-SNAPSHOT")::class)
         assertEquals<KClass<*>>(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("0.1.1-SNAPSHOT")::class)
@@ -91,8 +100,9 @@ class ClientModelMapperTest {
         assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.0-SNAPSHOT")::class)
         assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("2.3.1-SNAPSHOT")::class)
         assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("3.0.0-SNAPSHOT")::class)
-        assertEquals<KClass<*>>(ClientModelSerializerV4::class, ClientVersion.getSerializer("4.0.0-SNAPSHOT")::class)
-        assertEquals<KClass<*>>(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("5.0.0-SNAPSHOT")::class)
+        assertEquals<KClass<*>>(CompositeModelSerializer::class, ClientVersion.getSerializer("4.0.0-SNAPSHOT")::class)
+        assertEquals<KClass<*>>(ClientModelSerializerV5::class, ClientVersion.getSerializer("5.0.0-SNAPSHOT")::class)
+        assertEquals<KClass<*>>(ClientModelMapperUnsupportedVersion::class, ClientVersion.getSerializer("6.0.0-SNAPSHOT")::class)
     }
 
     @Test
