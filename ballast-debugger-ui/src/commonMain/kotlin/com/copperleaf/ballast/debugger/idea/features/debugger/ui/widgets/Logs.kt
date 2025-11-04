@@ -27,14 +27,13 @@ import com.copperleaf.ballast.debugger.idea.utils.maybeFilter
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
 
 @Composable
 internal fun ColumnScope.LogsListToolbar(
     connection: BallastConnectionState?,
     viewModel: BallastViewModelState?,
-    fullHistory: List<BallastDebuggerEventV4>,
+    fullHistory: List<BallastDebuggerEventV5>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
     if (connection == null) return
@@ -60,7 +59,7 @@ internal fun ColumnScope.LogsListToolbar(
 internal fun ColumnScope.LogsList(
     connection: BallastConnectionState?,
     viewModel: BallastViewModelState?,
-    fullHistory: List<BallastDebuggerEventV4>,
+    fullHistory: List<BallastDebuggerEventV5>,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
     SelectionContainer {
@@ -88,43 +87,43 @@ internal fun ColumnScope.LogsList(
 @Suppress("UNUSED_PARAMETER")
 @Composable
 internal fun LogSummary(
-    logEntry: BallastDebuggerEventV4,
+    logEntry: BallastDebuggerEventV5,
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
     val color = when (logEntry) {
-        is BallastDebuggerEventV4.ViewModelStatusChanged -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.ViewModelStatusChanged -> MaterialTheme.colors.onSurface
 
-        is BallastDebuggerEventV4.InputQueued -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.InputAccepted -> MaterialTheme.colors.primary
-        is BallastDebuggerEventV4.InputRejected -> MaterialTheme.colors.primary
-        is BallastDebuggerEventV4.InputDropped -> MaterialTheme.colors.primary
-        is BallastDebuggerEventV4.InputHandledSuccessfully -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.InputCancelled -> MaterialTheme.colors.primary
-        is BallastDebuggerEventV4.InputHandlerError -> MaterialTheme.colors.error
+        is BallastDebuggerEventV5.InputQueued -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.InputAccepted -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.InputRejected -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.InputDropped -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.InputHandledSuccessfully -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.InputCancelled -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.InputHandlerError -> MaterialTheme.colors.error
 
-        is BallastDebuggerEventV4.EventQueued -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.EventEmitted -> MaterialTheme.colors.primary
-        is BallastDebuggerEventV4.EventHandledSuccessfully -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.EventHandlerError -> MaterialTheme.colors.error
-        is BallastDebuggerEventV4.EventProcessingStarted -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.EventProcessingStopped -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.EventQueued -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.EventEmitted -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.EventHandledSuccessfully -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.EventHandlerError -> MaterialTheme.colors.error
+        is BallastDebuggerEventV5.EventProcessingStarted -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.EventProcessingStopped -> MaterialTheme.colors.onSurface
 
-        is BallastDebuggerEventV4.StateChanged -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.StateChanged -> MaterialTheme.colors.primary
 
-        is BallastDebuggerEventV4.SideJobQueued -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.SideJobStarted -> MaterialTheme.colors.primary
-        is BallastDebuggerEventV4.SideJobCompleted -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.SideJobCancelled -> MaterialTheme.colors.primary
-        is BallastDebuggerEventV4.SideJobError -> MaterialTheme.colors.error
+        is BallastDebuggerEventV5.SideJobQueued -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.SideJobStarted -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.SideJobCompleted -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.SideJobCancelled -> MaterialTheme.colors.primary
+        is BallastDebuggerEventV5.SideJobError -> MaterialTheme.colors.error
 
-        is BallastDebuggerEventV4.InterceptorAttached -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.InterceptorFailed -> MaterialTheme.colors.error
+        is BallastDebuggerEventV5.InterceptorAttached -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.InterceptorFailed -> MaterialTheme.colors.error
 
-        is BallastDebuggerEventV4.UnhandledError -> MaterialTheme.colors.error
+        is BallastDebuggerEventV5.UnhandledError -> MaterialTheme.colors.error
 
-        is BallastDebuggerEventV4.Heartbeat -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.RefreshViewModelComplete -> MaterialTheme.colors.onSurface
-        is BallastDebuggerEventV4.RefreshViewModelStart -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.Heartbeat -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.RefreshViewModelComplete -> MaterialTheme.colors.onSurface
+        is BallastDebuggerEventV5.RefreshViewModelStart -> MaterialTheme.colors.onSurface
     }
 
     val text = remember(logEntry) {
@@ -145,7 +144,7 @@ internal fun LogSummary(
 internal fun rememberViewModelLogsList(
     viewModel: BallastViewModelState?,
     searchText: String,
-): State<List<BallastDebuggerEventV4>> {
+): State<List<BallastDebuggerEventV5>> {
     return viewModelValue {
         viewModel?.fullHistory?.maybeFilter(searchText) {
             listOf(it.toString())

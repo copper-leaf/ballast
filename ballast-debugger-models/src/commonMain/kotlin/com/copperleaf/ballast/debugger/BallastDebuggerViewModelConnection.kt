@@ -2,7 +2,7 @@ package com.copperleaf.ballast.debugger
 
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.debugger.models.serialize
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDateTime
 
@@ -18,7 +18,7 @@ public data class BallastDebuggerViewModelConnection<Inputs : Any, Events : Any,
 public class BallastDebuggerOutgoingEventWrapper<Inputs : Any, Events : Any, State : Any>(
     public val connection: BallastDebuggerViewModelConnection<Inputs, Events, State>,
     public val notification: BallastNotification<Inputs, Events, State>?,
-    public val debuggerEvent: BallastDebuggerEventV4?,
+    public val debuggerEvent: BallastDebuggerEventV5?,
     public val updateConnectionState: Boolean,
 ) {
     public fun serialize(
@@ -26,7 +26,7 @@ public class BallastDebuggerOutgoingEventWrapper<Inputs : Any, Events : Any, Sta
         uuid: String,
         firstSeen: LocalDateTime,
         now: LocalDateTime,
-    ): BallastDebuggerEventV4 {
+    ): BallastDebuggerEventV5 {
         return notification!!.serialize(
             connectionId = connectionId,
             viewModelConnection = connection,

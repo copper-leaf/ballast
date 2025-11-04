@@ -42,7 +42,7 @@ import com.copperleaf.ballast.debugger.models.BallastStateSnapshot
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 import com.copperleaf.ballast.debugger.versions.ClientVersion
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerActionV5
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
@@ -95,7 +95,7 @@ internal fun ColumnScope.StatesListToolbar(
                     postInput(
                         DebuggerUiContract.Inputs.SendToDebuggerServer(
                             DebuggerServerContract.Inputs.SendDebuggerAction(
-                                BallastDebuggerActionV4.RequestReplaceState(
+                                BallastDebuggerActionV5.RequestReplaceState(
                                     connection.connectionId,
                                     viewModel.viewModelName,
                                     serializedState = serializedState,
@@ -195,7 +195,7 @@ internal fun StateSnapshotSummary(
                     postInput(
                         DebuggerUiContract.Inputs.SendToDebuggerServer(
                             DebuggerServerContract.Inputs.SendDebuggerAction(
-                                BallastDebuggerActionV4.RequestRestoreState(
+                                BallastDebuggerActionV5.RequestRestoreState(
                                     connectionId = stateSnapshot.connectionId,
                                     viewModelName = stateSnapshot.viewModelName,
                                     stateUuid = stateSnapshot.uuid,

@@ -42,7 +42,7 @@ include(":ballast-debugger-models")
 include(":ballast-debugger-client")
 include(":ballast-debugger-server")
 include(":ballast-debugger-ui")
-//include(":ballast-idea-plugin")
+include(":ballast-idea-plugin")
 
 include(":ballast-test")
 

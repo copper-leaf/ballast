@@ -3,7 +3,7 @@ package com.copperleaf.ballast.debugger.models
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.now
 import com.copperleaf.ballast.debugger.utils.removeFraction
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
 import kotlinx.datetime.LocalDateTime
 import kotlin.time.DurationUnit
 
@@ -24,7 +24,7 @@ public data class BallastViewModelState(
 
     public val firstSeen: LocalDateTime = LocalDateTime.now(),
     public val lastSeen: LocalDateTime = LocalDateTime.now(),
-    public val fullHistory: List<BallastDebuggerEventV4> = emptyList(),
+    public val fullHistory: List<BallastDebuggerEventV5> = emptyList(),
     public val refreshing: Boolean = false,
 ) {
     public val runningInputCount: Int = inputs.count { it.status == BallastInputState.Status.Running }
@@ -149,11 +149,11 @@ public data class BallastViewModelState(
     }
 
     public fun updateWithDebuggerEvent(
-        event: BallastDebuggerEventV4,
+        event: BallastDebuggerEventV5,
         actualValue: Any?
     ): BallastViewModelState {
         val updatedState = when (event) {
-            is BallastDebuggerEventV4.RefreshViewModelStart -> {
+            is BallastDebuggerEventV5.RefreshViewModelStart -> {
                 BallastViewModelState(
                     connectionId = connectionId,
                     viewModelName = viewModelName,
@@ -164,18 +164,18 @@ public data class BallastViewModelState(
                 )
             }
 
-            is BallastDebuggerEventV4.RefreshViewModelComplete -> {
+            is BallastDebuggerEventV5.RefreshViewModelComplete -> {
                 copy(refreshing = false)
             }
 
-            is BallastDebuggerEventV4.ViewModelStatusChanged -> {
+            is BallastDebuggerEventV5.ViewModelStatusChanged -> {
                 copy(
-                    viewModelActive = event.status != BallastDebuggerEventV4.StatusV4.Cleared,
+                    viewModelActive = event.status != BallastDebuggerEventV5.StatusV5.Cleared,
                     viewModelType = event.viewModelType
                 )
             }
 
-            is BallastDebuggerEventV4.InputQueued -> {
+            is BallastDebuggerEventV5.InputQueued -> {
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
@@ -187,7 +187,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.InputAccepted -> {
+            is BallastDebuggerEventV5.InputAccepted -> {
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
@@ -199,7 +199,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.InputHandledSuccessfully -> {
+            is BallastDebuggerEventV5.InputHandledSuccessfully -> {
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
@@ -213,7 +213,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.InputCancelled -> {
+            is BallastDebuggerEventV5.InputCancelled -> {
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
@@ -227,7 +227,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.InputHandlerError -> {
+            is BallastDebuggerEventV5.InputHandlerError -> {
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
@@ -242,7 +242,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.InputDropped -> {
+            is BallastDebuggerEventV5.InputDropped -> {
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
@@ -254,7 +254,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.InputRejected -> {
+            is BallastDebuggerEventV5.InputRejected -> {
                 updateInput(event.uuid, actualValue) {
                     copy(
                         type = event.inputType,
@@ -266,7 +266,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.EventQueued -> {
+            is BallastDebuggerEventV5.EventQueued -> {
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
@@ -278,7 +278,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.EventEmitted -> {
+            is BallastDebuggerEventV5.EventEmitted -> {
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
@@ -290,7 +290,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.EventHandledSuccessfully -> {
+            is BallastDebuggerEventV5.EventHandledSuccessfully -> {
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
@@ -304,7 +304,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.EventHandlerError -> {
+            is BallastDebuggerEventV5.EventHandlerError -> {
                 updateEvent(event.uuid) {
                     copy(
                         type = event.eventType,
@@ -319,15 +319,15 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.EventProcessingStarted -> {
+            is BallastDebuggerEventV5.EventProcessingStarted -> {
                 copy(eventProcessingActive = true)
             }
 
-            is BallastDebuggerEventV4.EventProcessingStopped -> {
+            is BallastDebuggerEventV5.EventProcessingStopped -> {
                 copy(eventProcessingActive = false)
             }
 
-            is BallastDebuggerEventV4.StateChanged -> {
+            is BallastDebuggerEventV5.StateChanged -> {
                 appendStateSnapshot(event.uuid, actualValue) {
                     copy(
                         emittedAt = event.timestamp,
@@ -338,7 +338,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.SideJobQueued -> {
+            is BallastDebuggerEventV5.SideJobQueued -> {
                 updateSideJob(event.uuid) {
                     copy(
                         key = event.key,
@@ -348,7 +348,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.SideJobStarted -> {
+            is BallastDebuggerEventV5.SideJobStarted -> {
                 updateSideJob(event.uuid) {
                     copy(
                         key = event.key,
@@ -359,7 +359,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.SideJobCompleted -> {
+            is BallastDebuggerEventV5.SideJobCompleted -> {
                 updateSideJob(event.uuid) {
                     copy(
                         key = event.key,
@@ -372,7 +372,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.SideJobCancelled -> {
+            is BallastDebuggerEventV5.SideJobCancelled -> {
                 updateSideJob(event.uuid) {
                     copy(
                         key = event.key,
@@ -385,7 +385,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.SideJobError -> {
+            is BallastDebuggerEventV5.SideJobError -> {
                 updateSideJob(event.uuid) {
                     copy(
                         key = event.key,
@@ -399,7 +399,7 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.InterceptorAttached -> {
+            is BallastDebuggerEventV5.InterceptorAttached -> {
                 updateInterceptor(event.uuid) {
                     copy(
                         type = event.interceptorType,
@@ -409,7 +409,7 @@ public data class BallastViewModelState(
                     )
                 }
             }
-            is BallastDebuggerEventV4.InterceptorFailed -> {
+            is BallastDebuggerEventV5.InterceptorFailed -> {
                 updateInterceptor(event.uuid) {
                     copy(
                         type = event.interceptorType,
@@ -420,14 +420,14 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV4.Heartbeat -> { this }
-            is BallastDebuggerEventV4.UnhandledError -> { this }
+            is BallastDebuggerEventV5.Heartbeat -> { this }
+            is BallastDebuggerEventV5.UnhandledError -> { this }
         }
 
         val newHistory = when (event) {
-            is BallastDebuggerEventV4.Heartbeat,
-            is BallastDebuggerEventV4.RefreshViewModelComplete,
-            is BallastDebuggerEventV4.RefreshViewModelStart -> {
+            is BallastDebuggerEventV5.Heartbeat,
+            is BallastDebuggerEventV5.RefreshViewModelComplete,
+            is BallastDebuggerEventV5.RefreshViewModelStart -> {
                 fullHistory
             }
 
