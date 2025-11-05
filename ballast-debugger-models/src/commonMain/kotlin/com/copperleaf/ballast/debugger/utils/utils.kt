@@ -1,10 +1,10 @@
 package com.copperleaf.ballast.debugger.utils
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
@@ -23,6 +23,7 @@ public operator fun LocalDateTime.minus(other: LocalDateTime): Duration {
     return this.toInstant(TimeZone.currentSystemDefault()) - other.toInstant(TimeZone.currentSystemDefault())
 }
 
+@Suppress("REDUNDANT_ELSE_IN_WHEN")
 public fun Duration.removeFraction(minUnit: DurationUnit): Duration {
     return when(minUnit) {
         DurationUnit.NANOSECONDS -> this.inWholeNanoseconds.nanoseconds

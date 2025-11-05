@@ -2,12 +2,17 @@ package com.copperleaf.ballast.utils
 
 import com.copperleaf.ballast.core.BootstrapInterceptor
 import com.copperleaf.ballast.core.KillSwitch
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class BallastUtilsTests : StringSpec({
-    "check toString values" {
-        BootstrapInterceptor<Any, Any, Any>(getInitialInput = { Any() }).toString() shouldBe "BootstrapInterceptor"
-        KillSwitch<Any, Any, Any>().toString() shouldBe "KillSwitch(gracePeriod=100ms)"
+class BallastUtilsTests {
+    @Test
+    fun checkToStringValues() = runTest {
+        assertEquals<Any?>(
+            "BootstrapInterceptor",
+            BootstrapInterceptor<Any, Any, Any>(getInitialInput = { Any() }).toString()
+        )
+        assertEquals<Any?>("KillSwitch(gracePeriod=100ms)", KillSwitch<Any, Any, Any>().toString())
     }
-})
+}

@@ -1,9 +1,9 @@
 package com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.RestartAlt
@@ -21,7 +21,7 @@ internal enum class ViewModelContentTab(
     internal val icon: ImageVector,
     internal val text: String,
 ) {
-    States(Icons.Default.List, "States"),
+    States(Icons.AutoMirrored.Filled.List, "States"),
     Inputs(Icons.Default.Refresh, "Inputs"),
     Events(Icons.Default.NotificationsActive, "Events"),
     SideJobs(Icons.Default.CloudUpload, "SideJobs"),

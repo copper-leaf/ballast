@@ -1,12 +1,12 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
 
 public class EveryDaySchedule private constructor(
     private val timesOfDay: List<LocalTime>,
@@ -46,7 +46,7 @@ public class EveryDaySchedule private constructor(
         return LocalDateTime(
             year = this.year,
             month = this.month,
-            dayOfMonth = this.dayOfMonth,
+            day = this.day,
             hour = time.hour,
             minute = time.minute,
             second = 0,

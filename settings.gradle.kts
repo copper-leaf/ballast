@@ -54,4 +54,4 @@ include(":examples:schedules")
 include(":examples:navigationWithEnumRoutes")
 include(":examples:navigationWithCustomRoutes")
 
-include(":docs")
+//include(":docs")

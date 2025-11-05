@@ -9,16 +9,18 @@ import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.PrintlnLogger
 import com.copperleaf.ballast.test.viewModelTest
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-class BallastCoroutineScopeTests : StringSpec({
-    "test dispatchers" {
+class BallastCoroutineScopeTests {
+    @Test
+    fun testDispatchers() = runTest {
         viewModelTest(
             inputHandler = DispatcherTestInputHandler(),
             eventHandler = DispatcherTestEventHandler(),
@@ -44,23 +46,23 @@ class BallastCoroutineScopeTests : StringSpec({
                 }
                 resultsIn {
                     latestState.let {
-                        (it.actualInputCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name shouldBe "Inputs"
-                        (it.actualInputCoroutineScopeInfo?.uncaughtExceptionHandler) shouldNotBe null
+                        assertEquals("Inputs", (it.actualInputCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name)
+                        assertNotNull(it.actualInputCoroutineScopeInfo?.uncaughtExceptionHandler)
                         val inputContext = it.actualInputCoroutineScopeInfo?.fullContext
                         inputContext.also { }
 
-                        (it.actualEventCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name shouldBe "Events"
-                        (it.actualEventCoroutineScopeInfo?.uncaughtExceptionHandler) shouldNotBe null
+                        assertEquals("Events", (it.actualEventCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name)
+                        assertNotNull(it.actualEventCoroutineScopeInfo?.uncaughtExceptionHandler)
                         val eventContext = it.actualEventCoroutineScopeInfo?.fullContext
                         eventContext.also { }
 
-                        (it.actualSideJobCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name shouldBe "SideJobs"
-                        (it.actualSideJobCoroutineScopeInfo?.uncaughtExceptionHandler) shouldNotBe null
+                        assertEquals("SideJobs", (it.actualSideJobCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name)
+                        assertNotNull(it.actualSideJobCoroutineScopeInfo?.uncaughtExceptionHandler)
                         val sideJobContext = it.actualSideJobCoroutineScopeInfo?.fullContext
                         sideJobContext.also { }
 
-                        (it.actualInterceptorCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name shouldBe "Interceptor"
-                        (it.actualInterceptorCoroutineScopeInfo?.uncaughtExceptionHandler) shouldNotBe null
+                        assertEquals("Interceptor", (it.actualInterceptorCoroutineScopeInfo?.dispatcher as? NamedDispatcher?)?.name)
+                        assertNotNull(it.actualInterceptorCoroutineScopeInfo?.uncaughtExceptionHandler)
                         val interceptorContext = it.actualInterceptorCoroutineScopeInfo?.fullContext
                         interceptorContext.also { }
 
@@ -70,4 +72,4 @@ class BallastCoroutineScopeTests : StringSpec({
             }
         }
     }
-})
+}

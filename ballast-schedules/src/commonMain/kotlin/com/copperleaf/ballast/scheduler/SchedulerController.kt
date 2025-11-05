@@ -10,7 +10,7 @@ import com.copperleaf.ballast.scheduler.vm.SchedulerContract
 import com.copperleaf.ballast.scheduler.vm.SchedulerFifoInputStrategy
 import com.copperleaf.ballast.scheduler.vm.SchedulerInputHandler
 import com.copperleaf.ballast.withViewModel
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 public typealias SchedulerController<I, E, S> = BallastViewModel<
         SchedulerContract.Inputs<I, E, S>,
@@ -36,7 +36,7 @@ public fun <I : Any, E : Any, S : Any> BallastViewModelConfiguration.Builder.wit
         }
 }
 
-@Suppress("UNCHECKED_CAST")
+@Suppress("UNCHECKED_CAST", "OPT_IN_USAGE")
 public suspend fun <I : Any, E : Any, S : Any> SideJobScope<I, E, S>.scheduler(): SchedulerController<I, E, S> {
     return getInterceptor(SchedulerInterceptor.Key)
         .controller as SchedulerController<I, E, S>

@@ -22,13 +22,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.ExperimentalTime
 import kotlin.time.TimeSource
 
 /**
  * An internal class used to keep the test framework
  */
-@ExperimentalTime
 internal class TestInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val testCoroutineScope: CoroutineScope,
     private val onTestComplete: CompletableDeferred<ScenarioResult<Inputs, Events, State>>,

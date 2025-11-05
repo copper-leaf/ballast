@@ -8,14 +8,13 @@ import com.copperleaf.ballast.debugger.CONNECTION_ID_HEADER
 import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 import com.copperleaf.ballast.debugger.versions.ClientModelSerializer
 import com.copperleaf.ballast.debugger.versions.ClientVersion
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerActionV5
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
 import io.github.copper_leaf.ballast_debugger_server.BALLAST_VERSION
-import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
@@ -40,7 +39,7 @@ import org.slf4j.event.Level
 public class BallastDebuggerServerConnection(
     private val logger: BallastLogger,
     private val settings: BallastDebuggerServerSettings,
-    private val outgoingActions: SharedFlow<BallastDebuggerActionV4>,
+    private val outgoingActions: SharedFlow<BallastDebuggerActionV5>,
     private val postInput: suspend (DebuggerServerContract.Inputs) -> Unit,
 ) {
     public suspend fun runServer() {
@@ -99,7 +98,7 @@ public class BallastDebuggerServerConnection(
     }
 
     private fun WebSocketServerSession.processOutgoing(
-        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV4, BallastDebuggerActionV4>,
+        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV5, BallastDebuggerActionV5>,
         connectionId: String
     ): Job {
         val session = this
@@ -118,7 +117,7 @@ public class BallastDebuggerServerConnection(
     }
 
     private fun WebSocketServerSession.processIncoming(
-        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV4, BallastDebuggerActionV4>,
+        clientModelMapper: ClientModelSerializer<BallastDebuggerEventV5, BallastDebuggerActionV5>,
     ): Job {
         return incoming
             .receiveAsFlow()

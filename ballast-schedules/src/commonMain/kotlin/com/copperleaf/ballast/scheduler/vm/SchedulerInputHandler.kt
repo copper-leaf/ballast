@@ -6,7 +6,7 @@ import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.internal.restartableJob
 import com.copperleaf.ballast.scheduler.executor.CoroutineScheduleExecutor
 import com.copperleaf.ballast.scheduler.internal.SchedulerAdapterScopeImpl
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 
 internal class SchedulerInputHandler<I : Any, E : Any, S : Any>(
     private val clock: Clock,

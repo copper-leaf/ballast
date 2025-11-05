@@ -11,7 +11,7 @@ import com.copperleaf.ballast.scheduler.internal.RegisteredSchedule
 import com.copperleaf.ballast.scheduler.workmanager.BallastWorkManagerData
 import com.copperleaf.ballast.scheduler.workmanager.BallastWorkManagerScheduleWorker
 import com.copperleaf.ballast.scheduler.workmanager.BallastWorkScheduleData
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlin.time.toJavaDuration
 
 @RequiresApi(Build.VERSION_CODES.O)

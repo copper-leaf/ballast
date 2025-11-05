@@ -31,7 +31,7 @@ public class BrowserHashNavigationInterceptor<T : Route>(
 
         return if (!initialPath.isNullOrBlank() || !initialQueryString.isNullOrBlank()) {
             UriBuilder.build(
-                encodedPath = "/$initialPath".also { println("initialPath: $it") },
+                encodedPath = "/$initialPath",
                 encodedQueryString = initialQueryString,
             )
         } else {

@@ -2,7 +2,7 @@ package com.copperleaf.ballast.firebase
 
 import com.copperleaf.ballast.analytics.AnalyticsTracker
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.analytics.logEvent
 
 public class FirebaseAnalyticsTracker(
     private val analytics: FirebaseAnalytics,

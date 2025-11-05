@@ -4,7 +4,7 @@ plugins {
     id("copper-leaf-base")
     id("copper-leaf-android-application")
     id("copper-leaf-targets")
-    id("copper-leaf-kotest")
+    id("copper-leaf-tests")
     id("copper-leaf-compose")
     id("copper-leaf-lint")
 }
@@ -76,12 +76,6 @@ compose {
     desktop {
         application {
             mainClass = "com.copperleaf.ballast.examples.counter.MainKt"
-        }
-    }
-    experimental {
-        web {
-            application {
-            }
         }
     }
 }

@@ -1,13 +1,17 @@
 package com.copperleaf.ballast.undo
 
 import com.copperleaf.ballast.undo.state.StateBasedUndoController
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class BallastUndoTests : StringSpec({
-    "check toString values" {
-        BallastUndoInterceptor<Any, Any, Any>(
-            controller = StateBasedUndoController()
-        ).toString() shouldBe "BallastUndoInterceptor(controller=StateBasedUndoController)"
+class BallastUndoTests {
+    @Test
+    fun checkToStringValues() = runTest {
+        assertEquals<Any?>(
+            "BallastUndoInterceptor(controller=StateBasedUndoController)", BallastUndoInterceptor<Any, Any, Any>(
+                controller = StateBasedUndoController()
+            ).toString()
+        )
     }
-})
+}

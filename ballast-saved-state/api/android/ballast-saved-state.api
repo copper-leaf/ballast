@@ -1,9 +1,9 @@
 public abstract interface class com/copperleaf/ballast/savedstate/AndroidSavedStateAdapter : com/copperleaf/ballast/savedstate/SavedStateAdapter {
-	public abstract fun get (Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
-	public abstract fun getPrefix ()Lkotlin/jvm/functions/Function1;
+	public fun get (Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Ljava/lang/String;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public fun getPrefix ()Lkotlin/jvm/functions/Function1;
 	public abstract fun getSavedStateHandle ()Landroidx/lifecycle/SavedStateHandle;
-	public abstract fun saveAllToSavedStateHandle (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun saveDiffToSavedStateHandle (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveAllToSavedStateHandle (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun saveDiffToSavedStateHandle (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/savedstate/AndroidSavedStateAdapter$DefaultImpls {

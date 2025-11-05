@@ -6,7 +6,7 @@ plugins {
     id("copper-leaf-base")
     id("copper-leaf-android-application")
     id("copper-leaf-targets")
-    id("copper-leaf-kotest")
+    id("copper-leaf-tests")
 //    id("copper-leaf-lint")
     id("copper-leaf-buildConfig")
 }
@@ -45,6 +45,7 @@ kotlin {
                 implementation(libs.multiplatformSettings.core)
                 implementation(libs.multiplatformSettings.noArg)
                 implementation(libs.coil)
+                implementation(libs.coil.ktor3)
             }
         }
     }

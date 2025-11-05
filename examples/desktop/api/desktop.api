@@ -1,0 +1,1255 @@
+public final class com/copperleaf/ballast/examples/ComposableSingletons$MainKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ComposableSingletons$MainKt;
+	public fun <init> ()V
+	public final fun getLambda$-1721318391$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2088629963$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2102606982$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-372071631$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1192321120$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1270018712$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1582124919$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1894231126$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$645806298$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$957912505$desktop ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/MainKt {
+	public static final fun main ()V
+	public static synthetic fun main ([Ljava/lang/String;)V
+}
+
+public abstract interface class com/copperleaf/ballast/examples/api/BggApi {
+	public abstract fun getHotGames (Lcom/copperleaf/ballast/examples/api/models/HotListType;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/api/BggApiImpl : com/copperleaf/ballast/examples/api/BggApi {
+	public static final field $stable I
+	public fun <init> (Lio/ktor/client/HttpClient;)V
+	public fun getHotGames (Lcom/copperleaf/ballast/examples/api/models/HotListType;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/api/models/BggHotListItem {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (JILjava/lang/String;Ljava/lang/String;Ljava/lang/Integer;)V
+	public synthetic fun <init> (JILjava/lang/String;Ljava/lang/String;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()I
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/Integer;
+	public final fun copy (JILjava/lang/String;Ljava/lang/String;Ljava/lang/Integer;)Lcom/copperleaf/ballast/examples/api/models/BggHotListItem;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/api/models/BggHotListItem;JILjava/lang/String;Ljava/lang/String;Ljava/lang/Integer;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/api/models/BggHotListItem;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()J
+	public final fun getName ()Ljava/lang/String;
+	public final fun getRank ()I
+	public final fun getThumbnail ()Ljava/lang/String;
+	public final fun getYearPublished ()Ljava/lang/Integer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/api/models/HotListType : java/lang/Enum {
+	public static final field BoardGame Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static final field BoardGameCompany Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static final field BoardGamePerson Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static final field Rpg Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static final field RpgCompany Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static final field RpgPerson Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static final field VideoGame Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static final field VideoGameCompany Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public final fun getDisplayName ()Ljava/lang/String;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getValue ()Ljava/lang/String;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public static fun values ()[Lcom/copperleaf/ballast/examples/api/models/HotListType;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/injector/ComposeDesktopInjector {
+	public abstract fun bggViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/examples/ui/bgg/BggViewModel;
+	public abstract fun counterViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;Lcom/copperleaf/ballast/sync/SyncConnectionAdapter;)Lcom/copperleaf/ballast/examples/ui/counter/CounterViewModel;
+	public abstract fun kitchenSinkViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkViewModel;
+	public abstract fun router ()Lcom/copperleaf/ballast/BallastViewModel;
+	public abstract fun routerUndoController ()Lcom/copperleaf/ballast/undo/UndoController;
+	public abstract fun scorekeeperViewModel (Lkotlinx/coroutines/CoroutineScope;Landroidx/compose/material/SnackbarHostState;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperViewModel;
+	public abstract fun storefrontViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontViewModel;
+	public abstract fun undoViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/undo/state/StateBasedUndoController;)Lcom/copperleaf/ballast/examples/ui/undo/UndoViewModel;
+}
+
+public final class com/copperleaf/ballast/examples/injector/ComposeDesktopInjectorImpl : com/copperleaf/ballast/examples/injector/ComposeDesktopInjector {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;)V
+	public fun bggViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/examples/ui/bgg/BggViewModel;
+	public fun counterViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/sync/DefaultSyncConnection$ClientType;Lcom/copperleaf/ballast/sync/SyncConnectionAdapter;)Lcom/copperleaf/ballast/examples/ui/counter/CounterViewModel;
+	public fun kitchenSinkViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkViewModel;
+	public fun router ()Lcom/copperleaf/ballast/BallastViewModel;
+	public fun routerUndoController ()Lcom/copperleaf/ballast/undo/UndoController;
+	public fun scorekeeperViewModel (Lkotlinx/coroutines/CoroutineScope;Landroidx/compose/material/SnackbarHostState;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperViewModel;
+	public fun storefrontViewModel (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontViewModel;
+	public fun undoViewModel (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/undo/state/StateBasedUndoController;)Lcom/copperleaf/ballast/examples/ui/undo/UndoViewModel;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/preferences/BallastExamplesPreferences {
+	public abstract fun getBackstack ()Ljava/util/List;
+	public abstract fun getKitchenSinkInputStrategySelection ()Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public abstract fun getScorekeeperButtonValues ()Ljava/util/List;
+	public abstract fun getScorekeeperScoresheetState ()Ljava/util/Map;
+	public abstract fun setBackstack (Ljava/util/List;)V
+	public abstract fun setKitchenSinkInputStrategySelection (Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;)V
+	public abstract fun setScorekeeperButtonValues (Ljava/util/List;)V
+	public abstract fun setScorekeeperScoresheetState (Ljava/util/Map;)V
+}
+
+public final class com/copperleaf/ballast/examples/preferences/BallastExamplesPreferencesImpl : com/copperleaf/ballast/examples/preferences/BallastExamplesPreferences {
+	public static final field $stable I
+	public fun <init> (Lcom/russhwolf/settings/Settings;)V
+	public fun getBackstack ()Ljava/util/List;
+	public fun getKitchenSinkInputStrategySelection ()Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public fun getScorekeeperButtonValues ()Ljava/util/List;
+	public fun getScorekeeperScoresheetState ()Ljava/util/Map;
+	public fun setBackstack (Ljava/util/List;)V
+	public fun setKitchenSinkInputStrategySelection (Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;)V
+	public fun setScorekeeperButtonValues (Ljava/util/List;)V
+	public fun setScorekeeperScoresheetState (Ljava/util/Map;)V
+}
+
+public abstract interface class com/copperleaf/ballast/examples/repository/BggRepository {
+	public abstract fun clearAllCaches ()V
+	public abstract fun getBggHotList (Lcom/copperleaf/ballast/examples/api/models/HotListType;Z)Lkotlinx/coroutines/flow/Flow;
+	public static synthetic fun getBggHotList$default (Lcom/copperleaf/ballast/examples/repository/BggRepository;Lcom/copperleaf/ballast/examples/api/models/HotListType;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepository$DefaultImpls {
+	public static synthetic fun getBggHotList$default (Lcom/copperleaf/ballast/examples/repository/BggRepository;Lcom/copperleaf/ballast/examples/api/models/HotListType;ZILjava/lang/Object;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$BggHotListUpdated : com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/api/models/HotListType;Lcom/copperleaf/ballast/repository/cache/Cached;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public final fun component2 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun copy (Lcom/copperleaf/ballast/examples/api/models/HotListType;Lcom/copperleaf/ballast/repository/cache/Cached;)Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$BggHotListUpdated;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$BggHotListUpdated;Lcom/copperleaf/ballast/examples/api/models/HotListType;Lcom/copperleaf/ballast/repository/cache/Cached;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$BggHotListUpdated;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBggHotList ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun getHotListType ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$ClearCaches : com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$ClearCaches;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$Initialize : com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$Initialize;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$RefreshAllCaches : com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$RefreshAllCaches;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$RefreshBggHotList : com/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/api/models/HotListType;Z)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public final fun component2 ()Z
+	public final fun copy (Lcom/copperleaf/ballast/examples/api/models/HotListType;Z)Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$RefreshBggHotList;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$RefreshBggHotList;Lcom/copperleaf/ballast/examples/api/models/HotListType;ZILjava/lang/Object;)Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs$RefreshBggHotList;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getForceRefresh ()Z
+	public final fun getHotListType ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (ZLcom/copperleaf/ballast/examples/api/models/HotListType;ZLcom/copperleaf/ballast/repository/cache/Cached;)V
+	public synthetic fun <init> (ZLcom/copperleaf/ballast/examples/api/models/HotListType;ZLcom/copperleaf/ballast/repository/cache/Cached;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public final fun component3 ()Z
+	public final fun component4 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun copy (ZLcom/copperleaf/ballast/examples/api/models/HotListType;ZLcom/copperleaf/ballast/repository/cache/Cached;)Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$State;ZLcom/copperleaf/ballast/examples/api/models/HotListType;ZLcom/copperleaf/ballast/repository/cache/Cached;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBggHotList ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun getBggHotListInitialized ()Z
+	public final fun getBggHotListType ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public final fun getInitialized ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryImpl : com/copperleaf/ballast/repository/BallastRepository, com/copperleaf/ballast/examples/repository/BggRepository {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
+	public fun clearAllCaches ()V
+	public fun getBggHotList (Lcom/copperleaf/ballast/examples/api/models/HotListType;Z)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/copperleaf/ballast/examples/repository/BggRepositoryInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/examples/api/BggApi;)V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/repository/BggRepositoryContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/router/BallastExamples : java/lang/Enum, com/copperleaf/ballast/navigation/routing/Route {
+	public static final field ApiCall Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public static final field Counter Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public static final field KitchenSink Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public static final field Scorekeeper Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public static final field Storefront Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public static final field Sync Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public static final field Undo Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public fun getAnnotations ()Ljava/util/Set;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public fun getMatcher ()Lcom/copperleaf/ballast/navigation/routing/RouteMatcher;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/router/BallastExamples;
+	public static fun values ()[Lcom/copperleaf/ballast/examples/router/BallastExamples;
+}
+
+public final class com/copperleaf/ballast/examples/router/BallastExamplesRouter : com/copperleaf/ballast/core/BasicViewModel, com/copperleaf/ballast/BallastViewModel {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
+}
+
+public final class com/copperleaf/ballast/examples/router/RouterSavedStateAdapter : com/copperleaf/ballast/savedstate/SavedStateAdapter {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;Lcom/copperleaf/ballast/examples/preferences/BallastExamplesPreferences;Z)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/navigation/routing/RoutingTable;Lcom/copperleaf/ballast/navigation/routing/Route;Lcom/copperleaf/ballast/examples/preferences/BallastExamplesPreferences;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun restore (Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun save (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/bgg/BggContract;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/bgg/BggContract$Events {
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$ChangeHotListType : com/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/api/models/HotListType;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public final fun copy (Lcom/copperleaf/ballast/examples/api/models/HotListType;)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$ChangeHotListType;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$ChangeHotListType;Lcom/copperleaf/ballast/examples/api/models/HotListType;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$ChangeHotListType;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHotListType ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$FetchHotList : com/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Z)V
+	public final fun component1 ()Z
+	public final fun copy (Z)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$FetchHotList;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$FetchHotList;ZILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$FetchHotList;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getForceRefresh ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$HotListUpdated : com/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/repository/cache/Cached;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun copy (Lcom/copperleaf/ballast/repository/cache/Cached;)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$HotListUpdated;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$HotListUpdated;Lcom/copperleaf/ballast/repository/cache/Cached;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs$HotListUpdated;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBggHotList ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/copperleaf/ballast/examples/api/models/HotListType;Lcom/copperleaf/ballast/repository/cache/Cached;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/examples/api/models/HotListType;Lcom/copperleaf/ballast/repository/cache/Cached;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public final fun component2 ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun copy (Lcom/copperleaf/ballast/examples/api/models/HotListType;Lcom/copperleaf/ballast/repository/cache/Cached;)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$State;Lcom/copperleaf/ballast/examples/api/models/HotListType;Lcom/copperleaf/ballast/repository/cache/Cached;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBggHotList ()Lcom/copperleaf/ballast/repository/cache/Cached;
+	public final fun getBggHotListType ()Lcom/copperleaf/ballast/examples/api/models/HotListType;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/repository/BggRepository;)V
+	public final fun getRepository ()Lcom/copperleaf/ballast/examples/repository/BggRepository;
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/bgg/BggUi;
+	public final fun Content (Lcom/copperleaf/ballast/examples/injector/ComposeDesktopInjector;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Lcom/copperleaf/ballast/examples/ui/bgg/BggContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/BggViewModel : com/copperleaf/ballast/core/BasicViewModel {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/examples/ui/bgg/BggEventHandler;)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/bgg/ComposableSingletons$BggUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/bgg/ComposableSingletons$BggUiKt;
+	public fun <init> ()V
+	public final fun getLambda$-1650399641$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1826266791$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-2076444053$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-637994201$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1246097880$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$882087677$desktop ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/ComposableSingletons$CounterUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/counter/ComposableSingletons$CounterUiKt;
+	public fun <init> ()V
+	public final fun getLambda$-1543360987$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$2082155471$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$404777286$desktop ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/counter/CounterContract;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/counter/CounterContract$Events {
+	public static final field Companion Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Events$Companion;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$Events$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs {
+	public static final field Companion Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Companion;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement : com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs {
+	public static final field $stable I
+	public static final field Companion Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement$Companion;
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Decrement$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment : com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs {
+	public static final field $stable I
+	public static final field Companion Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment$Companion;
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs$Increment$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$State {
+	public static final field $stable I
+	public static final field Companion Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State$Companion;
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final synthetic class com/copperleaf/ballast/examples/ui/counter/CounterContract$State$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterContract$State$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/counter/CounterUi;
+	public final fun Content (Lcom/copperleaf/ballast/examples/injector/ComposeDesktopInjector;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Lcom/copperleaf/ballast/examples/ui/counter/CounterContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/counter/CounterViewModel : com/copperleaf/ballast/core/BasicViewModel {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/examples/ui/counter/CounterEventHandler;)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/ComposableSingletons$KitchenSinkUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/ComposableSingletons$KitchenSinkUiKt;
+	public fun <init> ()V
+	public final fun getLambda$-144612208$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-176249330$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-207886452$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-2090605326$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-898171372$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1034546531$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1200216175$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1923778635$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1955415757$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1987052879$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$2018690001$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$570014130$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$658713060$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$824412856$desktop ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection : java/lang/Enum {
+	public static final field Fifo Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public static final field Lifo Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public static final field Parallel Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getGet ()Lkotlin/jvm/functions/Function0;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public static fun values ()[Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events {
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$CloseWindow : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$CloseWindow;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$ErrorRunningEvent : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$ErrorRunningEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$LongRunningEvent : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$LongRunningEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$NavigateTo : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$NavigateTo;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$NavigateTo;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events$NavigateTo;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDirections ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$CancelInfiniteSideJob : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$CancelInfiniteSideJob;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ChangeInputStrategy : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public final fun copy (Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ChangeInputStrategy;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ChangeInputStrategy;Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ChangeInputStrategy;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInputStrategy ()Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$CloseKitchenSinkWindow : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$CloseKitchenSinkWindow;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ErrorRunningEvent : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ErrorRunningEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ErrorRunningInput : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ErrorRunningInput;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ErrorRunningSideJob : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ErrorRunningSideJob;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$IncrementInfiniteCounter : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$IncrementInfiniteCounter;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$IncrementInfiniteCounter;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$IncrementInfiniteCounter;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDelta ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$InfiniteSideJob : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$InfiniteSideJob;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$LongRunningEvent : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$LongRunningEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$LongRunningInput : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$LongRunningInput;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$LongRunningSideJob : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$LongRunningSideJob;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ShutDownGracefully : com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs$ShutDownGracefully;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$State {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;ZIIZ)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;ZIIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public final fun component2 ()Z
+	public final fun component3 ()I
+	public final fun component4 ()I
+	public final fun component5 ()Z
+	public final fun copy (Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;ZIIZ)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$State;Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;ZIIZILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCompletedInputCounter ()I
+	public final fun getInfiniteCounter ()I
+	public final fun getInfiniteSideJobRunning ()Z
+	public final fun getInputStrategy ()Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;
+	public final fun getLoading ()Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModel;)V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/core/KillSwitch;)V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkUi;
+	public final fun Content (Lcom/copperleaf/ballast/examples/injector/ComposeDesktopInjector;Lcom/copperleaf/ballast/examples/ui/kitchensink/InputStrategySelection;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkViewModel : com/copperleaf/ballast/core/BasicViewModel, com/copperleaf/ballast/BallastViewModel {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/examples/ui/kitchensink/KitchenSinkEventHandler;)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ComposableSingletons$ScorekeeperUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/scorekeeper/ComposableSingletons$ScorekeeperUiKt;
+	public fun <init> ()V
+	public final fun getLambda$-753353260$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$12759131$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1433664050$desktop ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Events {
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Events$ShowErrorMessage : com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Events {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Events$ShowErrorMessage;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Events$ShowErrorMessage;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Events$ShowErrorMessage;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$AddPlayer : com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$AddPlayer;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$AddPlayer;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$AddPlayer;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPlayerName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$ChangeScore : com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs {
+	public static final field $stable I
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$ChangeScore;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$ChangeScore;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$ChangeScore;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAmount ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$CommitAllTempScores : com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$CommitAllTempScores;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$CommitTempScore : com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$CommitTempScore;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$CommitTempScore;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$CommitTempScore;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPlayerName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$RemovePlayer : com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$RemovePlayer;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$RemovePlayer;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$RemovePlayer;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPlayerName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$TogglePlayerSelection : com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$TogglePlayerSelection;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$TogglePlayerSelection;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs$TogglePlayerSelection;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getPlayerName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$State;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getButtonValues ()Ljava/util/List;
+	public final fun getPlayers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> (Lkotlin/jvm/functions/Function2;)V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperSavedStateAdapter : com/copperleaf/ballast/savedstate/SavedStateAdapter {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/preferences/BallastExamplesPreferences;)V
+	public fun restore (Lcom/copperleaf/ballast/savedstate/RestoreStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun save (Lcom/copperleaf/ballast/savedstate/SaveStateScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperUi;
+	public final fun Content (Landroidx/compose/material/SnackbarHostState;Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Lcom/copperleaf/ballast/examples/injector/ComposeDesktopInjector;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperViewModel : com/copperleaf/ballast/core/BasicViewModel {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/examples/ui/scorekeeper/ScorekeeperEventHandler;)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/scorekeeper/models/Player {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;IIZ)V
+	public synthetic fun <init> (Ljava/lang/String;IIZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun commitScore ()Lcom/copperleaf/ballast/examples/ui/scorekeeper/models/Player;
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun component3 ()I
+	public final fun component4 ()Z
+	public final fun copy (Ljava/lang/String;IIZ)Lcom/copperleaf/ballast/examples/ui/scorekeeper/models/Player;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/scorekeeper/models/Player;Ljava/lang/String;IIZILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/scorekeeper/models/Player;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getScore ()I
+	public final fun getScoreDisplay ()Ljava/lang/String;
+	public final fun getSelected ()Z
+	public final fun getTempScore ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/ComposableSingletons$StorefrontUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/storefront/ComposableSingletons$StorefrontUiKt;
+	public fun <init> ()V
+	public final fun getLambda$-1452693927$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1777631153$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-659167855$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1064776258$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$721892449$desktop ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract;
+}
+
+public abstract class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Events {
+	public static final field $stable I
+}
+
+public abstract class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$Initialize : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$Initialize;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$QueryCoffeeProducts : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$QueryCoffeeProducts;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleColumnSort : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public final fun copy (Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleColumnSort;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleColumnSort;Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleColumnSort;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColumn ()Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleFilterInStock : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleFilterInStock;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleTag : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleTag;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleTag;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$ToggleTag;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getTag ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMax : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-pVg5ArA ()I
+	public final fun copy-WZ4Q5Ns (I)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMax;
+	public static synthetic fun copy-WZ4Q5Ns$default (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMax;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMax;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxPrice-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMin : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-pVg5ArA ()I
+	public final fun copy-WZ4Q5Ns (I)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMin;
+	public static synthetic fun copy-WZ4Q5Ns$default (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMin;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdatePriceRangeMin;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMinPrice-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateRating : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public synthetic fun <init> (ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-pVg5ArA ()I
+	public final fun copy-WZ4Q5Ns (I)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateRating;
+	public static synthetic fun copy-WZ4Q5Ns$default (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateRating;IILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateRating;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getRating-pVg5ArA ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateSearchQuery : com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateSearchQuery;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateSearchQuery;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs$UpdateSearchQuery;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSearchQuery ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontContract$State {
+	public static final field $stable I
+	public synthetic fun <init> (ZLjava/util/List;ILjava/lang/String;Ljava/util/List;ZLkotlin/ranges/ClosedRange;Lkotlin/UInt;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (ZLjava/util/List;ILjava/lang/String;Ljava/util/List;ZLkotlin/ranges/ClosedRange;Lkotlin/UInt;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Z
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()I
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/util/List;
+	public final fun component6 ()Z
+	public final fun component7 ()Lkotlin/ranges/ClosedRange;
+	public final fun component8-0hXNFcg ()Lkotlin/UInt;
+	public final fun component9 ()Ljava/util/List;
+	public final fun copy-s9AUvew (ZLjava/util/List;ILjava/lang/String;Ljava/util/List;ZLkotlin/ranges/ClosedRange;Lkotlin/UInt;Ljava/util/List;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$State;
+	public static synthetic fun copy-s9AUvew$default (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$State;ZLjava/util/List;ILjava/lang/String;Ljava/util/List;ZLkotlin/ranges/ClosedRange;Lkotlin/UInt;Ljava/util/List;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFilterByRating-0hXNFcg ()Lkotlin/UInt;
+	public final fun getFilterByTags ()Ljava/util/List;
+	public final fun getFilterInStock ()Z
+	public final fun getFilteredCoffeeProducts ()Ljava/util/List;
+	public final fun getLoading ()Z
+	public final fun getPriceRange ()Lkotlin/ranges/ClosedRange;
+	public final fun getSearchQuery ()Ljava/lang/String;
+	public final fun getSortResultsBy ()Ljava/util/List;
+	public final fun getTotalNumberOfProducts ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/examples/ui/storefront/api/CoffeeProductsApi;)V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontUi;
+	public final fun Content (Lcom/copperleaf/ballast/examples/injector/ComposeDesktopInjector;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (Lcom/copperleaf/ballast/examples/ui/storefront/StorefrontContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/StorefrontViewModel : com/copperleaf/ballast/core/BasicViewModel {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/storefront/api/CoffeeProductsApi {
+	public abstract fun getTotalProductsCount (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun queryProducts-t7FQQTk (Ljava/lang/String;Ljava/util/List;ZLkotlin/ranges/ClosedRange;Lkotlin/UInt;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/api/CoffeeProductsApiImpl : com/copperleaf/ballast/examples/ui/storefront/api/CoffeeProductsApi {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getTotalProductsCount (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun queryProducts-t7FQQTk (Ljava/lang/String;Ljava/util/List;ZLkotlin/ranges/ClosedRange;Lkotlin/UInt;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/models/CoffeeProduct {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;IIDILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/util/List;
+	public final fun component5-pVg5ArA ()I
+	public final fun component6-pVg5ArA ()I
+	public final fun component7 ()D
+	public final fun component8-pVg5ArA ()I
+	public final fun copy-7zqUNHo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;IIDI)Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProduct;
+	public static synthetic fun copy-7zqUNHo$default (Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProduct;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/List;IIDIILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProduct;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBrand ()Ljava/lang/String;
+	public final fun getCost-pVg5ArA ()I
+	public final fun getDescription ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getNumberOfReviews-pVg5ArA ()I
+	public final fun getQuantity-pVg5ArA ()I
+	public final fun getRating ()D
+	public final fun getTags ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn : java/lang/Enum {
+	public static final field Cost Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public static final field Description Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public static final field Name Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public static final field NumberOfReviews Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public static final field Quantity Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public static final field Rating Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public static final field Tags Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public final fun getCanSort ()Z
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+	public static fun values ()[Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProductColumn;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/models/ColumnSort {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Enum;Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;)V
+	public final fun component1 ()Ljava/lang/Enum;
+	public final fun component2 ()Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;
+	public final fun copy (Ljava/lang/Enum;Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;)Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort;Ljava/lang/Enum;Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColumn ()Ljava/lang/Enum;
+	public final fun getSortDirection ()Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction : java/lang/Enum {
+	public static final field Ascending Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;
+	public static final field Descending Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;
+	public static fun values ()[Lcom/copperleaf/ballast/examples/ui/storefront/models/ColumnSort$Direction;
+}
+
+public final class com/copperleaf/ballast/examples/ui/storefront/utils/GenerateCoffeeProductsKt {
+	public static final fun generateCoffeeProduct (Ljava/util/Random;Lio/github/serpro69/kfaker/Faker;)Lcom/copperleaf/ballast/examples/ui/storefront/models/CoffeeProduct;
+	public static final fun generateCoffeeProducts (Ljava/util/Random;Lio/github/serpro69/kfaker/Faker;I)Ljava/util/List;
+	public static synthetic fun generateCoffeeProducts$default (Ljava/util/Random;Lio/github/serpro69/kfaker/Faker;IILjava/lang/Object;)Ljava/util/List;
+	public static final fun roundTo (D)D
+}
+
+public final class com/copperleaf/ballast/examples/ui/sync/ComposableSingletons$SyncUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/sync/ComposableSingletons$SyncUiKt;
+	public fun <init> ()V
+	public final fun getLambda$-152120324$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-182108397$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$782268290$desktop ()Lkotlin/jvm/functions/Function2;
+}
+
+public final class com/copperleaf/ballast/examples/ui/sync/SyncUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/sync/SyncUi;
+	public final fun Content (Lcom/copperleaf/ballast/examples/injector/ComposeDesktopInjector;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/ComposableSingletons$UndoUiKt {
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/undo/ComposableSingletons$UndoUiKt;
+	public fun <init> ()V
+	public final fun getLambda$-1009762496$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$-1254324891$desktop ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1321066601$desktop ()Lkotlin/jvm/functions/Function3;
+	public final fun getLambda$1321391135$desktop ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoContract {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/undo/UndoContract;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/undo/UndoContract$Events {
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoContract$Events$HandleUndoAction : com/copperleaf/ballast/examples/ui/undo/UndoContract$Events {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs;)V
+	public final fun getAction ()Lcom/copperleaf/ballast/undo/state/StateBasedUndoControllerContract$Inputs;
+}
+
+public abstract interface class com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$CaptureStateNow : com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$CaptureStateNow;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$Redo : com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$Redo;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$Undo : com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$Undo;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$UpdateText : com/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$UpdateText;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$UpdateText;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs$UpdateText;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoContract$State {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$State;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getText ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoEventHandler : com/copperleaf/ballast/EventHandler {
+	public static final field $stable I
+	public fun <init> (Lcom/copperleaf/ballast/undo/state/StateBasedUndoController;)V
+	public fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Events;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleEvent (Lcom/copperleaf/ballast/EventHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoInputHandler : com/copperleaf/ballast/InputHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Lcom/copperleaf/ballast/examples/ui/undo/UndoContract$Inputs;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun handleInput (Lcom/copperleaf/ballast/InputHandlerScope;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoUi {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/copperleaf/ballast/examples/ui/undo/UndoUi;
+	public final fun Content (Lcom/copperleaf/ballast/examples/injector/ComposeDesktopInjector;Landroidx/compose/runtime/Composer;I)V
+	public final fun Content (ZZLcom/copperleaf/ballast/examples/ui/undo/UndoContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/copperleaf/ballast/examples/ui/undo/UndoViewModel : com/copperleaf/ballast/core/BasicViewModel {
+	public static final field $stable I
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/examples/ui/undo/UndoEventHandler;)V
+}
+

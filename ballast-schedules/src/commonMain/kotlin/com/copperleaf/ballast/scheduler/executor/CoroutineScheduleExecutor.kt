@@ -1,8 +1,9 @@
 package com.copperleaf.ballast.scheduler.executor
 
+import com.copperleaf.ballast.scheduler.executor.ScheduleExecutor.DelayMode
 import com.copperleaf.ballast.scheduler.schedule.Schedule
 import kotlinx.coroutines.CompletableDeferred
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * A [ScheduleExecutor] which executes tasks in-process, suspending for as long the schedule is still active (which may

@@ -8,9 +8,9 @@ import com.copperleaf.ballast.scheduler.schedule.dropHistory
 import com.copperleaf.ballast.scheduler.workmanager.internal.getLongFromTag
 import com.copperleaf.ballast.scheduler.workmanager.internal.getRegisteredSchedules
 import com.copperleaf.ballast.scheduler.workmanager.internal.getStringFromTag
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 internal data class BallastWorkScheduleData(
     val workManagerData: BallastWorkManagerData,

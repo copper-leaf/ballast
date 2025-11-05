@@ -3,8 +3,8 @@ package com.copperleaf.ballast.scheduler.executor
 import com.copperleaf.ballast.scheduler.schedule.Schedule
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.delay
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 public class CoroutineClockScheduleExecutor(
     private val clock: Clock = Clock.System,

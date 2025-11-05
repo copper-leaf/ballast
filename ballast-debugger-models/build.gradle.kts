@@ -6,19 +6,22 @@ plugins {
     id("copper-leaf-targets")
     id("copper-leaf-buildConfig")
     id("copper-leaf-serialization")
-    id("copper-leaf-kotest")
+    id("copper-leaf-tests")
 //    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 
 kotlin {
+    compilerOptions {
+        optIn.add("kotlin.time.ExperimentalTime")
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-api"))
                 implementation(libs.bundles.ktorClient)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.benasher44.uuid)
             }
         }
         val jvmMain by getting {

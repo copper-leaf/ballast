@@ -2,9 +2,9 @@ package com.copperleaf.ballast.internal.actors
 
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.BallastScopeFactory
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.internal.Status
-import com.copperleaf.ballast.internal.scopes.BallastInterceptorScopeImpl
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.BufferOverflow
@@ -23,8 +23,9 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-internal class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
-    private val impl: BallastViewModelImpl<Inputs, Events, State>
+public class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+    private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
     private val _notificationsQueue: Channel<BallastNotification<Inputs, Events, State>> =
         Channel(BUFFERED, BufferOverflow.SUSPEND)
@@ -58,16 +59,10 @@ internal class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
 
                 with(interceptor) {
                     try {
-                        BallastInterceptorScopeImpl(
+                        scopeFactory.createBallastInterceptorScope(
                             interceptorCoroutineScope = impl.viewModelScope +
                                     SupervisorJob(impl.viewModelScope.coroutineContext.job) +
                                     impl.interceptorDispatcher,
-                            logger = impl.logger,
-                            hostViewModelName = impl.name,
-                            hostViewModelType = impl.type,
-                            initialState = impl.initialState,
-                            inputActor = impl.inputActor,
-                            eventActor = impl.eventActor,
                         ).start(notificationFlow)
                     } catch (e: Exception) {
                         notifyImmediate(

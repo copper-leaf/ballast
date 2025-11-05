@@ -1,17 +1,14 @@
 public final class com/copperleaf/ballast/examples/counter/ComposableSingletons$CounterUiKt {
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/ComposableSingletons$CounterUiKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
-	public static field lambda-2 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$counter_release ()Lkotlin/jvm/functions/Function2;
-	public final fun getLambda-2$counter_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-1524905582$counter_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$-820739095$counter_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/examples/counter/ComposableSingletons$MainActivityKt {
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/ComposableSingletons$MainActivityKt;
-	public static field lambda-1 Lkotlin/jvm/functions/Function2;
 	public fun <init> ()V
-	public final fun getLambda-1$counter_release ()Lkotlin/jvm/functions/Function2;
+	public final fun getLambda$1017829356$counter_release ()Lkotlin/jvm/functions/Function2;
 }
 
 public final class com/copperleaf/ballast/examples/counter/CounterContract {
@@ -98,11 +95,6 @@ public final class com/copperleaf/ballast/examples/counter/CounterUi {
 	public static final field INSTANCE Lcom/copperleaf/ballast/examples/counter/CounterUi;
 	public final fun Content (Landroidx/compose/material3/SnackbarHostState;Lcom/copperleaf/ballast/examples/counter/CounterContract$State;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)V
 	public final fun Content (Landroidx/compose/runtime/Composer;I)V
-}
-
-public final class com/copperleaf/ballast/examples/counter/IconsKt {
-	public static final fun getAdd (Landroidx/compose/material/icons/Icons$Filled;)Landroidx/compose/ui/graphics/vector/ImageVector;
-	public static final fun getRemove (Landroidx/compose/material/icons/Icons$Filled;)Landroidx/compose/ui/graphics/vector/ImageVector;
 }
 
 public final class com/copperleaf/ballast/examples/counter/MainActivity : androidx/activity/ComponentActivity {

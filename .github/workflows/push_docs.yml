@@ -1,28 +1,45 @@
-# On pushes to docs, build the examples JS bundle and update Orchid documentation site.
+# On pushes to main, run tests on all supported platforms. If all tests pass, then publish release artifacts and
+# update Orchid documentation site.
 
-name: 'Push to `docs` (Update documentation site)'
+name: 'Update docs'
 
 on:
+  workflow_dispatch:
   push:
-    branches: ['docs']
+    branches: ['main', 'docs']
 
 jobs:
-  publishDocumentationOnMacOs:
+  buildDocumentationSite:
     runs-on: 'macos-latest'
     env:
       GITHUB_ACTOR: '${{ github.actor }}'
       GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
     steps:
-      - uses: 'actions/checkout@v3'
+      - uses: 'actions/checkout@v2'
         with:
           submodules: 'recursive'
-          fetch-depth: 0 # all commit history and tags
+      - run: 'git fetch --prune --unshallow --tags'
       - name: 'Set up JDK 17'
         uses: 'actions/setup-java@v2'
         with:
           distribution: 'temurin'
-          java-version: 17
-      - name: 'Build example Compose Web site'
-        run: './gradlew :examples:web:jsBrowserDevelopmentWebpack :examples:counter:jsBrowserDevelopmentWebpack :examples:navigationWithEnumRoutes:jsBrowserDevelopmentWebpack --stacktrace -PreleaseDocs -PorchidEnvironment=prod'
-      - name: 'Publish Documentation'
-        run: './gradlew :docs:publish --stacktrace --no-configuration-cache -PreleaseDocs -PorchidEnvironment=prod'
+          java-version: '17'
+      - name: 'Build Documentation'
+        run: './gradlew :docs:mkdocsBuild --stacktrace -Prelease'
+      - name: 'Upload static files as artifact'
+        uses: 'actions/upload-pages-artifact@v3'
+        with:
+          path: docs/build/mkdocs/
+  deploy:
+    runs-on: 'macos-latest'
+    needs: ['buildDocumentationSite']
+    permissions:
+      pages: 'write'
+      id-token: 'write'
+    environment:
+      name: 'github-pages'
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 'Deploy to GitHub Pages'
+        id: 'deployment'
+        uses: 'actions/deploy-pages@v4'

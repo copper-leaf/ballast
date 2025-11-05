@@ -1,28 +1,30 @@
 package com.copperleaf.ballast
 
-import com.copperleaf.ballast.Assertions.assertEquals
-import com.copperleaf.ballast.Assertions.assertFalse
-import com.copperleaf.ballast.Assertions.assertTrue
 import com.copperleaf.ballast.contracts.test.TestContract
 import com.copperleaf.ballast.contracts.test.TestEventHandler
 import com.copperleaf.ballast.contracts.test.TestInputFilter
 import com.copperleaf.ballast.contracts.test.TestInputHandler
 import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
-import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.ParallelInputStrategy
 import com.copperleaf.ballast.core.PrintlnLogger
 import com.copperleaf.ballast.test.viewModelTest
-import io.kotest.core.spec.style.StringSpec
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
 @ExperimentalCoroutinesApi
-class BallastCoreTests : StringSpec({
-    "doTest" {
+class BallastCoreTests {
+    @Test
+    fun doTest() = runTest {
         viewModelTest(
             inputHandler = TestInputHandler(),
             eventHandler = TestEventHandler(),
@@ -31,7 +33,7 @@ class BallastCoreTests : StringSpec({
             defaultInputStrategy { LifoInputStrategy.typed(TestInputFilter()) }
             defaultInitialState { TestContract.State() }
             logger { PrintlnLogger(it) }
-            addInterceptor { LoggingInterceptor() }
+//            addInterceptor { LoggingInterceptor() }
 
             scenario("update string value only") {
                 running {
@@ -215,6 +217,7 @@ class BallastCoreTests : StringSpec({
                 running {
                     +TestContract.Inputs.SideJobStartedNoInputOverride
                     +TestContract.Inputs.Increment
+                    advanceUntilIdle()
                 }
                 resultsIn {
                     assertEquals(
@@ -233,7 +236,7 @@ class BallastCoreTests : StringSpec({
             }
 
             scenario("sideJobStarted with inputs that run quickly and override each other") {
-                skip() // this test seems to be very unreliable in CI Macos
+//                skip() // this test seems to be very unreliable in CI Macos
                 running {
                     +TestContract.Inputs.SideJobStartedWithInputOverride
                     +TestContract.Inputs.Increment
@@ -403,7 +406,11 @@ class BallastCoreTests : StringSpec({
                 running {
                     +TestContract.Inputs.Increment
                 }
-                resultsIn {}
+                resultsIn {
+                    // if this test ran, it would throw an error. By the fact that it doesn't throw, we know it was
+                    // skipped
+                    assertTrue { false }
+                }
             }
 
             scenario("Test timeout") {
@@ -448,4 +455,4 @@ class BallastCoreTests : StringSpec({
             }
         }
     }
-})
+}

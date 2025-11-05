@@ -2,12 +2,13 @@ package com.copperleaf.ballast.examples.counter
 
 import com.copperleaf.ballast.eventHandler
 import com.copperleaf.ballast.test.viewModelTest
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.collections.shouldBeEmpty
-import io.kotest.matchers.shouldBe
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class CounterTest : StringSpec({
-    "doTest" {
+class CounterTest {
+    @Test
+    fun doTest() = runTest {
         viewModelTest(
             inputHandler = CounterInputHandler(),
             eventHandler = eventHandler { },
@@ -19,12 +20,14 @@ class CounterTest : StringSpec({
                     +CounterContract.Inputs.Increment(1)
                 }
                 resultsIn {
-                    latestState.count shouldBe 1
-                    states shouldBe listOf(
-                        CounterContract.State(0),
-                        CounterContract.State(1),
+                    assertEquals(1, latestState.count)
+                    assertEquals(
+                        listOf(
+                            CounterContract.State(0),
+                            CounterContract.State(1),
+                        ), states
                     )
-                    events.shouldBeEmpty()
+                    assertEquals(0, events.size)
                 }
             }
 
@@ -33,13 +36,17 @@ class CounterTest : StringSpec({
                     +CounterContract.Inputs.Increment(10)
                 }
                 resultsIn {
-                    latestState.count shouldBe 10
-                    states shouldBe listOf(
-                        CounterContract.State(0),
-                        CounterContract.State(10),
+                    assertEquals(10, latestState.count)
+                    assertEquals(
+                        listOf(
+                            CounterContract.State(0),
+                            CounterContract.State(10),
+                        ), states
                     )
-                    events shouldBe listOf(
-                        CounterContract.Events.OnTenReached,
+                    assertEquals(
+                        listOf(
+                            CounterContract.Events.OnTenReached,
+                        ), events
                     )
                 }
             }
@@ -49,12 +56,14 @@ class CounterTest : StringSpec({
                     +CounterContract.Inputs.Decrement(1)
                 }
                 resultsIn {
-                    latestState.count shouldBe -1
-                    states shouldBe listOf(
-                        CounterContract.State(0),
-                        CounterContract.State(-1),
+                    assertEquals(-1, latestState.count)
+                    assertEquals(
+                        listOf(
+                            CounterContract.State(0),
+                            CounterContract.State(-1),
+                        ), states
                     )
-                    events.shouldBeEmpty()
+                    assertEquals(0, events.size)
                 }
             }
 
@@ -63,12 +72,14 @@ class CounterTest : StringSpec({
                     +CounterContract.Inputs.Decrement(10)
                 }
                 resultsIn {
-                    latestState.count shouldBe -10
-                    states shouldBe listOf(
-                        CounterContract.State(0),
-                        CounterContract.State(-10),
+                    assertEquals(-10, latestState.count)
+                    assertEquals(
+                        listOf(
+                            CounterContract.State(0),
+                            CounterContract.State(-10),
+                        ), states
                     )
-                    events.shouldBeEmpty()
+                    assertEquals(0, events.size)
                 }
             }
 
@@ -78,14 +89,18 @@ class CounterTest : StringSpec({
                     +CounterContract.Inputs.Reset
                 }
                 resultsIn {
-                    latestState.count shouldBe 0
-                    states shouldBe listOf(
-                        CounterContract.State(0),
-                        CounterContract.State(10),
-                        CounterContract.State(0),
+                    assertEquals(0, latestState.count)
+                    assertEquals(
+                        listOf(
+                            CounterContract.State(0),
+                            CounterContract.State(10),
+                            CounterContract.State(0),
+                        ), states
                     )
-                    events shouldBe listOf(
-                        CounterContract.Events.OnTenReached,
+                    assertEquals(
+                        listOf(
+                            CounterContract.Events.OnTenReached,
+                        ), events
                     )
                 }
             }
@@ -96,14 +111,16 @@ class CounterTest : StringSpec({
                     +CounterContract.Inputs.Decrement(1)
                 }
                 resultsIn {
-                    latestState.count shouldBe 10
-                    states shouldBe listOf(
-                        CounterContract.State(11),
-                        CounterContract.State(10),
+                    assertEquals(10, latestState.count)
+                    assertEquals(
+                        listOf(
+                            CounterContract.State(11),
+                            CounterContract.State(10),
+                        ), states
                     )
-                    events.shouldBeEmpty()
+                    assertEquals(0, events.size)
                 }
             }
         }
     }
-})
+}

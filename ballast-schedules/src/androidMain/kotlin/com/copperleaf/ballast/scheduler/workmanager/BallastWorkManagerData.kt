@@ -39,6 +39,7 @@ internal data class BallastWorkManagerData(
         internal const val DATA_CALLBACK_CLASS: String = "ballast::DATA_CALLBACK_CLASS::"
         internal const val DATA_WITH_HISTORY: String = "ballast::DATA_WITH_HISTORY::"
 
+        @Suppress("UNCHECKED_CAST")
         fun fromListenableWorker(worker: ListenableWorker): BallastWorkManagerData = with(worker) {
             return BallastWorkManagerData(
                 adapter = (Class.forName(getStringFromTag(DATA_ADAPTER_CLASS)) as Class<SchedulerAdapter<*, *, *>>)

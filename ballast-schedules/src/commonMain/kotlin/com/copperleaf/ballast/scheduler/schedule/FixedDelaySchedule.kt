@@ -1,8 +1,8 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import kotlinx.datetime.Instant
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Instant
 
 /**
  * A fixed delay schedule will return a perfect schedule that delays a specific amount of time between tasks. By

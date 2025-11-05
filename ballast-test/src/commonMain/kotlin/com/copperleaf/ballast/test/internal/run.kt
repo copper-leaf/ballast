@@ -3,10 +3,12 @@ package com.copperleaf.ballast.test.internal
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BasicViewModel
+import com.copperleaf.ballast.dispatchers
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -15,8 +17,6 @@ import kotlinx.coroutines.supervisorScope
 import kotlin.time.ExperimentalTime
 import kotlin.time.measureTime
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) {
@@ -24,8 +24,6 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuite(
 //    runTestSuiteInSeries(testSuite)
 }
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInParallel(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) = supervisorScope {
@@ -60,8 +58,6 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInPar
     testSuite.suiteLogger("").info("All scenarios completed in $totalTestTime")
 }
 
-@ExperimentalCoroutinesApi
-@ExperimentalTime
 internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInSeries(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
 ) = supervisorScope {
@@ -92,8 +88,7 @@ internal suspend fun <Inputs : Any, Events : Any, State : Any> runTestSuiteInSer
     testSuite.suiteLogger("").info("All scenarios completed in $totalTestTime")
 }
 
-@ExperimentalTime
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalStdlibApi::class)
 private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
     testSuite: BallastTestSuiteScopeImpl<Inputs, Events, State>,
     scenario: BallastScenarioScopeImpl<Inputs, Events, State>
@@ -119,6 +114,15 @@ private suspend fun <Inputs : Any, Events : Any, State : Any> runScenario(
                             scenario = scenario,
                             testSequenceTimeout = scenario.timeout ?: testSuite.defaultTimeout,
                         )
+                    }
+                    .let {
+                        // sets the TestCoroutineDispatcher as the VM's default dispatchers
+                        val testDispatcher = this@coroutineScope.coroutineContext[CoroutineDispatcher.Key]
+                        if (testDispatcher != null) {
+                            it.dispatchers(testDispatcher)
+                        } else {
+                            it
+                        }
                     }
                     .withViewModel(
                         initialState = scenario.givenBlock?.invoke()

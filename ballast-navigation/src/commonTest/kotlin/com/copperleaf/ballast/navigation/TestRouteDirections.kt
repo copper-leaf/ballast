@@ -1,8 +1,5 @@
 package com.copperleaf.ballast.navigation
 
-import com.copperleaf.ballast.navigation.Assertions.assertEquals
-import com.copperleaf.ballast.navigation.Assertions.assertFails
-import com.copperleaf.ballast.navigation.Assertions.assertTrue
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.Route
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
@@ -12,13 +9,18 @@ import com.copperleaf.ballast.navigation.routing.matchDestination
 import com.copperleaf.ballast.navigation.routing.path
 import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.navigation.routing.queryParameter
-import io.kotest.core.spec.style.StringSpec
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFails
+import kotlin.test.assertTrue
 
-class TestRouteDirections : StringSpec({
+class TestRouteDirections {
 // Path Tests - Success
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "testNoPathParametersAllowed()" {
+    @Test
+    fun testNoPathParametersAllowed() = runTest {
         SimpleRoute("/").apply {
             directions()
                 .shouldBe("/")
@@ -29,7 +31,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "test1RequiredPathParameter()" {
+    @Test
+    fun test1RequiredPathParameter() = runTest {
         SimpleRoute("/one/:two").apply {
             directions()
                 .pathParameter("two", "three")
@@ -43,7 +46,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "test1OptionalPathParameter()" {
+    @Test
+    fun test1OptionalPathParameter() = runTest {
         SimpleRoute("/one/{two?}").apply {
             directions()
                 .shouldBe("/one")
@@ -59,7 +63,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testMultiplePathParameters()" {
+    @Test
+    fun testMultiplePathParameters() = runTest {
         SimpleRoute("/one/:two/{three?}").apply {
             directions()
                 .pathParameter("two", "three")
@@ -78,14 +83,16 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testPathAnonymousTailcard()" {
+    @Test
+    fun testPathAnonymousTailcard() = runTest {
         SimpleRoute("/one/{...}").apply {
             directions()
                 .shouldBe("/one")
         }
     }
 
-    "testPathNamedTailcard()" {
+    @Test
+    fun testPathNamedTailcard() = runTest {
         SimpleRoute("/one/{two...}").apply {
             directions()
                 .pathParameter("two", "three")
@@ -105,7 +112,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testPathParameterWithAnonymousTailcard()" {
+    @Test
+    fun testPathParameterWithAnonymousTailcard() = runTest {
         SimpleRoute("/one/{two}/{...}").apply {
             directions()
                 .pathParameter("two", "three")
@@ -113,7 +121,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testPathParameterWithNamedTailcard()" {
+    @Test
+    fun testPathParameterWithNamedTailcard() = runTest {
         SimpleRoute("/one/{two}/{three...}").apply {
             directions()
                 .pathParameter("two", "two")
@@ -136,7 +145,8 @@ class TestRouteDirections : StringSpec({
 // Path Tests - Failure
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "testFailureWithNoPathParametersAllowed()" {
+    @Test
+    fun testFailureWithNoPathParametersAllowed() = runTest {
         SimpleRoute("/").apply {
             directions()
                 .pathParameter("two", "two")
@@ -144,7 +154,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testFailureWithRequiredPathParameter()" {
+    @Test
+    fun testFailureWithRequiredPathParameter() = runTest {
         SimpleRoute("/one/:two").apply {
             directions()
                 .shouldFail()
@@ -154,7 +165,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testPathWildcard()" {
+    @Test
+    fun testPathWildcard() = runTest {
         SimpleRoute("/one/*").apply {
             directions()
                 .shouldFail()
@@ -167,21 +179,24 @@ class TestRouteDirections : StringSpec({
 // Query Parameter Tests - Success
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "test1StaticQuery()" {
+    @Test
+    fun test1StaticQuery() = runTest {
         SimpleRoute("/one?one=two").apply {
             directions()
                 .shouldBe("/one?one=two")
         }
     }
 
-    "testMultipleStaticQuery()" {
+    @Test
+    fun testMultipleStaticQuery() = runTest {
         SimpleRoute("/one?one=two&three=four").apply {
             directions()
                 .shouldBe("/one?one=two&three=four")
         }
     }
 
-    "testRequiredQueryParameterWith1Value()" {
+    @Test
+    fun testRequiredQueryParameterWith1Value() = runTest {
         SimpleRoute("/one?one={!}").apply {
             directions()
                 .queryParameter("one", "two")
@@ -189,7 +204,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testRequiredQueryParameterWithMultipleValues()" {
+    @Test
+    fun testRequiredQueryParameterWithMultipleValues() = runTest {
         SimpleRoute("/one?one={[!]}").apply {
             directions()
                 .queryParameter("one", "two")
@@ -200,7 +216,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testOptionalQueryParameterWith1Value()" {
+    @Test
+    fun testOptionalQueryParameterWith1Value() = runTest {
         SimpleRoute("/one?one={?}").apply {
             directions().shouldBe("/one")
             directions()
@@ -209,7 +226,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testOptionalQueryParameterWithMultipleValues()" {
+    @Test
+    fun testOptionalQueryParameterWithMultipleValues() = runTest {
         SimpleRoute("/one?one={[?]}").apply {
             directions().shouldBe("/one")
             directions()
@@ -221,7 +239,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testRemainder()" {
+    @Test
+    fun testRemainder() = runTest {
         SimpleRoute("/one?{...}").apply {
             directions()
                 .shouldBe("/one")
@@ -241,7 +260,8 @@ class TestRouteDirections : StringSpec({
 // Query Parameter Tests - Failure
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "testFailureWithNoQuery()" {
+    @Test
+    fun testFailureWithNoQuery() = runTest {
         SimpleRoute("/one").apply {
             directions()
                 .queryParameter("one", "two")
@@ -249,7 +269,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testFailureWith1StaticQuery()" {
+    @Test
+    fun testFailureWith1StaticQuery() = runTest {
         SimpleRoute("/one?one=two").apply {
             directions()
                 .queryParameter("one", "two")
@@ -257,7 +278,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testFailureWithRequiredQueryParameterWith1Value()" {
+    @Test
+    fun testFailureWithRequiredQueryParameterWith1Value() = runTest {
         SimpleRoute("/one?one={!}").apply {
             directions()
                 .shouldFail()
@@ -270,7 +292,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testFailureWithRequiredQueryParameterWithMultipleValue()" {
+    @Test
+    fun testFailureWithRequiredQueryParameterWithMultipleValue() = runTest {
         SimpleRoute("/one?one={[!]}").apply {
             directions()
                 .shouldFail()
@@ -280,7 +303,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testFailureWithOptionalQueryParameterWith1Value()" {
+    @Test
+    fun testFailureWithOptionalQueryParameterWith1Value() = runTest {
         SimpleRoute("/one?one={?}").apply {
             directions()
                 .queryParameter("two", "three")
@@ -291,7 +315,8 @@ class TestRouteDirections : StringSpec({
         }
     }
 
-    "testFailureWithOptionalQueryParameterWithMultipleValue()" {
+    @Test
+    fun testFailureWithOptionalQueryParameterWithMultipleValue() = runTest {
         SimpleRoute("/one?one={[?]}").apply {
             directions()
                 .queryParameter("two", "three")
@@ -302,7 +327,8 @@ class TestRouteDirections : StringSpec({
 // Test encoding
 // ---------------------------------------------------------------------------------------------------------------------
 
-    "testEncoding()" {
+    @Test
+    fun testEncoding() = runTest {
         SimpleRoute("/one/:two?three={?}").apply {
             directions()
                 .pathParameter("two", "a b")
@@ -314,7 +340,7 @@ class TestRouteDirections : StringSpec({
                 .shouldBe("/one/a%2Fb?three=c%2F%26%2Fd")
         }
     }
-}) {
+
     companion object {
         private fun <T : Route> Destination.Directions<T>.shouldBe(expectedDestinationUrl: String) {
             val generatedDestinationUrl = build()

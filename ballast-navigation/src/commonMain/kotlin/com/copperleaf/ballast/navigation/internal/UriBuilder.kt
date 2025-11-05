@@ -39,6 +39,10 @@ internal object UriBuilder {
         encodedPath: String,
         encodedQueryString: String?,
     ): Uri {
+        check(encodedQueryString?.startsWith('?') != true) {
+            "encodedQueryString must not start with a '?'"
+        }
+
         val decodedPathSegments = encodedPath
             .split('/')
             .dropWhile { it.isBlank() }.dropLastWhile { it.isBlank() }

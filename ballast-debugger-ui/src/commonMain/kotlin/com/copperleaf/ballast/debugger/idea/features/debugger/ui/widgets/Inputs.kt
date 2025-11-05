@@ -45,7 +45,7 @@ import com.copperleaf.ballast.debugger.server.vm.DebuggerServerContract
 import com.copperleaf.ballast.debugger.utils.minus
 import com.copperleaf.ballast.debugger.utils.removeFraction
 import com.copperleaf.ballast.debugger.versions.ClientVersion
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerActionV5
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
@@ -102,7 +102,7 @@ internal fun ColumnScope.InputsListToolbar(
                     postInput(
                         DebuggerUiContract.Inputs.SendToDebuggerServer(
                             DebuggerServerContract.Inputs.SendDebuggerAction(
-                                BallastDebuggerActionV4.RequestSendInput(
+                                BallastDebuggerActionV5.RequestSendInput(
                                     connection.connectionId,
                                     viewModel.viewModelName,
                                     serializedInput = serializedState,
@@ -227,7 +227,7 @@ internal fun InputSummary(
                     postInput(
                         DebuggerUiContract.Inputs.SendToDebuggerServer(
                             DebuggerServerContract.Inputs.SendDebuggerAction(
-                                BallastDebuggerActionV4.RequestResendInput(
+                                BallastDebuggerActionV5.RequestResendInput(
                                     connectionId = inputState.connectionId,
                                     viewModelName = inputState.viewModelName,
                                     inputUuid = inputState.uuid,

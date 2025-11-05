@@ -1,0 +1,106 @@
+site_name: 'Ballast'
+site_description: 'Opinionated Application State Management framework for Kotlin Multiplatform'
+site_url: 'https://github.com/copper-leaf/ballast'
+repo_name: 'ballast'
+repo_url: 'https://github.com/copper-leaf/ballast'
+copyright: 'Copyright &copy; 2025 Copper Leaf'
+
+theme:
+  name: 'material'
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.path
+    - toc.follow
+
+plugins:
+  - search
+  - markdownextradata
+
+extra:
+  palette:
+    primary: 'indigo'
+    accent: 'indigo'
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/copper-leaf/ballast
+
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - pymdownx.snippets:
+      base_path: '.'
+      check_paths: true
+      restrict_base_path: false
+
+nav:
+  - Home:
+    - Feature Overview: pages/feature-overview.md
+    - Community: pages/community.md
+    - Changelog: pages/changelog.md
+    - Roadmap: pages/roadmap.md
+    - MVI Library Comparison: pages/feature-comparison.md
+  - Usage Guide: pages/wiki/usage/index.md
+  - Platforms: pages/wiki/platforms/index.md
+  - Modules:
+      - Ballast Core: pages/wiki/modules/ballast-core.md
+      - Ballast Analytics: pages/wiki/modules/ballast-analytics.md
+      - Ballast Crash Reporting: pages/wiki/modules/ballast-crash-reporting.md
+      - Ballast Debugger: pages/wiki/modules/ballast-debugger.md
+      - Ballast Intellij Plugin: pages/wiki/modules/ballast-intellij-plugin.md
+      - Ballast Navigation: pages/wiki/modules/ballast-navigation.md
+      - Ballast Navigation: pages/wiki/modules/ballast-repository.md
+      - Ballast Saved State: pages/wiki/modules/ballast-saved-state.md
+      - Ballast Schedules: pages/wiki/modules/ballast-schedules.md
+      - Ballast Sync: pages/wiki/modules/ballast-sync.md
+      - Ballast Test: pages/wiki/modules/ballast-test.md
+      - Ballast Undo: pages/wiki/modules/ballast-undo.md
+  - Examples: pages/wiki/usage/index.md

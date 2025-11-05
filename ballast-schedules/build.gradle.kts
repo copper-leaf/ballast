@@ -2,13 +2,17 @@ plugins {
     id("copper-leaf-base")
     id("copper-leaf-android-library")
     id("copper-leaf-targets")
-    id("copper-leaf-kotest")
+    id("copper-leaf-tests")
     id("copper-leaf-lint")
     id("copper-leaf-publish")
     id("copper-leaf-serialization")
 }
 
 kotlin {
+    compilerOptions {
+        optIn.add("kotlin.time.ExperimentalTime")
+    }
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -28,7 +32,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.work:work-runtime-ktx:2.8.1")
+                api("androidx.work:work-runtime-ktx:2.10.4")
             }
         }
         val jsMain by getting {

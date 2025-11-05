@@ -5,9 +5,9 @@ import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.scheduler.scheduler
 import com.copperleaf.ballast.scheduler.vm.SchedulerContract
 import kotlinx.coroutines.delay
-import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 class SchedulerExampleInputHandler(
     private val clock: Clock = Clock.System,

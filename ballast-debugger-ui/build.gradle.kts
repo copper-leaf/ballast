@@ -1,7 +1,7 @@
 plugins {
     id("copper-leaf-base")
     id("copper-leaf-targets")
-    id("copper-leaf-kotest")
+    id("copper-leaf-tests")
     id("copper-leaf-serialization")
     id("copper-leaf-compose")
 //    id("copper-leaf-lint")

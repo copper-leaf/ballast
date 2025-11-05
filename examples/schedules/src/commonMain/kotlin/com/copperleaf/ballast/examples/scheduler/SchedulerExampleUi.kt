@@ -113,7 +113,7 @@ object SchedulerExampleUi {
     }
 
     private fun LocalDateTime.formatDate(): String {
-        return "${month.name} $dayOfMonth, $year"
+        return "${month.name} $day, $year"
     }
 
     private fun LocalDateTime.formatTime(): String {

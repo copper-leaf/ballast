@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.examples.navigation
 
 import com.copperleaf.ballast.eventHandler
-import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.RouterContract
 import com.copperleaf.ballast.navigation.routing.RoutingTable
 import com.copperleaf.ballast.navigation.routing.build
@@ -12,13 +11,14 @@ import com.copperleaf.ballast.navigation.routing.pathParameter
 import com.copperleaf.ballast.navigation.routing.queryParameter
 import com.copperleaf.ballast.navigation.vm.RouterInputHandlerImpl
 import com.copperleaf.ballast.test.viewModelTest
-import io.kotest.core.spec.style.StringSpec
-import io.kotest.matchers.nulls.shouldNotBeNull
-import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
-class NavigationTest : StringSpec({
-    "doTest" {
+class NavigationTest {
+    @Test
+    fun doTest() = runTest {
         viewModelTest(
             inputHandler = RouterInputHandlerImpl<AppScreen>(),
             eventHandler = eventHandler { },
@@ -33,10 +33,9 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreen>>()
-                    currentRoute.originalRoute shouldBe AppScreen.Home
-                    currentRoute.originalDestinationUrl shouldBe "/app/home"
+                    assertNotNull(currentRoute)
+                    assertEquals<Any?>(AppScreen.Home, currentRoute.originalRoute)
+                    assertEquals<Any?>("/app/home", currentRoute.originalDestinationUrl)
                 }
             }
 
@@ -48,10 +47,9 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreen>>()
-                    currentRoute.originalRoute shouldBe AppScreen.PostList
-                    currentRoute.originalDestinationUrl shouldBe "/app/posts"
+                    assertNotNull(currentRoute)
+                    assertEquals<Any?>(AppScreen.PostList, currentRoute.originalRoute)
+                    assertEquals<Any?>("/app/posts", currentRoute.originalDestinationUrl)
                 }
             }
 
@@ -63,10 +61,9 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreen>>()
-                    currentRoute.originalRoute shouldBe AppScreen.PostList
-                    currentRoute.originalDestinationUrl shouldBe "/app/posts?sort=desc"
+                    assertNotNull(currentRoute)
+                    assertEquals<Any?>(AppScreen.PostList, currentRoute.originalRoute)
+                    assertEquals<Any?>("/app/posts?sort=desc", currentRoute.originalDestinationUrl)
                 }
             }
 
@@ -78,12 +75,11 @@ class NavigationTest : StringSpec({
                 }
                 resultsIn {
                     val currentRoute = latestState.currentDestinationOrNull
-                    currentRoute.shouldNotBeNull()
-                    currentRoute.shouldBeInstanceOf<Destination.Match<AppScreen>>()
-                    currentRoute.originalRoute shouldBe AppScreen.PostDetails
-                    currentRoute.originalDestinationUrl shouldBe "/app/posts/5"
+                    assertNotNull(currentRoute)
+                    assertEquals<Any?>(AppScreen.PostDetails, currentRoute.originalRoute)
+                    assertEquals<Any?>("/app/posts/5", currentRoute.originalDestinationUrl)
                 }
             }
         }
     }
-})
+}

@@ -3,7 +3,7 @@ import com.copperleaf.gradle.projectVersion
 plugins {
     id("copper-leaf-base")
     id("copper-leaf-targets")
-    id("copper-leaf-kotest")
+    id("copper-leaf-tests")
     id("copper-leaf-serialization")
     id("copper-leaf-buildConfig")
 //    id("copper-leaf-lint")

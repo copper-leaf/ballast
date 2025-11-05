@@ -1,17 +1,19 @@
 package com.copperleaf.ballast.navigation
 
-import com.copperleaf.ballast.navigation.Assertions.assertEquals
-import com.copperleaf.ballast.navigation.Assertions.assertFailsWith
-import com.copperleaf.ballast.navigation.Assertions.assertSame
-import com.copperleaf.ballast.navigation.Assertions.assertTrue
 import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
 import com.copperleaf.ballast.navigation.routing.matchDestination
 import com.copperleaf.ballast.navigation.routing.matchDestinationOrThrow
-import io.kotest.core.spec.style.StringSpec
+import kotlinx.coroutines.test.runTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
-class TestMatching : StringSpec({
-    "testMatchPath" {
+class TestMatching {
+    @Test
+    fun testMatchPath() = runTest {
         SimpleRoute("/one").apply {
             "/one".shouldMatch(this)
             "/".shouldNotMatch(
@@ -150,7 +152,8 @@ class TestMatching : StringSpec({
         }
     }
 
-    "testMatchQuery" {
+    @Test
+    fun testMatchQuery() = runTest {
         SimpleRoute("/one?one=two").apply {
             "/one?one=two".shouldMatch(
                 this,
@@ -333,7 +336,8 @@ class TestMatching : StringSpec({
         }
     }
 
-    "testRoutePriority" {
+    @Test
+    fun testRoutePriority() = runTest {
         val pathRoute = SimpleRoute("/one/{two?}?three={!}")
         val queryRoute = SimpleRoute("/one?two={?}&three={!}")
         val simpleRoutingTable = SimpleRoutingTable(queryRoute, pathRoute)
@@ -352,7 +356,8 @@ class TestMatching : StringSpec({
         assertSame(pathRoute, (destination as Destination.Match).originalRoute)
     }
 
-    "testRoutePriorityWithHardcodedWeights" {
+    @Test
+    fun testRoutePriorityWithHardcodedWeights() = runTest {
         val pathRoute = SimpleRoute("/one/{two?}?three={!}")
         val queryRoute = SimpleRoute("/one?two={?}&three={!}", Double.MAX_VALUE)
         val simpleRoutingTable = SimpleRoutingTable(queryRoute, pathRoute)
@@ -371,7 +376,8 @@ class TestMatching : StringSpec({
         assertSame(queryRoute, (destination as Destination.Match).originalRoute)
     }
 
-    "testRoutePriorityWithManyQueryParameters" {
+    @Test
+    fun testRoutePriorityWithManyQueryParameters() = runTest {
         val pathRoute = SimpleRoute("/one/{two?}?three={!}")
         val queryRoute = SimpleRoute("/one?two={?}&three={!}&four={?}")
         val simpleRoutingTable = SimpleRoutingTable(queryRoute, pathRoute)
@@ -389,7 +395,8 @@ class TestMatching : StringSpec({
         assertTrue { destination is Destination.Match }
         assertSame(queryRoute, (destination as Destination.Match).originalRoute)
     }
-}) {
+
+
     companion object {
         fun String.shouldMatch(
             route: SimpleRoute,

@@ -1,12 +1,11 @@
 package com.copperleaf.ballast.internal.actors
 
 import com.copperleaf.ballast.BallastNotification
+import com.copperleaf.ballast.BallastScopeFactory
 import com.copperleaf.ballast.InputStrategy
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.internal.BallastViewModelImpl
 import com.copperleaf.ballast.internal.Status
-import com.copperleaf.ballast.internal.scopes.InputHandlerScopeImpl
-import com.copperleaf.ballast.internal.scopes.InputStrategyScopeImpl
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.channels.ChannelResult
@@ -14,21 +13,16 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.plus
 
-internal class InputActor<Inputs : Any, Events : Any, State : Any>(
-    private val impl: BallastViewModelImpl<Inputs, Events, State>
+public class InputActor<Inputs : Any, Events : Any, State : Any>(
+    private val impl: BallastViewModelImpl<Inputs, Events, State>,
+    private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
 
     internal fun startMainQueueInternal() {
         // observe and process Inputs
-        val scope = InputStrategyScopeImpl(
+        val scope = scopeFactory.createInputStrategyScope(
             inputStrategyCoroutineScope = impl.viewModelScope +
                     impl.inputsDispatcher,
-            logger = impl.logger,
-            hostViewModelType = impl.type,
-            hostViewModelName = impl.name,
-            inputActor = impl.inputActor,
-            stateActor = impl.stateActor,
-            interceptorActor = impl.interceptorActor,
         )
         with(impl.inputStrategy) {
             scope.start()
@@ -139,17 +133,11 @@ internal class InputActor<Inputs : Any, Events : Any, State : Any>(
         try {
             coroutineScope {
                 // Create a handler scope to handle the input normally
-                val handlerScope = InputHandlerScopeImpl(
-                    guardian = guardian,
-                    logger = impl.logger,
-                    stateActor = impl.stateActor,
-                    eventActor = impl.eventActor,
-                    sideJobActor = impl.sideJobActor,
-                )
+                val inputHandlerScope = scopeFactory.createInputHandlerScope(guardian)
                 with(impl.inputHandler) {
-                    handlerScope.handleInput(input)
+                    inputHandlerScope.handleInput(input)
                 }
-                handlerScope.close()
+                inputHandlerScope.markAsCompletedSuccessfully()
 
                 try {
                     impl.interceptorActor.notify(

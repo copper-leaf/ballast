@@ -35,6 +35,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         }
     }
 
+    @OptIn(ExperimentalWasmJsInterop::class)
     override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow {
             window.onpopstate = { event: PopStateEvent ->
@@ -50,6 +51,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         }
     }
 
+    @OptIn(ExperimentalWasmJsInterop::class)
     override fun setDestinationUrl(url: Uri) {
         try {
             val previousDestination = getInitialUrl()
@@ -57,7 +59,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
                 val updatedUrl = if(basePath != null) {
                     UriBuilder.build(
                         encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
-                        encodedQueryString = url.encodedQueryString,
+                        encodedQueryString = url.encodedQueryString.trimStart('?'),
                     )
                 } else {
                     url

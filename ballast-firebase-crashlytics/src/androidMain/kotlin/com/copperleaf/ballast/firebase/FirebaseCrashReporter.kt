@@ -2,8 +2,8 @@ package com.copperleaf.ballast.firebase
 
 import com.copperleaf.ballast.crashreporting.CrashReporter
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.google.firebase.crashlytics.ktx.KeyValueBuilder
-import com.google.firebase.crashlytics.ktx.setCustomKeys
+import com.google.firebase.crashlytics.KeyValueBuilder
+import com.google.firebase.crashlytics.setCustomKeys
 
 public class FirebaseCrashReporter(
     private val crashlytics: FirebaseCrashlytics,

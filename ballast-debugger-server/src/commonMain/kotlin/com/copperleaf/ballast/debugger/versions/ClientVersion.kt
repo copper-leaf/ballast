@@ -6,10 +6,12 @@ import com.copperleaf.ballast.debugger.versions.v2.ClientModelConverterV1ToV2
 import com.copperleaf.ballast.debugger.versions.v2.ClientModelSerializerV2
 import com.copperleaf.ballast.debugger.versions.v3.ClientModelConverterV2ToV3
 import com.copperleaf.ballast.debugger.versions.v3.ClientModelSerializerV3
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerActionV4
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
 import com.copperleaf.ballast.debugger.versions.v4.ClientModelConverterV3ToV4
 import com.copperleaf.ballast.debugger.versions.v4.ClientModelSerializerV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerActionV5
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
+import com.copperleaf.ballast.debugger.versions.v5.ClientModelConverterV4ToV5
+import com.copperleaf.ballast.debugger.versions.v5.ClientModelSerializerV5
 
 @Suppress("NOTHING_TO_INLINE")
 public data class ClientVersion(val major: Int, val minor: Int?, val patch: Int?) : Comparable<ClientVersion> {
@@ -84,7 +86,7 @@ public data class ClientVersion(val major: Int, val minor: Int?, val patch: Int?
 
         public fun getSerializer(
             clientVersion: ClientVersion
-        ): ClientModelSerializer<BallastDebuggerEventV4, BallastDebuggerActionV4> {
+        ): ClientModelSerializer<BallastDebuggerEventV5, BallastDebuggerActionV5> {
             return when (clientVersion.major) {
                 1 -> CompositeModelSerializer(
                     serializer = ClientModelSerializerV1(),
@@ -93,24 +95,38 @@ public data class ClientVersion(val major: Int, val minor: Int?, val patch: Int?
                             ClientModelConverterV1ToV2(),
                             ClientModelConverterV2ToV3(),
                         ),
-                        ClientModelConverterV3ToV4(),
+                        CompositeModelConverter(
+                            ClientModelConverterV3ToV4(),
+                            ClientModelConverterV4ToV5(),
+                        ),
                     ),
                 )
 
                 2 -> CompositeModelSerializer(
                     serializer = ClientModelSerializerV2(),
                     converter = CompositeModelConverter(
-                        ClientModelConverterV2ToV3(),
-                        ClientModelConverterV3ToV4(),
+                        CompositeModelConverter(
+                            ClientModelConverterV2ToV3(),
+                            ClientModelConverterV3ToV4(),
+                        ),
+                        ClientModelConverterV4ToV5(),
                     ),
                 )
 
                 3 -> CompositeModelSerializer(
                     serializer = ClientModelSerializerV3(),
-                    converter = ClientModelConverterV3ToV4(),
+                    converter = CompositeModelConverter(
+                        ClientModelConverterV3ToV4(),
+                        ClientModelConverterV4ToV5(),
+                    )
                 )
 
-                4 -> ClientModelSerializerV4()
+                4 -> CompositeModelSerializer(
+                    serializer = ClientModelSerializerV4(),
+                    converter = ClientModelConverterV4ToV5(),
+                )
+
+                5 -> ClientModelSerializerV5()
 
                 else -> ClientModelMapperUnsupportedVersion(clientVersion)
             }
@@ -118,7 +134,7 @@ public data class ClientVersion(val major: Int, val minor: Int?, val patch: Int?
 
         public fun getSerializer(
             clientVersion: String
-        ): ClientModelSerializer<BallastDebuggerEventV4, BallastDebuggerActionV4> {
+        ): ClientModelSerializer<BallastDebuggerEventV5, BallastDebuggerActionV5> {
             return getSerializer(parse(clientVersion))
         }
     }

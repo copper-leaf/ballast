@@ -12,9 +12,9 @@ import com.copperleaf.ballast.scheduler.schedule.take
 import com.copperleaf.ballast.scheduler.workmanager.internal.getRegisteredSchedules
 import com.copperleaf.ballast.scheduler.workmanager.internal.syncSchedulesOnStartupInternal
 import com.copperleaf.ballast.scheduler.workmanager.internal.syncSchedulesPeriodicallyInternal
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
+import kotlin.time.Clock
 import kotlin.time.Duration
+import kotlin.time.Instant
 
 // public API to Ballast Scheduler WorkManager
 // ---------------------------------------------------------------------------------------------------------------------
