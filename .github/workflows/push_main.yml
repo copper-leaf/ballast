@@ -26,7 +26,6 @@ jobs:
     runs-on: 'ubuntu-latest'
     outputs:
       projectVersion: ${{ steps.outputProjectVersion.outputs.projectVersion }}
-      encryptedStagingRepositoryId: ${{ steps.encryptStagingRepositoryId.outputs.out }}
     steps:
       - uses: 'actions/checkout@v3'
         with:
@@ -41,14 +40,6 @@ jobs:
         run: './gradlew writeProjectVersion openSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
       - id: 'outputProjectVersion'
         run: 'echo "projectVersion=$(cat ./build/export/projectVersion)" && echo "projectVersion=$(cat ./build/export/projectVersion)" >> "$GITHUB_OUTPUT"'
-      - id: 'outputStagingRepositoryId'
-        run: 'echo "stagingRepositoryId=$(cat ./build/export/stagingRepositoryId)" && echo "stagingRepositoryId=$(cat ./build/export/stagingRepositoryId)" >> "$GITHUB_OUTPUT"'
-      - id: 'encryptStagingRepositoryId'
-        uses: 'cloudposse/github-action-secret-outputs@main'
-        with:
-          secret: ${{ secrets.SECRETS_PASSWORD }}
-          op: encode
-          in: ${{ steps.outputStagingRepositoryId.outputs.stagingRepositoryId }}
 
   publishIntellijPlugin:
     runs-on: 'ubuntu-latest'
@@ -68,6 +59,7 @@ jobs:
 
   publishArtifacts:
     strategy:
+      fail-fast: false
       matrix:
         java: [17]
         config:
@@ -92,14 +84,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - id: 'decryptStagingRepositoryId'
-        uses: 'cloudposse/github-action-secret-outputs@main'
-        with:
-          secret: ${{ secrets.SECRETS_PASSWORD }}
-          op: decode
-          in: ${{needs.openStagingRepo.outputs.encryptedStagingRepositoryId}}
-      - run: echo "stagingRepositoryId=${{ steps.decryptStagingRepositoryId.outputs.out }}" >> $GITHUB_ENV
-      - run: 'echo "stagingRepositoryId=$(echo $stagingRepositoryId)"'
+      - run: './gradlew findStagingRepositoryId'
       - run: './gradlew publish${{ matrix.config.target }}PublicationToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
 
   closeStagingRepo:
@@ -115,13 +100,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - id: 'decryptStagingRepositoryId'
-        uses: 'cloudposse/github-action-secret-outputs@main'
-        with:
-          secret: ${{ secrets.SECRETS_PASSWORD }}
-          op: decode
-          in: ${{needs.openStagingRepo.outputs.encryptedStagingRepositoryId}}
-      - run: echo "stagingRepositoryId=${{ steps.decryptStagingRepositoryId.outputs.out }}" >> $GITHUB_ENV
-      - run: 'echo "stagingRepositoryId=$(echo $stagingRepositoryId)"'
+      - run: './gradlew findStagingRepositoryId'
       - name: 'Close Sonatype Staging Repository'
         run: './gradlew closeSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
