@@ -84,7 +84,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - run: './gradlew findStagingRepositoryId'
+      - run: './gradlew findSonatypeStagingRepository'
       - run: './gradlew publish${{ matrix.config.target }}PublicationToMavenCentralRepository --stacktrace -Prelease -PorchidEnvironment=prod'
 
   closeStagingRepo:
@@ -100,6 +100,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-      - run: './gradlew findStagingRepositoryId'
+      - run: './gradlew findSonatypeStagingRepository'
       - name: 'Close Sonatype Staging Repository'
         run: './gradlew closeSonatypeStagingRepository --no-configuration-cache --stacktrace -Prelease -PorchidEnvironment=prod'
