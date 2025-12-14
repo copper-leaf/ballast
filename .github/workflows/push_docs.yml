@@ -3,10 +3,10 @@
 
 name: 'Update docs'
 
-on:
-  workflow_dispatch:
-  push:
-    branches: ['main', 'docs']
+#on:
+#  workflow_dispatch:
+#  push:
+#    branches: ['main', 'docs']
 
 jobs:
   buildDocumentationSite:
