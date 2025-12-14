@@ -6,6 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
+@Suppress("SENSELESS_COMPARISON")
 class TestUriBuilder {
     @Test
     fun uriBuilder_base() = runTest {

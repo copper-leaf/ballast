@@ -596,17 +596,22 @@ public final class com/copperleaf/ballast/internal/BallastViewModelImpl : com/co
 	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 	public final fun attachEventHandler (Lcom/copperleaf/ballast/EventHandler;Lkotlinx/coroutines/CoroutineScope;)V
 	public static synthetic fun attachEventHandler$default (Lcom/copperleaf/ballast/internal/BallastViewModelImpl;Lcom/copperleaf/ballast/EventHandler;Lkotlinx/coroutines/CoroutineScope;ILjava/lang/Object;)V
+	public final fun getEventActor ()Lcom/copperleaf/ballast/internal/actors/EventActor;
 	public fun getEventStrategy ()Lcom/copperleaf/ballast/EventStrategy;
 	public fun getEventsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getInitialState ()Ljava/lang/Object;
+	public final fun getInputActor ()Lcom/copperleaf/ballast/internal/actors/InputActor;
 	public fun getInputHandler ()Lcom/copperleaf/ballast/InputHandler;
 	public fun getInputStrategy ()Lcom/copperleaf/ballast/InputStrategy;
 	public fun getInputsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getInterceptorActor ()Lcom/copperleaf/ballast/internal/actors/InterceptorActor;
 	public fun getInterceptorDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun getInterceptors ()Ljava/util/List;
 	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public fun getName ()Ljava/lang/String;
+	public final fun getSideJobActor ()Lcom/copperleaf/ballast/internal/actors/SideJobActor;
 	public fun getSideJobsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getStateActor ()Lcom/copperleaf/ballast/internal/actors/StateActor;
 	public final fun getViewModelScope ()Lkotlinx/coroutines/CoroutineScope;
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -704,6 +709,7 @@ public final class com/copperleaf/ballast/internal/Status$ShuttingDown : com/cop
 
 public final class com/copperleaf/ballast/internal/actors/EventActor {
 	public fun <init> (Lcom/copperleaf/ballast/internal/BallastViewModelImpl;Lcom/copperleaf/ballast/BallastScopeFactory;)V
+	public final fun enqueueEvent (Ljava/lang/Object;Lkotlinx/coroutines/CompletableDeferred;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/internal/actors/InputActor {
@@ -716,6 +722,8 @@ public final class com/copperleaf/ballast/internal/actors/InterceptorActor {
 
 public final class com/copperleaf/ballast/internal/actors/SideJobActor {
 	public fun <init> (Lcom/copperleaf/ballast/internal/BallastViewModelImpl;Lcom/copperleaf/ballast/BallastScopeFactory;)V
+	public final fun cancelSideJob (Ljava/lang/String;)V
+	public final fun enqueueSideJob (Ljava/lang/String;Lkotlin/jvm/functions/Function2;)V
 }
 
 public abstract interface class com/copperleaf/ballast/internal/actors/StateActor {
@@ -736,6 +744,7 @@ public class com/copperleaf/ballast/internal/scopes/DefaultBallastScopeFactory :
 	public fun createInputStrategyScope (Lkotlinx/coroutines/CoroutineScope;)Lcom/copperleaf/ballast/InputStrategyScope;
 	public fun createSideJobScope (Lkotlinx/coroutines/CoroutineScope;Ljava/lang/String;Lcom/copperleaf/ballast/SideJobScope$RestartState;)Lcom/copperleaf/ballast/SideJobScope;
 	public fun createStateActor (Lcom/copperleaf/ballast/internal/BallastViewModelImpl;)Lcom/copperleaf/ballast/internal/actors/StateActor;
+	protected final fun getImpl ()Lcom/copperleaf/ballast/internal/BallastViewModelImpl;
 }
 
 public final class com/copperleaf/ballast/internal/scopes/InputStrategyScopeImpl : com/copperleaf/ballast/InputStrategyScope, kotlinx/coroutines/CoroutineScope {

@@ -6,7 +6,7 @@ import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.models.BallastConnectionState
 import com.copperleaf.ballast.debugger.models.BallastViewModelState
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerConnection
-import com.copperleaf.ballast.debugger.versions.v4.BallastDebuggerEventV4
+import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
 
 public class DebuggerServerInputHandler : InputHandler<
         DebuggerServerContract.Inputs,
@@ -86,7 +86,7 @@ public class DebuggerServerInputHandler : InputHandler<
                     allMessages = it.allMessages + input.message,
                     applicationState = it.applicationState.updateConnection(input.message.connectionId) {
 
-                        if (input.message is BallastDebuggerEventV4.Heartbeat) {
+                        if (input.message is BallastDebuggerEventV5.Heartbeat) {
                             copy(connectionBallastVersion = input.message.connectionBallastVersion)
                         } else {
                             updateViewModel(input.message.viewModelName) {
