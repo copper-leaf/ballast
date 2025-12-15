@@ -6,6 +6,16 @@ name: 'Push to `main` (Create Release)'
 on:
   push:
     branches: ['main']
+  workflow_dispatch:
+    inputs:
+      releaseIntellijPlugin:
+        description: 'Release Intellij Plugin'
+        required: false
+        type: boolean
+      releaseArtifacts:
+        description: 'Release Artifacts'
+        required: false
+        type: boolean
 
 env:
   GITHUB_ACTOR: '${{ github.actor }}'
@@ -44,6 +54,7 @@ jobs:
   publishIntellijPlugin:
     runs-on: 'ubuntu-latest'
     needs: ['openStagingRepo']
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.releaseIntellijPlugin == true)
     steps:
       - uses: 'actions/checkout@v3'
         with:
@@ -75,6 +86,7 @@ jobs:
     name: 'Publish ${{ matrix.config.target }} artifacts on ${{ matrix.config.os }} JDK ${{ matrix.java }}'
     runs-on: '${{ matrix.config.os }}'
     needs: ['openStagingRepo']
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.releaseArtifacts == true)
     steps:
       - uses: 'actions/checkout@v3'
         with:
