@@ -1,3 +1,14 @@
+## 5.0.1 - 2025-12-15
+
+- Replaced usages of `kotlinx.datetime.Clock` with `kotlin.time.Clock`
+- Replaced usages of `kotlinx.datetime.Instant` with `kotlin.time.Instant`
+- Ballast debugger client is now supported on WasmJS targets
+- **Kotlin** updated to `2.2.20`.
+- **Compose** updated to `1.8.2`.
+- **kotlinx-serialization** updated to `1.9.0`.
+- **kotlinx-datetime** updated to `0.7.1`.
+- **ktor client** updated to `3.3.0`.
+
 ## 4.2.2 - 2025-01-26
 
 - **Kotlin** updated to `2.1.0`.
