@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.scheduler.operators
 
-import com.copperleaf.ballast.scheduler.schedule.Schedule
+import com.copperleaf.ballast.scheduler.Schedule
 import kotlin.time.Clock
 
 /**

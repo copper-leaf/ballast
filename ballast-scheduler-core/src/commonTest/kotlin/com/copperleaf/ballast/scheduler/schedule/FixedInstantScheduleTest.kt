@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import com.copperleaf.ballast.scheduler.ExactTimeClock
 import com.copperleaf.ballast.scheduler.firstTen
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
@@ -21,7 +20,6 @@ class FixedInstantScheduleTest {
         assertEquals(
             actual = FixedInstantSchedule(
                 startDay.atTime(2, 45, 0).toInstant(timeZone),
-                clock = ExactTimeClock(startInstant),
             )
                 .generateSchedule(startInstant)
                 .firstTen(),
@@ -38,11 +36,6 @@ class FixedInstantScheduleTest {
                 startDay.atTime(2, 45, 0).toInstant(timeZone),
                 startDay.atTime(3, 45, 0).toInstant(timeZone),
                 startDay.atTime(3, 56, 44).toInstant(timeZone),
-                clock = ExactTimeClock(
-                    startDay.atTime(2, 44, 0).toInstant(timeZone),
-                    startDay.atTime(3, 44, 0).toInstant(timeZone),
-                    startDay.atTime(3, 55, 44).toInstant(timeZone),
-                ),
             )
                 .generateSchedule(startInstant)
                 .firstTen(),

@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.scheduler.schedule
 
+import com.copperleaf.ballast.scheduler.Schedule
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone

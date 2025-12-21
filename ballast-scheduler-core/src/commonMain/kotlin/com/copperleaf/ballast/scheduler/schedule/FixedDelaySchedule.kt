@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.scheduler.schedule
 
+import com.copperleaf.ballast.scheduler.Schedule
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Instant

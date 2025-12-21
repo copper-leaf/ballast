@@ -1,13 +1,13 @@
-package com.copperleaf.ballast.scheduler.schedule
+package com.copperleaf.ballast.scheduler
 
 import kotlin.time.Instant
 
 /**
  * An interface for generating a non-persistent schedule of tasks.
  *
- * A Schedule produces an _ideal_ schedule, meaning it takes a starting [Instant] and generates a Sequence of future
+ * A Schedule produces an _ideal_ schedule, meaning it takes a starting [kotlin.time.Instant] and generates a Sequence of future
  * Instants according to the schedule's algorithm. These are intended to be seen as the Instants which _should_ be
- * executed, but in reality some of these Instants might be dropped for a variety of reasons. A [ScheduleExecutor] is
+ * executed, but in reality some of these Instants might be dropped for a variety of reasons. A Schedule Executor is
  * responsible for "realizing" the generated schedule and sending callbacks at the appropriate time to the best of
  * its ability.
  *

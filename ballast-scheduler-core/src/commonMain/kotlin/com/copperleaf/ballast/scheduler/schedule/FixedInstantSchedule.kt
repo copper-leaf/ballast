@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.scheduler.schedule
 
-import kotlin.time.Clock
+import com.copperleaf.ballast.scheduler.Schedule
 import kotlin.time.Instant
 
 /**
@@ -9,7 +9,6 @@ import kotlin.time.Instant
  */
 public class FixedInstantSchedule(
     instants: List<Instant>,
-    private val clock: Clock,
 ) : Schedule {
 
     private val instants: List<Instant>
@@ -21,20 +20,18 @@ public class FixedInstantSchedule(
 
     public constructor(
         vararg instants: Instant,
-        clock: Clock
-    ) : this(instants.toList(), clock)
+    ) : this(instants.toList())
 
     override fun generateSchedule(start: Instant): Sequence<Instant> {
         return sequence {
+            val remainingInstants = instants
+                .dropWhile { it <= start }
+                .toMutableList()
+
             while (true) {
-                val now = clock.now()
-                val nextInstant = getNextInstant(now) ?: return@sequence
+                val nextInstant = remainingInstants.removeFirstOrNull() ?: return@sequence
                 yield(nextInstant)
             }
         }
-    }
-
-    private fun getNextInstant(now: Instant): Instant? {
-        return instants.firstOrNull { it > now }
     }
 }

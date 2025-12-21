@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.scheduler.operators
 
-import com.copperleaf.ballast.scheduler.schedule.Schedule
+import com.copperleaf.ballast.scheduler.Schedule
 import kotlin.time.Instant
 
 /**
@@ -19,8 +19,6 @@ public fun Schedule.between(validRange: ClosedRange<Instant>): Schedule {
 
             while (iterator.hasNext()) {
                 val next = iterator.next()
-
-                println("checking $next")
 
                 when {
                     next < validRange.start -> {
