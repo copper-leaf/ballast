@@ -1,0 +1,68 @@
+package com.copperleaf.ballast.scheduler.schedule
+
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Instant
+
+public class EveryDaySchedule(
+    timesOfDay: List<LocalTime> = listOf(LocalTime(0, 0, 0)),
+    private val timeZone: TimeZone = TimeZone.UTC,
+) : Schedule {
+
+    private val timesOfDay: List<LocalTime>
+
+    init {
+        check(timesOfDay.isNotEmpty()) { "timesOfDay cannot be empty" }
+        this.timesOfDay = timesOfDay.sorted()
+    }
+
+    public constructor(
+        vararg timesOfDay: LocalTime,
+        timeZone: TimeZone = TimeZone.UTC,
+    ) : this(timesOfDay.toList(), timeZone)
+
+    override fun generateSchedule(start: Instant): Sequence<Instant> {
+        return sequence {
+            var nextInstant = start
+            while (true) {
+                nextInstant = nextInstant.getNextAvailableTime()
+                yield(nextInstant)
+            }
+        }
+    }
+
+    private fun Instant.getNextAvailableTime(): Instant {
+        val currentInstantAsDateTime = this.toLocalDateTime(timeZone)
+
+        val nextAvailableTime = timesOfDay
+            .firstOrNull { it > currentInstantAsDateTime.time }
+
+        return if (nextAvailableTime != null) {
+            currentInstantAsDateTime
+                .atTime(nextAvailableTime)
+                .toInstant(timeZone)
+        } else {
+            this
+                .plus(1.days)
+                .toLocalDateTime(timeZone)
+                .atTime(timesOfDay.first())
+                .toInstant(timeZone)
+        }
+    }
+
+    private fun LocalDateTime.atTime(time: LocalTime): LocalDateTime {
+        return LocalDateTime(
+            year = this.year,
+            month = this.month,
+            day = this.day,
+            hour = time.hour,
+            minute = time.minute,
+            second = 0,
+            nanosecond = 0,
+        )
+    }
+}

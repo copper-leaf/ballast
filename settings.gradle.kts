@@ -44,6 +44,8 @@ include(":ballast-debugger-server")
 include(":ballast-debugger-ui")
 include(":ballast-idea-plugin")
 
+include(":ballast-scheduler-core")
+
 include(":ballast-test")
 
 include(":examples:android")

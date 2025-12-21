@@ -1,0 +1,34 @@
+package com.copperleaf.ballast.scheduler.schedule
+
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Instant
+
+/**
+ * A fixed delay schedule will return a perfect schedule that delays a specific amount of time between tasks. By
+ * default, the delay does not consider how long it takes to process each task, and they may be dropped if the
+ * processing time is longer than the schedule period.
+ *
+ * Use the [com.copperleaf.ballast.scheduler.operators.adaptive] schedule operator to make the schedule adapt to the processing time of an item, so that the
+ * specified amount of time is delayed between the end of processing one task and the next time it begins.
+ */
+public class FixedDelaySchedule(
+    private val period: Duration
+) : Schedule {
+
+    init {
+        check(period >= 1.milliseconds) {
+            "Minimum period of delay is 1ms"
+        }
+    }
+
+    override fun generateSchedule(start: Instant): Sequence<Instant> {
+        return sequence {
+            var nextInstant = start
+            while (true) {
+                nextInstant += period
+                yield(nextInstant)
+            }
+        }
+    }
+}
