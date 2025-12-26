@@ -3,6 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>SchemeUserState</key>
-	<dict />
+	<dict>
+		<key>iosApp.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+	</dict>
 </dict>
 </plist>

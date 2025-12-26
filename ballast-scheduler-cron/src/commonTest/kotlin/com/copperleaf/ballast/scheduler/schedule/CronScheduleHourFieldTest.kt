@@ -21,11 +21,11 @@ class CronScheduleHourFieldTest {
     fun every4Hours() {
         // Cron: "0 */4 * * *" (every 4 hours)
         val cronExpression = CronExpression(
-            minute = MinuteField(ExactValue(0, 59, 0)),
-            hour = HourField(AnyValue(0, 23, 4)),
-            dayOfMonth = DayOfMonthField(AnyValue(1, 31)),
-            month = MonthField(AnyValue(1, 12)),
-            dayOfWeek = DayOfWeekField(AnyValue(0, 6)),
+            minute = MinuteField(0),
+            hour = HourField((0..23 step 4).toList()),
+            dayOfMonth = DayOfMonthField((1..31).toList()),
+            month = MonthField((1..12).toList()),
+            dayOfWeek = DayOfWeekField((1..6).toList()),
             timeZone = timeZone,
         )
 
