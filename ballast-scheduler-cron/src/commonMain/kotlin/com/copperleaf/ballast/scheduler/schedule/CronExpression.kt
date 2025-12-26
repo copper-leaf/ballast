@@ -8,12 +8,12 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.atTime
-import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.number
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Instant
 
 @Suppress("SimpleRedundantLet")
@@ -26,9 +26,11 @@ public data class CronExpression(
     internal val timeZone: TimeZone = TimeZone.UTC,
 ) {
     public fun nextMatchingInstant(current: Instant): Instant {
-        var currentTime = current.adjust(timeZone) {
-            update(second = 0, nanosecond = 0)
-        }
+        var currentTime = current
+            .plus(1.minutes)
+            .adjust(timeZone) {
+                update(second = 0, nanosecond = 0)
+            }
 
         while (true) {
             val updatedTime = advanceToNextMatchingTime(currentTime)
@@ -56,7 +58,7 @@ public data class CronExpression(
                 hour.matches(tDateTime.hour) &&
                 dayOfMonth.matches(tDateTime.day) &&
                 month.matches(tDateTime.month.number) &&
-                dayOfWeek.matches(tDateTime.dayOfWeek.isoDayNumber % 7)
+                dayOfWeek.matches(tDateTime.dayOfWeek.ordinal)
     }
 
     internal fun advanceToNextMatchingMonth(time: Instant): Instant {
@@ -83,23 +85,28 @@ public data class CronExpression(
         while (true) {
             val tDateTime = tInstant.toLocalDateTime(timeZone)
             val domMatch = dayOfMonth.matches(tDateTime.day)
-            val dowMatch = dayOfWeek.matches(tDateTime.dayOfWeek.isoDayNumber % 7)
+            val dowMatch = dayOfWeek.matches(tDateTime.dayOfWeek.ordinal)
 
-//            // TODO
-//            val dayMatches = if (dayOfMonth.isWildcard || dayOfWeek.isWildcard) {
-//                domMatch && dowMatch
-//            } else {
-//                domMatch || dowMatch
-//            }
-            val dayMatches = domMatch || dowMatch
+            // According to standard CRON semantics, when either day-of-month or day-of-week is a wildcard (*), the
+            // other field is used exclusively. If neither are wildcards, a match occurs when either field matches
+            val dayMatches = if (dayOfMonth.wildcard) {
+                dowMatch
+            } else if (dayOfWeek.wildcard) {
+                domMatch
+            } else {
+                domMatch || dowMatch
+            }
 
-            if (dayMatches) return tInstant
+            if (dayMatches) {
+                return tInstant
+            } else {
+                tInstant = tInstant
+                    .plus(1.days)
+                    .toLocalDateTime(timeZone)
+                    .date
+                    .atStartOfDayIn(timeZone)
+            }
 
-            tInstant = tInstant
-                .plus(1.days)
-                .toLocalDateTime(timeZone)
-                .date
-                .atStartOfDayIn(timeZone)
         }
     }
 

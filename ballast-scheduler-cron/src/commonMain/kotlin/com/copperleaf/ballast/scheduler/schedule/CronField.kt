@@ -65,6 +65,10 @@ public class MonthField private constructor(
             return MonthField(listOf(value), wildcard = false)
         }
 
+        public fun exactValue(value: Month): MonthField {
+            return MonthField(listOf(value.number), wildcard = false)
+        }
+
         public fun range(min: Int, max: Int, step: Int = 1): MonthField {
             return MonthField(min..max step step, wildcard = false)
         }
@@ -147,6 +151,10 @@ public class DayOfWeekField private constructor(
 
         public fun exactValue(value: Int): DayOfWeekField {
             return DayOfWeekField(listOf(value), wildcard = false)
+        }
+
+        public fun exactValue(value: DayOfWeek): DayOfWeekField {
+            return DayOfWeekField(listOf(value.ordinal), wildcard = false)
         }
 
         public fun range(min: Int, max: Int, step: Int = 1): DayOfWeekField {
