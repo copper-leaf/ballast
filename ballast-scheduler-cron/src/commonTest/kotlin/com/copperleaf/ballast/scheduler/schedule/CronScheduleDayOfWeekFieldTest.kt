@@ -7,11 +7,9 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
-import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@Ignore
 class CronScheduleDayOfWeekFieldTest {
 
     val timeZone = TimeZone.UTC
@@ -19,14 +17,14 @@ class CronScheduleDayOfWeekFieldTest {
     val startInstant = startDay.atTime(2, 37, 0).toInstant(timeZone)
 
     @Test
-    fun testEveryTuesday() {
-        // Cron: "0 0 * * 2" (at midnight every Tuesday)
+    fun testEveryWednesday() {
+        // Cron: "0 0 * * 3" (at midnight every Wednesday)
         val cronExpression = CronExpression(
-            minute = MinuteField(0),
-            hour = HourField(0),
-            dayOfMonth = DayOfMonthField((1..31).toList()),
-            month = MonthField(Month.entries.toList()),
-            dayOfWeek = DayOfWeekField(DayOfWeek.TUESDAY),
+            minute = MinuteField.exactValue(0),
+            hour = HourField.exactValue(0),
+            dayOfMonth = DayOfMonthField.anyValue(),
+            month = MonthField.anyValue(),
+            dayOfWeek = DayOfWeekField.exactValue(DayOfWeek.WEDNESDAY),
             timeZone = timeZone,
         )
 
@@ -35,16 +33,16 @@ class CronScheduleDayOfWeekFieldTest {
                 .generateSchedule(startInstant)
                 .firstTen(timeZone),
             expected = listOf(
-                LocalDate(2023, Month.DECEMBER, 5).atTime(0, 0),
-                LocalDate(2023, Month.DECEMBER, 12).atTime(0, 0),
-                LocalDate(2023, Month.DECEMBER, 19).atTime(0, 0),
-                LocalDate(2023, Month.DECEMBER, 26).atTime(0, 0),
-                LocalDate(2024, Month.JANUARY, 2).atTime(0, 0),
-                LocalDate(2024, Month.JANUARY, 9).atTime(0, 0),
-                LocalDate(2024, Month.JANUARY, 16).atTime(0, 0),
-                LocalDate(2024, Month.JANUARY, 23).atTime(0, 0),
-                LocalDate(2024, Month.JANUARY, 30).atTime(0, 0),
-                LocalDate(2024, Month.FEBRUARY, 6).atTime(0, 0),
+                LocalDate(2023, Month.DECEMBER, 6).atTime(0, 0),
+                LocalDate(2023, Month.DECEMBER, 13).atTime(0, 0),
+                LocalDate(2023, Month.DECEMBER, 20).atTime(0, 0),
+                LocalDate(2023, Month.DECEMBER, 27).atTime(0, 0),
+                LocalDate(2024, Month.JANUARY, 3).atTime(0, 0),
+                LocalDate(2024, Month.JANUARY, 10).atTime(0, 0),
+                LocalDate(2024, Month.JANUARY, 17).atTime(0, 0),
+                LocalDate(2024, Month.JANUARY, 24).atTime(0, 0),
+                LocalDate(2024, Month.JANUARY, 31).atTime(0, 0),
+                LocalDate(2024, Month.FEBRUARY, 7).atTime(0, 0),
             ),
         )
     }

@@ -26,6 +26,8 @@ public data class CronExpression(
     internal val timeZone: TimeZone = TimeZone.UTC,
 ) {
     public fun nextMatchingInstant(current: Instant): Instant {
+        // start at the top of the next minute, to ensure values are always matching in the future
+        // relative to `current` if it is also a valid match
         var currentTime = current
             .plus(1.minutes)
             .adjust(timeZone) {
@@ -43,13 +45,13 @@ public data class CronExpression(
     }
 
     internal fun advanceToNextMatchingTime(after: Instant): Instant {
-        var time = after
-        time = advanceToNextMatchingMonth(time)
-        time = advanceToNextMatchingDay(time)
-        time = advanceToNextMatchingHour(time)
-        time = advanceToNextMatchingMinute(time)
+        val time0 = after
+        val time1 = advanceToNextMatchingMonth(time0)
+        val time2 = advanceToNextMatchingDay(time1)
+        val time3 = advanceToNextMatchingHour(time2)
+        val time4 = advanceToNextMatchingMinute(time3)
 
-        return time
+        return time4
     }
 
     internal fun matches(time: Instant): Boolean {
@@ -65,17 +67,21 @@ public data class CronExpression(
         val tDateTime = time.toLocalDateTime(timeZone)
         val next = month.nextOrSame(tDateTime.month.number)
 
-        return if (next != null) {
+        return if (next == tDateTime.month.number) {
+            // the current month matches. Don't adjust the month
+            return time
+        } else if (next != null) {
+            // the current month is not valid, but another exists later in the year. Adjust to the start of that month
             tDateTime
-                .update(month = Month.entries[next - 1])
-                .toInstant(timeZone)
+                .update(month = Month.entries[next - 1], day = 1)
+                .date.atStartOfDayIn(timeZone)
         } else {
+            // no more valid months this year, advance to the first valid month next year
             LocalDate(
                 year = tDateTime.year + 1,
-                month = 1,
+                month = Month.JANUARY,
                 day = 1,
-            )
-                .atStartOfDayIn(timeZone)
+            ).atStartOfDayIn(timeZone)
         }
     }
 
@@ -106,7 +112,6 @@ public data class CronExpression(
                     .date
                     .atStartOfDayIn(timeZone)
             }
-
         }
     }
 
@@ -115,14 +120,16 @@ public data class CronExpression(
 
         val next = hour.nextOrSame(tDateTime.hour)
 
-        return if (next != null) {
+        return if (next == tDateTime.hour) {
+            // the current hour matches. Don't adjust the hour
+            time
+        } else if (next != null) {
+            // the current hour is not valid, but another exists later in the day. Adjust to that hour
             tDateTime
                 .let {
                     it.date.atTime(
                         hour = next,
-                        minute = tDateTime.minute,
-                        second = tDateTime.second,
-                        nanosecond = tDateTime.nanosecond,
+                        minute = 0,
                     )
                 }
                 .toInstant(timeZone)
@@ -130,15 +137,8 @@ public data class CronExpression(
             time
                 .plus(1.days)
                 .toLocalDateTime(timeZone)
-                .let {
-                    it.date.atTime(
-                        hour = 0,
-                        minute = 0,
-                        second = 0,
-                        nanosecond = 0,
-                    )
-                }
-                .toInstant(timeZone)
+                .date
+                .atStartOfDayIn(timeZone)
         }
     }
 
@@ -147,14 +147,16 @@ public data class CronExpression(
 
         val next = minute.nextOrSame(tDateTime.minute)
 
-        return if (next != null) {
+        return if (next == tDateTime.minute) {
+            // the current minute matches. Don't adjust the minute
+            time
+        } else if (next != null) {
+            // the current minute is not valid, but another exists later in the hour. Adjust to that minute
             tDateTime
                 .let {
                     it.date.atTime(
                         hour = tDateTime.hour,
                         minute = next,
-                        second = tDateTime.second,
-                        nanosecond = tDateTime.nanosecond,
                     )
                 }
                 .toInstant(timeZone)
@@ -166,8 +168,6 @@ public data class CronExpression(
                     it.date.atTime(
                         hour = it.hour,
                         minute = 0,
-                        second = 0,
-                        nanosecond = 0,
                     )
                 }
                 .toInstant(timeZone)
