@@ -77,8 +77,6 @@ object SchedulerExampleUi {
                         Text("first update at:  ${schedule.firstUpdateAt}")
                         Text("latest update at:  ${schedule.latestUpdateAt}")
                         Text("numberOfDispatchedInputs:  ${schedule.numberOfDispatchedInputs}")
-                        Text("numberOfDroppedInputs:  ${schedule.numberOfDroppedInputs}")
-                        Text("numberOfFailedInputs:  ${schedule.numberOfFailedInputs}")
 
                         Button({ postInput(SchedulerExampleContract.Inputs.StopSchedule(schedule.key)) }) {
                             Text("Cancel")

@@ -46,6 +46,7 @@ include(":ballast-idea-plugin")
 
 include(":ballast-scheduler-core")
 include(":ballast-scheduler-cron")
+include(":ballast-scheduler-viewmodel")
 
 include(":ballast-test")
 

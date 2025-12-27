@@ -2,6 +2,7 @@ package com.copperleaf.ballast.examples.scheduler
 
 import com.copperleaf.ballast.scheduler.SchedulerAdapter
 import com.copperleaf.ballast.scheduler.SchedulerAdapterScope
+import com.copperleaf.ballast.scheduler.operators.named
 import com.copperleaf.ballast.scheduler.schedule.EveryDaySchedule
 import com.copperleaf.ballast.scheduler.schedule.EveryHourSchedule
 import com.copperleaf.ballast.scheduler.schedule.FixedDelaySchedule
@@ -24,18 +25,15 @@ public class AndroidSchedulerExampleAdapter :
             SchedulerExampleContract.Events,
             SchedulerExampleContract.State>.configureSchedules() {
         onSchedule(
-            key = twiceAnHour,
-            schedule = EveryHourSchedule(0, 30),
+            schedule = EveryHourSchedule(0, 30).named("twiceAnHour"),
             scheduledInput = { SchedulerExampleContract.Inputs.Increment(twiceAnHour, 1) }
         )
         onSchedule(
-            key = twiceDaily,
-            schedule = EveryDaySchedule(LocalTime(9, 47), LocalTime(21, 47)),
+            schedule = EveryDaySchedule(LocalTime(9, 47), LocalTime(21, 47)).named(twiceDaily),
             scheduledInput = { SchedulerExampleContract.Inputs.Increment(twiceDaily, 1) }
         )
         onSchedule(
-            key = every63Minutes,
-            schedule = FixedDelaySchedule(63.minutes),
+            schedule = FixedDelaySchedule(63.minutes).named(every63Minutes),
             scheduledInput = { SchedulerExampleContract.Inputs.Increment(every63Minutes, 1) }
         )
     }

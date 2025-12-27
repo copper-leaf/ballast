@@ -15,6 +15,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.Instant
 
+// TODO: handle catch-up behavior for schedules that were missed while the executor was not running
 public class PollingScheduleExecutor(
     private val scheduleState: ScheduleExecutor.State,
     private val clock: Clock = Clock.System,

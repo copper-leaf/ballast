@@ -23,7 +23,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-core"))
-                implementation(project(":ballast-schedules"))
+                implementation(project(":ballast-scheduler-core"))
+                implementation(project(":ballast-scheduler-viewmodel"))
             }
         }
 
