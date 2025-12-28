@@ -1,0 +1,151 @@
+public abstract interface class com/copperleaf/ballast/scheduler/SchedulerAdapter {
+	public abstract fun configureSchedules (Lcom/copperleaf/ballast/scheduler/SchedulerAdapterScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/copperleaf/ballast/scheduler/SchedulerAdapterScope {
+	public abstract fun onSchedule (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/jvm/functions/Function0;)V
+}
+
+public final class com/copperleaf/ballast/scheduler/SchedulerControllerKt {
+	public static final fun scheduler (Lcom/copperleaf/ballast/SideJobScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun withSchedulerController (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/time/Clock;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static synthetic fun withSchedulerController$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$Builder;Lkotlin/time/Clock;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+}
+
+public final class com/copperleaf/ballast/scheduler/SchedulerInterceptor : com/copperleaf/ballast/BallastInterceptor {
+	public fun <init> ()V
+	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getController ()Lcom/copperleaf/ballast/BallastViewModel;
+	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
+	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/SchedulerInterceptor$Key : com/copperleaf/ballast/BallastInterceptor$Key {
+	public static final field INSTANCE Lcom/copperleaf/ballast/scheduler/SchedulerInterceptor$Key;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/ScheduleState {
+	public fun <init> (Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;I)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlin/time/Instant;
+	public final fun component3 ()Z
+	public final fun component4 ()Lkotlin/time/Instant;
+	public final fun component5 ()Lkotlin/time/Instant;
+	public final fun component6 ()I
+	public final fun copy (Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;I)Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;Ljava/lang/String;Lkotlin/time/Instant;ZLkotlin/time/Instant;Lkotlin/time/Instant;IILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/ScheduleState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirstUpdateAt ()Lkotlin/time/Instant;
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getLatestUpdateAt ()Lkotlin/time/Instant;
+	public final fun getNumberOfDispatchedInputs ()I
+	public final fun getPaused ()Z
+	public final fun getStartedAt ()Lkotlin/time/Instant;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract {
+	public static final field INSTANCE Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract;
+}
+
+public abstract interface class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Events {
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Events$PostInputToHost : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Events {
+	public fun <init> (Lcom/copperleaf/ballast/Queued$HandleInput;)V
+	public final fun component1 ()Lcom/copperleaf/ballast/Queued$HandleInput;
+	public final fun copy (Lcom/copperleaf/ballast/Queued$HandleInput;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$Events$PostInputToHost;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$Events$PostInputToHost;Lcom/copperleaf/ballast/Queued$HandleInput;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$Events$PostInputToHost;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getQueued ()Lcom/copperleaf/ballast/Queued$HandleInput;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$CancelSchedule : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getKey ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$DispatchScheduledTask : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/Queued$HandleInput;)V
+	public final fun getKey ()Ljava/lang/String;
+	public final fun getQueued ()Lcom/copperleaf/ballast/Queued$HandleInput;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$MarkScheduleComplete : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getKey ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$PauseSchedule : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getKey ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$ResumeSchedule : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getKey ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$StartSchedule : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+	public fun <init> (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/jvm/functions/Function0;)V
+	public final fun getSchedule ()Lcom/copperleaf/ballast/scheduler/NamedSchedule;
+	public final fun getScheduledInput ()Lkotlin/jvm/functions/Function0;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$StartSchedules : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
+	public fun <init> (Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;)V
+	public final fun getAdapter ()Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$State {
+	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/Map;
+	public final fun copy (Ljava/util/Map;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;Ljava/util/Map;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSchedules ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy : com/copperleaf/ballast/core/ChannelInputStrategy {
+	public static final field Companion Lcom/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy$Companion;
+	public synthetic fun <init> (Lcom/copperleaf/ballast/InputFilter;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun processInputs (Lcom/copperleaf/ballast/InputStrategyScope;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy$Companion {
+	public final fun invoke ()Lcom/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy;
+	public final fun typed (Lcom/copperleaf/ballast/InputFilter;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy;
+	public static synthetic fun typed$default (Lcom/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy$Companion;Lcom/copperleaf/ballast/InputFilter;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy;
+}
+
+public class com/copperleaf/ballast/scheduler/vm/SchedulerFifoInputStrategy$Guardian : com/copperleaf/ballast/InputStrategy$Guardian {
+	public fun <init> ()V
+	public fun checkNoOp ()V
+	public fun checkPostEvent ()V
+	public fun checkSideJob ()V
+	public fun checkStateAccess ()V
+	public fun checkStateUpdate ()V
+	public fun close ()V
+	protected final fun getClosed ()Z
+	protected final fun getSideJobsPosted ()Z
+	protected final fun getStateAccessed ()Z
+	protected final fun getUsedProperly ()Z
+	protected final fun setClosed (Z)V
+	protected final fun setSideJobsPosted (Z)V
+	protected final fun setStateAccessed (Z)V
+	protected final fun setUsedProperly (Z)V
+}
+

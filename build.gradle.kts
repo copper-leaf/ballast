@@ -8,14 +8,14 @@ apiValidation {
     ignoredProjects.addAll(
         listOf(
 //            "docs",
-//            "android",
-//            "counter",
-//            "desktop",
-//            "navigationWithCustomRoutes",
-//            "navigationWithEnumRoutes",
-//            "schedules",
-//            "web",
-//            "ballast-idea-plugin",
+            "android",
+            "counter",
+            "desktop",
+            "navigationWithCustomRoutes",
+            "navigationWithEnumRoutes",
+            "schedules",
+            "web",
+            "ballast-idea-plugin",
         )
     )
 }
