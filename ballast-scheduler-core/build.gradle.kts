@@ -33,6 +33,16 @@ kotlin {
         val jsMain by getting {
             dependencies { }
         }
+        val jsTest by getting {
+            dependencies {
+                implementation(npm("@js-joda/timezone", "2.22.0"))
+            }
+        }
+        val wasmJsTest by getting {
+            dependencies {
+                implementation(npm("@js-joda/timezone", "2.22.0"))
+            }
+        }
         val iosMain by getting {
             dependencies { }
         }
