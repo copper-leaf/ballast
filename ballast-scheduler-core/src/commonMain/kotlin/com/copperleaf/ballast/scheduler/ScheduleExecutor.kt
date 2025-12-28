@@ -3,7 +3,6 @@ package com.copperleaf.ballast.scheduler
 import kotlinx.coroutines.flow.Flow
 import kotlin.time.Instant
 
-
 public interface ScheduleExecutor {
     /**
      * Executes a single [NamedSchedule], producing a [Flow] of [ScheduleEmission] events indicating tasks to be

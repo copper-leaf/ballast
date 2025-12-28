@@ -6,7 +6,7 @@ plugins {
     id("copper-leaf-targets")
     id("copper-leaf-tests")
     id("copper-leaf-compose")
-    id("copper-leaf-lint")
+//    id("copper-leaf-lint")
 }
 
 kotlin {

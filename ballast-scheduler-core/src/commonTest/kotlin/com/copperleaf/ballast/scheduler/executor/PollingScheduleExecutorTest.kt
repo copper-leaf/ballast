@@ -87,5 +87,4 @@ public class PollingScheduleExecutorTest {
             lastExecutions[schedule.name] = instant
         }
     }
-
 }

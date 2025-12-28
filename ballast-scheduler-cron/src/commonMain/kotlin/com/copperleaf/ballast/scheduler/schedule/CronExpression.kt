@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.scheduler.schedule
 
 import com.copperleaf.ballast.scheduler.utils.adjust
-import com.copperleaf.ballast.scheduler.utils.plusMinutes
 import com.copperleaf.ballast.scheduler.utils.update
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -40,7 +39,7 @@ public data class CronExpression(
                 return updatedTime
             }
 
-            currentTime = updatedTime.plusMinutes(1, timeZone)
+            currentTime = updatedTime.plus(1.minutes)
         }
     }
 
