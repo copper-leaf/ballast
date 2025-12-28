@@ -48,6 +48,8 @@ include(":ballast-scheduler-core")
 include(":ballast-scheduler-cron")
 include(":ballast-scheduler-viewmodel")
 
+include(":ballast-ktor-server")
+
 include(":ballast-test")
 
 include(":examples:android")

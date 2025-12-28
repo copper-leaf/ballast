@@ -1,0 +1,22 @@
+public final class com/copperleaf/ballast/ktor/BallastKtorPluginConfiguration {
+	public fun <init> ()V
+	public final fun registerViewModel (Lio/ktor/util/AttributeKey;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/copperleaf/ballast/ktor/PluginKt {
+	public static final fun getBallast ()Lio/ktor/server/application/ApplicationPlugin;
+}
+
+public final class com/copperleaf/ballast/ktor/RegisteredViewModel {
+	public fun <init> (Lio/ktor/util/AttributeKey;Lkotlin/jvm/functions/Function1;)V
+	public final fun component1 ()Lio/ktor/util/AttributeKey;
+	public final fun component2 ()Lkotlin/jvm/functions/Function1;
+	public final fun copy (Lio/ktor/util/AttributeKey;Lkotlin/jvm/functions/Function1;)Lcom/copperleaf/ballast/ktor/RegisteredViewModel;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/ktor/RegisteredViewModel;Lio/ktor/util/AttributeKey;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Lcom/copperleaf/ballast/ktor/RegisteredViewModel;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAttributeKey ()Lio/ktor/util/AttributeKey;
+	public final fun getCreateViewModel ()Lkotlin/jvm/functions/Function1;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
