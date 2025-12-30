@@ -13,7 +13,7 @@ import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
-public class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
+public open class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
     coroutineScope: CoroutineScope,
     private val factory: ViewModelFactory<Inputs, Events, State>,
     private val scalingPolicy: ScalingPolicy<Inputs, Events, State>,
