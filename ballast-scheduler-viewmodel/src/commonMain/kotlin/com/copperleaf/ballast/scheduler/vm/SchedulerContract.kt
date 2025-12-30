@@ -3,9 +3,11 @@ package com.copperleaf.ballast.scheduler.vm
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.scheduler.NamedSchedule
 import com.copperleaf.ballast.scheduler.SchedulerAdapter
+import kotlin.time.Instant
 
 public object SchedulerContract {
     public data class State<I : Any, E : Any, S : Any>(
+        val scheduleIndex: Int = 0,
         val schedules: Map<String, ScheduleState> = emptyMap()
     )
 
@@ -16,7 +18,7 @@ public object SchedulerContract {
 
         public class StartSchedule<I : Any, E : Any, S : Any>(
             public val schedule: NamedSchedule,
-            public val scheduledInput: () -> I,
+            public val scheduledInput: (Instant) -> I,
         ) : Inputs<I, E, S>
 
         public class PauseSchedule<I : Any, E : Any, S : Any>(

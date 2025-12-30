@@ -2,6 +2,7 @@ package com.copperleaf.ballast.scheduler.internal
 
 import com.copperleaf.ballast.scheduler.NamedSchedule
 import com.copperleaf.ballast.scheduler.SchedulerAdapterScope
+import kotlin.time.Instant
 
 internal class SchedulerAdapterScopeImpl<I : Any, E : Any, S : Any> : SchedulerAdapterScope<I, E, S> {
 
@@ -9,7 +10,7 @@ internal class SchedulerAdapterScopeImpl<I : Any, E : Any, S : Any> : SchedulerA
 
     override fun <T : I> onSchedule(
         schedule: NamedSchedule,
-        scheduledInput: () -> T,
+        scheduledInput: (Instant) -> T,
     ) {
         schedules += RegisteredSchedule(
             schedule = schedule,

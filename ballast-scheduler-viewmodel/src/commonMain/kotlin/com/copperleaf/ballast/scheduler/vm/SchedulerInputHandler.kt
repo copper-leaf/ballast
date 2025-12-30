@@ -4,6 +4,7 @@ import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
 import com.copperleaf.ballast.Queued
 import com.copperleaf.ballast.scheduler.ScheduleExecutor
+import com.copperleaf.ballast.scheduler.internal.RegisteredSchedule
 import com.copperleaf.ballast.scheduler.internal.SchedulerAdapterScopeImpl
 import kotlinx.coroutines.flow.filter
 import kotlin.time.Clock
@@ -24,22 +25,54 @@ internal class SchedulerInputHandler<I : Any, E : Any, S : Any>(
         input: SchedulerContract.Inputs<I, E, S>
     ): Unit = when (input) {
         is SchedulerContract.Inputs.StartSchedules -> {
+            val currentIndex = getAndUpdateState { it.copy(scheduleIndex = it.scheduleIndex + 1) }.scheduleIndex
+
             // run the adapter to get the schedules which should run
             val adapterScope = SchedulerAdapterScopeImpl<I, E, S>()
             with(input.adapter) {
                 adapterScope.configureSchedules()
             }
 
-            sideJob("StartSchedules") {
-                adapterScope.schedules.forEach { schedule ->
-                    postInput(SchedulerContract.Inputs.StartSchedule(schedule.schedule, schedule.scheduledInput))
-                }
+            // add the schedule to the list of running schedules
+            val now = clock.now()
+            updateState {
+                it.copy(
+                    schedules = it.schedules
+                        .toMutableMap()
+                        .apply {
+                            adapterScope.schedules.forEach { schedule ->
+                                this[schedule.schedule.name] = ScheduleState(schedule.schedule.name, now)
+                            }
+                        }
+                        .toMap()
+                )
+            }
+
+            val isPaused: suspend (String) -> Boolean = { scheduleName: String ->
+                getCurrentState().schedules[scheduleName]?.paused == true
+            }
+
+            sideJob("StartSchedules-$currentIndex") {
+                // run the schedule, sending an Event with each tick. This may suspend indefinitely for infinite schedules
+                scheduleExecutor
+                    .runSchedules(adapterScope.schedules.map { it.schedule })
+                    .filter { emission -> !isPaused(emission.name) }
+                    .collect { emission ->
+                        val registeredSchedule: RegisteredSchedule<I, E, S> = adapterScope
+                            .schedules
+                            .single { it.schedule.name == emission.name }
+                        postInput(
+                            SchedulerContract.Inputs.DispatchScheduledTask(
+                                emission.name,
+                                Queued.HandleInput(null, registeredSchedule.scheduledInput(emission.triggeredAt))
+                            )
+                        )
+                    }
             }
         }
 
         is SchedulerContract.Inputs.StartSchedule -> {
-            // cancel any running schedules which have the same keys as the newly requested schedules
-            cancelSideJob(input.schedule.name)
+            val currentIndex = getAndUpdateState { it.copy(scheduleIndex = it.scheduleIndex + 1) }.scheduleIndex
 
             // add the schedule to the list of running schedules
             val now = clock.now()
@@ -62,16 +95,16 @@ internal class SchedulerInputHandler<I : Any, E : Any, S : Any>(
                 getCurrentState().schedules[input.schedule.name]?.paused == true
             }
 
-            sideJob(input.schedule.name) {
+            sideJob("StartSchedule-$currentIndex") {
                 // run the schedule, sending an Event with each tick. This may suspend indefinitely for infinite schedules
                 scheduleExecutor
                     .runSchedule(input.schedule)
                     .filter { !isPaused() }
-                    .collect {
+                    .collect { emission ->
                         postInput(
                             SchedulerContract.Inputs.DispatchScheduledTask(
                                 input.schedule.name,
-                                Queued.HandleInput(null, input.scheduledInput())
+                                Queued.HandleInput(null, input.scheduledInput(emission.triggeredAt))
                             )
                         )
                     }

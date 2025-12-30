@@ -7,6 +7,7 @@ import com.copperleaf.ballast.scheduler.ScheduleExecutor
 import com.copperleaf.ballast.scheduler.operators.getNext
 import com.copperleaf.ballast.scheduler.schedule.EveryMinuteSchedule
 import com.copperleaf.ballast.scheduler.utils.generateSafeSchedule
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
@@ -24,32 +25,39 @@ public class PollingScheduleExecutor(
 ) : ScheduleExecutor {
 
     override fun runSchedule(schedule: NamedSchedule): Flow<ScheduleEmission> = flow {
-        val pollingStartTime = clock.now()
+        startPollingSchedule { pollingStartTime, nextScheduleInstant ->
+            handleScheduledTaskIfReady(
+                pollingStartTime,
+                nextScheduleInstant,
+                schedule,
+            )
+        }
+    }
 
-        pollingSchedule
-            .generateSafeSchedule(clock.now())
-            .forEach { nextScheduleInstant ->
+    override fun runSchedules(schedules: List<NamedSchedule>): Flow<ScheduleEmission> = flow {
+        startPollingSchedule { pollingStartTime, nextScheduleInstant ->
+            schedules.forEach { schedule ->
                 handleScheduledTaskIfReady(
                     pollingStartTime,
                     nextScheduleInstant,
                     schedule,
                 )
             }
+        }
     }
 
-    override fun runSchedules(schedules: List<NamedSchedule>): Flow<ScheduleEmission> = flow {
+    private suspend inline fun startPollingSchedule(
+        onClockTick: (Instant, Instant) -> Unit,
+    ) {
         val pollingStartTime = clock.now()
-
         pollingSchedule
-            .generateSafeSchedule(clock.now())
+            .generateSafeSchedule(pollingStartTime)
             .forEach { nextScheduleInstant ->
-                schedules.forEach { schedule ->
-                    handleScheduledTaskIfReady(
-                        pollingStartTime,
-                        nextScheduleInstant,
-                        schedule,
-                    )
-                }
+                // wait the appropriate amount of time until we hit the next scheduled instant
+                val currentInstant = clock.now()
+                val delayDuration = nextScheduleInstant - currentInstant
+                delay(delayDuration)
+                onClockTick(pollingStartTime, nextScheduleInstant)
             }
     }
 
