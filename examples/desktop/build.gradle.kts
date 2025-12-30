@@ -17,7 +17,6 @@ kotlin {
         all {
             languageSettings.apply {
                 optIn("androidx.compose.material.ExperimentalMaterialApi")
-                optIn("com.copperleaf.ballast.ExperimentalBallastApi")
             }
         }
 

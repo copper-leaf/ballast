@@ -1,10 +1,8 @@
-@file:OptIn(ExperimentalBallastApi::class)
 @file:Suppress("UNCHECKED_CAST")
 
 package com.copperleaf.ballast.ktor
 
 import com.copperleaf.ballast.BallastViewModel
-import com.copperleaf.ballast.ExperimentalBallastApi
 import io.ktor.server.application.ApplicationCall
 import io.ktor.util.AttributeKey
 

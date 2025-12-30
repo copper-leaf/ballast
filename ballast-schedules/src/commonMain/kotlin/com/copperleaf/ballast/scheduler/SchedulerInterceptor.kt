@@ -4,7 +4,6 @@ import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.awaitViewModelStart
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.internal.BallastViewModelImpl
@@ -14,7 +13,6 @@ import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-@ExperimentalBallastApi
 public class SchedulerInterceptor<I : Any, E : Any, S : Any>(
     private val config: BallastViewModelConfiguration<
             SchedulerContract.Inputs<I, E, S>,

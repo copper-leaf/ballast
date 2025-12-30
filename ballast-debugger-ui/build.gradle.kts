@@ -14,7 +14,6 @@ kotlin {
             languageSettings.apply {
                 optIn("androidx.compose.material.ExperimentalMaterialApi")
                 optIn("androidx.compose.foundation.ExperimentalFoundationApi")
-                optIn("com.copperleaf.ballast.ExperimentalBallastApi")
                 optIn("org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi")
             }
         }

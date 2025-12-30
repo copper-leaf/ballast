@@ -19,7 +19,6 @@ kotlin {
     sourceSets {
         all {
             languageSettings.apply {
-                optIn("com.copperleaf.ballast.ExperimentalBallastApi")
             }
         }
 

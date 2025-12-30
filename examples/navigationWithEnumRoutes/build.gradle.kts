@@ -16,7 +16,6 @@ kotlin {
                 optIn("kotlin.time.ExperimentalTime")
                 optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
                 optIn("androidx.compose.material3.ExperimentalMaterial3Api")
-                optIn("com.copperleaf.ballast.ExperimentalBallastApi")
             }
         }
 

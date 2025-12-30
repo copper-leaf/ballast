@@ -2,7 +2,6 @@ package com.copperleaf.ballast.scheduler
 
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.SideJobScope
 import com.copperleaf.ballast.scheduler.executor.CoroutineClockScheduleExecutor
 import com.copperleaf.ballast.scheduler.executor.CoroutineScheduleExecutor
@@ -17,7 +16,6 @@ public typealias SchedulerController<I, E, S> = BallastViewModel<
         SchedulerContract.Events<I, E, S>,
         SchedulerContract.State<I, E, S>>
 
-@ExperimentalBallastApi
 public fun <I : Any, E : Any, S : Any> BallastViewModelConfiguration.Builder.withSchedulerController(
     clock: Clock = Clock.System,
     scheduleExecutor: CoroutineScheduleExecutor = CoroutineClockScheduleExecutor(clock),
