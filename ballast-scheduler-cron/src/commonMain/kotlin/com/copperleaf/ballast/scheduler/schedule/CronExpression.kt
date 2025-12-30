@@ -1,6 +1,8 @@
 package com.copperleaf.ballast.scheduler.schedule
 
+import com.copperleaf.ballast.scheduler.parser.CronExpressionParser
 import com.copperleaf.ballast.scheduler.utils.adjust
+import com.copperleaf.ballast.scheduler.utils.number
 import com.copperleaf.ballast.scheduler.utils.update
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.Month
@@ -17,11 +19,11 @@ import kotlin.time.Instant
 
 @Suppress("SimpleRedundantLet")
 public data class CronExpression(
-    val minute: MinuteField,
-    val hour: HourField,
-    val dayOfMonth: DayOfMonthField,
-    val month: MonthField,
-    val dayOfWeek: DayOfWeekField,
+    val minute: MinuteField = MinuteField.anyValue(),
+    val hour: HourField = HourField.anyValue(),
+    val dayOfMonth: DayOfMonthField = DayOfMonthField.anyValue(),
+    val month: MonthField = MonthField.anyValue(),
+    val dayOfWeek: DayOfWeekField = DayOfWeekField.anyValue(),
     internal val timeZone: TimeZone = TimeZone.UTC,
 ) {
     public fun nextMatchingInstant(current: Instant): Instant {
@@ -59,7 +61,7 @@ public data class CronExpression(
                 hour.matches(tDateTime.hour) &&
                 dayOfMonth.matches(tDateTime.day) &&
                 month.matches(tDateTime.month.number) &&
-                dayOfWeek.matches(tDateTime.dayOfWeek.ordinal)
+                dayOfWeek.matches(tDateTime.dayOfWeek.number)
     }
 
     internal fun advanceToNextMatchingMonth(time: Instant): Instant {
@@ -90,7 +92,7 @@ public data class CronExpression(
         while (true) {
             val tDateTime = tInstant.toLocalDateTime(timeZone)
             val domMatch = dayOfMonth.matches(tDateTime.day)
-            val dowMatch = dayOfWeek.matches(tDateTime.dayOfWeek.ordinal)
+            val dowMatch = dayOfWeek.matches(tDateTime.dayOfWeek.number)
 
             // According to standard CRON semantics, when either day-of-month or day-of-week is a wildcard (*), the
             // other field is used exclusively. If neither are wildcards, a match occurs when either field matches
@@ -170,6 +172,12 @@ public data class CronExpression(
                     )
                 }
                 .toInstant(timeZone)
+        }
+    }
+
+    public companion object {
+        public fun parse(expression: String, timeZone: TimeZone = TimeZone.UTC): CronExpression {
+            return CronExpressionParser.parse(expression, timeZone)
         }
     }
 }

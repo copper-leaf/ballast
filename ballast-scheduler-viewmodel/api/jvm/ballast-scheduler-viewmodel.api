@@ -3,7 +3,7 @@ public abstract interface class com/copperleaf/ballast/scheduler/SchedulerAdapte
 }
 
 public abstract interface class com/copperleaf/ballast/scheduler/SchedulerAdapterScope {
-	public abstract fun onSchedule (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/jvm/functions/Function0;)V
+	public abstract fun onSchedule (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/jvm/functions/Function1;)V
 }
 
 public final class com/copperleaf/ballast/scheduler/SchedulerControllerKt {
@@ -96,9 +96,9 @@ public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$
 }
 
 public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$StartSchedule : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
-	public fun <init> (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/jvm/functions/Function0;)V
+	public fun <init> (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/jvm/functions/Function1;)V
 	public final fun getSchedule ()Lcom/copperleaf/ballast/scheduler/NamedSchedule;
-	public final fun getScheduledInput ()Lkotlin/jvm/functions/Function0;
+	public final fun getScheduledInput ()Lkotlin/jvm/functions/Function1;
 }
 
 public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$StartSchedules : com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs {
@@ -108,12 +108,14 @@ public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$Inputs$
 
 public final class com/copperleaf/ballast/scheduler/vm/SchedulerContract$State {
 	public fun <init> ()V
-	public fun <init> (Ljava/util/Map;)V
-	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public final fun component1 ()Ljava/util/Map;
-	public final fun copy (Ljava/util/Map;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;Ljava/util/Map;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;
+	public fun <init> (ILjava/util/Map;)V
+	public synthetic fun <init> (ILjava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/util/Map;
+	public final fun copy (ILjava/util/Map;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;ILjava/util/Map;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/vm/SchedulerContract$State;
 	public fun equals (Ljava/lang/Object;)Z
+	public final fun getScheduleIndex ()I
 	public final fun getSchedules ()Ljava/util/Map;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

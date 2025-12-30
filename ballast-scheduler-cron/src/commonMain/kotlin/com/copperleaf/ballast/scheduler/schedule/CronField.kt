@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.scheduler.schedule
 
+import com.copperleaf.ballast.scheduler.utils.number
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.Month
 import kotlinx.datetime.number
@@ -27,6 +28,26 @@ public class MonthField private constructor(
     override val values: List<Int>,
     override val wildcard: Boolean = false,
 ) : CronField() {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is MonthField) return false
+
+        if (min != other.min) return false
+        if (max != other.max) return false
+        if (wildcard != other.wildcard) return false
+        if (values != other.values) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = min
+        result = 31 * result + max
+        result = 31 * result + wildcard.hashCode()
+        result = 31 * result + values.hashCode()
+        return result
+    }
 
     public companion object {
         public const val MIN_VALUE: Int = 1
@@ -72,6 +93,20 @@ public class MonthField private constructor(
         public fun range(min: Int, max: Int, step: Int = 1): MonthField {
             return MonthField(min..max step step, wildcard = false)
         }
+
+        public fun series(vararg fields: MonthField): MonthField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return MonthField(allValues, wildcard = wildcard)
+        }
+
+        public fun series(fields: Iterable<MonthField>): MonthField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return MonthField(allValues, wildcard = wildcard)
+        }
     }
 }
 
@@ -81,6 +116,26 @@ public class DayOfMonthField private constructor(
     override val values: List<Int>,
     override val wildcard: Boolean = false,
 ) : CronField() {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DayOfMonthField) return false
+
+        if (min != other.min) return false
+        if (max != other.max) return false
+        if (wildcard != other.wildcard) return false
+        if (values != other.values) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = min
+        result = 31 * result + max
+        result = 31 * result + wildcard.hashCode()
+        result = 31 * result + values.hashCode()
+        return result
+    }
 
     public companion object {
         public const val MIN_VALUE: Int = 1
@@ -109,6 +164,20 @@ public class DayOfMonthField private constructor(
         public fun range(min: Int, max: Int, step: Int = 1): DayOfMonthField {
             return DayOfMonthField(min..max step step, wildcard = false)
         }
+
+        public fun series(vararg fields: DayOfMonthField): DayOfMonthField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return DayOfMonthField(allValues, wildcard = wildcard)
+        }
+
+        public fun series(fields: Iterable<DayOfMonthField>): DayOfMonthField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return DayOfMonthField(allValues, wildcard = wildcard)
+        }
     }
 }
 
@@ -118,6 +187,26 @@ public class DayOfWeekField private constructor(
     override val values: List<Int>,
     override val wildcard: Boolean,
 ) : CronField() {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is DayOfWeekField) return false
+
+        if (min != other.min) return false
+        if (max != other.max) return false
+        if (wildcard != other.wildcard) return false
+        if (values != other.values) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = min
+        result = 31 * result + max
+        result = 31 * result + wildcard.hashCode()
+        result = 31 * result + values.hashCode()
+        return result
+    }
 
     public companion object {
         public const val MIN_VALUE: Int = 0
@@ -138,11 +227,11 @@ public class DayOfWeekField private constructor(
 
         @JvmName("dayOfWeekField_DayOfWeek")
         public operator fun invoke(days: Iterable<DayOfWeek>, wildcard: Boolean = false): DayOfWeekField {
-            return DayOfWeekField(days.map { it.ordinal }, wildcard)
+            return DayOfWeekField(days.map { it.number }, wildcard)
         }
 
         public operator fun invoke(vararg days: DayOfWeek, wildcard: Boolean = false): DayOfWeekField {
-            return DayOfWeekField(days.map { it.ordinal }, wildcard)
+            return DayOfWeekField(days.map { it.number }, wildcard)
         }
 
         public fun anyValue(step: Int = 1): DayOfWeekField {
@@ -154,11 +243,25 @@ public class DayOfWeekField private constructor(
         }
 
         public fun exactValue(value: DayOfWeek): DayOfWeekField {
-            return DayOfWeekField(listOf(value.ordinal), wildcard = false)
+            return DayOfWeekField(listOf(value.number), wildcard = false)
         }
 
         public fun range(min: Int, max: Int, step: Int = 1): DayOfWeekField {
             return DayOfWeekField(min..max step step, wildcard = false)
+        }
+
+        public fun series(vararg fields: DayOfWeekField): DayOfWeekField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return DayOfWeekField(allValues, wildcard = wildcard)
+        }
+
+        public fun series(fields: Iterable<DayOfWeekField>): DayOfWeekField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return DayOfWeekField(allValues, wildcard = wildcard)
         }
     }
 }
@@ -169,6 +272,26 @@ public class HourField private constructor(
     override val values: List<Int>,
     override val wildcard: Boolean,
 ) : CronField() {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is HourField) return false
+
+        if (min != other.min) return false
+        if (max != other.max) return false
+        if (wildcard != other.wildcard) return false
+        if (values != other.values) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = min
+        result = 31 * result + max
+        result = 31 * result + wildcard.hashCode()
+        result = 31 * result + values.hashCode()
+        return result
+    }
 
     public companion object {
         public const val MIN_VALUE: Int = 0
@@ -197,6 +320,20 @@ public class HourField private constructor(
         public fun range(min: Int, max: Int, step: Int = 1): HourField {
             return HourField(min..max step step, wildcard = false)
         }
+
+        public fun series(vararg fields: HourField): HourField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return HourField(allValues, wildcard = wildcard)
+        }
+
+        public fun series(fields: Iterable<HourField>): HourField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return HourField(allValues, wildcard = wildcard)
+        }
     }
 }
 
@@ -206,6 +343,26 @@ public class MinuteField private constructor(
     override val values: List<Int>,
     override val wildcard: Boolean,
 ) : CronField() {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is MinuteField) return false
+
+        if (min != other.min) return false
+        if (max != other.max) return false
+        if (wildcard != other.wildcard) return false
+        if (values != other.values) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = min
+        result = 31 * result + max
+        result = 31 * result + wildcard.hashCode()
+        result = 31 * result + values.hashCode()
+        return result
+    }
 
     public companion object {
         public const val MIN_VALUE: Int = 0
@@ -233,6 +390,20 @@ public class MinuteField private constructor(
 
         public fun range(min: Int, max: Int, step: Int = 1): MinuteField {
             return MinuteField(min..max step step, wildcard = false)
+        }
+
+        public fun series(vararg fields: MinuteField): MinuteField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return MinuteField(allValues, wildcard = wildcard)
+        }
+
+        public fun series(fields: Iterable<MinuteField>): MinuteField {
+            val allValues: List<Int> = fields.flatMap { it.values }
+            val wildcard: Boolean = fields.all { it.wildcard }
+
+            return MinuteField(allValues, wildcard = wildcard)
         }
     }
 }

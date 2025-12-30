@@ -1,4 +1,6 @@
 public final class com/copperleaf/ballast/scheduler/schedule/CronExpression {
+	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/CronExpression$Companion;
+	public fun <init> ()V
 	public fun <init> (Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;Lcom/copperleaf/ballast/scheduler/schedule/HourField;Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;Lcom/copperleaf/ballast/scheduler/schedule/MonthField;Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;Lkotlinx/datetime/TimeZone;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;Lcom/copperleaf/ballast/scheduler/schedule/HourField;Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;Lcom/copperleaf/ballast/scheduler/schedule/MonthField;Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;Lkotlinx/datetime/TimeZone;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;
@@ -17,6 +19,11 @@ public final class com/copperleaf/ballast/scheduler/schedule/CronExpression {
 	public fun hashCode ()I
 	public final fun nextMatchingInstant (Lkotlin/time/Instant;)Lkotlin/time/Instant;
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/scheduler/schedule/CronExpression$Companion {
+	public final fun parse (Ljava/lang/String;Lkotlinx/datetime/TimeZone;)Lcom/copperleaf/ballast/scheduler/schedule/CronExpression;
+	public static synthetic fun parse$default (Lcom/copperleaf/ballast/scheduler/schedule/CronExpression$Companion;Ljava/lang/String;Lkotlinx/datetime/TimeZone;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/CronExpression;
 }
 
 public abstract class com/copperleaf/ballast/scheduler/schedule/CronField {
@@ -45,10 +52,12 @@ public final class com/copperleaf/ballast/scheduler/schedule/DayOfMonthField : c
 	public static final field MAX_VALUE I
 	public static final field MIN_VALUE I
 	public synthetic fun <init> (IILjava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getMax ()I
 	public fun getMin ()I
 	public fun getValues ()Ljava/util/List;
 	public fun getWildcard ()Z
+	public fun hashCode ()I
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/DayOfMonthField$Companion {
@@ -61,6 +70,8 @@ public final class com/copperleaf/ballast/scheduler/schedule/DayOfMonthField$Com
 	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField$Companion;[IZILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;
 	public final fun range (III)Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;
 	public static synthetic fun range$default (Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField$Companion;IIIILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;
+	public final fun series (Ljava/lang/Iterable;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;
+	public final fun series ([Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfMonthField;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/DayOfWeekField : com/copperleaf/ballast/scheduler/schedule/CronField {
@@ -68,10 +79,12 @@ public final class com/copperleaf/ballast/scheduler/schedule/DayOfWeekField : co
 	public static final field MAX_VALUE I
 	public static final field MIN_VALUE I
 	public synthetic fun <init> (IILjava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getMax ()I
 	public fun getMin ()I
 	public fun getValues ()Ljava/util/List;
 	public fun getWildcard ()Z
+	public fun hashCode ()I
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/DayOfWeekField$Companion {
@@ -89,6 +102,8 @@ public final class com/copperleaf/ballast/scheduler/schedule/DayOfWeekField$Comp
 	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField$Companion;[Lkotlinx/datetime/DayOfWeek;ZILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;
 	public final fun range (III)Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;
 	public static synthetic fun range$default (Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField$Companion;IIIILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;
+	public final fun series (Ljava/lang/Iterable;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;
+	public final fun series ([Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;)Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/HourField : com/copperleaf/ballast/scheduler/schedule/CronField {
@@ -96,10 +111,12 @@ public final class com/copperleaf/ballast/scheduler/schedule/HourField : com/cop
 	public static final field MAX_VALUE I
 	public static final field MIN_VALUE I
 	public synthetic fun <init> (IILjava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getMax ()I
 	public fun getMin ()I
 	public fun getValues ()Ljava/util/List;
 	public fun getWildcard ()Z
+	public fun hashCode ()I
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/HourField$Companion {
@@ -112,6 +129,8 @@ public final class com/copperleaf/ballast/scheduler/schedule/HourField$Companion
 	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/HourField$Companion;[IZILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/HourField;
 	public final fun range (III)Lcom/copperleaf/ballast/scheduler/schedule/HourField;
 	public static synthetic fun range$default (Lcom/copperleaf/ballast/scheduler/schedule/HourField$Companion;IIIILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/HourField;
+	public final fun series (Ljava/lang/Iterable;)Lcom/copperleaf/ballast/scheduler/schedule/HourField;
+	public final fun series ([Lcom/copperleaf/ballast/scheduler/schedule/HourField;)Lcom/copperleaf/ballast/scheduler/schedule/HourField;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/MinuteField : com/copperleaf/ballast/scheduler/schedule/CronField {
@@ -119,10 +138,12 @@ public final class com/copperleaf/ballast/scheduler/schedule/MinuteField : com/c
 	public static final field MAX_VALUE I
 	public static final field MIN_VALUE I
 	public synthetic fun <init> (IILjava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getMax ()I
 	public fun getMin ()I
 	public fun getValues ()Ljava/util/List;
 	public fun getWildcard ()Z
+	public fun hashCode ()I
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/MinuteField$Companion {
@@ -135,6 +156,8 @@ public final class com/copperleaf/ballast/scheduler/schedule/MinuteField$Compani
 	public static synthetic fun invoke$default (Lcom/copperleaf/ballast/scheduler/schedule/MinuteField$Companion;[IZILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;
 	public final fun range (III)Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;
 	public static synthetic fun range$default (Lcom/copperleaf/ballast/scheduler/schedule/MinuteField$Companion;IIIILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;
+	public final fun series (Ljava/lang/Iterable;)Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;
+	public final fun series ([Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;)Lcom/copperleaf/ballast/scheduler/schedule/MinuteField;
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/MonthField : com/copperleaf/ballast/scheduler/schedule/CronField {
@@ -142,10 +165,12 @@ public final class com/copperleaf/ballast/scheduler/schedule/MonthField : com/co
 	public static final field MAX_VALUE I
 	public static final field MIN_VALUE I
 	public synthetic fun <init> (IILjava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun equals (Ljava/lang/Object;)Z
 	public fun getMax ()I
 	public fun getMin ()I
 	public fun getValues ()Ljava/util/List;
 	public fun getWildcard ()Z
+	public fun hashCode ()I
 }
 
 public final class com/copperleaf/ballast/scheduler/schedule/MonthField$Companion {
@@ -163,5 +188,11 @@ public final class com/copperleaf/ballast/scheduler/schedule/MonthField$Companio
 	public static synthetic fun monthField_Month$default (Lcom/copperleaf/ballast/scheduler/schedule/MonthField$Companion;Ljava/lang/Iterable;ZILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/MonthField;
 	public final fun range (III)Lcom/copperleaf/ballast/scheduler/schedule/MonthField;
 	public static synthetic fun range$default (Lcom/copperleaf/ballast/scheduler/schedule/MonthField$Companion;IIIILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/schedule/MonthField;
+	public final fun series (Ljava/lang/Iterable;)Lcom/copperleaf/ballast/scheduler/schedule/MonthField;
+	public final fun series ([Lcom/copperleaf/ballast/scheduler/schedule/MonthField;)Lcom/copperleaf/ballast/scheduler/schedule/MonthField;
+}
+
+public final class com/copperleaf/ballast/scheduler/utils/CronAdjustUtilsKt {
+	public static final fun getNumber (Lkotlinx/datetime/DayOfWeek;)I
 }
 

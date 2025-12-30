@@ -1,4 +1,4 @@
-public final class com/copperleaf/ballast/autoscale/AutoscalingViewModel : com/copperleaf/ballast/BallastViewModel {
+public class com/copperleaf/ballast/autoscale/AutoscalingViewModel : com/copperleaf/ballast/BallastViewModel {
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/autoscale/ViewModelFactory;Lcom/copperleaf/ballast/autoscale/ScalingPolicy;Lcom/copperleaf/ballast/autoscale/DistributionPolicy;)V
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

@@ -39,6 +39,13 @@ public final class com/copperleaf/ballast/scheduler/executor/DelayScheduleExecut
 	public fun runSchedules (Ljava/util/List;)Lkotlinx/coroutines/flow/Flow;
 }
 
+public final class com/copperleaf/ballast/scheduler/executor/InMemoryScheduleState : com/copperleaf/ballast/scheduler/ScheduleExecutor$State {
+	public fun <init> ()V
+	public fun getLastExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getLastExecutions ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun storeExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/time/Instant;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/copperleaf/ballast/scheduler/executor/PollingScheduleExecutor : com/copperleaf/ballast/scheduler/ScheduleExecutor {
 	public fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
@@ -49,6 +56,11 @@ public final class com/copperleaf/ballast/scheduler/executor/PollingScheduleExec
 public final class com/copperleaf/ballast/scheduler/operators/AdaptiveKt {
 	public static final fun adaptive (Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/time/Clock;)Lcom/copperleaf/ballast/scheduler/Schedule;
 	public static synthetic fun adaptive$default (Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/time/Clock;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/Schedule;
+}
+
+public final class com/copperleaf/ballast/scheduler/operators/AlignKt {
+	public static final fun alignTo (Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/time/DurationUnit;Lkotlinx/datetime/TimeZone;)Lcom/copperleaf/ballast/scheduler/Schedule;
+	public static synthetic fun alignTo$default (Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/time/DurationUnit;Lkotlinx/datetime/TimeZone;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/Schedule;
 }
 
 public final class com/copperleaf/ballast/scheduler/operators/BoundsKt {
