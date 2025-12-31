@@ -7,12 +7,12 @@ import com.copperleaf.ballast.scheduler.ScheduleExecutor
 import com.copperleaf.ballast.scheduler.operators.getNext
 import com.copperleaf.ballast.scheduler.schedule.EveryMinuteSchedule
 import com.copperleaf.ballast.scheduler.utils.generateSafeSchedule
+import com.copperleaf.ballast.scheduler.utils.isSameOrBeforeMinute
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -77,7 +77,7 @@ public class PollingScheduleExecutor(
         val nextScheduleInstant = schedule.getNext(scheduleStartTime) ?: return
 
         // if the next scheduled time matches the current time, store the execution time and emit it
-        if (nextScheduleInstant.isSameOrBeforeMinute(currentInstant)) {
+        if (nextScheduleInstant.isSameOrBeforeMinute(currentInstant, timeZone)) {
             emit(
                 ScheduleEmission(
                     triggeredAt = currentInstant,
@@ -87,19 +87,5 @@ public class PollingScheduleExecutor(
             )
             scheduleState.storeExecution(schedule, currentInstant)
         }
-    }
-
-    private fun Instant.isSameOrBeforeMinute(other: Instant): Boolean {
-        val a = this.toLocalDateTime(timeZone)
-        val b = other.toLocalDateTime(timeZone)
-
-        if (a.year < b.year) return true
-        if (a.month < b.month) return true
-        if (a.day < b.day) return true
-        if (a.hour < b.hour) return true
-        if (a.minute < b.minute) return true
-        if (a.minute == b.minute) return true
-
-        return false
     }
 }
