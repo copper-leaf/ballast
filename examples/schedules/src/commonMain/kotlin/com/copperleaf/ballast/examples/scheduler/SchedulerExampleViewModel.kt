@@ -8,7 +8,6 @@ import com.copperleaf.ballast.core.FifoInputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.plusAssign
 import com.copperleaf.ballast.scheduler.SchedulerInterceptor
-import com.copperleaf.ballast.scheduler.withSchedulerController
 import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -25,17 +24,13 @@ internal fun createScheduler(): SchedulerInterceptor<
         SchedulerExampleContract.Events,
         SchedulerExampleContract.State> {
     return SchedulerInterceptor(
-        config = BallastViewModelConfiguration.Builder()
-            .logging()
-            .debugging()
-            .withSchedulerController<
-                    SchedulerExampleContract.Inputs,
-                    SchedulerExampleContract.Events,
-                    SchedulerExampleContract.State>()
-            .build(),
+        extraConfig = {
+            it.logging().debugging()
+        },
         initialSchedule = SchedulerExampleAdapter(),
     )
 }
+
 internal fun createViewModel(
     viewModelCoroutineScope: CoroutineScope,
     scheduler: SchedulerInterceptor<
