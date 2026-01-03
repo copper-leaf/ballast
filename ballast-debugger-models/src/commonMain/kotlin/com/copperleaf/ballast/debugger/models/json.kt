@@ -1,7 +1,11 @@
+@file:Suppress("IfThenToElvis", "DEPRECATION")
+
 package com.copperleaf.ballast.debugger.models
 
+import com.copperleaf.ballast.BallastEncoder
 import com.copperleaf.ballast.BallastNotification
 import com.copperleaf.ballast.debugger.BallastDebuggerViewModelConnection
+import com.copperleaf.ballast.debugger.DebuggerAdapter
 import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
 import com.copperleaf.ballast.internal.Status
 import io.ktor.http.ContentType
@@ -18,56 +22,57 @@ internal fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Input
     uuid: String,
     firstSeen: LocalDateTime,
     now: LocalDateTime,
+    ballastEncoder: BallastEncoder<Inputs, Events, State>,
 ): BallastDebuggerEventV5 {
     return when (this) {
         is BallastNotification.ViewModelStatusChanged -> {
             BallastDebuggerEventV5.ViewModelStatusChanged(connectionId, viewModelName, viewModelType, uuid, firstSeen, status.serialize())
         }
         is BallastNotification.InputQueued -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeInput(input)
+            val (contentType, serializedContent) = serializeInput(viewModelConnection.adapter, ballastEncoder, input)
             BallastDebuggerEventV5.InputQueued(connectionId, viewModelName, uuid, firstSeen, input.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.InputAccepted -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeInput(input)
+            val (contentType, serializedContent) = serializeInput(viewModelConnection.adapter, ballastEncoder, input)
             BallastDebuggerEventV5.InputAccepted(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.InputRejected -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeInput(input)
+            val (contentType, serializedContent) = serializeInput(viewModelConnection.adapter, ballastEncoder, input)
             BallastDebuggerEventV5.InputRejected(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.InputDropped -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeInput(input)
+            val (contentType, serializedContent) = serializeInput(viewModelConnection.adapter, ballastEncoder, input)
             BallastDebuggerEventV5.InputDropped(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.InputHandledSuccessfully -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeInput(input)
+            val (contentType, serializedContent) = serializeInput(viewModelConnection.adapter, ballastEncoder, input)
             BallastDebuggerEventV5.InputHandledSuccessfully(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.InputCancelled -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeInput(input)
+            val (contentType, serializedContent) = serializeInput(viewModelConnection.adapter, ballastEncoder, input)
             BallastDebuggerEventV5.InputCancelled(connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.InputHandlerError -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeInput(input)
+            val (contentType, serializedContent) = serializeInput(viewModelConnection.adapter, ballastEncoder, input)
             BallastDebuggerEventV5.InputHandlerError(
                 connectionId, viewModelName, uuid, now, input.type, serializedContent, contentType.asContentTypeString(),
                 throwable.stackTraceToString()
             )
         }
         is BallastNotification.EventQueued -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeEvent(event)
+            val (contentType, serializedContent) = serializeEvent(viewModelConnection.adapter, ballastEncoder, event)
             BallastDebuggerEventV5.EventQueued(connectionId, viewModelName, uuid, firstSeen, event.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.EventEmitted -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeEvent(event)
+            val (contentType, serializedContent) = serializeEvent(viewModelConnection.adapter, ballastEncoder, event)
             BallastDebuggerEventV5.EventEmitted(connectionId, viewModelName, uuid, now, event.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.EventHandledSuccessfully -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeEvent(event)
+            val (contentType, serializedContent) = serializeEvent(viewModelConnection.adapter, ballastEncoder, event)
             BallastDebuggerEventV5.EventHandledSuccessfully(connectionId, viewModelName, uuid, now, event.type, serializedContent, contentType.asContentTypeString())
         }
         is BallastNotification.EventHandlerError -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeEvent(event)
+            val (contentType, serializedContent) = serializeEvent(viewModelConnection.adapter, ballastEncoder, event)
             BallastDebuggerEventV5.EventHandlerError(
                 connectionId, viewModelName, uuid, now, event.type, serializedContent, contentType.asContentTypeString(),
                 throwable.stackTraceToString()
@@ -80,7 +85,7 @@ internal fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Input
             BallastDebuggerEventV5.EventProcessingStopped(connectionId, viewModelName, uuid, now)
         }
         is BallastNotification.StateChanged -> {
-            val (contentType, serializedContent) = viewModelConnection.adapter.serializeState(state)
+            val (contentType, serializedContent) = serializeState(viewModelConnection.adapter, ballastEncoder, state)
             BallastDebuggerEventV5.StateChanged(connectionId, viewModelName, uuid, firstSeen, state.type, serializedContent, contentType.asContentTypeString())
         }
 
@@ -148,4 +153,49 @@ public fun Status.serialize(): BallastDebuggerEventV5.StatusV5 {
 
 private fun ContentType.asContentTypeString(): String {
     return "$contentType/$contentSubtype"
+}
+
+internal fun <Inputs : Any, Events : Any, State : Any> serializeInput(
+    debuggerAdapter: DebuggerAdapter<Inputs, Events, State>?,
+    ballastEncoder: BallastEncoder<Inputs, Events, State>,
+    input: Inputs,
+): Pair<ContentType, String> {
+    return if (debuggerAdapter != null) {
+        debuggerAdapter.serializeInput(input)
+    } else {
+        val contentType = ballastEncoder.contentType
+            ?.let { runCatching { ContentType.parse(it) }.getOrNull() }
+            ?: ContentType.Any
+        contentType to ballastEncoder.encodeInputToString(input)
+    }
+}
+
+internal fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs, Events, State>.serializeEvent(
+    debuggerAdapter: DebuggerAdapter<Inputs, Events, State>?,
+    ballastEncoder: BallastEncoder<Inputs, Events, State>,
+    event: Events,
+): Pair<ContentType, String> {
+    return if (debuggerAdapter != null) {
+        debuggerAdapter.serializeEvent(event)
+    } else {
+        val contentType = ballastEncoder.contentType
+            ?.let { runCatching { ContentType.parse(it) }.getOrNull() }
+            ?: ContentType.Any
+        contentType to ballastEncoder.encodeEventToString(event)
+    }
+}
+
+internal fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs, Events, State>.serializeState(
+    debuggerAdapter: DebuggerAdapter<Inputs, Events, State>?,
+    ballastEncoder: BallastEncoder<Inputs, Events, State>,
+    state: State,
+): Pair<ContentType, String> {
+    return if (debuggerAdapter != null) {
+        debuggerAdapter.serializeState(state)
+    } else {
+        val contentType = ballastEncoder.contentType
+            ?.let { runCatching { ContentType.parse(it) }.getOrNull() }
+            ?: ContentType.Any
+        contentType to ballastEncoder.encodeStateToString(state)
+    }
 }

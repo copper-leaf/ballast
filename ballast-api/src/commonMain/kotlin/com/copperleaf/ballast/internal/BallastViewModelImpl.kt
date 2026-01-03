@@ -60,7 +60,11 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
         return inputActor.enqueueQueuedImmediate(Queued.HandleInput(null, element))
     }
 
-// ViewModel Lifecycle
+    override fun close() {
+        inputActor.enqueueQueuedImmediate(Queued.ShutDownGracefully(CompletableDeferred(), shutDownGracePeriod))
+    }
+
+    // ViewModel Lifecycle
 // ---------------------------------------------------------------------------------------------------------------------
 
     public fun attachEventHandler(

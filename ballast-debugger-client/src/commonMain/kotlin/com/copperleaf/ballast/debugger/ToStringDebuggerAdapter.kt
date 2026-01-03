@@ -2,6 +2,8 @@ package com.copperleaf.ballast.debugger
 
 import io.ktor.http.ContentType
 
+@Suppress("DEPRECATION")
+@Deprecated("Set the serializers in the BallastViewModelConfiguration instead.")
 public class ToStringDebuggerAdapter<Inputs : Any, Events : Any, State : Any> :
     DebuggerAdapter<Inputs, Events, State> {
 

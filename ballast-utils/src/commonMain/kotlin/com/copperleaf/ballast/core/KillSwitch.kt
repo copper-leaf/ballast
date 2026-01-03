@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
+@Suppress("DEPRECATION")
+@Deprecated("Use the built-in BallastViewModel.close() instead.")
 public class KillSwitch<Inputs : Any, Events : Any, State : Any>(
     private val gracePeriod: Duration = 100.milliseconds,
 ) : BallastInterceptor<Inputs, Events, State> {

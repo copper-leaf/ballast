@@ -16,6 +16,6 @@ public data class RegisteredViewModel<Inputs : Any, Events : Any, State : Any>(
     }
 
     internal suspend fun shutDownGracefully() {
-        // TODO: implement graceful shutdown
+        vm.close()
     }
 }

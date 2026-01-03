@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.AndroidLogger
-import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.PrintlnLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
@@ -77,7 +76,7 @@ class AndroidInjectorImpl(
 // Router
 // ---------------------------------------------------------------------------------------------------------------------
 
-    private fun newViewModelScope() : CoroutineScope {
+    private fun newViewModelScope(): CoroutineScope {
         return CoroutineScope(SupervisorJob() + Dispatchers.Main)
     }
 
@@ -172,9 +171,9 @@ class AndroidInjectorImpl(
 
     override fun undoViewModel(
         undoController: StateBasedUndoController<
-            UndoContract.Inputs,
-            UndoContract.Events,
-            UndoContract.State>
+                UndoContract.Inputs,
+                UndoContract.Events,
+                UndoContract.State>
     ): UndoViewModel {
         return UndoViewModel(
             config = commonBuilder()
@@ -258,19 +257,14 @@ class AndroidInjectorImpl(
     override fun kitchenSinkViewModel(
         inputStrategy: InputStrategySelection,
     ): KitchenSinkViewModel {
-        val killSwitch = KillSwitch<
-                KitchenSinkContract.Inputs,
-                KitchenSinkContract.Events,
-                KitchenSinkContract.State>(5.seconds)
         return KitchenSinkViewModel(
             config = commonBuilder()
                 .apply {
                     this.inputStrategy = inputStrategy.get()
-                    this += killSwitch
                 }
                 .withViewModel(
                     initialState = KitchenSinkContract.State(inputStrategy = inputStrategy),
-                    inputHandler = KitchenSinkInputHandler(killSwitch),
+                    inputHandler = KitchenSinkInputHandler(),
                     name = "KitchenSink",
                 )
                 .build(),

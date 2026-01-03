@@ -42,7 +42,7 @@ public open class IosViewModel<Inputs : Any, Events : Any, State : Any> private 
         )
     }
 
-    public fun close() {
+    override fun close() {
         impl.viewModelScope.cancel()
     }
 }

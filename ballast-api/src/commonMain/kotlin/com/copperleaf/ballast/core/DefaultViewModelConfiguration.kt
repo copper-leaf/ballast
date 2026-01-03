@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.core
 
+import com.copperleaf.ballast.BallastDecoder
+import com.copperleaf.ballast.BallastEncoder
 import com.copperleaf.ballast.BallastInterceptor
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
@@ -7,6 +9,7 @@ import com.copperleaf.ballast.EventStrategy
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputStrategy
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlin.time.Duration
 
 /**
  * A default implementation of [BallastViewModelConfiguration] produced by [BallastViewModelConfiguration.Builder].
@@ -26,4 +29,7 @@ public class DefaultViewModelConfiguration<Inputs : Any, Events : Any, State : A
     override val interceptorDispatcher: CoroutineDispatcher,
     override val name: String,
     override val logger: BallastLogger,
+    override val encoder: BallastEncoder<Inputs, Events, State>,
+    override val decoder: BallastDecoder<Inputs, Events, State>?,
+    override val shutDownGracePeriod: Duration,
 ) : BallastViewModelConfiguration<Inputs, Events, State>

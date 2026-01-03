@@ -2,6 +2,7 @@ package com.copperleaf.ballast.debugger
 
 import io.ktor.http.ContentType
 
+@Deprecated("Set the serializers in the BallastViewModelConfiguration instead.")
 public interface DebuggerAdapter<Inputs : Any, Events : Any, State : Any> {
     public fun serializeInput(input: Inputs): Pair<ContentType, String> {
         return ContentType.Text.Any to input.toString()

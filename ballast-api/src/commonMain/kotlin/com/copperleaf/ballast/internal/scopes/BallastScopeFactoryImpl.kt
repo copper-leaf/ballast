@@ -27,6 +27,8 @@ public open class DefaultBallastScopeFactory<Inputs : Any, Events : Any, State :
             initialState = initialState,
             inputActor = inputActor,
             eventActor = eventActor,
+            encoder = encoder,
+            decoder = decoder,
         )
     }
 
@@ -89,6 +91,7 @@ public open class DefaultBallastScopeFactory<Inputs : Any, Events : Any, State :
             interceptorActor = interceptorActor,
             key = key,
             restartState = restartState,
+            shutDownGracePeriod = shutDownGracePeriod,
         )
     }
 

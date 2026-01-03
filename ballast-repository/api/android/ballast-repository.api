@@ -2,6 +2,7 @@ public class com/copperleaf/ballast/repository/AndroidBallastRepository : androi
 	public static final field Companion Lcom/copperleaf/ballast/repository/AndroidBallastRepository$Companion;
 	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;)V
 	public fun <init> (Lcom/copperleaf/ballast/repository/bus/EventBus;Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lkotlinx/coroutines/CoroutineScope;)V
+	public fun close ()V
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

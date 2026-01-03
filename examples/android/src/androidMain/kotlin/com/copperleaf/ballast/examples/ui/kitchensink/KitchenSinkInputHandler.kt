@@ -2,7 +2,6 @@ package com.copperleaf.ballast.examples.ui.kitchensink
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.examples.router.BallastExamples
 import com.copperleaf.ballast.navigation.routing.build
 import com.copperleaf.ballast.navigation.routing.directions
@@ -11,15 +10,10 @@ import com.copperleaf.ballast.observeFlows
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
-class KitchenSinkInputHandler(
-    private val killSwitch: KillSwitch<
-            KitchenSinkContract.Inputs,
-            KitchenSinkContract.Events,
-            KitchenSinkContract.State>,
-) : InputHandler<
-        KitchenSinkContract.Inputs,
-        KitchenSinkContract.Events,
-        KitchenSinkContract.State> {
+class KitchenSinkInputHandler: InputHandler<
+    KitchenSinkContract.Inputs,
+    KitchenSinkContract.Events,
+    KitchenSinkContract.State> {
 
     override suspend fun InputHandlerScope<
             KitchenSinkContract.Inputs,
@@ -95,7 +89,9 @@ class KitchenSinkInputHandler(
         }
 
         is KitchenSinkContract.Inputs.ShutDownGracefully -> {
-            killSwitch.requestGracefulShutdown()
+            sideJob("ShutDownGracefully") {
+                requestGracefulShutdown()
+            }
         }
     }
 }

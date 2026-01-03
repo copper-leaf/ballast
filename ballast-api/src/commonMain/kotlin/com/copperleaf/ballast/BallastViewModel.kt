@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
  * Practically-speaking, those platform-specific ViewModels just wrap an instance of [BallastViewModelImpl], which does
  * the actual work of implementing the pattern, and delegates all its internal calls to that internal implementation.
  */
-public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> {
+public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : AutoCloseable {
 
     /**
      * Observe the flow of states from this ViewModel

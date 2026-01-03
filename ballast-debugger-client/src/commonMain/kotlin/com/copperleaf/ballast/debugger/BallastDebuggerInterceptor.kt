@@ -8,9 +8,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
+@Suppress("DEPRECATION")
 public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>(
     private val connection: BallastDebuggerClientConnection<*>,
-    private val adapter: DebuggerAdapter<Inputs, Events, State> = ToStringDebuggerAdapter(),
+    private val adapter: DebuggerAdapter<Inputs, Events, State>? = ToStringDebuggerAdapter(),
 ) : BallastInterceptor<Inputs, Events, State> {
 
     override fun BallastInterceptorScope<Inputs, Events, State>.start(notifications: Flow<BallastNotification<Inputs, Events, State>>) {
@@ -31,6 +32,7 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
 
     public companion object {
 
+        @Deprecated("Set the serializers in the BallastViewModelConfiguration instead.")
         public operator fun <Inputs : Any, Events : Any, State : Any> invoke(
             connection: BallastDebuggerClientConnection<*>,
             serializeInput: (Inputs) -> Pair<ContentType, String>,
@@ -47,6 +49,7 @@ public class BallastDebuggerInterceptor<Inputs : Any, Events : Any, State : Any>
             )
         }
 
+        @Deprecated("Set the serializers in the BallastViewModelConfiguration instead.")
         public operator fun <Inputs : Any, Events : Any, State : Any> invoke(
             connection: BallastDebuggerClientConnection<*>,
             inputsSerializer: KSerializer<Inputs>? = null,

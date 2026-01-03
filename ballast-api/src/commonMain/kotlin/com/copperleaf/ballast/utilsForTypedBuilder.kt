@@ -25,6 +25,9 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         interceptorDispatcher = interceptorDispatcher,
         name = vmName,
         logger = logger(vmName),
+        encoder = encoder,
+        decoder = decoder,
+        shutDownGracePeriod = shutDownGracePeriod,
     )
 }
 

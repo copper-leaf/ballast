@@ -4,7 +4,9 @@ import com.copperleaf.ballast.BallastViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.ChannelResult
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
@@ -12,12 +14,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 public open class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
     coroutineScope: CoroutineScope,
     private val factory: ViewModelFactory<Inputs, Events, State>,
     private val scalingPolicy: ScalingPolicy<Inputs, Events, State>,
     private val distributionPolicy: DistributionPolicy<Inputs, Events, State>,
+    public val shutDownGracePeriod: Duration = 10.seconds,
 ) : BallastViewModel<Inputs, Events, State> {
 
     private val scalingScope: CoroutineScope = coroutineScope + SupervisorJob(coroutineScope.coroutineContext.job)
@@ -34,6 +39,11 @@ public open class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
                 .collect { replicaCount ->
                     autoscale(replicaCount)
                 }
+        }
+        scalingScope.coroutineContext.job.invokeOnCompletion {
+            // Clean up all ViewModels in the pool when the scalingScope is cancelled, which happens when this VM itself
+            // is closed
+            viewModelPool.value.forEach { it.close() }
         }
     }
 
@@ -59,7 +69,15 @@ public open class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
             ?: error("DistributionPolicy was unable to select a ViewModel from the pool.")
     }
 
-// Autoscaling
+    override fun close() {
+        scalingScope.launch {
+            viewModelPool.value.forEach { it.close() }
+            delay(shutDownGracePeriod)
+            scalingScope.cancel()
+        }
+    }
+
+    // Autoscaling
 // ---------------------------------------------------------------------------------------------------------------------
 
     private fun autoscale(replicaCount: Int) {
@@ -99,7 +117,7 @@ public open class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
             index < replicaCount
         }
         toRemove.forEach { (_, vm) ->
-            // TODO: shut down gracefully
+            vm.close()
         }
         return toKeep.map { it.value }
     }

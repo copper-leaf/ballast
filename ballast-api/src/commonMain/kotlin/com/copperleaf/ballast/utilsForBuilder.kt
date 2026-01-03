@@ -25,6 +25,9 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         interceptorDispatcher = interceptorDispatcher,
         name = vmName,
         logger = logger(vmName),
+        encoder = encoder.requireTyped("encoder"),
+        decoder = decoder.requireTypedIfPresent("decoder"),
+        shutDownGracePeriod = shutDownGracePeriod,
     )
 }
 
@@ -46,6 +49,9 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         interceptorDispatcher = interceptorDispatcher,
         name = vmName,
         logger = logger,
+        encoder = encoder.requireTyped("encoder"),
+        decoder = decoder.requireTypedIfPresent("decoder"),
+        shutDownGracePeriod = shutDownGracePeriod,
     )
 }
 

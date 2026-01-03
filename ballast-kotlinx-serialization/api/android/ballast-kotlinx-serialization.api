@@ -1,0 +1,23 @@
+public final class com/copperleaf/ballast/JsonBallastEncoder : com/copperleaf/ballast/BallastDecoder, com/copperleaf/ballast/BallastEncoder {
+	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)V
+	public synthetic fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun decodeEventFromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun decodeInputFromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun decodeStateFromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun encodeEventToString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun encodeInputToString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun encodeStateToString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun getContentType ()Ljava/lang/String;
+}
+
+public final class com/copperleaf/ballast/KSerializerEncoder : com/copperleaf/ballast/BallastDecoder, com/copperleaf/ballast/BallastEncoder {
+	public fun <init> ()V
+	public fun decodeEventFromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun decodeInputFromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun decodeStateFromString (Ljava/lang/String;)Ljava/lang/Object;
+	public fun encodeEventToString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun encodeInputToString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun encodeStateToString (Ljava/lang/Object;)Ljava/lang/String;
+	public fun getContentType ()Ljava/lang/String;
+}
+

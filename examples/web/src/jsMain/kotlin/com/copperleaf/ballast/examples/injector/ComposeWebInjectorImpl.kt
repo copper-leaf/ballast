@@ -3,7 +3,6 @@ package com.copperleaf.ballast.examples.injector
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.JsConsoleLogger
-import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
@@ -61,7 +60,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 class ComposeWebInjectorImpl(
     private val applicationScope: CoroutineScope,
@@ -248,20 +246,15 @@ class ComposeWebInjectorImpl(
         coroutineScope: CoroutineScope,
         inputStrategy: InputStrategySelection,
     ): KitchenSinkViewModel {
-        val killSwitch = KillSwitch<
-                KitchenSinkContract.Inputs,
-                KitchenSinkContract.Events,
-                KitchenSinkContract.State>(5.seconds)
         return KitchenSinkViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = commonBuilder()
                 .apply {
                     this.inputStrategy = inputStrategy.get()
-                    this += killSwitch
                 }
                 .withViewModel(
                     initialState = KitchenSinkContract.State(inputStrategy = inputStrategy),
-                    inputHandler = KitchenSinkInputHandler(killSwitch),
+                    inputHandler = KitchenSinkInputHandler(),
                     name = "KitchenSink",
                 )
                 .build(),

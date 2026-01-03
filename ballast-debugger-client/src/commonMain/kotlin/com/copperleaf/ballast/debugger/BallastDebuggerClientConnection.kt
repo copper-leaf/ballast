@@ -1,5 +1,6 @@
 package com.copperleaf.ballast.debugger
 
+import com.copperleaf.ballast.BallastEncoder
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastNotification
@@ -192,7 +193,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
         applicationCoroutineScope.launch(start = CoroutineStart.UNDISPATCHED) {
             viewModelConnection
                 .notifications
-                .collect { acceptNotification(it, viewModelConnection) }
+                .collect { acceptNotification(it, viewModelConnection, encoder) }
         }.invokeOnCompletion { processIncomingJob.cancel() }
     }
 
@@ -201,7 +202,8 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
     private suspend fun <Inputs : Any, Events : Any, State : Any> acceptNotification(
         notification: BallastNotification<Inputs, Events, State>,
-        viewModelConnection: BallastDebuggerViewModelConnection<Inputs, Events, State>
+        viewModelConnection: BallastDebuggerViewModelConnection<Inputs, Events, State>,
+        ballastEncoder: BallastEncoder<Inputs, Events, State>,
     ) {
         outgoingMessages.send(
             BallastDebuggerOutgoingEventWrapper(
@@ -209,6 +211,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                 notification = notification,
                 debuggerEvent = null,
                 updateConnectionState = true,
+                ballastEncoder = ballastEncoder,
             )
         )
         waitForEvent.complete(Unit)
@@ -344,6 +347,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                             action.viewModelName,
                         ),
                         updateConnectionState = false,
+                        ballastEncoder = encoder,
                     )
                 )
 
@@ -354,6 +358,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                             notification = null,
                             debuggerEvent = it,
                             updateConnectionState = false,
+                            ballastEncoder = encoder,
                         )
                     )
                 }
@@ -367,6 +372,7 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
                             action.viewModelName,
                         ),
                         updateConnectionState = false,
+                        ballastEncoder = encoder,
                     )
                 )
 
@@ -389,10 +395,19 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
             is BallastDebuggerActionV5.RequestReplaceState -> {
                 val stateToReplaceResult = runCatching {
-                    viewModelConnection.adapter.deserializeState(
-                        ContentType.parse(action.stateContentType),
-                        action.serializedState,
-                    )
+                    if (viewModelConnection.adapter != null) {
+                        // (legacy) decode using the viewModelConnection.adapter
+                        viewModelConnection.adapter!!.deserializeState(
+                            ContentType.parse(action.stateContentType),
+                            action.serializedState,
+                        )
+                    } else if (decoder != null) {
+                        // (replacement) decode using the VM configuration's decoder
+                        decoder?.decodeStateFromString(action.serializedState)
+                    } else {
+                        // do not decode
+                        null
+                    }
                 }
 
                 stateToReplaceResult.fold(
@@ -425,10 +440,19 @@ public class BallastDebuggerClientConnection<out T : HttpClientEngineConfig>(
 
             is BallastDebuggerActionV5.RequestSendInput -> {
                 val inputToSendResult = runCatching {
-                    viewModelConnection.adapter.deserializeInput(
-                        ContentType.parse(action.inputContentType),
-                        action.serializedInput,
-                    )
+                    if (viewModelConnection.adapter != null) {
+                        // (legacy) decode using the viewModelConnection.adapter
+                        viewModelConnection.adapter!!.deserializeInput(
+                            ContentType.parse(action.inputContentType),
+                            action.serializedInput,
+                        )
+                    } else if (decoder != null) {
+                        // (replacement) decode using the VM configuration's decoder
+                        decoder?.decodeInputFromString(action.serializedInput)
+                    } else {
+                        // do not decode
+                        null
+                    }
                 }
 
                 inputToSendResult.fold(

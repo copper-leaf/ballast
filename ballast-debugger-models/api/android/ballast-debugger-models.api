@@ -1,5 +1,5 @@
 public final class com/copperleaf/ballast/debugger/BallastDebuggerOutgoingEventWrapper {
-	public fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;Lcom/copperleaf/ballast/BallastNotification;Lcom/copperleaf/ballast/debugger/versions/v5/BallastDebuggerEventV5;Z)V
+	public fun <init> (Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;Lcom/copperleaf/ballast/BallastNotification;Lcom/copperleaf/ballast/debugger/versions/v5/BallastDebuggerEventV5;ZLcom/copperleaf/ballast/BallastEncoder;)V
 	public final fun getConnection ()Lcom/copperleaf/ballast/debugger/BallastDebuggerViewModelConnection;
 	public final fun getDebuggerEvent ()Lcom/copperleaf/ballast/debugger/versions/v5/BallastDebuggerEventV5;
 	public final fun getNotification ()Lcom/copperleaf/ballast/BallastNotification;
