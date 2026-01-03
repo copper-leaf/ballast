@@ -7,6 +7,7 @@ import com.copperleaf.ballast.scheduler.ScheduleExecutor
 import com.copperleaf.ballast.scheduler.operators.getNext
 import com.copperleaf.ballast.scheduler.schedule.EveryMinuteSchedule
 import com.copperleaf.ballast.scheduler.utils.generateSafeSchedule
+import com.copperleaf.ballast.scheduler.utils.isBeforeMinute
 import com.copperleaf.ballast.scheduler.utils.isSameOrBeforeMinute
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -16,16 +17,22 @@ import kotlinx.datetime.TimeZone
 import kotlin.time.Clock
 import kotlin.time.Instant
 
-// TODO: handle catch-up behavior for schedules that were missed while the executor was not running
 public class PollingScheduleExecutor(
     private val scheduleState: ScheduleExecutor.State,
     private val clock: Clock = Clock.System,
     private val timeZone: TimeZone = TimeZone.UTC,
     private val pollingSchedule: Schedule = EveryMinuteSchedule(0, timeZone = timeZone),
+    private val catchUpBehavior: ScheduleExecutor.CatchUpBehavior = ScheduleExecutor.CatchUpBehavior.ExecuteOne,
 ) : ScheduleExecutor {
 
     override fun runSchedule(schedule: NamedSchedule): Flow<ScheduleEmission> = flow {
-        startPollingSchedule { pollingStartTime, nextScheduleInstant ->
+        val pollingStartTime = clock.now()
+
+        // emit any missed executions since we last ran this schedule, if needed
+        catchUpExecutions(pollingStartTime, schedule)
+
+        // start polling for future executions every minute, and emit when the schedule matches
+        startPollingSchedule(pollingStartTime) { nextScheduleInstant ->
             handleScheduledTaskIfReady(
                 pollingStartTime,
                 nextScheduleInstant,
@@ -35,7 +42,16 @@ public class PollingScheduleExecutor(
     }
 
     override fun runSchedules(schedules: List<NamedSchedule>): Flow<ScheduleEmission> = flow {
-        startPollingSchedule { pollingStartTime, nextScheduleInstant ->
+        val pollingStartTime = clock.now()
+
+        // emit any missed executions since we last ran this schedule, if needed. Each schedule is caught up individually
+        schedules.forEach { schedule ->
+            catchUpExecutions(pollingStartTime, schedule)
+        }
+
+        // start polling for future executions every minute, and emit when the schedule matches. Each schedule is
+        // checked individually, but all values will be emitted downstream through the same Flow
+        startPollingSchedule(pollingStartTime) { nextScheduleInstant ->
             schedules.forEach { schedule ->
                 handleScheduledTaskIfReady(
                     pollingStartTime,
@@ -47,9 +63,9 @@ public class PollingScheduleExecutor(
     }
 
     private suspend inline fun startPollingSchedule(
-        onClockTick: (Instant, Instant) -> Unit,
+        pollingStartTime: Instant,
+        onClockTick: (Instant) -> Unit,
     ) {
-        val pollingStartTime = clock.now()
         pollingSchedule
             .generateSafeSchedule(pollingStartTime)
             .forEach { nextScheduleInstant ->
@@ -57,7 +73,7 @@ public class PollingScheduleExecutor(
                 val currentInstant = clock.now()
                 val delayDuration = nextScheduleInstant - currentInstant
                 delay(delayDuration)
-                onClockTick(pollingStartTime, nextScheduleInstant)
+                onClockTick(nextScheduleInstant)
             }
     }
 
@@ -86,6 +102,55 @@ public class PollingScheduleExecutor(
                 )
             )
             scheduleState.storeExecution(schedule, currentInstant)
+        }
+    }
+
+    private suspend fun FlowCollector<ScheduleEmission>.catchUpExecutions(
+        pollingStartTime: Instant,
+        schedule: NamedSchedule,
+    ) {
+        val scheduleStartTime = (scheduleState.getLastExecution(schedule) ?: pollingStartTime)
+        // get the next scheduled time for this schedule based on the last execution time, and coerce it to the next
+        // future minute
+        val nextScheduleInstant = schedule.getNext(scheduleStartTime) ?: return
+
+        if (nextScheduleInstant.isBeforeMinute(pollingStartTime, timeZone)) {
+            // we have missed at least one scheduled execution
+            when (catchUpBehavior) {
+                ScheduleExecutor.CatchUpBehavior.Skip -> {
+                    // do nothing, but store the latest execution time so the schedule does not try to catch up once
+                    // we start polling.
+                    scheduleState.storeExecution(schedule, pollingStartTime)
+                }
+
+                ScheduleExecutor.CatchUpBehavior.ExecuteOne -> {
+                    // emit one missed execution
+                    emit(
+                        ScheduleEmission(
+                            triggeredAt = pollingStartTime,
+                            name = schedule.name,
+                            schedule = schedule,
+                        )
+                    )
+                    scheduleState.storeExecution(schedule, pollingStartTime)
+                }
+
+                ScheduleExecutor.CatchUpBehavior.ExecuteAll -> {
+                    // emit all missed executions
+                    var missedScheduleInstant = nextScheduleInstant
+                    while (missedScheduleInstant.isBeforeMinute(pollingStartTime, timeZone)) {
+                        emit(
+                            ScheduleEmission(
+                                triggeredAt = missedScheduleInstant,
+                                name = schedule.name,
+                                schedule = schedule,
+                            )
+                        )
+                        scheduleState.storeExecution(schedule, missedScheduleInstant)
+                        missedScheduleInstant = schedule.getNext(missedScheduleInstant) ?: break
+                    }
+                }
+            }
         }
     }
 }

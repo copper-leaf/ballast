@@ -30,7 +30,7 @@ public open class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
         scalingScope.launch {
             scalingPolicy
                 .getReplicaCount()
-                .onEach { check(it > 1) { "AutoscalingViewModel requires at least 1 replica to function." } }
+                .onEach { check(it >= 1) { "AutoscalingViewModel requires at least 1 replica to function." } }
                 .collect { replicaCount ->
                     autoscale(replicaCount)
                 }

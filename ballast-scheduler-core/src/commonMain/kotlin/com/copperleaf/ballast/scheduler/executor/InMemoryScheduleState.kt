@@ -8,8 +8,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.time.Instant
 
-public class InMemoryScheduleState : ScheduleExecutor.State {
-    private val _lastExecutions = MutableStateFlow<Map<String, Instant>>(emptyMap())
+public class InMemoryScheduleState(
+    initialState: Map<String, Instant> = emptyMap()
+) : ScheduleExecutor.State {
+    private val _lastExecutions = MutableStateFlow(initialState)
     public val lastExecutions: StateFlow<Map<String, Instant>> get() = _lastExecutions.asStateFlow()
 
     override suspend fun getLastExecution(schedule: NamedSchedule): Instant? {

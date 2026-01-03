@@ -26,6 +26,15 @@ public abstract interface class com/copperleaf/ballast/scheduler/ScheduleExecuto
 	public abstract fun runSchedules (Ljava/util/List;)Lkotlinx/coroutines/flow/Flow;
 }
 
+public final class com/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior : java/lang/Enum {
+	public static final field ExecuteAll Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;
+	public static final field ExecuteOne Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;
+	public static final field Skip Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;
+	public static fun values ()[Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;
+}
+
 public abstract interface class com/copperleaf/ballast/scheduler/ScheduleExecutor$State {
 	public abstract fun getLastExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun storeExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/time/Instant;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -41,14 +50,16 @@ public final class com/copperleaf/ballast/scheduler/executor/DelayScheduleExecut
 
 public final class com/copperleaf/ballast/scheduler/executor/InMemoryScheduleState : com/copperleaf/ballast/scheduler/ScheduleExecutor$State {
 	public fun <init> ()V
+	public fun <init> (Ljava/util/Map;)V
+	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getLastExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getLastExecutions ()Lkotlinx/coroutines/flow/StateFlow;
 	public fun storeExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/time/Instant;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/scheduler/executor/PollingScheduleExecutor : com/copperleaf/ballast/scheduler/ScheduleExecutor {
-	public fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;)V
-	public synthetic fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun runSchedule (Lcom/copperleaf/ballast/scheduler/NamedSchedule;)Lkotlinx/coroutines/flow/Flow;
 	public fun runSchedules (Ljava/util/List;)Lkotlinx/coroutines/flow/Flow;
 }

@@ -14,8 +14,8 @@ public final class com/copperleaf/ballast/scheduler/SchedulerControllerKt {
 
 public final class com/copperleaf/ballast/scheduler/SchedulerInterceptor : com/copperleaf/ballast/BallastInterceptor {
 	public fun <init> ()V
-	public fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;)V
-	public synthetic fun <init> (Lcom/copperleaf/ballast/BallastViewModelConfiguration;Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lkotlin/time/Clock;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor;Lkotlin/jvm/functions/Function1;Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;)V
+	public synthetic fun <init> (Lkotlin/time/Clock;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor;Lkotlin/jvm/functions/Function1;Lcom/copperleaf/ballast/scheduler/SchedulerAdapter;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getController ()Lcom/copperleaf/ballast/BallastViewModel;
 	public fun getKey ()Lcom/copperleaf/ballast/BallastInterceptor$Key;
 	public fun start (Lcom/copperleaf/ballast/BallastInterceptorScope;Lkotlinx/coroutines/flow/Flow;)V

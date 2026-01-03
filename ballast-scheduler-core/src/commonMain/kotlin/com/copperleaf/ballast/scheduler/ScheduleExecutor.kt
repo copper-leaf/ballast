@@ -31,4 +31,10 @@ public interface ScheduleExecutor {
             instant: Instant,
         )
     }
+
+    public enum class CatchUpBehavior {
+        Skip,
+        ExecuteOne,
+        ExecuteAll,
+    }
 }

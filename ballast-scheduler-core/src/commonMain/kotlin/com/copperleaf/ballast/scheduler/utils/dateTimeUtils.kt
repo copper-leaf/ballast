@@ -16,6 +16,18 @@ internal fun Instant.isSameOrBeforeMinute(other: Instant, timeZone: TimeZone): B
     return a <= b
 }
 
+internal fun Instant.isSameMinute(other: Instant, timeZone: TimeZone): Boolean {
+    val a = this.alignToNextMinute(timeZone)
+    val b = other.alignToNextMinute(timeZone)
+    return a == b
+}
+
+internal fun Instant.isBeforeMinute(other: Instant, timeZone: TimeZone): Boolean {
+    val a = this.alignToNextMinute(timeZone)
+    val b = other.alignToNextMinute(timeZone)
+    return a < b
+}
+
 internal fun Instant.alignToNextSecond(timeZone: TimeZone): Instant {
     val alignedDateTime = this.toLocalDateTime(timeZone)
     val aligned = LocalDateTime(

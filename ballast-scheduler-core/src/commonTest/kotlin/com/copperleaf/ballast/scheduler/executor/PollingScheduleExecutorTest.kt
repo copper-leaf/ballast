@@ -1,11 +1,12 @@
 package com.copperleaf.ballast.scheduler.executor
 
-import com.copperleaf.ballast.scheduler.NamedSchedule
 import com.copperleaf.ballast.scheduler.ScheduleExecutor
 import com.copperleaf.ballast.scheduler.TestClock
+import com.copperleaf.ballast.scheduler.firstTen
 import com.copperleaf.ballast.scheduler.firstTenWithNames
 import com.copperleaf.ballast.scheduler.operators.named
 import com.copperleaf.ballast.scheduler.operators.until
+import com.copperleaf.ballast.scheduler.schedule.EveryHourSchedule
 import com.copperleaf.ballast.scheduler.schedule.EveryMinuteSchedule
 import com.copperleaf.ballast.scheduler.schedule.FixedDelaySchedule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,10 +17,11 @@ import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atTime
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Instant
 
 @OptIn(ExperimentalCoroutinesApi::class)
 public class PollingScheduleExecutorTest {
@@ -42,9 +44,8 @@ public class PollingScheduleExecutorTest {
     fun fastCollector() = runTest {
         advanceTimeBy(startInstant.toEpochMilliseconds())
 
-        val missedTasks = mutableListOf<Instant>()
         val executor = PollingScheduleExecutor(
-            scheduleState = TestScheduleState(),
+            scheduleState = InMemoryScheduleState(),
             clock = TestClock(),
             timeZone = timeZone,
             pollingSchedule = pollingSchedule,
@@ -67,24 +68,101 @@ public class PollingScheduleExecutorTest {
                 "EveryMinuteAt12Seconds" to startDay.atTime(2, 45, 0),
             ),
         )
+    }
+
+    @Test
+    fun testCatchUpBehavior_Skip() = runTest {
+        advanceTimeBy(startInstant.toEpochMilliseconds())
+
+        val executor = PollingScheduleExecutor(
+            scheduleState = InMemoryScheduleState(mapOf("EveryHour" to startInstant.minus(4.hours))),
+            clock = TestClock(),
+            timeZone = timeZone,
+            pollingSchedule = EveryMinuteSchedule(0, timeZone = timeZone)
+                .until(startInstant.plus(12.hours)),
+            catchUpBehavior = ScheduleExecutor.CatchUpBehavior.Skip
+        )
+
         assertEquals(
-            actual = missedTasks,
-            expected = emptyList(),
+            actual = executor
+                .runSchedule(EveryHourSchedule(0).named("EveryHour"))
+                .firstTen(),
+            expected = listOf(
+                LocalDate(2023, Month.DECEMBER, 28).atTime(3, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(4, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(5, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(6, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(7, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(8, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(9, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(10, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(11, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(12, 0, 0),
+            ),
         )
     }
 
-    class TestScheduleState : ScheduleExecutor.State {
-        private val lastExecutions: MutableMap<String, Instant> = mutableMapOf()
+    @Test
+    fun testCatchUpBehavior_ExecuteOne() = runTest {
+        advanceTimeBy(startInstant.toEpochMilliseconds())
 
-        override suspend fun getLastExecution(schedule: NamedSchedule): Instant? {
-            return lastExecutions[schedule.name]
-        }
+        val executor = PollingScheduleExecutor(
+            scheduleState = InMemoryScheduleState(mapOf("EveryHour" to startInstant.minus(4.hours))),
+            clock = TestClock(),
+            timeZone = timeZone,
+            pollingSchedule = EveryMinuteSchedule(0, timeZone = timeZone)
+                .until(startInstant.plus(12.hours)),
+            catchUpBehavior = ScheduleExecutor.CatchUpBehavior.ExecuteOne
+        )
 
-        override suspend fun storeExecution(
-            schedule: NamedSchedule,
-            instant: Instant
-        ) {
-            lastExecutions[schedule.name] = instant
-        }
+        assertEquals(
+            actual = executor
+                .runSchedule(EveryHourSchedule(0).named("EveryHour"))
+                .firstTen(),
+            expected = listOf(
+                startInstant.toLocalDateTime(timeZone),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(3, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(4, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(5, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(6, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(7, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(8, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(9, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(10, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(11, 0, 0),
+            ),
+        )
+    }
+
+    @Test
+    fun testCatchUpBehavior_ExecuteAll() = runTest {
+        advanceTimeBy(startInstant.toEpochMilliseconds())
+
+        val executor = PollingScheduleExecutor(
+            scheduleState = InMemoryScheduleState(mapOf("EveryHour" to startInstant.minus(4.hours))),
+            clock = TestClock(),
+            timeZone = timeZone,
+            pollingSchedule = EveryMinuteSchedule(0, timeZone = timeZone)
+                .until(startInstant.plus(12.hours)),
+            catchUpBehavior = ScheduleExecutor.CatchUpBehavior.ExecuteAll
+        )
+
+        assertEquals(
+            actual = executor
+                .runSchedule(EveryHourSchedule(0).named("EveryHour"))
+                .firstTen(),
+            expected = listOf(
+                LocalDate(2023, Month.DECEMBER, 27).atTime(23, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(0, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(1, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(2, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(3, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(4, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(5, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(6, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(7, 0, 0),
+                LocalDate(2023, Month.DECEMBER, 28).atTime(8, 0, 0),
+            ),
+        )
     }
 }
