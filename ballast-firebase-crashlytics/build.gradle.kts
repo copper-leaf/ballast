@@ -21,5 +21,10 @@ kotlin {
                 implementation(libs.firebase.crashlytics)
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(project(":ballast-test"))
+            }
+        }
     }
 }

@@ -1,9 +1,22 @@
----
----
+# Ballast Navigation
 
 ## Overview
 
+Ballast Navigation is a Kotlin multiplatform URL-based routing library, built on top of the rock-solid Ballast state
+management library. It is framework-agnostic and can be easily integrated into Compose, Android, or any other
+application where you need to handle routing or navigation. It works purely at runtime with no reflection, no code
+generation, and no magic. Just simple, predictable state management, like a browser's address bar anywhere you need it.
 
+Ballast Navigation essentially just provides a way to manage a backstack of URLs, and match those URLs to registered
+routes using a pattern syntax similar to Ktor's router. It manages backstack updates safely and predictably, and since
+it is built with Ballast at the core, you can extend your routing functionality with features like:
+
+- Time-travel debugging and inspecting the backstack with the [Ballast Debugger][1]
+- Adding browser-like forward/backward navigation buttons with [Ballast Undo][2]
+- Synchronizing router state across components or devices with [Ballast Sync][3]
+- Tracking page views with [Ballast Analytics][4]
+
+## See Also
 
 ## Usage
 
@@ -608,7 +621,7 @@ repositories {
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-navigation:{{gradle.version}}")
+    implementation("io.github.copper-leaf:ballast-navigation:{{ballastVersion}}")
 }
 
 // for multiplatform projects
@@ -616,12 +629,13 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-navigation:{{gradle.version}}")
+                implementation("io.github.copper-leaf:ballast-navigation:{{ballastVersion}}")
             }
         }
     }
 }
 ```
+
 
 [1]: ballast-debugger.md
 [2]: ballast-undo.md

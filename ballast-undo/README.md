@@ -1,5 +1,4 @@
----
----
+# Ballast Undo
 
 ## Overview
 
@@ -9,17 +8,19 @@ through the history of a user's changes over time.
 
 Note that the default functionality is strictly state-based, and it works by observing States emitted from the ViewModel
 and restoring captured State when requested, irrespective of any particular Inputs that changed the State. It does not
-attempt to undo specific Inputs, which may have performed other actions like emitting Events, starting Side Jobs, or 
+attempt to undo specific Inputs, which may have performed other actions like emitting Events, starting Side Jobs, or
 other "side effects" which cannot be so easily tracked and undone.
+
+## See Also
 
 ## Usage
 
-Start by creating a `UndoController` for your ViewModel. This controller includes functions to `undo()` and `redo()` 
+Start by creating a `UndoController` for your ViewModel. This controller includes functions to `undo()` and `redo()`
 which should be called from the UI, as well as corresponding `Flows` which notify whether such actions are can be used.
-A default implementation, `DefaultUndoController` may be used, but for advanced use-cases such as persisting the 
+A default implementation, `DefaultUndoController` may be used, but for advanced use-cases such as persisting the
 undo/redo state across application restarts, you may implement your own.
 
-Then, set up your ViewModel with the `BallastUndoInterceptor` added, which needs that Controller we just created. 
+Then, set up your ViewModel with the `BallastUndoInterceptor` added, which needs that Controller we just created.
 
 ```kotlin
 class ExampleViewModel(
@@ -74,7 +75,7 @@ repositories {
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-undo:{{gradle.version}}")
+    implementation("io.github.copper-leaf:ballast-undo:{{ballastVersion}}")
 }
 
 // for multiplatform projects
@@ -82,7 +83,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-undo:{{gradle.version}}")
+                implementation("io.github.copper-leaf:ballast-undo:{{ballastVersion}}")
             }
         }
     }

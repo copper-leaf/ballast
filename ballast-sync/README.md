@@ -1,13 +1,14 @@
----
----
+# Ballast Sync
 
 ## Overview
 
 Ballast Sync allows you to share the state of your ViewModel across multiple instances, potentially even over a network.
 It allows you to build your ViewModels as normal, and then choose one to be the "source of truth" for the other
-ViewModels will share the synchronized state, and optionally allow those "observing" ViewModels to send changes back to
-the source. The flow of data within a synchronized ViewModels is all asynchronous, and follows a model of
+ViewModels which will share the synchronized state, and optionally allow those "observing" ViewModels to send changes 
+back to the source. The flow of data within a synchronized ViewModels is all asynchronous, and follows a model of
 "eventual consistency".
+
+## See Also
 
 ## Usage
 
@@ -16,8 +17,8 @@ There are 3 types of ViewModels which may share in the synchronized state:
 - `Source`: The Source ultimately drives the state of the other ViewModels. Anytime its own State gets changed, that
   updated State will be sent back to all other ViewModels that are observing it. There should only be 1 Source ViewModel
   in a given Connection, otherwise they will all be competing to be the source of truth, which may lead to infinite
-  recursion. If all synchronization is performed locally, it's up to you to make sure there is only 1 ViewModel 
-  registered as Source. If you're connecting over a network, it's best to keep the Source ViewModel on the Server, and 
+  recursion. If all synchronization is performed locally, it's up to you to make sure there is only 1 ViewModel
+  registered as Source. If you're connecting over a network, it's best to keep the Source ViewModel on the Server, and
   only use Replicas or Spectators within the client applications.
 - `Replica`: Replicas are ViewModels that share the same Contract and InputHandler as the Source ViewModel, but will
   ultimately reflect the State of the Source. Any Inputs sent to it will be processed locally, and then sent back to the
@@ -84,7 +85,7 @@ repositories {
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-sync:{{gradle.version}}")
+    implementation("io.github.copper-leaf:ballast-sync:{{ballastVersion}}")
 }
 
 // for multiplatform projects
@@ -92,7 +93,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-sync:{{gradle.version}}")
+                implementation("io.github.copper-leaf:ballast-sync:{{ballastVersion}}")
             }
         }
     }

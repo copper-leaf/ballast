@@ -1,29 +1,30 @@
----
----
+# Ballast Saved State
 
 ## Overview
 
 Ballast ViewModels are held entirely in memory, but there are lots of cases where the ViewModel state needs to be saved
-in one session and restored in another. The traditional way to do this is to put all that saving/loading logic within 
-the InputHandler itself, but this can become messy and error-prone. 
+in one session and restored in another. The traditional way to do this is to put all that saving/loading logic within
+the InputHandler itself, but this can become messy and error-prone.
 
-The Saved State module implements the same kind of save/restore state functionality as an Interceptor. Using an 
+The Saved State module implements the same kind of save/restore state functionality as an Interceptor. Using an
 Interceptor ensures that all changes to the State are persisted, and ensures that the ViewModel does nothing else while
 the State is being loaded.
 
 Ballast Saved State offers a standard API to let you save the State to any persistent store you wish, but also offers
 out-of-the-box integration with `SavedStateHandle`.
 
+## See Also
+
 ## Usage
 
 Start by creating a `SavedStateAdapter` for your ViewModel. This adapter includes functions to `save()` and `restore()`
-the state, which will get called at the appropriate times. 
+the state, which will get called at the appropriate times.
 
-`restore()` will be called initially when the `ViewModelStarted` is sent, and requires that no other Inputs get sent 
-until after the State has been restored. If you need to do some additional initialization after the State has been 
+`restore()` will be called initially when the `ViewModelStarted` is sent, and requires that no other Inputs get sent
+until after the State has been restored. If you need to do some additional initialization after the State has been
 loaded, you can override `onRestoreComplete()` to send an Input back to the VM once the State has been restored.
 
-The `save()` function will be called anytime the State gets updated. You can use the `saveDiff()` function to save 
+The `save()` function will be called anytime the State gets updated. You can use the `saveDiff()` function to save
 individual properties of the State only when they've changed, to reduce unnecessary writes.
 
 ```kotlin
@@ -90,7 +91,7 @@ repositories {
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-saved-state:{{gradle.version}}")
+    implementation("io.github.copper-leaf:ballast-saved-state:{{ballastVersion}}")
 }
 
 // for multiplatform projects
@@ -98,7 +99,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-saved-state:{{gradle.version}}")
+                implementation("io.github.copper-leaf:ballast-saved-state:{{ballastVersion}}")
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.analytics
 
-public interface AnalyticsTracker {
+public fun interface AnalyticsTracker {
 
     /**
      * Record an event with an analytics SDK.

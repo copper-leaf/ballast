@@ -3,10 +3,7 @@
 
 ## Overview
 
-The Ballast Core module provides all the core capabilities of the entire Ballast MVI framework. The Core framework is
-robust and opinionated, but also provides many ways to extend the functionality through Interceptors without impacting
-the core MVI model. Any additional functionality outside of Core will typically be implemented as an Interceptor and
-provided to the `BallastViewModelConfiguration`.
+
 
 ## Usage
 

@@ -14,6 +14,11 @@ kotlin {
                 implementation(project(":ballast-api"))
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(project(":ballast-test"))
+            }
+        }
         val jvmMain by getting {
             dependencies { }
         }

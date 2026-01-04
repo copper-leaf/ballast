@@ -1,0 +1,40 @@
+# Ballast API
+
+## Overview
+
+These are the fundamental interfaces and internal implementations necessary to create and run a Ballast ViewModel. If 
+you're using Ballast ViewModels is an application, you probably should depend on [Ballast Core](./../ballast-core/README.md)
+to get all the full functionality needed for your application. If you're building a library that uses or extends Ballast's
+base functionality, this is the module you should depend on so you don't pull in unnecessary dependencies.
+
+## See Also
+
+- [Ballast Core](./../ballast-core/README.md)
+
+## Usage
+
+TODO
+
+## Installation
+
+```kotlin
+repositories {
+    mavenCentral()
+}
+
+// for plain JVM or Android projects
+dependencies {
+    implementation("io.github.copper-leaf:ballast-api:{{ballastVersion}}")
+}
+
+// for multiplatform projects
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation("io.github.copper-leaf:ballast-api:{{ballastVersion}}")
+            }
+        }
+    }
+}
+```
