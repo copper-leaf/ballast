@@ -2,8 +2,8 @@ package com.copperleaf.ballast.scheduler
 
 import kotlin.time.Instant
 
-public data class ScheduleEmission(
+public data class TriggeredTask(
     val triggeredAt: Instant,
-    val name: String,
+    val name: String?,
     val schedule: Schedule,
 )

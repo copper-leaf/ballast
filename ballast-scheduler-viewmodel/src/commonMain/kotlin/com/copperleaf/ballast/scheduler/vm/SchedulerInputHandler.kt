@@ -48,7 +48,7 @@ internal class SchedulerInputHandler<I : Any, E : Any, S : Any>(
                 )
             }
 
-            val isPaused: suspend (String) -> Boolean = { scheduleName: String ->
+            val isPaused: suspend (String?) -> Boolean = { scheduleName: String? ->
                 getCurrentState().schedules[scheduleName]?.paused == true
             }
 
@@ -159,7 +159,7 @@ internal class SchedulerInputHandler<I : Any, E : Any, S : Any>(
             SchedulerContract.Inputs<I, E, S>,
             SchedulerContract.Events<I, E, S>,
             SchedulerContract.State<I, E, S>>.updateScheduleState(
-        key: String,
+        key: String?,
         block: (ScheduleState) -> ScheduleState?,
     ) {
         updateState {

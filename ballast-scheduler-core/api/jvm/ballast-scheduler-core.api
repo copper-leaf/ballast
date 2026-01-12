@@ -6,23 +6,9 @@ public abstract interface class com/copperleaf/ballast/scheduler/Schedule {
 	public abstract fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 
-public final class com/copperleaf/ballast/scheduler/ScheduleEmission {
-	public fun <init> (Lkotlin/time/Instant;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;)V
-	public final fun component1 ()Lkotlin/time/Instant;
-	public final fun component2 ()Ljava/lang/String;
-	public final fun component3 ()Lcom/copperleaf/ballast/scheduler/Schedule;
-	public final fun copy (Lkotlin/time/Instant;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;)Lcom/copperleaf/ballast/scheduler/ScheduleEmission;
-	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/ScheduleEmission;Lkotlin/time/Instant;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/ScheduleEmission;
-	public fun equals (Ljava/lang/Object;)Z
-	public final fun getName ()Ljava/lang/String;
-	public final fun getSchedule ()Lcom/copperleaf/ballast/scheduler/Schedule;
-	public final fun getTriggeredAt ()Lkotlin/time/Instant;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
 public abstract interface class com/copperleaf/ballast/scheduler/ScheduleExecutor {
 	public abstract fun runSchedule (Lcom/copperleaf/ballast/scheduler/NamedSchedule;)Lkotlinx/coroutines/flow/Flow;
+	public abstract fun runSchedule (Lcom/copperleaf/ballast/scheduler/Schedule;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun runSchedules (Ljava/util/List;)Lkotlinx/coroutines/flow/Flow;
 }
 
@@ -36,8 +22,23 @@ public final class com/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBeha
 }
 
 public abstract interface class com/copperleaf/ballast/scheduler/ScheduleExecutor$State {
-	public abstract fun getLastExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun storeExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/time/Instant;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun getLastExecution (Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun storeExecution (Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/time/Instant;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/scheduler/TriggeredTask {
+	public fun <init> (Lkotlin/time/Instant;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;)V
+	public final fun component1 ()Lkotlin/time/Instant;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lcom/copperleaf/ballast/scheduler/Schedule;
+	public final fun copy (Lkotlin/time/Instant;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;)Lcom/copperleaf/ballast/scheduler/TriggeredTask;
+	public static synthetic fun copy$default (Lcom/copperleaf/ballast/scheduler/TriggeredTask;Lkotlin/time/Instant;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/TriggeredTask;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSchedule ()Lcom/copperleaf/ballast/scheduler/Schedule;
+	public final fun getTriggeredAt ()Lkotlin/time/Instant;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/copperleaf/ballast/scheduler/executor/DelayScheduleExecutor : com/copperleaf/ballast/scheduler/ScheduleExecutor {
@@ -45,6 +46,7 @@ public final class com/copperleaf/ballast/scheduler/executor/DelayScheduleExecut
 	public fun <init> (Lkotlin/time/Clock;Lkotlin/jvm/functions/Function1;)V
 	public synthetic fun <init> (Lkotlin/time/Clock;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun runSchedule (Lcom/copperleaf/ballast/scheduler/NamedSchedule;)Lkotlinx/coroutines/flow/Flow;
+	public fun runSchedule (Lcom/copperleaf/ballast/scheduler/Schedule;)Lkotlinx/coroutines/flow/Flow;
 	public fun runSchedules (Ljava/util/List;)Lkotlinx/coroutines/flow/Flow;
 }
 
@@ -52,15 +54,16 @@ public final class com/copperleaf/ballast/scheduler/executor/InMemoryScheduleSta
 	public fun <init> ()V
 	public fun <init> (Ljava/util/Map;)V
 	public synthetic fun <init> (Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun getLastExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getLastExecution (Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getLastExecutions ()Lkotlinx/coroutines/flow/StateFlow;
-	public fun storeExecution (Lcom/copperleaf/ballast/scheduler/NamedSchedule;Lkotlin/time/Instant;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun storeExecution (Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/Schedule;Lkotlin/time/Instant;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/scheduler/executor/PollingScheduleExecutor : com/copperleaf/ballast/scheduler/ScheduleExecutor {
 	public fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;)V
 	public synthetic fun <init> (Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$State;Lkotlin/time/Clock;Lkotlinx/datetime/TimeZone;Lcom/copperleaf/ballast/scheduler/Schedule;Lcom/copperleaf/ballast/scheduler/ScheduleExecutor$CatchUpBehavior;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun runSchedule (Lcom/copperleaf/ballast/scheduler/NamedSchedule;)Lkotlinx/coroutines/flow/Flow;
+	public fun runSchedule (Lcom/copperleaf/ballast/scheduler/Schedule;)Lkotlinx/coroutines/flow/Flow;
 	public fun runSchedules (Ljava/util/List;)Lkotlinx/coroutines/flow/Flow;
 }
 
@@ -143,6 +146,12 @@ public final class com/copperleaf/ballast/scheduler/schedule/EverySecondSchedule
 	public fun <init> ()V
 	public fun <init> (Lkotlinx/datetime/TimeZone;)V
 	public synthetic fun <init> (Lkotlinx/datetime/TimeZone;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
+}
+
+public final class com/copperleaf/ballast/scheduler/schedule/ExponentialDelaySchedule : com/copperleaf/ballast/scheduler/Schedule {
+	public synthetic fun <init> (JDJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JDJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun generateSchedule (Lkotlin/time/Instant;)Lkotlin/sequences/Sequence;
 }
 

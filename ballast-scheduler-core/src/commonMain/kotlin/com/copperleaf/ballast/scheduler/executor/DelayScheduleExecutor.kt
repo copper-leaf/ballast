@@ -1,8 +1,9 @@
 package com.copperleaf.ballast.scheduler.executor
 
 import com.copperleaf.ballast.scheduler.NamedSchedule
-import com.copperleaf.ballast.scheduler.ScheduleEmission
+import com.copperleaf.ballast.scheduler.Schedule
 import com.copperleaf.ballast.scheduler.ScheduleExecutor
+import com.copperleaf.ballast.scheduler.TriggeredTask
 import com.copperleaf.ballast.scheduler.utils.generateSafeSchedule
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -17,8 +18,27 @@ public class DelayScheduleExecutor(
 ) : ScheduleExecutor {
 
     override fun runSchedule(
+        schedule: Schedule,
+    ): Flow<TriggeredTask> {
+        return runSchedule(null, schedule)
+    }
+
+    override fun runSchedule(
         schedule: NamedSchedule,
-    ): Flow<ScheduleEmission> = flow {
+    ): Flow<TriggeredTask> {
+        return runSchedule(schedule.name, schedule)
+    }
+
+    override fun runSchedules(schedules: List<NamedSchedule>): Flow<TriggeredTask> {
+        return schedules
+            .map { runSchedule(it.name, it) }
+            .merge()
+    }
+
+    private fun runSchedule(
+        scheduleName: String?,
+        schedule: Schedule,
+    ): Flow<TriggeredTask> = flow {
         schedule
             .generateSafeSchedule(clock.now())
             .forEach { nextScheduleInstant ->
@@ -31,9 +51,9 @@ public class DelayScheduleExecutor(
                     delay(delayDuration)
 
                     emit(
-                        ScheduleEmission(
+                        TriggeredTask(
                             triggeredAt = nextScheduleInstant,
-                            name = schedule.name,
+                            name = scheduleName,
                             schedule = schedule,
                         )
                     )
@@ -42,11 +62,5 @@ public class DelayScheduleExecutor(
                     onTaskDropped(nextScheduleInstant)
                 }
             }
-    }
-
-    override fun runSchedules(schedules: List<NamedSchedule>): Flow<ScheduleEmission> {
-        return schedules
-            .map { runSchedule(it) }
-            .merge()
     }
 }

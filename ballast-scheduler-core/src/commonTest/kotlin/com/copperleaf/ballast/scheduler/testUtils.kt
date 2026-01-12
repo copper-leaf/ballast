@@ -16,14 +16,14 @@ fun Sequence<Instant>.firstTen(timeZone: TimeZone = TimeZone.UTC): List<LocalDat
         .toList()
 }
 
-suspend fun Flow<ScheduleEmission>.firstTen(timeZone: TimeZone = TimeZone.UTC): List<LocalDateTime> {
+suspend fun Flow<TriggeredTask>.firstTen(timeZone: TimeZone = TimeZone.UTC): List<LocalDateTime> {
     return this
         .map { it.triggeredAt.toLocalDateTime(timeZone) }
         .take(10)
         .toList()
 }
 
-suspend fun Flow<ScheduleEmission>.firstTenWithNames(timeZone: TimeZone = TimeZone.UTC): List<Pair<String, LocalDateTime>> {
+suspend fun Flow<TriggeredTask>.firstTenWithNames(timeZone: TimeZone = TimeZone.UTC): List<Pair<String?, LocalDateTime>> {
     return this
         .map { it.name to it.triggeredAt.toLocalDateTime(timeZone) }
         .take(10)

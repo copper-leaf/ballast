@@ -8,7 +8,7 @@ import kotlin.time.Instant
 public object SchedulerContract {
     public data class State<I : Any, E : Any, S : Any>(
         val scheduleIndex: Int = 0,
-        val schedules: Map<String, ScheduleState> = emptyMap()
+        val schedules: Map<String?, ScheduleState> = emptyMap()
     )
 
     public sealed interface Inputs<I : Any, E : Any, S : Any> {
@@ -34,11 +34,11 @@ public object SchedulerContract {
         ) : Inputs<I, E, S>
 
         public class MarkScheduleComplete<I : Any, E : Any, S : Any>(
-            public val key: String
+            public val key: String?
         ) : Inputs<I, E, S>
 
         public class DispatchScheduledTask<I : Any, E : Any, S : Any>(
-            public val key: String,
+            public val key: String?,
             public val queued: Queued.HandleInput<I, E, S>,
         ) : Inputs<I, E, S>
     }

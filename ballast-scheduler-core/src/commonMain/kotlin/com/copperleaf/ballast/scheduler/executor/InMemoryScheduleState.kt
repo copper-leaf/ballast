@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.scheduler.executor
 
-import com.copperleaf.ballast.scheduler.NamedSchedule
+import com.copperleaf.ballast.scheduler.Schedule
 import com.copperleaf.ballast.scheduler.ScheduleExecutor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,21 +9,25 @@ import kotlinx.coroutines.flow.update
 import kotlin.time.Instant
 
 public class InMemoryScheduleState(
-    initialState: Map<String, Instant> = emptyMap()
+    initialState: Map<String?, Instant> = emptyMap()
 ) : ScheduleExecutor.State {
     private val _lastExecutions = MutableStateFlow(initialState)
-    public val lastExecutions: StateFlow<Map<String, Instant>> get() = _lastExecutions.asStateFlow()
+    public val lastExecutions: StateFlow<Map<String?, Instant>> get() = _lastExecutions.asStateFlow()
 
-    override suspend fun getLastExecution(schedule: NamedSchedule): Instant? {
-        return _lastExecutions.value[schedule.name]
+    override suspend fun getLastExecution(
+        scheduleName: String?,
+        schedule: Schedule,
+    ): Instant? {
+        return _lastExecutions.value[scheduleName]
     }
 
     override suspend fun storeExecution(
-        schedule: NamedSchedule,
+        scheduleName: String?,
+        schedule: Schedule,
         instant: Instant
     ) {
         _lastExecutions.update {
-            it + (schedule.name to instant)
+            it + (scheduleName to instant)
         }
     }
 }
