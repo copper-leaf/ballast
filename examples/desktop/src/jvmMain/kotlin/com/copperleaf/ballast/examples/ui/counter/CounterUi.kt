@@ -67,5 +67,4 @@ object CounterUi {
             }
         }
     }
-
 }

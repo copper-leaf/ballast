@@ -10,6 +10,5 @@ object TestContract {
         data object DontTrackThis : Inputs
     }
 
-    sealed interface Events {
-    }
+    sealed interface Events
 }

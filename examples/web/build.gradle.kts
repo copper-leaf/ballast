@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.copperleaf.gradle.projectVersion
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
@@ -8,10 +7,9 @@ plugins {
     id("copper-leaf-base")
     id("copper-leaf-targets")
     id("copper-leaf-tests")
-    id("copper-leaf-buildConfig")
     id("copper-leaf-compose")
     id("copper-leaf-serialization")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
 }
 
 kotlin {
@@ -42,10 +40,6 @@ kotlin {
     }
 }
 
-buildConfig {
-    projectVersion(project, "BALLAST_VERSION")
-}
-
 // Cache APIs because of stupid CORS...
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +60,7 @@ val fetchLatestBggApis by tasks.registering {
         }
     }
 }
-//tasks.getByName("jsProcessResources").dependsOn(fetchLatestBggApis)
+// tasks.getByName("jsProcessResources").dependsOn(fetchLatestBggApis)
 
 fun executeAndGetXmlResponse(type: String) {
     val url = "https://boardgamegeek.com/xmlapi2/hot?type=$type"

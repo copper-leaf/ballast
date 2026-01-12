@@ -12,8 +12,7 @@ public interface BallastScopeFactory<Inputs : Any, Events : Any, State : Any> {
         interceptorCoroutineScope: CoroutineScope,
     ): BallastInterceptorScope<Inputs, Events, State>
 
-    public fun createEventHandlerScope(
-    ): InternalEventHandlerScope<Inputs, Events, State>
+    public fun createEventHandlerScope(): InternalEventHandlerScope<Inputs, Events, State>
 
     public fun createEventStrategyScope(
         eventHandler: EventHandler<Inputs, Events, State>,

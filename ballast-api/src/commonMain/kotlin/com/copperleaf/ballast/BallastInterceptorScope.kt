@@ -59,5 +59,4 @@ public interface BallastInterceptorScope<Inputs : Any, Events : Any, State : Any
      * Post an Event back to the ViewModel.
      */
     public suspend fun postEvent(event: Events)
-
 }

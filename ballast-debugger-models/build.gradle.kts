@@ -7,7 +7,7 @@ plugins {
     id("copper-leaf-buildConfig")
     id("copper-leaf-serialization")
     id("copper-leaf-tests")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 

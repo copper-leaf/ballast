@@ -6,4 +6,3 @@ public interface BallastDecoder<Inputs : Any, Events : Any, State : Any> {
     public fun decodeEventFromString(encoded: String): Events
     public fun decodeStateFromString(encoded: String): State
 }
-

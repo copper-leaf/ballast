@@ -7,7 +7,6 @@ import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Nav
 import org.jetbrains.compose.web.dom.Span
 
-
 @Composable
 fun BulmaPanel(
     headingStart: @Composable () -> Unit,

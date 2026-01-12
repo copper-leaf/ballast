@@ -36,7 +36,7 @@ class BggApiImpl(
             }
         }
 
-        val (currentHost: String, currentPort: Int) = if(window.location.host.contains(":")) {
+        val (currentHost: String, currentPort: Int) = if (window.location.host.contains(":")) {
             window.location.host.split(":")[0] to (window.location.host.split(":")[1].toIntOrNull() ?: DEFAULT_PORT)
         } else {
             window.location.host to DEFAULT_PORT
@@ -53,11 +53,11 @@ class BggApiImpl(
         val stringBody: String = response.bodyAsText()
 
         val parser = DOMParser()
-        val doc = parser.parseFromString(stringBody, "application/xml");
+        val doc = parser.parseFromString(stringBody, "application/xml")
         val itemNodes = doc.querySelectorAll("item")
 
         return buildList {
-            for(nodeIndex in 0 until itemNodes.length) {
+            for (nodeIndex in 0 until itemNodes.length) {
                 val node = itemNodes.item(nodeIndex) as? Element ?: continue
 
                 this += BggHotListItem(

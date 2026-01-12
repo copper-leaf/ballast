@@ -130,11 +130,13 @@ internal object PathParser {
 
             val (nextChar, remaining) = input.nextChar()
 
-            if (nextChar != '/') throw ParserException(
+            if (nextChar != '/') {
+                throw ParserException(
                 "Path must start with a leading slash",
                 this@LeadingSlashParser,
                 input
             )
+            }
 
             CharNode(nextChar, NodeContext(input, remaining)) to remaining
         }

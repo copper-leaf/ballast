@@ -12,7 +12,6 @@ import org.jetbrains.compose.web.dom.Progress
 import org.jetbrains.compose.web.dom.Select
 import org.jetbrains.compose.web.dom.Text
 
-
 @Composable
 fun BulmaFormField(
     fieldName: String,
@@ -25,7 +24,6 @@ fun BulmaFormField(
         }
     }
 }
-
 
 @Composable
 fun <T : Any> BulmaSelect(

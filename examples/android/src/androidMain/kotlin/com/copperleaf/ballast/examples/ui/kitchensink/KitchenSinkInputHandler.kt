@@ -10,7 +10,7 @@ import com.copperleaf.ballast.observeFlows
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 
-class KitchenSinkInputHandler: InputHandler<
+class KitchenSinkInputHandler : InputHandler<
     KitchenSinkContract.Inputs,
     KitchenSinkContract.Events,
     KitchenSinkContract.State> {

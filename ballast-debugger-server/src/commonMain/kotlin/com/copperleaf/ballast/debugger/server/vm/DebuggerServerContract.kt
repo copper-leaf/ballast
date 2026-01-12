@@ -45,6 +45,6 @@ public object DebuggerServerContract {
     }
 
     public sealed interface Events {
-        public data class ConnectionEstablished(val connectionId: String): Events
+        public data class ConnectionEstablished(val connectionId: String) : Events
     }
 }

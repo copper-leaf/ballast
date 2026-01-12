@@ -17,5 +17,4 @@ interface CoffeeProductsApi {
         rating: UInt?,
         sortResultsBy: List<ColumnSort<CoffeeProductColumn>>,
     ): List<CoffeeProduct>
-
 }

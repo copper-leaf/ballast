@@ -574,7 +574,6 @@ public fun <T : Route> BackstackNavigator<T>.popUntilRoute(
     }
 }
 
-
 /**
  * Navigate backward in the backstack, removing all destinations that contain the given [annotation].
  */

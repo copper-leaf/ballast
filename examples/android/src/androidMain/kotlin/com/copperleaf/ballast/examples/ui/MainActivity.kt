@@ -45,6 +45,5 @@ class MainActivity : AppCompatActivity() {
         state: RouterContract.State<BallastExamples>,
         postInput: (RouterContract.Inputs<BallastExamples>) -> Unit
     ) {
-
     }
 }

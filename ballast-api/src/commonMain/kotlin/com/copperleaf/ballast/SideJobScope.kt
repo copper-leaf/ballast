@@ -62,9 +62,10 @@ public interface SideJobScope<Inputs : Any, Events : Any, State : Any> : Corouti
     /**
      * Get an Interceptor registered to this ViewModel by its key.
      */
-    public suspend fun <I: BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I
+    public suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I
 
     public enum class RestartState {
-        Initial, Restarted
+        Initial,
+        Restarted
     }
 }

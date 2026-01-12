@@ -13,7 +13,7 @@ import com.copperleaf.ballast.debugger.models.getActualValue
 import com.copperleaf.ballast.debugger.utils.now
 import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerActionV5
 import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
-import io.github.copper_leaf.ballast_debugger_client.BALLAST_VERSION
+import io.github.copperleaf.ballastdebuggerclient.BALLAST_VERSION
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngineConfig

@@ -26,5 +26,4 @@ public interface CrashReporter {
         viewModelName: String,
         throwable: Throwable,
     )
-
 }

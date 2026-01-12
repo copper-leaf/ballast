@@ -84,7 +84,6 @@ object SyncUi {
         }
     }
 
-
     @Composable
     private fun ColumnScope.SyncedViewModelUi(
         injector: ComposeDesktopInjector,

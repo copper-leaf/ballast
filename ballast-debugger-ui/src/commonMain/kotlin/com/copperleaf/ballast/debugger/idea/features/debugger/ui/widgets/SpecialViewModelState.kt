@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets
 
 import androidx.compose.foundation.layout.ColumnScope
@@ -18,7 +19,7 @@ internal fun ColumnScope.SpecialViewModelState(
     postInput: (DebuggerUiContract.Inputs) -> Unit,
 ) {
     if (settings.getCachedOrNull()?.alwaysShowCurrentState == true) {
-        if(currentState != null) {
+        if (currentState != null) {
             Text("Current State")
             Divider()
             StateDetails(currentState, postInput)

@@ -27,7 +27,7 @@ import kotlinx.serialization.encoding.Encoder
  *  https://github.com/Kotlin/kotlinx-datetime/blob/94bcc6ff1733c22ef4f937a25a276d3fd728a301/LICENSE.txt
  *  https://github.com/Kotlin/kotlinx-datetime/blob/94bcc6ff1733c22ef4f937a25a276d3fd728a301/LICENSE.txt
  */
-public object BallastLocalDateTimeSerializer: KSerializer<LocalDateTime> {
+public object BallastLocalDateTimeSerializer : KSerializer<LocalDateTime> {
 
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("LocalDateTime", PrimitiveKind.STRING)

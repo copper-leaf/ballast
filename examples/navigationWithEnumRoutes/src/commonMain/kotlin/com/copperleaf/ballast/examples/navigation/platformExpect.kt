@@ -1,6 +1,5 @@
 package com.copperleaf.ballast.examples.navigation
 
-import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.navigation.routing.RoutingTable
 import com.copperleaf.ballast.navigation.vm.RouterBuilder

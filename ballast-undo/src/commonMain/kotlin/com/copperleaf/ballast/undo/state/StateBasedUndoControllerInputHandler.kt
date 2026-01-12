@@ -80,7 +80,6 @@ internal class StateBasedUndoControllerInputHandler<Inputs : Any, Events : Any, 
         }
     }
 
-
     private fun captureState(
         oldState: StateBasedUndoControllerContract.State<Inputs, Events, State>,
         newFrame: State,

@@ -116,7 +116,7 @@ internal fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Input
         is BallastNotification.InterceptorAttached -> {
             BallastDebuggerEventV5.InterceptorAttached(connectionId, viewModelName, uuid, now, interceptor.type, interceptor.toString())
         }
-        is BallastNotification.InterceptorFailed-> {
+        is BallastNotification.InterceptorFailed -> {
             BallastDebuggerEventV5.InterceptorFailed(connectionId, viewModelName, uuid, now, interceptor.type, interceptor.toString(), throwable.stackTraceToString())
         }
     }
@@ -143,7 +143,7 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastNotification<Inputs,
 private val Any.type: String get() = this::class.simpleName ?: ""
 
 public fun Status.serialize(): BallastDebuggerEventV5.StatusV5 {
-    return when(this) {
+    return when (this) {
         is Status.NotStarted -> BallastDebuggerEventV5.StatusV5.NotStarted
         is Status.Running -> BallastDebuggerEventV5.StatusV5.Running
         is Status.ShuttingDown -> BallastDebuggerEventV5.StatusV5.ShuttingDown

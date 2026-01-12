@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets
 
 import androidx.compose.foundation.layout.ColumnScope

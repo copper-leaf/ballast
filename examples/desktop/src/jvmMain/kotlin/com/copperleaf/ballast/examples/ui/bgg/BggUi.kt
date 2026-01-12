@@ -137,7 +137,9 @@ object BggUi {
                             text = { Text("${it.rank}: ${it.name}") },
                             overlineText = if (it.yearPublished != null) {
                                 { Text("Published ${it.yearPublished}") }
-                            } else null
+                            } else {
+                                null
+                            }
                         )
                     }
                 }

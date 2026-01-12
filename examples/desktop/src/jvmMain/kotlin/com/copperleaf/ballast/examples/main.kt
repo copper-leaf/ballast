@@ -84,7 +84,6 @@ fun main() = singleWindowApplication(title = "Ballast Examples") {
                     }
 
                     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-
                         ListItem(
                             modifier = Modifier
                                 .routeLink(

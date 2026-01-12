@@ -41,7 +41,6 @@ class TestBackstack {
             originalBackstack = listOf("/one", "/two", "/three"),
             expectedResult = listOf("/one", "/two", "/three"),
         ) {
-
         }
     }
 

@@ -11,12 +11,6 @@ import androidx.work.WorkManagerInitializer
 public class AndroidSchedulerStartup : Initializer<Unit> {
     override fun create(context: Context) {
         Log.d("BallastWorkManager", "Running AndroidSchedulerStartup")
-//        WorkManager.getInstance(context)
-//            .syncSchedulesOnStartup(
-//                adapter = AndroidSchedulerExampleAdapter(),
-//                callback = AndroidSchedulerExampleCallback(),
-//                withHistory = false
-//            )
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {

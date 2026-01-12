@@ -48,7 +48,6 @@ public class MatchAllRoutingTable : RoutingTable<SimpleRoute> {
     }
 }
 
-
 public class Navigate<T : Route>(
     private val block: BackstackNavigator<T>.() -> Unit
 ) : RouterContract.Inputs<T>() {

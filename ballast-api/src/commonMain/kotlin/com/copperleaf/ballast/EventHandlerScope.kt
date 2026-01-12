@@ -20,5 +20,5 @@ public interface EventHandlerScope<Inputs : Any, Events : Any, State : Any> {
     /**
      * Get an Interceptor registered to this ViewModel by its key.
      */
-    public suspend fun <I: BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I
+    public suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I
 }

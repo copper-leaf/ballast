@@ -27,7 +27,7 @@ private class BundleDestinationParameters(
 
 private fun Map<String, List<String>>.toParametersBundle(): Bundle {
     return Bundle().apply {
-        for((key, values) in entries) {
+        for ((key, values) in entries) {
             putStringArray(key, values.toTypedArray())
         }
     }
@@ -36,7 +36,7 @@ private fun Map<String, List<String>>.toParametersBundle(): Bundle {
 private fun Bundle.fromParametersBundle(): Map<String, List<String>> {
     val bundle = this
     return buildMap {
-        for(key in bundle.keySet()) {
+        for (key in bundle.keySet()) {
             put(key, bundle.getStringArray(key)?.toList() ?: error(ERROR_MESSAGE))
         }
     }

@@ -312,7 +312,7 @@ public fun IntellijEditor(
     onContentCopied: ((String) -> Unit)? = null,
 ) {
     Box(modifier.fillMaxSize().background(Color(51, 51, 51))) {
-        if(onContentCopied != null) {
+        if (onContentCopied != null) {
             ToolBarActionIconButton(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -414,7 +414,6 @@ public fun getRouteForSelectedViewModel(
             .pathParameter("connectionId", connectionId)
             .pathParameter("viewModelName", viewModelName)
             .build()
-
     } else {
         DebuggerRoute.Connection
             .directions()

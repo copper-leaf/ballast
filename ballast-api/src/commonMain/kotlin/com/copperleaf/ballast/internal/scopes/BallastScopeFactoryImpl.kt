@@ -32,8 +32,7 @@ public open class DefaultBallastScopeFactory<Inputs : Any, Events : Any, State :
         )
     }
 
-    override fun createEventHandlerScope(
-    ): InternalEventHandlerScope<Inputs, Events, State> = with(impl) {
+    override fun createEventHandlerScope(): InternalEventHandlerScope<Inputs, Events, State> = with(impl) {
         return EventHandlerScopeImpl(
             logger = logger,
             inputActor = inputActor,

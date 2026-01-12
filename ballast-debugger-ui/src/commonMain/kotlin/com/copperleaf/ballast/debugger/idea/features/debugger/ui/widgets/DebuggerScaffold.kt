@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package com.copperleaf.ballast.debugger.idea.features.debugger.ui.widgets
 
 import androidx.compose.foundation.layout.Box
@@ -82,46 +83,42 @@ internal fun DebuggerScaffold(
                             splitPaneState = rememberSplitPaneState(0.35f),
                         ) {
                             first(minSize = 60.dp) { mainContentLeftLambda() }
-                            second() {
+                            second {
                                 Row(Modifier.fillMaxSize()) {
                                     HorizontalSplitPane(
                                         splitPaneState = rememberSplitPaneState(0.35f),
                                     ) {
                                         first(minSize = 60.dp) { mainContentRightLambda() }
-                                        second() { stickyContentLambda() }
+                                        second { stickyContentLambda() }
                                     }
                                 }
                             }
                         }
-                    }
-                    else if (mainContentLeft != null && mainContentRight != null) {
+                    } else if (mainContentLeft != null && mainContentRight != null) {
                         HorizontalSplitPane(
                             splitPaneState = rememberSplitPaneState(0.35f),
                         ) {
                             first(minSize = 60.dp) {
                                 mainContentLeftLambda()
                             }
-                            second() {
+                            second {
                                 mainContentRightLambda()
                             }
                         }
-                    }
-                    else if (mainContentLeft != null && stickyContent != null) {
+                    } else if (mainContentLeft != null && stickyContent != null) {
                         HorizontalSplitPane(
                             splitPaneState = rememberSplitPaneState(0.35f),
                         ) {
                             first(minSize = 60.dp) {
                                 mainContentLeftLambda()
                             }
-                            second() {
+                            second {
                                 stickyContentLambda()
                             }
                         }
-                    }
-                    else if(mainContentLeft != null) {
+                    } else if (mainContentLeft != null) {
                         mainContentLeftLambda()
-                    }
-                    else if(mainContentRight != null) {
+                    } else if (mainContentRight != null) {
                         error("use mainContentLeft for a single-panel view instead")
                     }
                 }

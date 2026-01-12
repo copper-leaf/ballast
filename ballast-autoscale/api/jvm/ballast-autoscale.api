@@ -1,6 +1,8 @@
 public class com/copperleaf/ballast/autoscale/AutoscalingViewModel : com/copperleaf/ballast/BallastViewModel {
-	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/autoscale/ViewModelFactory;Lcom/copperleaf/ballast/autoscale/ScalingPolicy;Lcom/copperleaf/ballast/autoscale/DistributionPolicy;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/autoscale/ViewModelFactory;Lcom/copperleaf/ballast/autoscale/ScalingPolicy;Lcom/copperleaf/ballast/autoscale/DistributionPolicy;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/autoscale/ViewModelFactory;Lcom/copperleaf/ballast/autoscale/ScalingPolicy;Lcom/copperleaf/ballast/autoscale/DistributionPolicy;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun close ()V
+	public final fun getShutDownGracePeriod-UwyO8pc ()J
 	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
 	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

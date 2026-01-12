@@ -32,7 +32,7 @@ public sealed interface Destination<T : Route> {
         public val annotations: Set<RouteAnnotation> = emptySet(),
     ) : Destination<T>, Parameters, ParametersProvider {
         override fun toString(): String {
-            return "'${originalDestinationUrl}'"
+            return "'$originalDestinationUrl'"
         }
 
         override val parameters: Parameters get() = this
@@ -46,7 +46,7 @@ public sealed interface Destination<T : Route> {
         override val originalDestinationUrl: String,
     ) : Destination<T> {
         override fun toString(): String {
-            return "'${originalDestinationUrl}' (not found)"
+            return "'$originalDestinationUrl' (not found)"
         }
     }
 

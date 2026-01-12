@@ -115,9 +115,9 @@ public class LoggingInterceptor<Inputs : Any, Events : Any, State : Any>(
 
     override fun toString(): String {
         val enabled = buildList<String> {
-            if(logDebug) { this += "debug" }
-            if(logInfo) { this += "info" }
-            if(logError) { this += "error" }
+            if (logDebug) this += "debug"
+            if (logInfo) this += "info"
+            if (logError) this += "error"
         }
         return "LoggingInterceptor(enabled=$enabled)"
     }

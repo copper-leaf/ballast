@@ -29,7 +29,7 @@ class BggApiImpl(
         val itemNodes = doc.getElementsByTagName("item")
 
         return buildList {
-            for(nodeIndex in 0 until itemNodes.length) {
+            for (nodeIndex in 0 until itemNodes.length) {
                 val node = itemNodes.item(nodeIndex) as? Element ?: continue
 
                 this += BggHotListItem(

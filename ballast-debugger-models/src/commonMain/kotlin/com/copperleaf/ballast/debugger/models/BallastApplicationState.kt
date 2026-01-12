@@ -21,7 +21,7 @@ public data class BallastApplicationState(
                         this[indexOfConnection] = this[indexOfConnection].block().copy(lastSeen = LocalDateTime.now())
                     } else {
                         // this is the first time we're seeing this connection, create a new entry for it
-                        this.add(0, BallastConnectionState(connectionId, firstSeen  = LocalDateTime.now()).block())
+                        this.add(0, BallastConnectionState(connectionId, firstSeen = LocalDateTime.now()).block())
                     }
                 }
                 .toList(),

@@ -38,11 +38,9 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
             }
 
             is Queued.RestoreState -> {
-
             }
 
             is Queued.ShutDownGracefully -> {
-
             }
         }
 
@@ -68,11 +66,9 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
             }
 
             is Queued.RestoreState -> {
-
             }
 
             is Queued.ShutDownGracefully -> {
-
             }
         }
 
@@ -91,11 +87,9 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
                 }
 
                 is Queued.RestoreState -> {
-
                 }
 
                 is Queued.ShutDownGracefully -> {
-
                 }
             }
         }

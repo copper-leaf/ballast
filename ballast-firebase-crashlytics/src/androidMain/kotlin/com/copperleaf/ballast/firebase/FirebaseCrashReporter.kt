@@ -14,10 +14,10 @@ public class FirebaseCrashReporter(
             key(Keys.ViewModelName, viewModelName)
             key(
                 Keys.InputType,
-                "${viewModelName}.${input::class.java.simpleName}"
+                "$viewModelName.${input::class.java.simpleName}"
             )
         }
-        crashlytics.log("${viewModelName}.${input}")
+        crashlytics.log("$viewModelName.$input")
     }
 
     override fun recordInputError(viewModelName: String, input: Any, throwable: Throwable) {
@@ -34,7 +34,7 @@ public class FirebaseCrashReporter(
 
     override fun recordSideJobError(viewModelName: String, key: String, throwable: Throwable) {
         onError(viewModelName, "SideJob", throwable, true) {
-            key(Keys.SideJobKey, "${viewModelName}.$key")
+            key(Keys.SideJobKey, "$viewModelName.$key")
         }
     }
 

@@ -3,6 +3,7 @@
 /**
  * Taken from https://touchlab.co/wasm-in-kermit
  */
+
 package com.copperleaf.ballast.core
 
 import com.copperleaf.ballast.BallastLogger

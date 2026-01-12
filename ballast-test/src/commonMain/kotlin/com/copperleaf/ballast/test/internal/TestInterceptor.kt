@@ -143,7 +143,7 @@ internal class TestInterceptor<Inputs : Any, Events : Any, State : Any>(
             // that this block gets executed, and the test framework will then be guaranteed to receive the result
             coroutineContext.job.invokeOnCompletion {
                 completeTest(mark.elapsedNow())
-                if(timedOut) {
+                if (timedOut) {
                     testCoroutineScope.cancel()
                 }
             }

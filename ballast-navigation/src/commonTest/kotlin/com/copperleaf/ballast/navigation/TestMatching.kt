@@ -396,7 +396,6 @@ class TestMatching {
         assertSame(queryRoute, (destination as Destination.Match).originalRoute)
     }
 
-
     companion object {
         fun String.shouldMatch(
             route: SimpleRoute,

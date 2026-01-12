@@ -4,8 +4,6 @@ import com.copperleaf.ballast.EventHandler
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.test.internal.BallastTestSuiteScopeImpl
 import com.copperleaf.ballast.test.internal.runTestSuite
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlin.time.ExperimentalTime
 
 public suspend fun <Inputs : Any, Events : Any, State : Any> viewModelTest(
     inputHandler: InputHandler<Inputs, Events, State>,

@@ -5,6 +5,5 @@ import com.copperleaf.ballast.examples.api.models.HotListType
 
 interface BggApi {
 
-    suspend fun getHotGames(type: HotListType) : List<BggHotListItem>
+    suspend fun getHotGames(type: HotListType): List<BggHotListItem>
 }
-

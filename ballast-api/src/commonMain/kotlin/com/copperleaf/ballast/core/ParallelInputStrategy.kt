@@ -28,8 +28,7 @@ import kotlinx.coroutines.launch
  * Because multiple inputs may be processed at once, if an input is cancelled there is no meaningful way to know what
  * state should be rolled-back to. Cancelled inputs may leave the ViewModel in a bad state.
  */
-public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor(
-) : ChannelInputStrategy<Inputs, Events, State>(
+public class ParallelInputStrategy<Inputs : Any, Events : Any, State : Any> private constructor() : ChannelInputStrategy<Inputs, Events, State>(
     capacity = Channel.BUFFERED,
     onBufferOverflow = BufferOverflow.SUSPEND,
     filter = null,
