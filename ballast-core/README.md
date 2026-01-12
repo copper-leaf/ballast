@@ -2,10 +2,26 @@
 
 ## Overview
 
-The Ballast Core module provides all the core capabilities of the entire Ballast MVI framework. The Core framework is
-robust and opinionated, but also provides many ways to extend the functionality through Interceptors without impacting
-the core MVI model. Any additional functionality outside of Core will typically be implemented as an Interceptor and
-provided to the `BallastViewModelConfiguration`.
+The Ballast Core module provides all the core capabilities of the entire Ballast MVI framework. This module is simply an
+aggregation of other fundamental Ballast modules, which are combined to provide the basic functionality and 
+platform-specific integrations needed for developing application, and is the primary module you should include when
+using Ballast for building applications. Library developers building additional features or integrations into Ballast 
+should depend on [Ballast API](./../ballast-api/README.md) instead, since a library should not need the 
+platform-specific features provided by the other modules.
+
+Refer to the [Getting Started guide](./) for basic setup and using of the Ballast MVI framework as a whole. Refer to 
+documentation for each module linked in the [See Also](#see-also) section of this page for configuration of the 
+platform-specific integrations.
+
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
 
 ## See Also
 

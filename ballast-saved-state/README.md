@@ -13,6 +13,16 @@ the State is being loaded.
 Ballast Saved State offers a standard API to let you save the State to any persistent store you wish, but also offers
 out-of-the-box integration with `SavedStateHandle`.
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 ## Usage

@@ -8,6 +8,16 @@ use-case would be in server-side applications such as job queue processors. For 
 parallelism of processing jobs in the queue in response to the number of pending jobs, average time spent waiting for a 
 job to start, etc.
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 - [Ballast Ktor Server](./../ballast-ktor-server/README.md)

@@ -7,6 +7,16 @@ you're using Ballast ViewModels is an application, you probably should depend on
 to get all the full functionality needed for your application. If you're building a library that uses or extends Ballast's
 base functionality, this is the module you should depend on so you don't pull in unnecessary dependencies.
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 - [Ballast Core](./../ballast-core/README.md)

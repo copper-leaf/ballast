@@ -5,6 +5,16 @@
 Ballast's Crash Reporting module automatically sends errors in your ViewModels to you crash reporting SDK. Support
 for Firebase Crashlytics is supported out-of-the-box on Android via [Ballast Firebase Crashlytics](./../ballast-firebase-crashlytics/README.md).
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 - [Ballast Analytics](./../ballast-analytics/README.md)

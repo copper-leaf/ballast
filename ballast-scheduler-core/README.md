@@ -2,6 +2,16 @@
 
 ## Overview
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 - [Ballast Scheduler Cron](./../ballast-scheduler-cron/README.md)

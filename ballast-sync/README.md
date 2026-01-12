@@ -8,6 +8,16 @@ ViewModels which will share the synchronized state, and optionally allow those "
 back to the source. The flow of data within a synchronized ViewModels is all asynchronous, and follows a model of
 "eventual consistency".
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 ## Usage

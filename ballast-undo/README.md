@@ -11,6 +11,16 @@ and restoring captured State when requested, irrespective of any particular Inpu
 attempt to undo specific Inputs, which may have performed other actions like emitting Events, starting Side Jobs, or
 other "side effects" which cannot be so easily tracked and undone.
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 ## Usage
