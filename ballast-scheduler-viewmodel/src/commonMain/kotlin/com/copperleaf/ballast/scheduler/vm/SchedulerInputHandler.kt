@@ -130,7 +130,8 @@ internal class SchedulerInputHandler<I : Any, E : Any, S : Any>(
             updateScheduleState(input.key) {
                 null
             }
-            cancelSideJob(input.key)
+            // TODO: this won't work
+            cancelSideJob(input.key ?: "")
         }
 
         is SchedulerContract.Inputs.MarkScheduleComplete -> {

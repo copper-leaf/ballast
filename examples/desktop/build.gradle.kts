@@ -26,6 +26,7 @@ kotlin {
                 implementation(project(":ballast-sync"))
                 implementation(project(":ballast-undo"))
                 implementation(project(":ballast-navigation"))
+                implementation(project(":ballast-kotlinx-serialization"))
 
                 implementation(compose.materialIconsExtended)
                 implementation(libs.bundles.ktorClient)

@@ -22,15 +22,15 @@ public object SchedulerContract {
         ) : Inputs<I, E, S>
 
         public class PauseSchedule<I : Any, E : Any, S : Any>(
-            public val key: String
+            public val key: String?
         ) : Inputs<I, E, S>
 
         public class ResumeSchedule<I : Any, E : Any, S : Any>(
-            public val key: String
+            public val key: String?
         ) : Inputs<I, E, S>
 
         public class CancelSchedule<I : Any, E : Any, S : Any>(
-            public val key: String
+            public val key: String?
         ) : Inputs<I, E, S>
 
         public class MarkScheduleComplete<I : Any, E : Any, S : Any>(

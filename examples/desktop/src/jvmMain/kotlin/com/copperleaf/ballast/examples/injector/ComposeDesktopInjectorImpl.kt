@@ -60,6 +60,7 @@ import com.copperleaf.ballast.undo.BallastUndoInterceptor
 import com.copperleaf.ballast.undo.UndoController
 import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import com.copperleaf.ballast.undo.state.withStateBasedUndoController
+import com.copperleaf.ballast.withSerialization
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -160,13 +161,13 @@ class ComposeDesktopInjectorImpl(
                     inputHandler = CounterInputHandler(),
                     name = "Counter",
                 )
+                .withSerialization(
+                    inputsSerializer = CounterContract.Inputs.serializer(),
+                    eventsSerializer = CounterContract.Events.serializer(),
+                    stateSerializer = CounterContract.State.serializer(),
+                )
                 .apply {
-                    this += BallastDebuggerInterceptor(
-                        debuggerConnection,
-                        inputsSerializer = CounterContract.Inputs.serializer(),
-                        eventsSerializer = CounterContract.Events.serializer(),
-                        stateSerializer = CounterContract.State.serializer(),
-                    )
+                    this += BallastDebuggerInterceptor(debuggerConnection)
                 }
                 .build(),
             eventHandler = CounterEventHandler(),

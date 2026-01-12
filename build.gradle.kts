@@ -10,7 +10,7 @@ apiValidation {
 //            "docs",
             "android",
             "counter",
-            "desktop",
+//            "desktop",
             "navigationWithCustomRoutes",
             "navigationWithEnumRoutes",
             "schedules",

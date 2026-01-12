@@ -13,7 +13,5 @@ class RepositoryEventHandler : EventHandler<
             RepositoryContract.Events,
             RepositoryContract.State>.handleEvent(
         event: RepositoryContract.Events
-    ) = when (event) {
-        else -> {}
-    }
+    ) { }
 }

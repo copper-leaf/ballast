@@ -275,6 +275,8 @@ public final class com/copperleaf/ballast/BallastViewModelConfiguration$Builder 
 	public final fun getShutDownGracePeriod-UwyO8pc ()J
 	public final fun getSideJobsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun hashCode ()I
+	public final fun setDecoder (Lcom/copperleaf/ballast/BallastDecoder;)V
+	public final fun setEncoder (Lcom/copperleaf/ballast/BallastEncoder;)V
 	public final fun setEventStrategy (Lcom/copperleaf/ballast/EventStrategy;)V
 	public final fun setEventsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
 	public final fun setFilter (Lcom/copperleaf/ballast/InputFilter;)V
@@ -323,6 +325,8 @@ public final class com/copperleaf/ballast/BallastViewModelConfiguration$TypedBui
 	public final fun getShutDownGracePeriod-UwyO8pc ()J
 	public final fun getSideJobsDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
 	public fun hashCode ()I
+	public final fun setDecoder (Lcom/copperleaf/ballast/BallastDecoder;)V
+	public final fun setEncoder (Lcom/copperleaf/ballast/BallastEncoder;)V
 	public final fun setEventStrategy (Lcom/copperleaf/ballast/EventStrategy;)V
 	public final fun setEventsDispatcher (Lkotlinx/coroutines/CoroutineDispatcher;)V
 	public final fun setInitialState (Ljava/lang/Object;)V

@@ -13,9 +13,9 @@ object SchedulerExampleContract {
         data class Increment(val scheduleKey: String, val amount: Int, val processingTime: Duration = Duration.ZERO) : Inputs
 
         data object StartSchedules : Inputs
-        data class PauseSchedule(val key: String) : Inputs
-        data class ResumeSchedule(val key: String) : Inputs
-        data class StopSchedule(val key: String) : Inputs
+        data class PauseSchedule(val key: String?) : Inputs
+        data class ResumeSchedule(val key: String?) : Inputs
+        data class StopSchedule(val key: String?) : Inputs
     }
 
     sealed interface Events

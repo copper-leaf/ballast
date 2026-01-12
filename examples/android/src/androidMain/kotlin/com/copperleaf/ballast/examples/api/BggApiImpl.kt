@@ -5,7 +5,7 @@ import com.copperleaf.ballast.examples.api.models.HotListType
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readBytes
+import io.ktor.client.statement.readRawBytes
 import kotlinx.coroutines.delay
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -24,7 +24,7 @@ class BggApiImpl(
 
         val builderFactory: DocumentBuilderFactory = DocumentBuilderFactory.newInstance()
         val docBuilder: DocumentBuilder = builderFactory.newDocumentBuilder()
-        val doc: Document = docBuilder.parse(ByteArrayInputStream(response.readBytes()))
+        val doc: Document = docBuilder.parse(ByteArrayInputStream(response.readRawBytes()))
 
         val itemNodes = doc.getElementsByTagName("item")
 

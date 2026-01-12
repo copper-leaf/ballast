@@ -34,4 +34,5 @@ kotlin {
 
 buildConfig {
     projectVersion(project, "BALLAST_VERSION")
+    packageName.set("io.github.copperleaf.ballastdebuggerserver")
 }

@@ -52,8 +52,8 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
 
         public var logger: (String) -> BallastLogger = { NoOpLogger() },
 
-        public val encoder: BallastEncoder<*, *, *> = ToStringEncoder<Any, Any, Any>(),
-        public val decoder: BallastDecoder<*, *, *>? = null,
+        public var encoder: BallastEncoder<*, *, *> = ToStringEncoder<Any, Any, Any>(),
+        public var decoder: BallastDecoder<*, *, *>? = null,
 
         public val shutDownGracePeriod: Duration = 10.seconds,
     )
@@ -74,8 +74,8 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
 
         public var logger: (String) -> BallastLogger,
 
-        public val encoder: BallastEncoder<Inputs, Events, State>,
-        public val decoder: BallastDecoder<Inputs, Events, State>?,
+        public var encoder: BallastEncoder<Inputs, Events, State>,
+        public var decoder: BallastDecoder<Inputs, Events, State>?,
 
         public val shutDownGracePeriod: Duration,
     )

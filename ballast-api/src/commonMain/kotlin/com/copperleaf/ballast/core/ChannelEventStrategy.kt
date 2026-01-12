@@ -15,11 +15,11 @@ public abstract class ChannelEventStrategy<Inputs : Any, Events : Any, State : A
     capacity: Int = Channel.BUFFERED,
     onBufferOverflow: BufferOverflow = BufferOverflow.SUSPEND,
 ) : EventStrategy<Inputs, Events, State> {
-    private val _eventsQueue: Channel<QueuedEvent> = Channel(capacity, onBufferOverflow)
-    private val _eventsQueueDrained: CompletableDeferred<Unit> = CompletableDeferred()
+    private val eventsQueue: Channel<QueuedEvent> = Channel(capacity, onBufferOverflow)
+    private val eventsQueueDrained: CompletableDeferred<Unit> = CompletableDeferred()
 
     final override suspend fun EventStrategyScope<Inputs, Events, State>.start() {
-        _eventsQueue
+        eventsQueue
             .receiveAsFlow()
             .onEach {
                 when (it) {
@@ -28,7 +28,7 @@ public abstract class ChannelEventStrategy<Inputs : Any, Events : Any, State : A
                     }
 
                     is GracefullyShutDownEvents -> {
-                        _eventsQueueDrained.complete(Unit)
+                        eventsQueueDrained.complete(Unit)
                     }
                 }
             }
@@ -38,19 +38,19 @@ public abstract class ChannelEventStrategy<Inputs : Any, Events : Any, State : A
     }
 
     final override suspend fun enqueue(event: Events) {
-        _eventsQueue.send(HandleEvent(event))
+        eventsQueue.send(HandleEvent(event))
     }
 
     final override fun close() {
-        val result = _eventsQueue.trySend(GracefullyShutDownEvents())
+        val result = eventsQueue.trySend(GracefullyShutDownEvents())
 
         if (result.isSuccess) {
-            _eventsQueue.close()
+            eventsQueue.close()
         }
     }
 
     final override suspend fun flush() {
-        _eventsQueueDrained.await()
+        eventsQueueDrained.await()
     }
 
     public abstract suspend fun EventStrategyScope<Inputs, Events, State>.processEvents(

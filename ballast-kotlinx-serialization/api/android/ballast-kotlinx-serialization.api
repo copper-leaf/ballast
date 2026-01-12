@@ -10,14 +10,8 @@ public final class com/copperleaf/ballast/JsonBallastEncoder : com/copperleaf/ba
 	public fun getContentType ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/KSerializerEncoder : com/copperleaf/ballast/BallastDecoder, com/copperleaf/ballast/BallastEncoder {
-	public fun <init> ()V
-	public fun decodeEventFromString (Ljava/lang/String;)Ljava/lang/Object;
-	public fun decodeInputFromString (Ljava/lang/String;)Ljava/lang/Object;
-	public fun decodeStateFromString (Ljava/lang/String;)Ljava/lang/Object;
-	public fun encodeEventToString (Ljava/lang/Object;)Ljava/lang/String;
-	public fun encodeInputToString (Ljava/lang/Object;)Ljava/lang/String;
-	public fun encodeStateToString (Ljava/lang/Object;)Ljava/lang/String;
-	public fun getContentType ()Ljava/lang/String;
+public final class com/copperleaf/ballast/UtilsKt {
+	public static final fun withSerialization (Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
+	public static synthetic fun withSerialization$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 }
 
