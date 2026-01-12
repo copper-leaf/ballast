@@ -13,7 +13,11 @@ class TestInputHandler : InputHandler<
             TestContract.State>.handleInput(
         input: TestContract.Inputs
     ): Unit = when (input) {
-        TestContract.Inputs.DontTrackThis -> { noOp() }
-        TestContract.Inputs.TrackThis -> { noOp() }
+        TestContract.Inputs.DontTrackThis -> {
+            noOp()
+        }
+        TestContract.Inputs.TrackThis -> {
+            noOp()
+        }
     }
 }

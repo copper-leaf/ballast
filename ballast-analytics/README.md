@@ -5,6 +5,16 @@
 Ballast's Analytics module automatically tracks Inputs sent to your ViewModels to send to your analytics SDK. Support
 for Firebase Analytics is supported out-of-the-box on Android via [Ballast Firebase Analytics](./../ballast-firebase-analytics/README.md).
 
+## Supported Platforms
+
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
+
 ## See Also
 
 - [Ballast Firebase Analytics](./../ballast-firebase-analytics/README.md)
@@ -25,7 +35,7 @@ class TestViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
         .apply {
             interceptors += AnalyticsInterceptor(
                 tracker = TestAnalyticsTracker(),
-                
+
                 // implement AnalyticsAdapter for full control over the eventId and eventParameters passed to the Tracker
                 adapter = DefaultAnalyticsAdapter(
                     shouldTrackInput = { input ->
@@ -50,6 +60,8 @@ class TestAnalyticsTracker : AnalyticsTracker {
     }
 }
 ```
+
+[Source](./src/commonTest/kotlin/com/copperleaf/ballast/analytics/vm/TestViewModel.kt)
 
 ## Installation
 

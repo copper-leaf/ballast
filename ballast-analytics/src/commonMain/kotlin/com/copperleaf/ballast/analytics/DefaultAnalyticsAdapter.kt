@@ -7,12 +7,12 @@ import com.copperleaf.ballast.BallastEncoder
  * an `eventId` of "action". You must provide a `shouldTrackInput
  */
 public class DefaultAnalyticsAdapter<Inputs : Any, Events : Any, State : Any>(
-    shouldTrackInput: (Inputs) -> Boolean,
+    shouldTrackInput: (Inputs) -> Boolean = { true },
 ) : AnalyticsAdapter<Inputs, Events, State> {
-    private val _shouldTrackInput: (Inputs) -> Boolean = shouldTrackInput
+    private val shouldTrackInputFn: (Inputs) -> Boolean = shouldTrackInput
 
     override fun shouldTrackInput(input: Inputs): Boolean {
-        return _shouldTrackInput(input)
+        return shouldTrackInputFn(input)
     }
 
     override fun getEventIdForInput(input: Inputs): String {
