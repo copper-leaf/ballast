@@ -212,11 +212,17 @@ public class DayOfWeekField private constructor(
         public const val MIN_VALUE: Int = 0
         public const val MAX_VALUE: Int = 6
 
+        // Aceptable values for parsing, since both 0 and 7 can represent Sunday. Internally, 7 is normalized to 0
+        public const val MAX_PARSED_VALUE: Int = 7
+
         @JvmName("dayOfWeekField_Int")
         public operator fun invoke(days: Iterable<Int>, wildcard: Boolean = false): DayOfWeekField {
-            val values = days.distinct().sorted()
-            require(values.all { it in MIN_VALUE..MAX_VALUE }) {
-                "Day-of-week values must all be between $MIN_VALUE and $MAX_VALUE, got $values"
+            val values = days
+                .map { if (it == 7) 0 else it }
+                .distinct()
+                .sorted()
+            require(values.all { it in MIN_VALUE..MAX_PARSED_VALUE }) {
+                "Day-of-week values must all be between $MIN_VALUE and $MAX_PARSED_VALUE, got $values"
             }
             return DayOfWeekField(MIN_VALUE, MAX_VALUE, values, wildcard)
         }

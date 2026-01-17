@@ -76,6 +76,7 @@ public final class com/copperleaf/ballast/scheduler/schedule/DayOfMonthField$Com
 
 public final class com/copperleaf/ballast/scheduler/schedule/DayOfWeekField : com/copperleaf/ballast/scheduler/schedule/CronField {
 	public static final field Companion Lcom/copperleaf/ballast/scheduler/schedule/DayOfWeekField$Companion;
+	public static final field MAX_PARSED_VALUE I
 	public static final field MAX_VALUE I
 	public static final field MIN_VALUE I
 	public synthetic fun <init> (IILjava/util/List;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V

@@ -215,6 +215,7 @@ public abstract interface class com/copperleaf/ballast/BallastScopeFactory {
 }
 
 public abstract interface class com/copperleaf/ballast/BallastViewModel : java/lang/AutoCloseable {
+	public abstract fun close ()V
 	public abstract fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
 	public abstract fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

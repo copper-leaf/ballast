@@ -43,4 +43,12 @@ public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : Aut
      * has finished processing completely.
      */
     public suspend fun sendAndAwaitCompletion(element: Inputs)
+
+    /**
+     * Closes this Viewmodel gracefully, allowing a short grace period for any in-flight work to complete before being
+     * completely terminated. By closing this ViewModel, you are given no guarantee that it will be able to accept
+     * any more Inputs after this call returns. But it will do it's best to drain the current queue and allow all
+     * previously enqueued Inputs the chance to be processed.
+     */
+    override fun close()
 }

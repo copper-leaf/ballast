@@ -13,8 +13,8 @@ class TestDayOfWeekField {
         DayOfWeekField(1)
         DayOfWeekField(1, 2, 3)
         DayOfWeekField(listOf(1, 2))
-        DayOfWeekField(0..6)
-        DayOfWeekField(0..6 step 4)
+        DayOfWeekField(0..7)
+        DayOfWeekField(0..7 step 4)
         DayOfWeekField(6 downTo 0)
         DayOfWeekField(6 downTo 0 step 4)
         DayOfWeekField(DayOfWeek.SUNDAY)
@@ -28,8 +28,8 @@ class TestDayOfWeekField {
         DayOfWeekField(1, wildcard = true)
         DayOfWeekField(1, 2, 3, wildcard = true)
         DayOfWeekField(listOf(1, 2), true)
-        DayOfWeekField(0..6, true)
-        DayOfWeekField(0..6 step 4, true)
+        DayOfWeekField(0..7, true)
+        DayOfWeekField(0..7 step 4, true)
         DayOfWeekField(6 downTo 0, true)
         DayOfWeekField(6 downTo 0 step 4, true)
         DayOfWeekField(DayOfWeek.SUNDAY, wildcard = true)
@@ -80,6 +80,16 @@ class TestDayOfWeekField {
                 expected = false,
             )
         }
+        DayOfWeekField.exactValue(7).let {
+            assertEquals(
+                actual = it.values,
+                expected = listOf(0)
+            )
+            assertEquals(
+                actual = it.wildcard,
+                expected = false,
+            )
+        }
         DayOfWeekField.range(2, 5).let {
             assertEquals(
                 actual = it.values,
@@ -105,6 +115,6 @@ class TestDayOfWeekField {
     @Test
     fun testInvalidValueFactoryFunctions() {
         assertFails { DayOfWeekField(DayOfWeekField.MIN_VALUE - 1) }
-        assertFails { DayOfWeekField(DayOfWeekField.MAX_VALUE + 1) }
+        assertFails { DayOfWeekField(DayOfWeekField.MAX_PARSED_VALUE + 1) }
     }
 }
