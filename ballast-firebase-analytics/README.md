@@ -28,14 +28,14 @@ Analytics automatically. Only Inputs annotated with `@FirebaseAnalyticsTrackInpu
 annotated with @FirebaseAnalyticsTrackInput do not leak any sensitive information through their `.toString()` value.
 
 ```kotlin
-class TestViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
-        TestContract.Inputs,
-        TestContract.Events,
-        TestContract.State
+class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
+        ExampleContract.Inputs,
+        ExampleContract.Events,
+        ExampleContract.State
         >(
     coroutineScope = coroutineScope,
     config = BallastViewModelConfiguration.Builder()
-        .withViewModel(TestContract.State(), TestInputHandler())
+        .withViewModel(ExampleContract.State(), ExampleInputHandler())
         .apply {
             interceptors += FirebaseAnalyticsInterceptor()
         }
@@ -43,7 +43,7 @@ class TestViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
     eventHandler = eventHandler { },
 )
 
-object TestContract {
+object ExampleContract {
     data class State(
         val loading: Boolean = false,
     )

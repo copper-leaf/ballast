@@ -141,10 +141,10 @@ Daylight Savings transitions.
 ### Example usage
 
 ```kotlin
-class TestViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
-        TestContract.Inputs,
-        TestContract.Events,
-        TestContract.State
+class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
+        ExampleContract.Inputs,
+        ExampleContract.Events,
+        ExampleContract.State
         >(
     coroutineScope = coroutineScope,
     config = BallastViewModelConfiguration.Builder()

@@ -24,21 +24,21 @@ for Firebase Crashlytics is supported out-of-the-box on Android via [Ballast Fir
 ## Usage
 
 ```kotlin
-class TestViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
-        TestContract.Inputs,
-        TestContract.Events,
-        TestContract.State
+class ExampleViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
+        ExampleContract.Inputs,
+        ExampleContract.Events,
+        ExampleContract.State
         >(
     coroutineScope = coroutineScope,
     config = BallastViewModelConfiguration.Builder()
-        .withViewModel(TestContract.State(), TestInputHandler())
+        .withViewModel(ExampleContract.State(), ExampleInputHandler())
         .apply {
             interceptors += CrashReportingInterceptor(
-                crashReporter = TestCrashReporter(),
+                crashReporter = ExampleCrashReporter(),
                 shouldTrackInput = { input ->
                     when (input) {
-                        is TestContract.Inputs.TrackThis -> true
-                        is TestContract.Inputs.DontTrackThis -> false
+                        is ExampleContract.Inputs.TrackThis -> true
+                        is ExampleContract.Inputs.DontTrackThis -> false
                     }
                 }
             )
@@ -47,7 +47,7 @@ class TestViewModel(coroutineScope: CoroutineScope) : BasicViewModel<
     eventHandler = eventHandler { },
 )
 
-class TestCrashReporter : CrashReporter {
+class ExampleCrashReporter : CrashReporter {
     override fun logInput(viewModelName: String, input: Any) {
         // log the event to your crash reporting system for trace of steps leading to a crash. Only inputs returning
         // true from `shouldTrackInput` are sent here.

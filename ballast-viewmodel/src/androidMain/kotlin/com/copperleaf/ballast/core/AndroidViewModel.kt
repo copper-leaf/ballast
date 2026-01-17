@@ -19,8 +19,7 @@ import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import java.io.Closeable
 
-public open class AndroidViewModel<Inputs : Any, Events : Any, State : Any>
-private constructor(
+public open class AndroidViewModel<Inputs : Any, Events : Any, State : Any> private constructor(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     providedCoroutineScope: CoroutineScope?
 ) : ViewModel(
