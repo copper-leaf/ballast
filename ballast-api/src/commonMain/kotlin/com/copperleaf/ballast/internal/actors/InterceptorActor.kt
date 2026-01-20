@@ -101,7 +101,7 @@ public class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    internal suspend fun notify(value: BallastNotification<Inputs, Events, State>) {
+    public suspend fun notify(value: BallastNotification<Inputs, Events, State>) {
         notificationsQueue.send(value)
     }
 
@@ -116,7 +116,7 @@ public class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    internal suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I {
+    public suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I {
         val interceptorsWithKey = impl.interceptors
             .filter {
                 if (it.key == null) {

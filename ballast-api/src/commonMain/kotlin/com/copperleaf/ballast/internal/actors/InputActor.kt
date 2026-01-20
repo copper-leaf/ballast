@@ -29,7 +29,7 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
         }
     }
 
-    internal suspend fun enqueueQueued(queued: Queued<Inputs, Events, State>, await: Boolean) {
+    public suspend fun enqueueQueued(queued: Queued<Inputs, Events, State>, await: Boolean) {
         impl.coordinator.coordinatorState.value.checkMainQueueOpen()
 
         when (queued) {
@@ -96,7 +96,7 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
         return result
     }
 
-    internal suspend fun safelyHandleQueued(
+    public suspend fun safelyHandleQueued(
         queued: Queued<Inputs, Events, State>,
         guardian: InputStrategy.Guardian,
         onCancelled: suspend () -> Unit

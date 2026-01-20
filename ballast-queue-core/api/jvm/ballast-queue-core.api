@@ -70,23 +70,37 @@ public final class com/copperleaf/ballast/queue/JobStatus : java/lang/Enum {
 }
 
 public abstract interface class com/copperleaf/ballast/queue/QueueDriver {
-	public abstract fun addToQueue-1Y68eR8 (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun markJobCompleted-6fn13As (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Lkotlinx/serialization/json/JsonObject;Lkotlin/time/Duration;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun markJobCompleted-Vv_KWEM (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/time/Duration;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observeQueue (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun requestJobCancellation (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun subscribeToJobCancellation (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
-	public abstract fun updateJobState (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun updateJobState (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/copperleaf/ballast/queue/QueueExecutor {
-	public abstract fun insertJob (Ljava/lang/String;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun runQueue (Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun insertJob (Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun runQueue (Ljava/lang/String;Lkotlin/jvm/functions/Function3;)Lkotlinx/coroutines/flow/Flow;
 }
 
 public abstract interface class com/copperleaf/ballast/queue/QueueExecutor$Adapter {
-	public abstract fun getDefaultRetryDelayTimeout-5sfh64U (Ljava/lang/Object;)J
+	public fun getDefaultRetryDelayTimeout-5sfh64U (Ljava/lang/Object;)J
 	public abstract fun getJobMetadata (Ljava/lang/Object;)Ljava/lang/Object;
-	public abstract fun getJobTimeout-5sfh64U (Ljava/lang/Object;)J
+	public fun getJobTimeout-5sfh64U (Ljava/lang/Object;)J
+}
+
+public final class com/copperleaf/ballast/queue/QueueExecutor$Adapter$DefaultImpls {
+	public static fun getDefaultRetryDelayTimeout-5sfh64U (Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;Ljava/lang/Object;)J
+	public static fun getJobTimeout-5sfh64U (Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;Ljava/lang/Object;)J
+}
+
+public abstract interface class com/copperleaf/ballast/queue/QueueExecutor$Serializers {
+	public abstract fun deserializePayload (Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun deserializeResult (Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun deserializeState (Ljava/lang/String;)Ljava/lang/Object;
+	public abstract fun serializePayload (Ljava/lang/Object;)Ljava/lang/String;
+	public abstract fun serializeResult (Ljava/lang/Object;)Ljava/lang/String;
+	public abstract fun serializeState (Ljava/lang/Object;)Ljava/lang/String;
 }
 
 public abstract interface class com/copperleaf/ballast/queue/QueueExecutorScope {
@@ -95,24 +109,24 @@ public abstract interface class com/copperleaf/ballast/queue/QueueExecutorScope 
 }
 
 public final class com/copperleaf/ballast/queue/SerializedJob {
-	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLkotlinx/serialization/json/JsonObject;Lcom/copperleaf/ballast/queue/JobStatus;Lkotlinx/serialization/json/JsonObject;Ljava/lang/Object;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Lcom/copperleaf/ballast/queue/JobStatus;Ljava/lang/String;Ljava/lang/Object;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/String;
 	public final fun component2 ()Ljava/lang/String;
-	public final fun component3 ()Lkotlinx/serialization/json/JsonObject;
+	public final fun component3 ()Ljava/lang/String;
 	public final fun component4-UwyO8pc ()J
-	public final fun component5 ()Lkotlinx/serialization/json/JsonObject;
+	public final fun component5 ()Ljava/lang/String;
 	public final fun component6 ()Lcom/copperleaf/ballast/queue/JobStatus;
-	public final fun component7 ()Lkotlinx/serialization/json/JsonObject;
+	public final fun component7 ()Ljava/lang/String;
 	public final fun component8 ()Ljava/lang/Object;
-	public final fun copy-mGOUYlo (Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLkotlinx/serialization/json/JsonObject;Lcom/copperleaf/ballast/queue/JobStatus;Lkotlinx/serialization/json/JsonObject;Ljava/lang/Object;)Lcom/copperleaf/ballast/queue/SerializedJob;
-	public static synthetic fun copy-mGOUYlo$default (Lcom/copperleaf/ballast/queue/SerializedJob;Ljava/lang/String;Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLkotlinx/serialization/json/JsonObject;Lcom/copperleaf/ballast/queue/JobStatus;Lkotlinx/serialization/json/JsonObject;Ljava/lang/Object;ILjava/lang/Object;)Lcom/copperleaf/ballast/queue/SerializedJob;
+	public final fun copy-mGOUYlo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Lcom/copperleaf/ballast/queue/JobStatus;Ljava/lang/String;Ljava/lang/Object;)Lcom/copperleaf/ballast/queue/SerializedJob;
+	public static synthetic fun copy-mGOUYlo$default (Lcom/copperleaf/ballast/queue/SerializedJob;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;Lcom/copperleaf/ballast/queue/JobStatus;Ljava/lang/String;Ljava/lang/Object;ILjava/lang/Object;)Lcom/copperleaf/ballast/queue/SerializedJob;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getJobId ()Ljava/lang/String;
 	public final fun getMetadata ()Ljava/lang/Object;
-	public final fun getPayloadJson ()Lkotlinx/serialization/json/JsonObject;
 	public final fun getQueueName ()Ljava/lang/String;
-	public final fun getResultJson ()Lkotlinx/serialization/json/JsonObject;
-	public final fun getStateJson ()Lkotlinx/serialization/json/JsonObject;
+	public final fun getSerializedPayload ()Ljava/lang/String;
+	public final fun getSerializedResultData ()Ljava/lang/String;
+	public final fun getSerializedState ()Ljava/lang/String;
 	public final fun getStatus ()Lcom/copperleaf/ballast/queue/JobStatus;
 	public final fun getTimeoutDuration-UwyO8pc ()J
 	public fun hashCode ()I
@@ -123,32 +137,48 @@ public final class com/copperleaf/ballast/queue/driver/InMemoryQueueDriver : com
 	public fun <init> ()V
 	public fun <init> (Lkotlin/time/Clock;)V
 	public synthetic fun <init> (Lkotlin/time/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun addToQueue-1Y68eR8 (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public synthetic fun addToQueue-1Y68eR8 (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun markJobCompleted-6fn13As (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Lkotlinx/serialization/json/JsonObject;Lkotlin/time/Duration;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun markJobCompleted-Vv_KWEM (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/time/Duration;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun observeJobState (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public fun observeQueue (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public final fun observeQueueState ()Lkotlinx/coroutines/flow/StateFlow;
 	public fun requestJobCancellation (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun subscribeToJobCancellation (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
-	public fun updateJobState (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun updateJobState (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/queue/driver/InMemoryQueueDriver$DefaultAdapter : com/copperleaf/ballast/queue/QueueExecutor$Adapter {
+	public fun <init> ()V
+	public fun <init> (Lkotlin/time/Clock;)V
+	public synthetic fun <init> (Lkotlin/time/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getDefaultRetryDelayTimeout-5sfh64U (Ljava/lang/Object;)J
+	public fun getJobMetadata (Ljava/lang/Object;)Lcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;
+	public synthetic fun getJobMetadata (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun getJobTimeout-5sfh64U (Ljava/lang/Object;)J
 }
 
 public final class com/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata {
-	public synthetic fun <init> (Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lkotlin/time/Instant;
 	public final fun component2 ()I
 	public final fun component3 ()I
 	public final fun component4 ()Lkotlin/time/Instant;
 	public final fun component5 ()I
 	public final fun component6-FghU774 ()Lkotlin/time/Duration;
-	public final fun copy-BAu0izY (Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;)Lcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;
-	public static synthetic fun copy-BAu0izY$default (Lcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;ILjava/lang/Object;)Lcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;
+	public final fun component7 ()Lcom/copperleaf/ballast/queue/JobCompletionResultType;
+	public final fun component8 ()Ljava/lang/String;
+	public final fun component9 ()Ljava/lang/String;
+	public final fun copy-ZfZE-DE (Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;
+	public static synthetic fun copy-ZfZE-DE$default (Lcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;Lkotlin/time/Instant;IILkotlin/time/Instant;ILkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/queue/driver/InMemoryQueueDriver$Metadata;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getAttempts ()I
 	public final fun getInsertedAt ()Lkotlin/time/Instant;
+	public final fun getLastErrorMessage ()Ljava/lang/String;
+	public final fun getLastResultType ()Lcom/copperleaf/ballast/queue/JobCompletionResultType;
 	public final fun getLastRunDuration-FghU774 ()Lkotlin/time/Duration;
+	public final fun getLastStacktrace ()Ljava/lang/String;
 	public final fun getMaxAttempts ()I
 	public final fun getPriority ()I
 	public final fun getRunAt ()Lkotlin/time/Instant;
@@ -162,24 +192,39 @@ public final class com/copperleaf/ballast/queue/driver/PollingUtilsKt {
 
 public final class com/copperleaf/ballast/queue/driver/SyncQueueDriver : com/copperleaf/ballast/queue/QueueDriver {
 	public fun <init> ()V
-	public synthetic fun addToQueue-1Y68eR8 (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun addToQueue-1Y68eR8 (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;JLkotlin/Unit;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun markJobCompleted-6fn13As (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Lkotlinx/serialization/json/JsonObject;Lkotlin/time/Duration;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLkotlin/Unit;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getLastJob ()Lcom/copperleaf/ballast/queue/SerializedJob;
+	public final fun getLastJobFailureMessage ()Ljava/lang/String;
+	public final fun getLastJobResultData ()Ljava/lang/String;
+	public final fun getLastJobResultType ()Lcom/copperleaf/ballast/queue/JobCompletionResultType;
+	public fun markJobCompleted-Vv_KWEM (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/time/Duration;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun observeQueue (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public fun requestJobCancellation (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun subscribeToJobCancellation (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
-	public fun updateJobState (Ljava/lang/String;Lkotlinx/serialization/json/JsonObject;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun updateJobState (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/queue/executor/DefaultQueueExecutor : com/copperleaf/ballast/queue/QueueExecutor {
-	public fun <init> (Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ZLkotlin/time/TimeSource;)V
-	public synthetic fun <init> (Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ZLkotlin/time/TimeSource;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun insertJob (Ljava/lang/String;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun runQueue (Ljava/lang/String;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun <init> (Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;Lcom/copperleaf/ballast/queue/QueueExecutor$Serializers;ZLkotlin/time/TimeSource;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;Lcom/copperleaf/ballast/queue/QueueExecutor$Serializers;ZLkotlin/time/TimeSource;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun insertJob (Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun runQueue (Ljava/lang/String;Lkotlin/jvm/functions/Function3;)Lkotlinx/coroutines/flow/Flow;
 }
 
 public final class com/copperleaf/ballast/queue/executor/JobFailureException : java/lang/Exception {
 	public synthetic fun <init> (Ljava/lang/Exception;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getRetryDelay-UwyO8pc ()J
+}
+
+public final class com/copperleaf/ballast/queue/executor/JsonSerializers : com/copperleaf/ballast/queue/QueueExecutor$Serializers {
+	public fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)V
+	public synthetic fun <init> (Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun deserializePayload (Ljava/lang/String;)Ljava/lang/Object;
+	public fun deserializeResult (Ljava/lang/String;)Ljava/lang/Object;
+	public fun deserializeState (Ljava/lang/String;)Ljava/lang/Object;
+	public fun serializePayload (Ljava/lang/Object;)Ljava/lang/String;
+	public fun serializeResult (Ljava/lang/Object;)Ljava/lang/String;
+	public fun serializeState (Ljava/lang/Object;)Ljava/lang/String;
 }
 

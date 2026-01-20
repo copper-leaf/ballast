@@ -10,8 +10,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -32,6 +30,7 @@ class InMemoryQueueDriverTest {
         val uuid = driver.addToQueue(
             queueName = "one",
             serializedPayload = "{}",
+            serializedInitialState = "{}",
             timeoutDuration = 30.seconds,
             metadata = InMemoryQueueDriver.Metadata(
                 insertedAt = clock.now(),
@@ -85,6 +84,7 @@ class InMemoryQueueDriverTest {
         val uuid = driver.addToQueue(
             queueName = "one",
             serializedPayload = "{}",
+            serializedInitialState = "{}",
             timeoutDuration = 30.seconds,
             metadata = InMemoryQueueDriver.Metadata(
                 insertedAt = clock.now(),
@@ -109,8 +109,10 @@ class InMemoryQueueDriverTest {
             jobId = uuid,
             processingTime = 5.seconds,
             resultType = JobCompletionResultType.Failure,
-            serializedResultData = JsonObject(mapOf("error" to JsonPrimitive("testError"))).toString(),
+            serializedResultData = null,
             retryDelay = null,
+            failureMessage = "testError",
+            failureStacktrace = null,
         )
 
         // job gets re-enqueued because it still had retries left
@@ -125,7 +127,11 @@ class InMemoryQueueDriverTest {
             )
             assertEquals(
                 actual = it?.serializedResultData,
-                expected = JsonObject(mapOf("error" to JsonPrimitive("testError"))).toString(),
+                expected = null,
+            )
+            assertEquals(
+                actual = it?.metadata?.lastErrorMessage,
+                expected = "testError",
             )
         }
     }
@@ -140,6 +146,7 @@ class InMemoryQueueDriverTest {
         val uuid = driver.addToQueue(
             queueName = "one",
             serializedPayload = "{}",
+            serializedInitialState = "{}",
             timeoutDuration = 30.seconds,
             metadata = InMemoryQueueDriver.Metadata(
                 insertedAt = clock.now(),
@@ -164,8 +171,10 @@ class InMemoryQueueDriverTest {
             jobId = uuid,
             processingTime = 5.seconds,
             resultType = JobCompletionResultType.Failure,
-            serializedResultData = JsonObject(mapOf("error" to JsonPrimitive("testError"))).toString(),
+            serializedResultData = null,
             retryDelay = null,
+            failureMessage = "testError",
+            failureStacktrace = null,
         )
 
         // job gets marked as Failed because it was on its last retry
@@ -180,7 +189,11 @@ class InMemoryQueueDriverTest {
             )
             assertEquals(
                 actual = it?.serializedResultData,
-                expected = JsonObject(mapOf("error" to JsonPrimitive("testError"))).toString(),
+                expected = null,
+            )
+            assertEquals(
+                actual = it?.metadata?.lastErrorMessage,
+                expected = "testError",
             )
         }
     }

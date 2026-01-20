@@ -17,8 +17,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 import kotlin.time.TimeSource
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -50,13 +48,9 @@ public class DefaultQueueExecutor<
     }
 
     private fun prepareJob(job: SerializedJob<JobMetadata>): RunningJob<Payload, Result, State> {
-        // extract JSON payloads
-        val payloadJson = job.serializedPayload
-        val stateJson = job.serializedState
-
-        // deserialize JSON payloads to proper objects
-        val payload = serializers.deserializePayload(payloadJson)
-        val state = serializers.deserializeState(stateJson)
+        // extract JSON payloads, then deserialize to proper objects
+        val payload = serializers.deserializePayload(job.serializedPayload)
+        val state = serializers.deserializeState(job.serializedState)
 
         return RunningJob(
             jobId = job.jobId,
@@ -153,34 +147,38 @@ public class DefaultQueueExecutor<
             },
             serializedResultData = when (result.result) {
                 is JobCompletionResult.Success -> if (result.result.resultData != null) {
-                    // if the job completed with a result, serialize it and include it in the result JSON
+                    // if the job completed with a result, serialize it and set it as the result
                     serializers.serializeResult(result.result.resultData)
                 } else {
-                    ""
+                    null
                 }
 
-                is JobCompletionResult.Cancelled -> buildJsonObject {
-                    put("reason", "cancelled")
-                }.toString()
-
-                is JobCompletionResult.Timeout -> buildJsonObject {
-                    put("error", result.result.cause.message)
-                    put("reason", "timeout")
-                }.toString()
-
-                is JobCompletionResult.Failure -> buildJsonObject {
-                    put("error", result.result.cause.message)
-                    put("reason", "exception")
-                    if (captureErrorStacktrace) {
-                        put("stacktrace", result.result.cause.stackTraceToString())
-                    }
-                }.toString()
+                is JobCompletionResult.Cancelled -> null
+                is JobCompletionResult.Timeout -> null
+                is JobCompletionResult.Failure -> null
             },
             retryDelay = when (result.result) {
                 is JobCompletionResult.Success -> null
                 is JobCompletionResult.Cancelled -> result.result.retryDelay
                 is JobCompletionResult.Timeout -> result.result.retryDelay
                 is JobCompletionResult.Failure -> result.result.retryDelay
+            },
+            failureMessage = when (result.result) {
+                is JobCompletionResult.Success -> null
+                is JobCompletionResult.Cancelled -> null
+                is JobCompletionResult.Timeout -> result.result.cause.message
+                is JobCompletionResult.Failure -> result.result.cause.message
+            },
+            failureStacktrace = when (result.result) {
+                is JobCompletionResult.Success -> null
+                is JobCompletionResult.Cancelled -> null
+                is JobCompletionResult.Timeout -> null
+
+                is JobCompletionResult.Failure -> if (captureErrorStacktrace) {
+                    result.result.cause.stackTraceToString()
+                } else {
+                    null
+                }
             },
         )
     }
@@ -191,14 +189,17 @@ public class DefaultQueueExecutor<
     override suspend fun insertJob(
         queueName: String,
         payload: Payload,
+        initialState: State,
     ): String {
-        val payloadJson = serializers.serializePayload(payload)
+        val serializedPayload = serializers.serializePayload(payload)
+        val serializedState = serializers.serializeState(initialState)
         val timeout = adapter.getJobTimeout(payload)
         val metadata = adapter.getJobMetadata(payload)
 
         return driver.addToQueue(
             queueName = queueName,
-            serializedPayload = payloadJson,
+            serializedPayload = serializedPayload,
+            serializedInitialState = serializedState,
             timeoutDuration = timeout,
             metadata = metadata,
         )

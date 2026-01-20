@@ -24,6 +24,7 @@ public interface QueueExecutor<
     public suspend fun insertJob(
         queueName: String,
         payload: Payload,
+        initialState: State,
     ): String
 
     public interface Adapter<

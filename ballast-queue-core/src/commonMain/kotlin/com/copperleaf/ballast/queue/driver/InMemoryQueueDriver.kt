@@ -3,6 +3,7 @@ package com.copperleaf.ballast.queue.driver
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import com.copperleaf.ballast.queue.JobStatus
 import com.copperleaf.ballast.queue.QueueDriver
+import com.copperleaf.ballast.queue.QueueExecutor
 import com.copperleaf.ballast.queue.SerializedJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -57,7 +58,26 @@ public class InMemoryQueueDriver(
 
         val attempts: Int = 0,
         val lastRunDuration: Duration? = null,
+        val lastResultType: JobCompletionResultType? = null,
+        val lastErrorMessage: String? = null,
+        val lastStacktrace: String? = null,
     )
+
+    public class DefaultAdapter<
+            Payload : Any,
+            Result : Any,
+            State : Any,
+            >(
+                private val clock: Clock = Clock.System,
+    ) : QueueExecutor.Adapter<Metadata, Payload, Result, State> {
+        override fun getJobMetadata(payload: Payload): Metadata {
+            val now = clock.now()
+            return Metadata(
+                insertedAt = now,
+                maxAttempts = 5,
+            )
+        }
+    }
 
 // Insert/Query Operations
 // ---------------------------------------------------------------------------------------------------------------------
@@ -65,6 +85,7 @@ public class InMemoryQueueDriver(
     override suspend fun addToQueue(
         queueName: String,
         serializedPayload: String,
+        serializedInitialState: String,
         timeoutDuration: Duration,
         metadata: Metadata,
     ): String {
@@ -74,7 +95,7 @@ public class InMemoryQueueDriver(
                 queueName = queueName,
                 timeoutDuration = timeoutDuration,
                 serializedPayload = serializedPayload,
-                serializedState = "{}",
+                serializedState = serializedInitialState,
                 serializedResultData = null,
                 status = JobStatus.Pending,
                 metadata = metadata,
@@ -153,8 +174,10 @@ public class InMemoryQueueDriver(
         jobId: String,
         processingTime: Duration,
         resultType: JobCompletionResultType,
-        serializedResultData: String,
+        serializedResultData: String?,
         retryDelay: Duration?,
+        failureMessage: String?,
+        failureStacktrace: String?
     ) {
         updateJob(jobId) {
             it.copy(
@@ -175,8 +198,11 @@ public class InMemoryQueueDriver(
                     }
                 },
                 metadata = it.metadata.copy(
+                    runAt = if (retryDelay != null) clock.now() + retryDelay else it.metadata.runAt,
                     lastRunDuration = processingTime,
-                    runAt = if (retryDelay != null) clock.now() + retryDelay else it.metadata.runAt
+                    lastResultType = resultType,
+                    lastErrorMessage = failureMessage,
+                    lastStacktrace = failureStacktrace,
                 )
             )
         }

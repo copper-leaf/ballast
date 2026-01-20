@@ -22,6 +22,7 @@ public interface QueueDriver<JobMetadata : Any> {
     public suspend fun addToQueue(
         queueName: String,
         serializedPayload: String,
+        serializedInitialState: String,
         timeoutDuration: Duration,
         metadata: JobMetadata,
     ): String
@@ -54,8 +55,10 @@ public interface QueueDriver<JobMetadata : Any> {
         jobId: String,
         processingTime: Duration,
         resultType: JobCompletionResultType,
-        serializedResultData: String,
+        serializedResultData: String?,
         retryDelay: Duration?,
+        failureMessage: String?,
+        failureStacktrace: String?,
     )
 
 // Cancellation

@@ -34,23 +34,32 @@ public class SyncQueueDriver() : QueueDriver<Unit> {
 
     private val channel = Channel<SerializedJob<Unit>>(RENDEZVOUS)
 
+    private var _lastJob: SerializedJob<Unit>? = null
+    private var _lastJobResultType: JobCompletionResultType? = null
+    private var _lastJobResultData: String? = null
+    private var _lastJobFailureMessage: String? = null
+
+    public val lastJob: SerializedJob<Unit>? get() = _lastJob
+    public val lastJobResultType: JobCompletionResultType? get() = _lastJobResultType
+    public val lastJobResultData: String? get() = _lastJobResultData
+    public val lastJobFailureMessage: String? get() = _lastJobFailureMessage
+
 // Insert/Query Operations
 // ---------------------------------------------------------------------------------------------------------------------
 
     override suspend fun addToQueue(
         queueName: String,
         serializedPayload: String,
+        serializedInitialState: String,
         timeoutDuration: Duration,
         metadata: Unit,
     ): String {
-        println("SyncQueueDriver.addToQueue called with payload: $serializedPayload")
-
         val serializedJob = SerializedJob(
             jobId = Uuid.random().toString(),
             queueName = queueName,
             timeoutDuration = timeoutDuration,
             serializedPayload = serializedPayload,
-            serializedState = "{}",
+            serializedState = serializedInitialState,
             serializedResultData = null,
             status = JobStatus.Pending,
             metadata = metadata,
@@ -64,9 +73,13 @@ public class SyncQueueDriver() : QueueDriver<Unit> {
     override fun observeQueue(
         queueName: String,
     ): Flow<SerializedJob<Unit>> {
-        return channel.receiveAsFlow()
-            .onEach {
-                println("SyncQueueDriver.observeQueue emitting job with payload: ${it.serializedPayload}, state=${it.serializedState}")
+        return channel
+            .receiveAsFlow()
+            .onEach { job ->
+                _lastJob = job
+                _lastJobResultType = null
+                _lastJobResultData = null
+                _lastJobFailureMessage = null
             }
     }
 
@@ -77,20 +90,24 @@ public class SyncQueueDriver() : QueueDriver<Unit> {
         jobId: String,
         serializedState: String,
     ) {
-        throw NotImplementedError("")
+        // no-op
     }
 
     override suspend fun markJobCompleted(
         jobId: String,
         processingTime: Duration,
         resultType: JobCompletionResultType,
-        serializedResultData: String,
+        serializedResultData: String?,
         retryDelay: Duration?,
+        failureMessage: String?,
+        failureStacktrace: String?
     ) {
-        // no-op
+        _lastJobResultType = resultType
+        _lastJobResultData = serializedResultData
+        _lastJobFailureMessage = failureMessage
     }
 
-// Cancellation
+    // Cancellation
 // ---------------------------------------------------------------------------------------------------------------------
 
     override suspend fun requestJobCancellation(jobId: String) {

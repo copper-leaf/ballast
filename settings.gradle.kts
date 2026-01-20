@@ -49,6 +49,7 @@ include(":ballast-scheduler-cron")
 include(":ballast-scheduler-viewmodel")
 
 include(":ballast-queue-core")
+include(":ballast-queue-viewmodel")
 
 include(":ballast-kotlinx-serialization")
 include(":ballast-ktor-server")
@@ -57,7 +58,7 @@ include(":ballast-autoscale")
 include(":ballast-test")
 
 include(":examples:android")
-//include(":examples:desktop")
+include(":examples:desktop")
 include(":examples:web")
 include(":examples:counter")
 include(":examples:schedules")

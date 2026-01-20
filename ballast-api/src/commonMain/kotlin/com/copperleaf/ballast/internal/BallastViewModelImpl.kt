@@ -11,14 +11,13 @@ import com.copperleaf.ballast.internal.actors.InputActor
 import com.copperleaf.ballast.internal.actors.InterceptorActor
 import com.copperleaf.ballast.internal.actors.SideJobActor
 import com.copperleaf.ballast.internal.actors.StateActor
-import com.copperleaf.ballast.internal.scopes.DefaultBallastScopeFactory
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ChannelResult
 import kotlinx.coroutines.flow.StateFlow
 
 public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
-    internal val type: String,
+    public val type: String,
     config: BallastViewModelConfiguration<Inputs, Events, State>,
 ) : BallastViewModel<Inputs, Events, State>,
     BallastViewModelConfiguration<Inputs, Events, State> by config {
@@ -26,7 +25,7 @@ public class BallastViewModelImpl<Inputs : Any, Events : Any, State : Any>(
 // Internal properties
 // ---------------------------------------------------------------------------------------------------------------------
 
-    internal val scopeFactory: BallastScopeFactory<Inputs, Events, State> = DefaultBallastScopeFactory(this)
+    internal val scopeFactory: BallastScopeFactory<Inputs, Events, State> = inputStrategy.getScopeFactory(this)
     public val inputActor: InputActor<Inputs, Events, State> = InputActor(this, scopeFactory)
     public val eventActor: EventActor<Inputs, Events, State> = EventActor(this, scopeFactory)
     public val stateActor: StateActor<Inputs, Events, State> = scopeFactory.createStateActor(this)

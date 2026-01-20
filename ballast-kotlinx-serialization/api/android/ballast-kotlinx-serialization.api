@@ -10,7 +10,7 @@ public final class com/copperleaf/ballast/JsonBallastEncoder : com/copperleaf/ba
 	public fun getContentType ()Ljava/lang/String;
 }
 
-public final class com/copperleaf/ballast/UtilsKt {
+public final class com/copperleaf/ballast/JsonBallastEncoderKt {
 	public static final fun withSerialization (Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 	public static synthetic fun withSerialization$default (Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/KSerializer;Lkotlinx/serialization/json/Json;ILjava/lang/Object;)Lcom/copperleaf/ballast/BallastViewModelConfiguration$TypedBuilder;
 }
