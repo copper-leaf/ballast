@@ -7,6 +7,7 @@ public fun interface DistributionPolicy<Inputs : Any, Events : Any, State : Any>
 
     public fun interface PolicyState<Inputs : Any, Events : Any, State : Any> {
         public fun getNextViewModel(
+            input: Inputs,
             pool: List<BallastViewModel<Inputs, Events, State>>
         ): BallastViewModel<Inputs, Events, State>?
     }

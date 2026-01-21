@@ -50,6 +50,7 @@ include(":ballast-scheduler-viewmodel")
 
 include(":ballast-queue-core")
 include(":ballast-queue-viewmodel")
+include(":ballast-queue-exposed-driver")
 
 include(":ballast-kotlinx-serialization")
 include(":ballast-ktor-server")
@@ -64,5 +65,6 @@ include(":examples:counter")
 include(":examples:schedules")
 include(":examples:navigationWithEnumRoutes")
 include(":examples:navigationWithCustomRoutes")
+include(":examples:queue")
 
 //include(":docs")

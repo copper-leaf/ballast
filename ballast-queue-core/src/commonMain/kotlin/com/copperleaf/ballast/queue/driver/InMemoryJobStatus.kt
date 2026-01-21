@@ -1,6 +1,8 @@
-package com.copperleaf.ballast.queue
+package com.copperleaf.ballast.queue.driver
 
-public enum class JobStatus {
+import com.copperleaf.ballast.queue.QueueDriver
+
+public enum class InMemoryJobStatus {
 
     /**
      * The job is inserted into the queue and is waiting to be processed. If a job failed during processed but is

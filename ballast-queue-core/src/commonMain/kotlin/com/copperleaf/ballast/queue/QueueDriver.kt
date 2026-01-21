@@ -47,16 +47,25 @@ public interface QueueDriver<JobMetadata : Any> {
     )
 
     /**
-     * The job ran to completion, which may have been successful or failure. The processing time and result
-     * (success, failure, retry) are provided so the driver can update the job record appropriately, and optionally
-     * enqueue it for retry at a later time.
+     * The job ran to completion successfully.
      */
-    public suspend fun markJobCompleted(
+    public suspend fun completeJobSuccessfully(
         jobId: String,
         processingTime: Duration,
         resultType: JobCompletionResultType,
         serializedResultData: String?,
-        retryDelay: Duration?,
+    )
+
+    /**
+     * The job failed to complete. The processing time and result are provided so the driver can update the job record
+     * appropriately, and optionally enqueue it for retry at a later time.
+     */
+    public suspend fun completeJobWithFailure(
+        jobId: String,
+        processingTime: Duration,
+        resultType: JobCompletionResultType,
+        retryDelay: Duration,
+        permanentlyFail: Boolean,
         failureMessage: String?,
         failureStacktrace: String?,
     )

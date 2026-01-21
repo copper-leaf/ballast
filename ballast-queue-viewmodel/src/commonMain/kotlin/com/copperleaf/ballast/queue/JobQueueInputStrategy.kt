@@ -101,7 +101,20 @@ public class JobQueueInputStrategy<Inputs : Any, Events : Any, State : Any, JobM
     ): Events? {
         val queuedInput = Queued.HandleInput<Inputs, Events, State>(null, payload)
         val guardian = JobQueueGuardian<Events, State>(queueExecutorScope)
-        inputStrategyScope.acceptQueued(queuedInput, guardian, onCancelled = { })
-        return guardian.resultEvent
+        var error: Throwable? = null
+        inputStrategyScope.acceptQueued(
+            queued = queuedInput,
+            guardian = guardian,
+            onFailed = { error = it },
+            onCancelled = { },
+        )
+
+        if (error != null) {
+            // the queue executor expects an exception to be thrown as a signal for failure
+            throw error
+        } else {
+            // if no exception was throw, the queue executor will acknowledge the job as successful
+            return guardian.resultEvent
+        }
     }
 }

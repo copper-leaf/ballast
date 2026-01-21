@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.queue.driver
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
-import com.copperleaf.ballast.queue.JobStatus
 import com.copperleaf.ballast.scheduler.TestClock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
@@ -49,8 +48,8 @@ class InMemoryQueueDriverTest {
         driver.observeJobState(uuid).firstOrNull().let {
             assertNotNull(it)
             assertEquals(
-                actual = it.status,
-                expected = JobStatus.Pending,
+                actual = it.metadata.status,
+                expected = InMemoryJobStatus.Pending,
             )
         }
 
@@ -68,8 +67,8 @@ class InMemoryQueueDriverTest {
         driver.observeJobState(uuid).firstOrNull().let {
             assertNotNull(it)
             assertEquals(
-                actual = it.status,
-                expected = JobStatus.Running,
+                actual = it.metadata.status,
+                expected = InMemoryJobStatus.Running,
             )
         }
     }
@@ -100,17 +99,17 @@ class InMemoryQueueDriverTest {
 
         // because we received the job from observeQueue(), its status is now Running
         assertEquals(
-            actual = driver.observeJobState(uuid).firstOrNull()?.status,
-            expected = JobStatus.Running,
+            actual = driver.observeJobState(uuid).firstOrNull()?.metadata?.status,
+            expected = InMemoryJobStatus.Running,
         )
 
         // mark job completion as a failure
-        driver.markJobCompleted(
+        driver.completeJobWithFailure(
             jobId = uuid,
             processingTime = 5.seconds,
             resultType = JobCompletionResultType.Failure,
-            serializedResultData = null,
-            retryDelay = null,
+            retryDelay = 30.seconds,
+            permanentlyFail = false,
             failureMessage = "testError",
             failureStacktrace = null,
         )
@@ -118,8 +117,8 @@ class InMemoryQueueDriverTest {
         // job gets re-enqueued because it still had retries left
         driver.observeJobState(uuid).firstOrNull().let {
             assertEquals(
-                actual = it?.status,
-                expected = JobStatus.Pending,
+                actual = it?.metadata?.status,
+                expected = InMemoryJobStatus.Pending,
             )
             assertEquals(
                 actual = it?.metadata?.lastRunDuration,
@@ -162,17 +161,17 @@ class InMemoryQueueDriverTest {
 
         // because we received the job from observeQueue(), its status is now Running
         assertEquals(
-            actual = driver.observeJobState(uuid).firstOrNull()?.status,
-            expected = JobStatus.Running,
+            actual = driver.observeJobState(uuid).firstOrNull()?.metadata?.status,
+            expected = InMemoryJobStatus.Running,
         )
 
         // mark job completion as a failure
-        driver.markJobCompleted(
+        driver.completeJobWithFailure(
             jobId = uuid,
             processingTime = 5.seconds,
             resultType = JobCompletionResultType.Failure,
-            serializedResultData = null,
-            retryDelay = null,
+            retryDelay = 30.seconds,
+            permanentlyFail = false,
             failureMessage = "testError",
             failureStacktrace = null,
         )
@@ -180,8 +179,8 @@ class InMemoryQueueDriverTest {
         // job gets marked as Failed because it was on its last retry
         driver.observeJobState(uuid).firstOrNull().let {
             assertEquals(
-                actual = it?.status,
-                expected = JobStatus.Failed,
+                actual = it?.metadata?.status,
+                expected = InMemoryJobStatus.Failed,
             )
             assertEquals(
                 actual = it?.metadata?.lastRunDuration,

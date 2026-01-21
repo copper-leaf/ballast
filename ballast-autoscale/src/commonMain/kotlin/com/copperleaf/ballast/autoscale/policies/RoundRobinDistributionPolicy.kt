@@ -7,7 +7,7 @@ public class RoundRobinDistributionPolicy<Inputs : Any, Events : Any, State : An
 
     override fun getPolicyState(): DistributionPolicy.PolicyState<Inputs, Events, State> {
         var currentIndex = -1
-        return DistributionPolicy.PolicyState { pool ->
+        return DistributionPolicy.PolicyState { input, pool ->
             currentIndex++
 
             if (currentIndex in pool.indices) {

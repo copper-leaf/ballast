@@ -28,5 +28,5 @@ public sealed interface JobCompletionResult<Result : Any> {
      * The job failed abnormally due to an Exception thrown during processing. This job is a candidate for being retried
      * according to the queue's retry policy.
      */
-    public data class Failure<Result : Any>(val cause: Exception, val retryDelay: Duration) : JobCompletionResult<Result>
+    public data class Failure<Result : Any>(val cause: Exception, val retryDelay: Duration, val permanentlyFail: Boolean) : JobCompletionResult<Result>
 }

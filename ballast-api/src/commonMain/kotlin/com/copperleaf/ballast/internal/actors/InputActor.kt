@@ -25,7 +25,11 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
                     impl.inputsDispatcher,
         )
         with(impl.inputStrategy) {
-            scope.start()
+            try {
+                scope.start()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -99,11 +103,12 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
     public suspend fun safelyHandleQueued(
         queued: Queued<Inputs, Events, State>,
         guardian: InputStrategy.Guardian,
-        onCancelled: suspend () -> Unit
+        onFailed: suspend (e: Throwable) -> Unit,
+        onCancelled: suspend () -> Unit,
     ) {
         when (queued) {
             is Queued.HandleInput -> {
-                safelyHandleInput(queued.input, queued.deferred, guardian, onCancelled)
+                safelyHandleInput(queued.input, queued.deferred, guardian, onFailed, onCancelled)
             }
 
             is Queued.RestoreState -> {
@@ -120,7 +125,8 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
         input: Inputs,
         deferred: CompletableDeferred<Unit>?,
         guardian: InputStrategy.Guardian,
-        onCancelled: suspend () -> Unit
+        onFailed: suspend (e: Throwable) -> Unit,
+        onCancelled: suspend () -> Unit,
     ) {
         impl.interceptorActor.notify(BallastNotification.InputAccepted(impl.type, impl.name, input))
 
@@ -155,6 +161,7 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
             deferred?.complete(Unit)
         } catch (e: Throwable) {
             impl.interceptorActor.notify(BallastNotification.InputHandlerError(impl.type, impl.name, input, e))
+            onFailed(e)
             deferred?.complete(Unit)
         }
     }

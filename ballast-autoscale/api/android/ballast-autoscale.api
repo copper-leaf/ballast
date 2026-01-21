@@ -14,7 +14,7 @@ public abstract interface class com/copperleaf/ballast/autoscale/DistributionPol
 }
 
 public abstract interface class com/copperleaf/ballast/autoscale/DistributionPolicy$PolicyState {
-	public abstract fun getNextViewModel (Ljava/util/List;)Lcom/copperleaf/ballast/BallastViewModel;
+	public abstract fun getNextViewModel (Ljava/lang/Object;Ljava/util/List;)Lcom/copperleaf/ballast/BallastViewModel;
 }
 
 public abstract interface class com/copperleaf/ballast/autoscale/ScalingPolicy {

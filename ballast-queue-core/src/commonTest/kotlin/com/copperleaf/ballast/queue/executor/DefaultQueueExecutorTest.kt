@@ -1,10 +1,10 @@
 package com.copperleaf.ballast.queue.executor
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
-import com.copperleaf.ballast.queue.JobStatus
 import com.copperleaf.ballast.queue.QueueExecutor
 import com.copperleaf.ballast.queue.QueueExecutorScope
 import com.copperleaf.ballast.queue.SerializedJob
+import com.copperleaf.ballast.queue.driver.InMemoryJobStatus
 import com.copperleaf.ballast.queue.driver.InMemoryQueueDriver
 import com.copperleaf.ballast.scheduler.TestClock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +54,10 @@ class DefaultQueueExecutorTest {
             )
         }
 
-        override fun getDefaultRetryDelayTimeout(payload: TestPayload): Duration {
+        override fun getDefaultRetryDelayTimeout(
+            payload: TestPayload,
+            metadata: InMemoryQueueDriver.Metadata
+        ): Duration {
             return 60.seconds
         }
     }
@@ -85,9 +88,9 @@ class DefaultQueueExecutorTest {
                 serializedPayload = buildJsonObject { put("data", "ballast") }.toString(),
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant,
@@ -129,11 +132,11 @@ class DefaultQueueExecutorTest {
                 serializedPayload = buildJsonObject { put("data", "ballast") }.toString(),
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
-                status = JobStatus.Completed,
                 serializedResultData = buildJsonObject {
                     put("resultData", "BALLAST")
                 }.toString(),
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Completed,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant,
@@ -185,9 +188,9 @@ class DefaultQueueExecutorTest {
                 serializedPayload = buildJsonObject { put("data", "ballast") }.toString(),
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 70.seconds, // time until cancellation + retry delay
@@ -234,9 +237,9 @@ class DefaultQueueExecutorTest {
                 serializedPayload = buildJsonObject { put("data", "ballast") }.toString(),
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 90.seconds, // the time for the timeout + retry delay
@@ -282,9 +285,9 @@ class DefaultQueueExecutorTest {
                 serializedPayload = buildJsonObject { put("data", "ballast") }.toString(),
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 45.seconds,
@@ -330,9 +333,9 @@ class DefaultQueueExecutorTest {
                 serializedPayload = buildJsonObject { put("data", "ballast") }.toString(),
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 60.seconds,
@@ -401,9 +404,9 @@ class DefaultQueueExecutorTest {
                 serializedPayload = buildJsonObject { put("data", "ballast") }.toString(),
                 timeoutDuration = 30.seconds,
                 serializedState = buildJsonObject { put("step", 1) }.toString(),
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 65.seconds,
@@ -431,9 +434,9 @@ class DefaultQueueExecutorTest {
                 serializedState = buildJsonObject {
                     put("step", 2)
                 }.toString(),
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + (65.seconds * 2),
@@ -461,9 +464,9 @@ class DefaultQueueExecutorTest {
                 serializedState = buildJsonObject {
                     put("step", 3)
                 }.toString(),
-                status = JobStatus.Pending,
                 serializedResultData = null,
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + (65.seconds * 3),
@@ -491,11 +494,11 @@ class DefaultQueueExecutorTest {
                 serializedState = buildJsonObject {
                     put("step", 4)
                 }.toString(),
-                status = JobStatus.Completed,
                 serializedResultData = buildJsonObject {
                     put("resultData", "BALLAST")
                 }.toString(),
                 metadata = InMemoryQueueDriver.Metadata(
+                    status = InMemoryJobStatus.Completed,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + (65.seconds * 3),

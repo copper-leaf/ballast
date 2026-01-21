@@ -430,6 +430,7 @@ public final class com/copperleaf/ballast/InputStrategy$Guardian$DefaultImpls {
 
 public abstract interface class com/copperleaf/ballast/InputStrategyScope : kotlinx/coroutines/CoroutineScope {
 	public abstract fun acceptQueued (Lcom/copperleaf/ballast/Queued;Lcom/copperleaf/ballast/InputStrategy$Guardian;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun acceptQueued (Lcom/copperleaf/ballast/Queued;Lcom/copperleaf/ballast/InputStrategy$Guardian;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getCurrentState (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public abstract fun rejectInput (Ljava/lang/Object;Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -770,7 +771,7 @@ public final class com/copperleaf/ballast/internal/actors/EventActor {
 public final class com/copperleaf/ballast/internal/actors/InputActor {
 	public fun <init> (Lcom/copperleaf/ballast/internal/BallastViewModelImpl;Lcom/copperleaf/ballast/BallastScopeFactory;)V
 	public final fun enqueueQueued (Lcom/copperleaf/ballast/Queued;ZLkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public final fun safelyHandleQueued (Lcom/copperleaf/ballast/Queued;Lcom/copperleaf/ballast/InputStrategy$Guardian;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun safelyHandleQueued (Lcom/copperleaf/ballast/Queued;Lcom/copperleaf/ballast/InputStrategy$Guardian;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/internal/actors/InterceptorActor {
@@ -809,6 +810,7 @@ public class com/copperleaf/ballast/internal/scopes/DefaultBallastScopeFactory :
 public final class com/copperleaf/ballast/internal/scopes/InputStrategyScopeImpl : com/copperleaf/ballast/InputStrategyScope, kotlinx/coroutines/CoroutineScope {
 	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/BallastLogger;Ljava/lang/String;Ljava/lang/String;Lcom/copperleaf/ballast/internal/actors/InputActor;Lcom/copperleaf/ballast/internal/actors/StateActor;Lcom/copperleaf/ballast/internal/actors/InterceptorActor;)V
 	public fun acceptQueued (Lcom/copperleaf/ballast/Queued;Lcom/copperleaf/ballast/InputStrategy$Guardian;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun acceptQueued (Lcom/copperleaf/ballast/Queued;Lcom/copperleaf/ballast/InputStrategy$Guardian;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getCoroutineContext ()Lkotlin/coroutines/CoroutineContext;
 	public fun getCurrentState (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;

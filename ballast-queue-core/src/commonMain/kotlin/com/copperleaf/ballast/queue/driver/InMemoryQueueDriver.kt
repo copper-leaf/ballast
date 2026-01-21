@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.queue.driver
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
-import com.copperleaf.ballast.queue.JobStatus
 import com.copperleaf.ballast.queue.QueueDriver
 import com.copperleaf.ballast.queue.QueueExecutor
 import com.copperleaf.ballast.queue.SerializedJob
@@ -55,6 +54,7 @@ public class InMemoryQueueDriver(
 
         val priority: Int = 0,
         val runAt: Instant = insertedAt,
+        val status: InMemoryJobStatus = InMemoryJobStatus.Pending,
 
         val attempts: Int = 0,
         val lastRunDuration: Duration? = null,
@@ -68,7 +68,7 @@ public class InMemoryQueueDriver(
             Result : Any,
             State : Any,
             >(
-                private val clock: Clock = Clock.System,
+        private val clock: Clock = Clock.System,
     ) : QueueExecutor.Adapter<Metadata, Payload, Result, State> {
         override fun getJobMetadata(payload: Payload): Metadata {
             val now = clock.now()
@@ -97,7 +97,6 @@ public class InMemoryQueueDriver(
                 serializedPayload = serializedPayload,
                 serializedState = serializedInitialState,
                 serializedResultData = null,
-                status = JobStatus.Pending,
                 metadata = metadata,
             )
             queue.update { it + serializedJob }
@@ -141,8 +140,8 @@ public class InMemoryQueueDriver(
             if (item != null) {
                 updateJobNoLock(item.jobId) {
                     it.copy(
-                        status = JobStatus.Running,
                         metadata = it.metadata.copy(
+                            status = InMemoryJobStatus.Running,
                             attempts = it.metadata.attempts + 1,
                         )
                     )
@@ -154,7 +153,7 @@ public class InMemoryQueueDriver(
     }
 
     private fun isReady(item: SerializedJob<Metadata>, now: Instant): Boolean {
-        return item.status == JobStatus.Pending &&
+        return item.metadata.status == InMemoryJobStatus.Pending &&
                 item.metadata.runAt <= now
     }
 
@@ -170,35 +169,53 @@ public class InMemoryQueueDriver(
         }
     }
 
-    override suspend fun markJobCompleted(
+    override suspend fun completeJobSuccessfully(
         jobId: String,
         processingTime: Duration,
         resultType: JobCompletionResultType,
-        serializedResultData: String?,
-        retryDelay: Duration?,
-        failureMessage: String?,
-        failureStacktrace: String?
+        serializedResultData: String?
     ) {
         updateJob(jobId) {
             it.copy(
                 serializedResultData = serializedResultData,
-                status = when (resultType) {
-                    JobCompletionResultType.Success -> {
-                        JobStatus.Completed
-                    }
-
-                    JobCompletionResultType.Cancelled,
-                    JobCompletionResultType.Timeout,
-                    JobCompletionResultType.Failure -> {
-                        if (it.metadata.attempts < it.metadata.maxAttempts) {
-                            JobStatus.Pending
-                        } else {
-                            JobStatus.Failed
-                        }
-                    }
-                },
                 metadata = it.metadata.copy(
-                    runAt = if (retryDelay != null) clock.now() + retryDelay else it.metadata.runAt,
+                    status = InMemoryJobStatus.Completed,
+                    runAt = it.metadata.runAt,
+                    lastRunDuration = processingTime,
+                    lastResultType = resultType,
+                    lastErrorMessage = null,
+                    lastStacktrace = null,
+                )
+            )
+        }
+    }
+
+    override suspend fun completeJobWithFailure(
+        jobId: String,
+        processingTime: Duration,
+        resultType: JobCompletionResultType,
+        retryDelay: Duration,
+        permanentlyFail: Boolean,
+        failureMessage: String?,
+        failureStacktrace: String?
+    ) {
+        updateJob(jobId) {
+            val shouldRetry = it.metadata.attempts < it.metadata.maxAttempts && !permanentlyFail
+
+            it.copy(
+                serializedResultData = null,
+                metadata = it.metadata.copy(
+                    status = when (resultType) {
+                        JobCompletionResultType.Success -> {
+                            error("Cannot complete job with failure using Success result type")
+                        }
+
+                        JobCompletionResultType.Cancelled,
+                        JobCompletionResultType.Timeout,
+                        JobCompletionResultType.Failure ->
+                            if (shouldRetry) InMemoryJobStatus.Pending else InMemoryJobStatus.Failed
+                    },
+                    runAt = if (shouldRetry) clock.now() + retryDelay else it.metadata.runAt,
                     lastRunDuration = processingTime,
                     lastResultType = resultType,
                     lastErrorMessage = failureMessage,
@@ -208,7 +225,7 @@ public class InMemoryQueueDriver(
         }
     }
 
-// Cancellation
+    // Cancellation
 // ---------------------------------------------------------------------------------------------------------------------
 
     override suspend fun requestJobCancellation(jobId: String) {

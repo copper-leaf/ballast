@@ -16,6 +16,7 @@ apiValidation {
             "schedules",
             "web",
             "ballast-idea-plugin",
+            "queue",
         )
     )
 }

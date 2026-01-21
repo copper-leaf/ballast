@@ -47,7 +47,7 @@ public class DefaultQueueExecutor<
             .map { finalizeJob(it) } // convert result data back to JSON, then mark the job as completed or failed, or re-enqueue it for retry
     }
 
-    private fun prepareJob(job: SerializedJob<JobMetadata>): RunningJob<Payload, Result, State> {
+    private fun prepareJob(job: SerializedJob<JobMetadata>): RunningJob<JobMetadata, Payload, Result, State> {
         // extract JSON payloads, then deserialize to proper objects
         val payload = serializers.deserializePayload(job.serializedPayload)
         val state = serializers.deserializeState(job.serializedState)
@@ -56,12 +56,13 @@ public class DefaultQueueExecutor<
             jobId = job.jobId,
             payload = payload,
             state = state,
+            metadata = job.metadata,
             timeoutDuration = job.timeoutDuration,
         )
     }
 
     private suspend fun runJob(
-        job: RunningJob<Payload, Result, State>,
+        job: RunningJob<JobMetadata, Payload, Result, State>,
         processJob: suspend QueueExecutorScope<State>.(Payload) -> Result?
     ): JobProcessingResult<Result> = coroutineScope {
         val mark = timeSource.markNow()
@@ -88,14 +89,21 @@ public class DefaultQueueExecutor<
                 result = JobProcessingResult(
                     jobId = job.jobId,
                     processingTime = mark.elapsedNow(),
-                    result = JobCompletionResult.Timeout(e, adapter.getDefaultRetryDelayTimeout(job.payload)),
+                    result = JobCompletionResult.Timeout(
+                        cause = e,
+                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata),
+                    ),
                 )
             } catch (e: JobFailureException) {
                 // job failed with a known failure which is requesting a specific delay
                 result = JobProcessingResult(
                     jobId = job.jobId,
                     processingTime = mark.elapsedNow(),
-                    result = JobCompletionResult.Failure(e.cause as Exception, e.retryDelay),
+                    result = JobCompletionResult.Failure(
+                        cause = e.cause as Exception,
+                        retryDelay = e.retryDelay ?: adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata),
+                        permanentlyFail = e.permanentlyFail,
+                    ),
                 )
             } catch (e: CancellationException) {
                 // cooperate with coroutine cancellation from the downstream collector
@@ -105,7 +113,11 @@ public class DefaultQueueExecutor<
                 result = JobProcessingResult(
                     jobId = job.jobId,
                     processingTime = mark.elapsedNow(),
-                    result = JobCompletionResult.Failure(e, adapter.getDefaultRetryDelayTimeout(job.payload)),
+                    result = JobCompletionResult.Failure(
+                        cause = e,
+                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata),
+                        permanentlyFail = false,
+                    ),
                 )
             }
         }
@@ -117,7 +129,9 @@ public class DefaultQueueExecutor<
                     result = JobProcessingResult(
                         jobId = job.jobId,
                         processingTime = mark.elapsedNow(),
-                        result = JobCompletionResult.Cancelled(adapter.getDefaultRetryDelayTimeout(job.payload)),
+                        result = JobCompletionResult.Cancelled(
+                            retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata)
+                        ),
                     )
                     inputProcessorJob.cancel()
                     inputProcessorJob.join()
@@ -135,52 +149,58 @@ public class DefaultQueueExecutor<
     }
 
     private suspend fun finalizeJob(result: JobProcessingResult<Result>) {
-        // mark the job as completed, with either success or failure
-        driver.markJobCompleted(
-            jobId = result.jobId,
-            processingTime = result.processingTime,
-            resultType = when (result.result) {
-                is JobCompletionResult.Success -> JobCompletionResultType.Success
-                is JobCompletionResult.Cancelled -> JobCompletionResultType.Cancelled
-                is JobCompletionResult.Timeout -> JobCompletionResultType.Timeout
-                is JobCompletionResult.Failure -> JobCompletionResultType.Failure
-            },
-            serializedResultData = when (result.result) {
-                is JobCompletionResult.Success -> if (result.result.resultData != null) {
-                    // if the job completed with a result, serialize it and set it as the result
-                    serializers.serializeResult(result.result.resultData)
-                } else {
-                    null
-                }
-
-                is JobCompletionResult.Cancelled -> null
-                is JobCompletionResult.Timeout -> null
-                is JobCompletionResult.Failure -> null
-            },
-            retryDelay = when (result.result) {
-                is JobCompletionResult.Success -> null
-                is JobCompletionResult.Cancelled -> result.result.retryDelay
-                is JobCompletionResult.Timeout -> result.result.retryDelay
-                is JobCompletionResult.Failure -> result.result.retryDelay
-            },
-            failureMessage = when (result.result) {
-                is JobCompletionResult.Success -> null
-                is JobCompletionResult.Cancelled -> null
-                is JobCompletionResult.Timeout -> result.result.cause.message
-                is JobCompletionResult.Failure -> result.result.cause.message
-            },
-            failureStacktrace = when (result.result) {
-                is JobCompletionResult.Success -> null
-                is JobCompletionResult.Cancelled -> null
-                is JobCompletionResult.Timeout -> null
-
-                is JobCompletionResult.Failure -> if (captureErrorStacktrace) {
-                    result.result.cause.stackTraceToString()
-                } else {
-                    null
-                }
-            },
-        )
+        when (result.result) {
+            is JobCompletionResult.Success -> {
+                driver.completeJobSuccessfully(
+                    jobId = result.jobId,
+                    processingTime = result.processingTime,
+                    resultType = JobCompletionResultType.Success,
+                    serializedResultData = if (result.result.resultData != null) {
+                        // if the job completed with a result, serialize it and set it as the result
+                        serializers.serializeResult(result.result.resultData)
+                    } else {
+                        null
+                    },
+                )
+            }
+            is JobCompletionResult.Cancelled -> {
+                driver.completeJobWithFailure(
+                    jobId = result.jobId,
+                    processingTime = result.processingTime,
+                    resultType = JobCompletionResultType.Cancelled,
+                    retryDelay = result.result.retryDelay,
+                    permanentlyFail = false,
+                    failureMessage = null,
+                    failureStacktrace = null,
+                )
+            }
+            is JobCompletionResult.Timeout -> {
+                driver.completeJobWithFailure(
+                    jobId = result.jobId,
+                    processingTime = result.processingTime,
+                    resultType = JobCompletionResultType.Timeout,
+                    retryDelay = result.result.retryDelay,
+                    permanentlyFail = false,
+                    failureMessage = result.result.cause.message,
+                    failureStacktrace = null
+                )
+            }
+            is JobCompletionResult.Failure -> {
+                driver.completeJobWithFailure(
+                    jobId = result.jobId,
+                    processingTime = result.processingTime,
+                    resultType = JobCompletionResultType.Failure,
+                    retryDelay = result.result.retryDelay,
+                    permanentlyFail = result.result.permanentlyFail,
+                    failureMessage = result.result.cause.message,
+                    failureStacktrace = if (captureErrorStacktrace) {
+                        result.result.cause.stackTraceToString()
+                    } else {
+                        null
+                    },
+                )
+            }
+        }
     }
 
 // Serialize and enqueue a job

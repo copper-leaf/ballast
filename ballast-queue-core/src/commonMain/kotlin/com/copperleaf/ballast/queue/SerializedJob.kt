@@ -44,11 +44,6 @@ public data class SerializedJob<JobMetadata : Any>(
     val serializedState: String,
 
     /**
-     * The current status of this job in the queue.
-     */
-    val status: JobStatus,
-
-    /**
      * The result of the job after processing the latest attempt. It typically will contain information tracked by the
      * QueueExecutor about the outcome of the processing attempt, such as an error message, stacktrace, or result data.
      */

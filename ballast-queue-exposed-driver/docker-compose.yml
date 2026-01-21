@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    ports: [ '5432:5432' ]
+    volumes:
+      - './build/postgresql/data/:/var/lib/postgresql'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+  mysql:
+    image: 'mysql:latest'
+    ports: ['3306:3306']
+    volumes:
+      - './build/mysql/data:/var/lib/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql
+      MYSQL_DATABASE: mysql
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: mysql

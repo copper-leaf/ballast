@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.queue.driver
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
-import com.copperleaf.ballast.queue.JobStatus
 import com.copperleaf.ballast.queue.QueueDriver
 import com.copperleaf.ballast.queue.SerializedJob
 import kotlinx.coroutines.channels.Channel
@@ -61,7 +60,6 @@ public class SyncQueueDriver() : QueueDriver<Unit> {
             serializedPayload = serializedPayload,
             serializedState = serializedInitialState,
             serializedResultData = null,
-            status = JobStatus.Pending,
             metadata = metadata,
         )
 
@@ -93,17 +91,28 @@ public class SyncQueueDriver() : QueueDriver<Unit> {
         // no-op
     }
 
-    override suspend fun markJobCompleted(
+    override suspend fun completeJobSuccessfully(
         jobId: String,
         processingTime: Duration,
         resultType: JobCompletionResultType,
-        serializedResultData: String?,
-        retryDelay: Duration?,
+        serializedResultData: String?
+    ) {
+        _lastJobResultType = resultType
+        _lastJobResultData = serializedResultData
+        _lastJobFailureMessage = null
+    }
+
+    override suspend fun completeJobWithFailure(
+        jobId: String,
+        processingTime: Duration,
+        resultType: JobCompletionResultType,
+        retryDelay: Duration,
+        permanentlyFail: Boolean,
         failureMessage: String?,
         failureStacktrace: String?
     ) {
         _lastJobResultType = resultType
-        _lastJobResultData = serializedResultData
+        _lastJobResultData = null
         _lastJobFailureMessage = failureMessage
     }
 

@@ -20,7 +20,16 @@ internal class JobQueueInputStrategyScope<Inputs : Any, Events : Any, State : An
         guardian: InputStrategy.Guardian,
         onCancelled: suspend () -> Unit
     ) {
-        impl.inputActor.safelyHandleQueued(queued, guardian, onCancelled)
+        impl.inputActor.safelyHandleQueued(queued, guardian, {}, onCancelled)
+    }
+
+    override suspend fun acceptQueued(
+        queued: Queued<Inputs, Events, State>,
+        guardian: InputStrategy.Guardian,
+        onFailed: suspend (t: Throwable) -> Unit,
+        onCancelled: suspend () -> Unit,
+    ) {
+        impl.inputActor.safelyHandleQueued(queued, guardian, onFailed, onCancelled)
     }
 
     override suspend fun getCurrentState(): State {

@@ -53,19 +53,19 @@ public open class AutoscalingViewModel<Inputs : Any, Events : Any, State : Any>(
 
     @OptIn(InternalCoroutinesApi::class)
     override fun trySend(element: Inputs): ChannelResult<Unit> {
-        return getNextViewModelAccordingToPolicy().trySend(element)
+        return getNextViewModelAccordingToPolicy(element).trySend(element)
     }
 
     override suspend fun send(element: Inputs) {
-        return getNextViewModelAccordingToPolicy().send(element)
+        return getNextViewModelAccordingToPolicy(element).send(element)
     }
 
     override suspend fun sendAndAwaitCompletion(element: Inputs) {
-        return getNextViewModelAccordingToPolicy().sendAndAwaitCompletion(element)
+        return getNextViewModelAccordingToPolicy(element).sendAndAwaitCompletion(element)
     }
 
-    private fun getNextViewModelAccordingToPolicy(): BallastViewModel<Inputs, Events, State> {
-        return distributionPolicyState.getNextViewModel(viewModelPool.value)
+    private fun getNextViewModelAccordingToPolicy(element: Inputs): BallastViewModel<Inputs, Events, State> {
+        return distributionPolicyState.getNextViewModel(element, viewModelPool.value)
             ?: error("DistributionPolicy was unable to select a ViewModel from the pool.")
     }
 

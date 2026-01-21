@@ -1,13 +1,12 @@
 package com.copperleaf.ballast.queue.driver
 
-import com.copperleaf.ballast.queue.SerializedJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-public inline fun <JobMetadata : Any> pollingFlow(
-    crossinline pollNext: suspend () -> SerializedJob<JobMetadata>?,
+public inline fun <T : Any> pollingFlow(
+    crossinline pollNext: suspend () -> T?,
     crossinline awaitNext: suspend (emptyPollCount: Int) -> Unit,
-): Flow<SerializedJob<JobMetadata>> = flow {
+): Flow<T> = flow {
     var emptyPollCount = 0
     while (true) {
         val next = pollNext()
