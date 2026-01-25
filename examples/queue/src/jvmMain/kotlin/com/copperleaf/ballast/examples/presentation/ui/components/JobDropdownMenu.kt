@@ -18,11 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.copperleaf.ballast.examples.presentation.ui.MainScreenContract
 import com.copperleaf.ballast.queue.SerializedJob
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
 
 @Composable
 fun JobDropdownMenu(
-    job: SerializedJob<DatabaseQueueDriver.Metadata>?,
+    job: SerializedJob<ExposedDatabaseQueueDriver.Metadata>?,
     enabled: Boolean,
     postInput: (MainScreenContract.Inputs) -> Unit,
 ) {

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This module extends the capabilities of [Ballast Analytics](./../ballast-analytics/README.md) to send analytics to
+This module extends the capabilities of [Ballast Analytics](./../ballast-analytics) to send analytics to
 [Firebase Analytics](https://firebase.google.com/products/analytics). Currently only available on Android.
 
 ## Supported Platforms
@@ -17,9 +17,9 @@ This module extends the capabilities of [Ballast Analytics](./../ballast-analyti
 
 ## See Also
 
-- [Ballast Analytics](./../ballast-analytics/README.md)
-- [Ballast Crash Reporting](./../ballast-crash-reporting/README.md)
-- [Ballast Firebase Crashlytics](./../ballast-firebase-crashlytics/README.md)
+- [Ballast Analytics](./../ballast-analytics)
+- [Ballast Crash Reporting](./../ballast-crash-reporting)
+- [Ballast Firebase Crashlytics](./../ballast-firebase-crashlytics)
 
 ## Usage
 
@@ -67,7 +67,7 @@ repositories {
     mavenCentral()
 }
 
-// for plain JVM or Android projects
+// for plain Android projects
 dependencies {
     implementation("io.github.copper-leaf:ballast-firebase-analytics:{{ballastVersion}}")
 }
@@ -75,7 +75,7 @@ dependencies {
 // for multiplatform projects
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        val androidMain by getting {
             dependencies {
                 implementation("io.github.copper-leaf:ballast-firebase-analytics:{{ballastVersion}}")
             }

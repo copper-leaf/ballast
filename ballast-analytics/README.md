@@ -3,7 +3,7 @@
 ## Overview
 
 Ballast's Analytics module automatically tracks Inputs sent to your ViewModels to send to your analytics SDK. Support
-for Firebase Analytics is supported out-of-the-box on Android via [Ballast Firebase Analytics](./../ballast-firebase-analytics/README.md).
+for Firebase Analytics is supported out-of-the-box on Android via [Ballast Firebase Analytics](./../ballast-firebase-analytics).
 
 ## Supported Platforms
 
@@ -17,9 +17,9 @@ for Firebase Analytics is supported out-of-the-box on Android via [Ballast Fireb
 
 ## See Also
 
-- [Ballast Firebase Analytics](./../ballast-firebase-analytics/README.md)
-- [Ballast Crash Reporting](./../ballast-crash-reporting/README.md)
-- [Ballast Firebase Crashlytics](./../ballast-firebase-crashlytics/README.md)
+- [Ballast Firebase Analytics](./../ballast-firebase-analytics)
+- [Ballast Crash Reporting](./../ballast-crash-reporting)
+- [Ballast Firebase Crashlytics](./../ballast-firebase-crashlytics)
 
 ## Usage
 

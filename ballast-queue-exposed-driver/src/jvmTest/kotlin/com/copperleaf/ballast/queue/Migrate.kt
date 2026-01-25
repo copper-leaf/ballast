@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.queue
 
-import com.copperleaf.ballast.queue.driver.JobsTable
+import com.copperleaf.ballast.queue.driver.db.JobsTable
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.v1.core.ExperimentalDatabaseMigrationApi
 import org.jetbrains.exposed.v1.core.InternalApi

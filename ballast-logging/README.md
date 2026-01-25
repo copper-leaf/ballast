@@ -17,7 +17,7 @@ log the activity of the ViewModel.
 
 ## See Also
 
-- [Ballast Core](./../ballast-core/README.md)
+- [Ballast Core](./../ballast-core)
 
 ## Usage
 

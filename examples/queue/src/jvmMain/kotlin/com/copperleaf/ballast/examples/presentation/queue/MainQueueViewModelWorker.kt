@@ -9,7 +9,7 @@ import com.copperleaf.ballast.eventHandler
 import com.copperleaf.ballast.examples.di.ComposeDesktopInjector
 import com.copperleaf.ballast.examples.presentation.models.QueueName
 import com.copperleaf.ballast.queue.JobQueueInputStrategy
-import com.copperleaf.ballast.withSerialization
+import com.copperleaf.ballast.withJsonSerialization
 import com.copperleaf.ballast.withViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlin.time.ExperimentalTime
@@ -30,7 +30,7 @@ class MainQueueViewModelWorker(
             inputHandler = MainQueueInputHandler(),
             name = "MainQueueViewModelWorker-${queue.name}",
         )
-        .withSerialization(
+        .withJsonSerialization(
             inputsSerializer = MainQueueContract.Inputs.serializer(),
             eventsSerializer = MainQueueContract.Events.serializer(),
             stateSerializer = MainQueueContract.State.serializer(),

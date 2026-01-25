@@ -27,7 +27,7 @@ public class DefaultQueueExecutor<
         State : Any,
         >(
     private val driver: QueueDriver<JobMetadata>,
-    private val adapter: QueueExecutor.Adapter<JobMetadata, Payload, Result, State>,
+    private val adapter: QueueDriver.Adapter<JobMetadata, Payload, Result, State>,
     private val serializers: QueueExecutor.Serializers<Payload, Result, State>,
     private val captureErrorStacktrace: Boolean = false,
     private val timeSource: TimeSource = TimeSource.Monotonic,
@@ -39,12 +39,12 @@ public class DefaultQueueExecutor<
     override fun runQueue(
         queueName: String,
         processJob: suspend QueueExecutorScope<State>.(Payload) -> Result?
-    ): Flow<Unit> {
+    ): Flow<JobProcessingResult<Result>> {
         return driver
             .observeQueue(queueName)
             .map { prepareJob(it) } // deserialize stored JSON to real object
             .map { runJob(it, processJob) } // run the job on a coroutine, respecting timeouts, cancellation, etc.
-            .map { finalizeJob(it) } // convert result data back to JSON, then mark the job as completed or failed, or re-enqueue it for retry
+            .onEach { finalizeJob(it) } // convert result data back to JSON, then mark the job as completed or failed, or re-enqueue it for retry
     }
 
     private fun prepareJob(job: SerializedJob<JobMetadata>): RunningJob<JobMetadata, Payload, Result, State> {
@@ -56,6 +56,7 @@ public class DefaultQueueExecutor<
             jobId = job.jobId,
             payload = payload,
             state = state,
+            attempts = job.attempts,
             metadata = job.metadata,
             timeoutDuration = job.timeoutDuration,
         )
@@ -91,7 +92,7 @@ public class DefaultQueueExecutor<
                     processingTime = mark.elapsedNow(),
                     result = JobCompletionResult.Timeout(
                         cause = e,
-                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata),
+                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
                     ),
                 )
             } catch (e: JobFailureException) {
@@ -101,7 +102,7 @@ public class DefaultQueueExecutor<
                     processingTime = mark.elapsedNow(),
                     result = JobCompletionResult.Failure(
                         cause = e.cause as Exception,
-                        retryDelay = e.retryDelay ?: adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata),
+                        retryDelay = e.retryDelay ?: adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
                         permanentlyFail = e.permanentlyFail,
                     ),
                 )
@@ -115,7 +116,7 @@ public class DefaultQueueExecutor<
                     processingTime = mark.elapsedNow(),
                     result = JobCompletionResult.Failure(
                         cause = e,
-                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata),
+                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
                         permanentlyFail = false,
                     ),
                 )
@@ -130,7 +131,7 @@ public class DefaultQueueExecutor<
                         jobId = job.jobId,
                         processingTime = mark.elapsedNow(),
                         result = JobCompletionResult.Cancelled(
-                            retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.metadata)
+                            retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts)
                         ),
                     )
                     inputProcessorJob.cancel()
@@ -148,7 +149,7 @@ public class DefaultQueueExecutor<
         result!!
     }
 
-    private suspend fun finalizeJob(result: JobProcessingResult<Result>) {
+    private suspend fun finalizeJob(result: JobProcessingResult<Result>): Result? {
         when (result.result) {
             is JobCompletionResult.Success -> {
                 driver.completeJobSuccessfully(
@@ -162,6 +163,7 @@ public class DefaultQueueExecutor<
                         null
                     },
                 )
+                return result.result.resultData
             }
             is JobCompletionResult.Cancelled -> {
                 driver.completeJobWithFailure(
@@ -173,6 +175,7 @@ public class DefaultQueueExecutor<
                     failureMessage = null,
                     failureStacktrace = null,
                 )
+                return null
             }
             is JobCompletionResult.Timeout -> {
                 driver.completeJobWithFailure(
@@ -184,6 +187,7 @@ public class DefaultQueueExecutor<
                     failureMessage = result.result.cause.message,
                     failureStacktrace = null
                 )
+                return null
             }
             is JobCompletionResult.Failure -> {
                 driver.completeJobWithFailure(
@@ -199,6 +203,7 @@ public class DefaultQueueExecutor<
                         null
                     },
                 )
+                return null
             }
         }
     }

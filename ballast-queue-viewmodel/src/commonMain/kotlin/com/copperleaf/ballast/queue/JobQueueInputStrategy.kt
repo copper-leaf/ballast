@@ -27,7 +27,7 @@ import kotlin.time.TimeSource
 public class JobQueueInputStrategy<Inputs : Any, Events : Any, State : Any, JobMetadata : Any>(
     private val queueName: String,
     private val driver: QueueDriver<JobMetadata>,
-    private val adapter: QueueExecutor.Adapter<JobMetadata, Inputs, Events, State>,
+    private val adapter: QueueDriver.Adapter<JobMetadata, Inputs, Events, State>,
     private val captureErrorStacktrace: Boolean = false,
 ) : InputStrategy<Inputs, Events, State> {
 

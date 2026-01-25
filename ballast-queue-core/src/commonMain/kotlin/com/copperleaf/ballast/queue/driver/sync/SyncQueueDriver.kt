@@ -1,10 +1,9 @@
-package com.copperleaf.ballast.queue.driver
+package com.copperleaf.ballast.queue.driver.sync
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import com.copperleaf.ballast.queue.QueueDriver
 import com.copperleaf.ballast.queue.SerializedJob
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.onEach
@@ -13,8 +12,8 @@ import kotlin.time.Duration
 import kotlin.uuid.Uuid
 
 /**
- * The Sync Queue Driver is a implementation of a [QueueDriver] that is intended for unit testing. It does not
- * actually kep a queue of jobs, but instead uses a [RENDEZVOUS] Channel to immediately process the job synchronously.
+ * The Sync Queue Driver is a implementation of a [com.copperleaf.ballast.queue.QueueDriver] that is intended for unit testing. It does not
+ * actually kep a queue of jobs, but instead uses a [kotlinx.coroutines.channels.Channel.Factory.RENDEZVOUS] Channel to immediately process the job synchronously.
  * This allows you to have guarantees in your unit tests that calling [addToQueue] will process the job before
  * returning, as long as another coroutine is currently observing the queue.
  *
@@ -31,7 +30,7 @@ import kotlin.uuid.Uuid
  */
 public class SyncQueueDriver() : QueueDriver<Unit> {
 
-    private val channel = Channel<SerializedJob<Unit>>(RENDEZVOUS)
+    private val channel = Channel<SerializedJob<Unit>>(Channel.Factory.RENDEZVOUS)
 
     private var _lastJob: SerializedJob<Unit>? = null
     private var _lastJobResultType: JobCompletionResultType? = null
@@ -54,12 +53,13 @@ public class SyncQueueDriver() : QueueDriver<Unit> {
         metadata: Unit,
     ): String {
         val serializedJob = SerializedJob(
-            jobId = Uuid.random().toString(),
+            jobId = Uuid.Companion.random().toString(),
             queueName = queueName,
             timeoutDuration = timeoutDuration,
             serializedPayload = serializedPayload,
             serializedState = serializedInitialState,
             serializedResultData = null,
+            attempts = 1,
             metadata = metadata,
         )
 

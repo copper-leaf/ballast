@@ -1,19 +1,19 @@
-public final class com/copperleaf/ballast/queue/driver/DatabaseJobStatus : java/lang/Enum {
-	public static final field Cancelled Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
-	public static final field Cooldown Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
-	public static final field Failed Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
-	public static final field Pending Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
-	public static final field Running Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
-	public static final field Succeeded Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
+public final class com/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus : java/lang/Enum {
+	public static final field Cancelled Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
+	public static final field Cooldown Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
+	public static final field Failed Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
+	public static final field Pending Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
+	public static final field Running Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
+	public static final field Succeeded Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
 	public static fun getEntries ()Lkotlin/enums/EnumEntries;
-	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
-	public static fun values ()[Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
+	public static fun values ()[Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
 }
 
-public final class com/copperleaf/ballast/queue/driver/DatabaseQueueDriver : com/copperleaf/ballast/queue/QueueDriver {
-	public synthetic fun <init> (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsRepository;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsRepository;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+public final class com/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver : com/copperleaf/ballast/queue/QueueDriver {
+	public synthetic fun <init> (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsRepository;Lcom/copperleaf/ballast/queue/QueueThrottle;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsRepository;Lcom/copperleaf/ballast/queue/QueueThrottle;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobWithFailure-3FA4DCs (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -23,28 +23,36 @@ public final class com/copperleaf/ballast/queue/driver/DatabaseQueueDriver : com
 	public fun updateJobState (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
-public final class com/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metadata {
-	public synthetic fun <init> (Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;ILkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;ILkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+public final class com/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$DefaultAdapter : com/copperleaf/ballast/queue/QueueDriver$Adapter {
+	public fun <init> ()V
+	public fun <init> (Lkotlin/time/Clock;)V
+	public synthetic fun <init> (Lkotlin/time/Clock;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getDefaultRetryDelayTimeout-3nIYWDw (Ljava/lang/Object;I)J
+	public fun getJobMetadata (Ljava/lang/Object;)Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;
+	public synthetic fun getJobMetadata (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun getJobTimeout-5sfh64U (Ljava/lang/Object;)J
+}
+
+public final class com/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata {
+	public synthetic fun <init> (Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lkotlin/time/Instant;
-	public final fun component10 ()I
-	public final fun component11 ()Lkotlin/time/Instant;
-	public final fun component12-FghU774 ()Lkotlin/time/Duration;
-	public final fun component13 ()Lcom/copperleaf/ballast/queue/JobCompletionResultType;
+	public final fun component10 ()Lkotlin/time/Instant;
+	public final fun component11-FghU774 ()Lkotlin/time/Duration;
+	public final fun component12 ()Lcom/copperleaf/ballast/queue/JobCompletionResultType;
+	public final fun component13 ()Ljava/lang/String;
 	public final fun component14 ()Ljava/lang/String;
-	public final fun component15 ()Ljava/lang/String;
 	public final fun component2 ()I
 	public final fun component3 ()Ljava/lang/String;
 	public final fun component4-FghU774 ()Lkotlin/time/Duration;
 	public final fun component5 ()I
 	public final fun component6 ()Lkotlin/time/Instant;
-	public final fun component7 ()Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
+	public final fun component7 ()Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
 	public final fun component8 ()Lkotlin/time/Instant;
 	public final fun component9 ()Lkotlin/time/Instant;
-	public final fun copy-py7B84g (Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;ILkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metadata;
-	public static synthetic fun copy-py7B84g$default (Lcom/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metadata;Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;ILkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metadata;
+	public final fun copy-5SUxySM (Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;)Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;
+	public static synthetic fun copy-5SUxySM$default (Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;Lkotlin/time/Instant;ILjava/lang/String;Lkotlin/time/Duration;ILkotlin/time/Instant;Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Instant;Lkotlin/time/Duration;Lcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;
 	public fun equals (Ljava/lang/Object;)Z
-	public final fun getAttempts ()I
 	public final fun getDeduplicationDuration-FghU774 ()Lkotlin/time/Duration;
 	public final fun getDeduplicationKey ()Ljava/lang/String;
 	public final fun getInsertedAt ()Lkotlin/time/Instant;
@@ -58,12 +66,12 @@ public final class com/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metad
 	public final fun getMaxAttempts ()I
 	public final fun getPriority ()I
 	public final fun getRunAt ()Lkotlin/time/Instant;
-	public final fun getStatus ()Lcom/copperleaf/ballast/queue/driver/DatabaseJobStatus;
+	public final fun getStatus ()Lcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseJobStatus;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
-public abstract class com/copperleaf/ballast/queue/driver/JobsTable : org/jetbrains/exposed/v1/core/dao/id/IdTable {
+public abstract class com/copperleaf/ballast/queue/driver/db/JobsTable : org/jetbrains/exposed/v1/core/dao/id/IdTable {
 	public fun <init> (Ljava/lang/String;)V
 	public final fun getAttempts ()Lorg/jetbrains/exposed/v1/core/Column;
 	public final fun getCreated_at ()Lorg/jetbrains/exposed/v1/core/Column;
@@ -91,8 +99,8 @@ public abstract class com/copperleaf/ballast/queue/driver/JobsTable : org/jetbra
 	public final fun getUpdated_at ()Lorg/jetbrains/exposed/v1/core/Column;
 }
 
-public final class com/copperleaf/ballast/queue/driver/JobsTable$Default : com/copperleaf/ballast/queue/driver/JobsTable {
-	public static final field INSTANCE Lcom/copperleaf/ballast/queue/driver/JobsTable$Default;
+public final class com/copperleaf/ballast/queue/driver/db/JobsTable$Default : com/copperleaf/ballast/queue/driver/db/JobsTable {
+	public static final field INSTANCE Lcom/copperleaf/ballast/queue/driver/db/JobsTable$Default;
 }
 
 public abstract interface class com/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository {
@@ -107,8 +115,8 @@ public final class com/copperleaf/ballast/queue/driver/db/repository/JobsMainten
 }
 
 public final class com/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepositoryImpl : com/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository {
-	public fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lcom/copperleaf/ballast/queue/driver/JobsTable;Lorg/jetbrains/exposed/v1/core/SqlLogger;)V
-	public synthetic fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lcom/copperleaf/ballast/queue/driver/JobsTable;Lorg/jetbrains/exposed/v1/core/SqlLogger;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lcom/copperleaf/ballast/queue/driver/db/JobsTable;Lorg/jetbrains/exposed/v1/core/SqlLogger;)V
+	public synthetic fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lcom/copperleaf/ballast/queue/driver/db/JobsTable;Lorg/jetbrains/exposed/v1/core/SqlLogger;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun deleteOldJobs-VtjQ1oo (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun freeJobCooldowns (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun retryHungJobs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -122,7 +130,7 @@ public abstract interface class com/copperleaf/ballast/queue/driver/db/repositor
 	public static synthetic fun forceRetry-dWUq8MI$default (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsRepository;Lkotlin/uuid/Uuid;JILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public abstract fun getAllJobs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getAllJobsInQueue (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun insertJob-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun insertJob-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun isJobCancelled (Lkotlin/uuid/Uuid;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun requestCancellation (Lkotlin/uuid/Uuid;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun retryOrPermanentlyFailJob-3FA4DCs (Lkotlin/uuid/Uuid;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
@@ -134,15 +142,15 @@ public final class com/copperleaf/ballast/queue/driver/db/repository/JobsReposit
 }
 
 public final class com/copperleaf/ballast/queue/driver/db/repository/JobsRepositoryImpl : com/copperleaf/ballast/queue/driver/db/repository/JobsRepository {
-	public fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lkotlin/time/Clock;Lcom/copperleaf/ballast/queue/driver/JobsTable;Lkotlinx/serialization/json/Json;Lorg/jetbrains/exposed/v1/core/SqlLogger;)V
-	public synthetic fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lkotlin/time/Clock;Lcom/copperleaf/ballast/queue/driver/JobsTable;Lkotlinx/serialization/json/Json;Lorg/jetbrains/exposed/v1/core/SqlLogger;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lkotlin/time/Clock;Lcom/copperleaf/ballast/queue/driver/db/JobsTable;Lkotlinx/serialization/json/Json;Lorg/jetbrains/exposed/v1/core/SqlLogger;)V
+	public synthetic fun <init> (Lorg/jetbrains/exposed/v1/jdbc/Database;Lkotlin/time/Clock;Lcom/copperleaf/ballast/queue/driver/db/JobsTable;Lkotlinx/serialization/json/Json;Lorg/jetbrains/exposed/v1/core/SqlLogger;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun claimNextAvailableJob-8Mi8wO0 (Ljava/lang/String;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJob-WPwdCS8 (Lkotlin/uuid/Uuid;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun deleteJob (Lkotlin/uuid/Uuid;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun forceRetry-dWUq8MI (Lkotlin/uuid/Uuid;JILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAllJobs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun getAllJobsInQueue (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun insertJob-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/DatabaseQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun insertJob-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun isJobCancelled (Lkotlin/uuid/Uuid;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun requestCancellation (Lkotlin/uuid/Uuid;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun retryOrPermanentlyFailJob-3FA4DCs (Lkotlin/uuid/Uuid;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

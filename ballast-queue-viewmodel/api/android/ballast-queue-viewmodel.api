@@ -1,6 +1,6 @@
 public final class com/copperleaf/ballast/queue/JobQueueInputStrategy : com/copperleaf/ballast/InputStrategy {
-	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;Z)V
-	public synthetic fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueExecutor$Adapter;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueDriver$Adapter;Z)V
+	public synthetic fun <init> (Ljava/lang/String;Lcom/copperleaf/ballast/queue/QueueDriver;Lcom/copperleaf/ballast/queue/QueueDriver$Adapter;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun close ()V
 	public fun enqueue (Lcom/copperleaf/ballast/Queued;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun flush (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

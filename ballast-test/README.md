@@ -87,13 +87,13 @@ repositories {
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-test:{{ballastVersion}}")
+    testImplementation("io.github.copper-leaf:ballast-test:{{ballastVersion}}")
 }
 
 // for multiplatform projects
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        val commonTest by getting {
             dependencies {
                 implementation("io.github.copper-leaf:ballast-test:{{ballastVersion}}")
             }

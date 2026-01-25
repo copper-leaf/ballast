@@ -26,8 +26,8 @@ import com.copperleaf.ballast.examples.presentation.ui.MainScreenContract
 import com.copperleaf.ballast.examples.presentation.utils.formatted
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import com.copperleaf.ballast.queue.SerializedJob
-import com.copperleaf.ballast.queue.driver.DatabaseJobStatus
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseJobStatus
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
 import kotlinx.serialization.json.Json
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
@@ -59,15 +59,15 @@ val JobsTableCell.colors: Colors
     @Composable
     get() = this.job?.metadata?.status?.colors ?: Colors.surface
 
-val DatabaseJobStatus.colors: Colors
+val ExposedDatabaseJobStatus.colors: Colors
     @Composable
     get() = when (this) {
-        DatabaseJobStatus.Pending -> Colors.yellow
-        DatabaseJobStatus.Running -> Colors.purple
-        DatabaseJobStatus.Succeeded -> Colors.green
-        DatabaseJobStatus.Failed -> Colors.red
-        DatabaseJobStatus.Cooldown -> Colors.blue
-        DatabaseJobStatus.Cancelled -> Colors.gray
+        ExposedDatabaseJobStatus.Pending -> Colors.yellow
+        ExposedDatabaseJobStatus.Running -> Colors.purple
+        ExposedDatabaseJobStatus.Succeeded -> Colors.green
+        ExposedDatabaseJobStatus.Failed -> Colors.red
+        ExposedDatabaseJobStatus.Cooldown -> Colors.blue
+        ExposedDatabaseJobStatus.Cancelled -> Colors.gray
     }
 
 val QueueName.colors: Colors
@@ -256,7 +256,7 @@ fun RenderJobsTableCellHeader(
 @OptIn(ExperimentalTime::class)
 @Composable
 fun RenderJobsTableCellValue(
-    job: SerializedJob<DatabaseQueueDriver.Metadata>,
+    job: SerializedJob<ExposedDatabaseQueueDriver.Metadata>,
     column: JobsTableColumn,
     json: Json,
     currentTime: Instant,
@@ -284,7 +284,7 @@ fun RenderJobsTableCellValue(
                 )
             }
 
-            JobsTableColumn.Attempts -> Text("${job.metadata.attempts}/${job.metadata.maxAttempts}")
+            JobsTableColumn.Attempts -> Text("${job.attempts}/${job.metadata.maxAttempts}")
             JobsTableColumn.InsertedAt -> Text(job.metadata.insertedAt.formatted)
             JobsTableColumn.JobId -> Text(job.jobId)
             JobsTableColumn.Priority -> Text("${job.metadata.priority}")
@@ -346,7 +346,7 @@ fun RenderJobsTableCellValue(
             }
 
             JobsTableColumn.RunningDuration -> {
-                if (job.metadata.status == DatabaseJobStatus.Running && job.metadata.leasedAt != null) {
+                if (job.metadata.status == ExposedDatabaseJobStatus.Running && job.metadata.leasedAt != null) {
                     val runningDuration = currentTime - job.metadata.leasedAt!!
                     Text(runningDuration.formatted)
                 } else {

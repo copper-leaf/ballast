@@ -6,7 +6,7 @@ The Ballast Core module provides all the core capabilities of the entire Ballast
 aggregation of other fundamental Ballast modules, which are combined to provide the basic functionality and 
 platform-specific integrations needed for developing application, and is the primary module you should include when
 using Ballast for building applications. Library developers building additional features or integrations into Ballast 
-should depend on [Ballast API](./../ballast-api/README.md) instead, since a library should not need the 
+should depend on [Ballast API](./../ballast-api) instead, since a library should not need the 
 platform-specific features provided by the other modules.
 
 Refer to the [Getting Started guide](./) for basic setup and using of the Ballast MVI framework as a whole. Refer to 
@@ -25,12 +25,14 @@ platform-specific integrations.
 
 ## See Also
 
-- [Ballast API](./../ballast-api/README.md)
-- [Ballast Viewmodel](./../ballast-viewmodel/README.md)
-- [Ballast Logging](./../ballast-logging/README.md)
-- [Ballast Utils](./../ballast-utils/README.md)
+- [Ballast API](./../ballast-api)
+- [Ballast Viewmodel](./../ballast-viewmodel)
+- [Ballast Logging](./../ballast-logging)
+- [Ballast Utils](./../ballast-utils)
 
 ## Usage
+
+TODO
 
 ## Installation
 

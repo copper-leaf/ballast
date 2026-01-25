@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.queue.driver.db.repository
 
-import com.copperleaf.ballast.queue.driver.DatabaseJobStatus
-import com.copperleaf.ballast.queue.driver.JobsTable
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseJobStatus
+import com.copperleaf.ballast.queue.driver.db.JobsTable
 import com.copperleaf.ballast.queue.driver.db.TimestampAdd
 import org.jetbrains.exposed.v1.core.SqlLogger
 import org.jetbrains.exposed.v1.core.and
@@ -33,7 +33,7 @@ public class JobsMaintenanceRepositoryImpl(
     override suspend fun deleteOldJobs(duration: Duration) {
         withTransaction {
             table.deleteWhere {
-                (table.status eq DatabaseJobStatus.Succeeded) and
+                (table.status eq ExposedDatabaseJobStatus.Succeeded) and
                         (TimestampAdd(last_run_finished_at, duration, currentDialect) lessEq CurrentTimestamp)
             }
         }
@@ -42,10 +42,10 @@ public class JobsMaintenanceRepositoryImpl(
     override suspend fun freeJobCooldowns() {
         withTransaction {
             table.update({
-                (table.status eq DatabaseJobStatus.Cooldown) and
+                (table.status eq ExposedDatabaseJobStatus.Cooldown) and
                         (table.unique_until lessEq CurrentTimestamp)
             }) {
-                it[table.status] = DatabaseJobStatus.Succeeded
+                it[table.status] = ExposedDatabaseJobStatus.Succeeded
             }
         }
     }
@@ -53,10 +53,10 @@ public class JobsMaintenanceRepositoryImpl(
     override suspend fun retryHungJobs() {
         withTransaction {
             table.update({
-                (table.status eq DatabaseJobStatus.Running) and
+                (table.status eq ExposedDatabaseJobStatus.Running) and
                         (table.leased_until lessEq CurrentTimestamp)
             }) {
-                it[table.status] = DatabaseJobStatus.Pending
+                it[table.status] = ExposedDatabaseJobStatus.Pending
             }
         }
     }

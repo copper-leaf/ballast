@@ -11,6 +11,8 @@ internal class JobQueueInputHandlerScope<Inputs : Any, Events : Any, State : Any
     private val guardian: JobQueueGuardian<Events, State>,
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
 ) : InternalInputHandlerScope<Inputs, Events, State> {
+    private val pendingSideJobs: MutableList<Pair<String, suspend SideJobScope<Inputs, Events, State>.() -> Unit>> = mutableListOf()
+
     override val logger: BallastLogger get() = impl.logger
 
     override suspend fun getCurrentState(): State {
@@ -65,7 +67,7 @@ internal class JobQueueInputHandlerScope<Inputs : Any, Events : Any, State : Any
         block: suspend SideJobScope<Inputs, Events, State>.() -> Unit
     ) {
         guardian.checkSideJob()
-        impl.sideJobActor.enqueueSideJob(key, block)
+        pendingSideJobs += key to block
     }
 
     override fun cancelSideJob(key: String) {
@@ -79,5 +81,8 @@ internal class JobQueueInputHandlerScope<Inputs : Any, Events : Any, State : Any
 
     override fun markAsCompletedSuccessfully() {
         guardian.close()
+        pendingSideJobs.forEach { (key, block) ->
+            impl.sideJobActor.enqueueSideJob(key, block)
+        }
     }
 }

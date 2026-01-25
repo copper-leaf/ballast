@@ -4,8 +4,8 @@ import androidx.compose.material3.SnackbarHostState
 import com.copperleaf.ballast.examples.presentation.queue.MainQueueViewModel
 import com.copperleaf.ballast.examples.presentation.ui.MainScreenEventHandler
 import com.copperleaf.ballast.examples.presentation.ui.MainScreenInputHandler
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
-import com.copperleaf.ballast.queue.driver.JobsTable
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.JobsTable
 import com.copperleaf.ballast.queue.driver.db.repository.JobsMaintenanceRepository
 import com.copperleaf.ballast.queue.driver.db.repository.JobsMaintenanceRepositoryImpl
 import com.copperleaf.ballast.queue.driver.db.repository.JobsRepository
@@ -25,7 +25,7 @@ interface ComposeDesktopInjector {
     val json: Json
     val snackbarHostState: SnackbarHostState
 
-    val driver: DatabaseQueueDriver
+    val driver: ExposedDatabaseQueueDriver
 
     val mainQueueViewModel: MainQueueViewModel
 
@@ -59,10 +59,16 @@ class ComposeDesktopInjectorImpl(
     )
     val db = postgresDatabase
 
-//    val db = mysqlDatabase
+    //    val db = mysqlDatabase
     private val jobsRepository: JobsRepository = JobsRepositoryImpl(db, clock, table, json, StdOutSqlLogger)
-    private val jobsMaintenanceRepository: JobsMaintenanceRepository = JobsMaintenanceRepositoryImpl(db, table, StdOutSqlLogger)
-    override val driver: DatabaseQueueDriver = DatabaseQueueDriver(jobsRepository)
+    private val jobsMaintenanceRepository: JobsMaintenanceRepository = JobsMaintenanceRepositoryImpl(
+        db,
+        table,
+        StdOutSqlLogger,
+    )
+    override val driver: ExposedDatabaseQueueDriver = ExposedDatabaseQueueDriver(
+        repository = jobsRepository,
+    )
 
     override val mainQueueViewModel: MainQueueViewModel by lazy {
         MainQueueViewModel(

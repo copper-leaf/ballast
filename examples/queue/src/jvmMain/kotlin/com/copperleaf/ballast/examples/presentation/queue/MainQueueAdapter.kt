@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.examples.presentation.queue
 
-import com.copperleaf.ballast.queue.QueueExecutor
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
+import com.copperleaf.ballast.queue.QueueDriver
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
 import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
@@ -9,8 +9,8 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 class MainQueueAdapter(
     private val clock: Clock = Clock.System,
-) : QueueExecutor.Adapter<
-        DatabaseQueueDriver.Metadata,
+) : QueueDriver.Adapter<
+        ExposedDatabaseQueueDriver.Metadata,
         MainQueueContract.Inputs,
         MainQueueContract.Events,
         MainQueueContract.State> {
@@ -23,7 +23,7 @@ class MainQueueAdapter(
         }
     }
 
-    override fun getDefaultRetryDelayTimeout(payload: MainQueueContract.Inputs, metadata: DatabaseQueueDriver.Metadata): Duration {
+    override fun getDefaultRetryDelayTimeout(payload: MainQueueContract.Inputs, attempts: Int): Duration {
         return when (payload) {
             is MainQueueContract.Inputs.MainJob -> {
                 payload.retryDelay
@@ -31,12 +31,12 @@ class MainQueueAdapter(
         }
     }
 
-    override fun getJobMetadata(payload: MainQueueContract.Inputs): DatabaseQueueDriver.Metadata {
+    override fun getJobMetadata(payload: MainQueueContract.Inputs): ExposedDatabaseQueueDriver.Metadata {
         val now = clock.now()
 
         return when (payload) {
             is MainQueueContract.Inputs.MainJob -> {
-                DatabaseQueueDriver.Metadata(
+                ExposedDatabaseQueueDriver.Metadata(
                     insertedAt = now,
                     maxAttempts = payload.maxAttempts,
                     deduplicationKey = payload.deduplicationKey,

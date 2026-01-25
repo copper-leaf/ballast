@@ -1,11 +1,11 @@
 package com.copperleaf.ballast.queue.executor
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
-import com.copperleaf.ballast.queue.QueueExecutor
+import com.copperleaf.ballast.queue.QueueDriver
 import com.copperleaf.ballast.queue.QueueExecutorScope
 import com.copperleaf.ballast.queue.SerializedJob
-import com.copperleaf.ballast.queue.driver.InMemoryJobStatus
-import com.copperleaf.ballast.queue.driver.InMemoryQueueDriver
+import com.copperleaf.ballast.queue.driver.memory.InMemoryJobStatus
+import com.copperleaf.ballast.queue.driver.memory.InMemoryQueueDriver
 import com.copperleaf.ballast.scheduler.TestClock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -42,7 +42,7 @@ class DefaultQueueExecutorTest {
 
     private class TestAdapter(
         private val clock: Clock,
-    ) : QueueExecutor.Adapter<InMemoryQueueDriver.Metadata, TestPayload, TestResult, TestState> {
+    ) : QueueDriver.Adapter<InMemoryQueueDriver.Metadata, TestPayload, TestResult, TestState> {
         override fun getJobTimeout(payload: TestPayload): Duration {
             return 30.seconds
         }
@@ -56,7 +56,7 @@ class DefaultQueueExecutorTest {
 
         override fun getDefaultRetryDelayTimeout(
             payload: TestPayload,
-            metadata: InMemoryQueueDriver.Metadata
+            attempts: Int,
         ): Duration {
             return 60.seconds
         }
@@ -89,13 +89,13 @@ class DefaultQueueExecutorTest {
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
                 serializedResultData = null,
+                attempts = 0,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant,
                     maxAttempts = 5,
-                    attempts = 0,
                     lastRunDuration = null,
                 ),
             ),
@@ -135,13 +135,13 @@ class DefaultQueueExecutorTest {
                 serializedResultData = buildJsonObject {
                     put("resultData", "BALLAST")
                 }.toString(),
+                attempts = 1,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Completed,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant,
                     maxAttempts = 5,
-                    attempts = 1,
                     lastRunDuration = Duration.Companion.ZERO,
                     lastErrorMessage = null,
                     lastResultType = JobCompletionResultType.Success,
@@ -189,13 +189,13 @@ class DefaultQueueExecutorTest {
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
                 serializedResultData = null,
+                attempts = 1,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 70.seconds, // time until cancellation + retry delay
                     maxAttempts = 5,
-                    attempts = 1,
                     lastRunDuration = 10.seconds,
                     lastErrorMessage = null,
                     lastResultType = JobCompletionResultType.Cancelled,
@@ -238,13 +238,13 @@ class DefaultQueueExecutorTest {
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
                 serializedResultData = null,
+                attempts = 1,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 90.seconds, // the time for the timeout + retry delay
                     maxAttempts = 5,
-                    attempts = 1,
                     lastRunDuration = 30.seconds,
                     lastErrorMessage = "Timed out after 30s of _virtual_ (kotlinx.coroutines.test) time. To use the real time, wrap 'withTimeout' in 'withContext(Dispatchers.Default.limitedParallelism(1))'",
                     lastResultType = JobCompletionResultType.Timeout,
@@ -286,13 +286,13 @@ class DefaultQueueExecutorTest {
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
                 serializedResultData = null,
+                attempts = 1,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 45.seconds,
                     maxAttempts = 5,
-                    attempts = 1,
                     lastRunDuration = Duration.Companion.ZERO,
                     lastErrorMessage = "normal error",
                     lastResultType = JobCompletionResultType.Failure,
@@ -334,13 +334,13 @@ class DefaultQueueExecutorTest {
                 timeoutDuration = 30.seconds,
                 serializedState = "{}",
                 serializedResultData = null,
+                attempts = 1,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 60.seconds,
                     maxAttempts = 5,
-                    attempts = 1,
                     lastRunDuration = Duration.Companion.ZERO,
                     lastErrorMessage = "normal error",
                     lastResultType = JobCompletionResultType.Failure,
@@ -405,13 +405,13 @@ class DefaultQueueExecutorTest {
                 timeoutDuration = 30.seconds,
                 serializedState = buildJsonObject { put("step", 1) }.toString(),
                 serializedResultData = null,
+                attempts = 1,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + 65.seconds,
                     maxAttempts = 5,
-                    attempts = 1,
                     lastRunDuration = 5.seconds,
                     lastErrorMessage = "please try again",
                     lastResultType = JobCompletionResultType.Failure,
@@ -435,13 +435,13 @@ class DefaultQueueExecutorTest {
                     put("step", 2)
                 }.toString(),
                 serializedResultData = null,
+                attempts = 2,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + (65.seconds * 2),
                     maxAttempts = 5,
-                    attempts = 2,
                     lastRunDuration = 5.seconds,
                     lastErrorMessage = "please try again",
                     lastResultType = JobCompletionResultType.Failure,
@@ -465,13 +465,13 @@ class DefaultQueueExecutorTest {
                     put("step", 3)
                 }.toString(),
                 serializedResultData = null,
+                attempts = 3,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Pending,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + (65.seconds * 3),
                     maxAttempts = 5,
-                    attempts = 3,
                     lastRunDuration = 5.seconds,
                     lastErrorMessage = "please try again",
                     lastResultType = JobCompletionResultType.Failure,
@@ -497,13 +497,13 @@ class DefaultQueueExecutorTest {
                 serializedResultData = buildJsonObject {
                     put("resultData", "BALLAST")
                 }.toString(),
+                attempts = 4,
                 metadata = InMemoryQueueDriver.Metadata(
                     status = InMemoryJobStatus.Completed,
                     insertedAt = startInstant,
                     priority = 0,
                     runAt = startInstant + (65.seconds * 3),
                     maxAttempts = 5,
-                    attempts = 4,
                     lastRunDuration = 5.seconds,
                     lastErrorMessage = null,
                     lastResultType = JobCompletionResultType.Success,

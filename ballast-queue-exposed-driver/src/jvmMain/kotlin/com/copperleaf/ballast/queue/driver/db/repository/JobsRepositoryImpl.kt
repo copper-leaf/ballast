@@ -2,9 +2,9 @@ package com.copperleaf.ballast.queue.driver.db.repository
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import com.copperleaf.ballast.queue.SerializedJob
-import com.copperleaf.ballast.queue.driver.DatabaseJobStatus
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
-import com.copperleaf.ballast.queue.driver.JobsTable
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseJobStatus
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.JobsTable
 import com.copperleaf.ballast.queue.driver.db.SerializedJobMapper
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.core.Case
@@ -51,7 +51,7 @@ public class JobsRepositoryImpl(
         }
     }
 
-    override suspend fun getAllJobs(): List<SerializedJob<DatabaseQueueDriver.Metadata>> {
+    override suspend fun getAllJobs(): List<SerializedJob<ExposedDatabaseQueueDriver.Metadata>> {
         return withTransaction(false) {
             table
                 .select(table.columns)
@@ -64,7 +64,7 @@ public class JobsRepositoryImpl(
         }
     }
 
-    override suspend fun getAllJobsInQueue(queueName: String): List<SerializedJob<DatabaseQueueDriver.Metadata>> {
+    override suspend fun getAllJobsInQueue(queueName: String): List<SerializedJob<ExposedDatabaseQueueDriver.Metadata>> {
         return withTransaction {
             table
                 .select(table.columns)
@@ -84,7 +84,7 @@ public class JobsRepositoryImpl(
     override suspend fun claimNextAvailableJob(
         queueName: String,
         leaseBufferDuration: Duration,
-    ): SerializedJob<DatabaseQueueDriver.Metadata>? {
+    ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>? {
         // assumes an existing database in transaction from the caller. But we need a sub-transaction here to do
         // the FOR UPDATE SKIP LOCKED
         return withTransaction(false) {
@@ -111,7 +111,7 @@ public class JobsRepositoryImpl(
     private suspend fun claimNextAvailableJobForPostgres(
         queueName: String,
         leaseBufferDuration: Duration,
-    ): SerializedJob<DatabaseQueueDriver.Metadata>? {
+    ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>? {
         // assumes an existing database in transaction from the caller. But we need a sub-transaction here to do
         // the FOR UPDATE SKIP LOCKED
 
@@ -122,7 +122,7 @@ public class JobsRepositoryImpl(
             .select(table.columns)
             .where {
                 (table.queue eq queueName) and
-                        (table.status eq DatabaseJobStatus.Pending) and
+                        (table.status eq ExposedDatabaseJobStatus.Pending) and
                         (table.run_at lessEq now)
             }
             .orderBy(
@@ -140,7 +140,7 @@ public class JobsRepositoryImpl(
                 returning = table.columns,
                 where = { table.id eq initialResultRow[table.id].value },
                 body = {
-                    it[status] = DatabaseJobStatus.Running
+                    it[status] = ExposedDatabaseJobStatus.Running
                     it[attempts] = initialResultRow[table.attempts] + 1
                     it[leased_at] = now
                     it[leased_until] = now + initialResultRow[table.timeout_duration] + leaseBufferDuration
@@ -158,7 +158,7 @@ public class JobsRepositoryImpl(
     private suspend fun claimNextAvailableJobForMysql(
         queueName: String,
         leaseBufferDuration: Duration,
-    ): SerializedJob<DatabaseQueueDriver.Metadata>? {
+    ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>? {
 
         val now = clock.now()
 
@@ -167,7 +167,7 @@ public class JobsRepositoryImpl(
             .select(table.columns)
             .where {
                 (table.queue eq queueName) and
-                        (table.status eq DatabaseJobStatus.Pending) and
+                        (table.status eq ExposedDatabaseJobStatus.Pending) and
                         (table.run_at lessEq now)
             }
             .orderBy(
@@ -184,7 +184,7 @@ public class JobsRepositoryImpl(
             .update(
                 where = { table.id eq initialResultRow[table.id].value },
                 body = {
-                    it[status] = DatabaseJobStatus.Running
+                    it[status] = ExposedDatabaseJobStatus.Running
                     it[attempts] = initialResultRow[table.attempts] + 1
                     it[leased_at] = now
                     it[leased_until] = now + initialResultRow[table.timeout_duration] + leaseBufferDuration
@@ -212,7 +212,7 @@ public class JobsRepositoryImpl(
         serializedPayload: String,
         serializedInitialState: String,
         timeoutDuration: Duration,
-        metadata: DatabaseQueueDriver.Metadata,
+        metadata: ExposedDatabaseQueueDriver.Metadata,
     ): Uuid {
         return withTransaction {
             table.insertAndGetId {
@@ -247,10 +247,10 @@ public class JobsRepositoryImpl(
                 it[table.status] = Case()
                     .When(
                         cond = table.unique_until.isNotNull() and (table.unique_until greater CurrentTimestamp),
-                        result = LiteralOp(table.status.columnType, DatabaseJobStatus.Cooldown),
+                        result = LiteralOp(table.status.columnType, ExposedDatabaseJobStatus.Cooldown),
                     )
                     .Else(
-                        LiteralOp(table.status.columnType, DatabaseJobStatus.Succeeded)
+                        LiteralOp(table.status.columnType, ExposedDatabaseJobStatus.Succeeded)
                     )
 
                 it[leased_at] = null
@@ -279,15 +279,15 @@ public class JobsRepositoryImpl(
         withTransaction {
             table.update({ table.id eq jobId }) {
                 if (permanentlyFail) {
-                    it[table.status] = DatabaseJobStatus.Failed
+                    it[table.status] = ExposedDatabaseJobStatus.Failed
                 } else {
                     it[table.status] = Case()
                         .When(
                             cond = table.attempts less table.max_attempts,
-                            result = LiteralOp(table.status.columnType, DatabaseJobStatus.Pending)
+                            result = LiteralOp(table.status.columnType, ExposedDatabaseJobStatus.Pending)
                         )
                         .Else(
-                            LiteralOp(table.status.columnType, DatabaseJobStatus.Failed)
+                            LiteralOp(table.status.columnType, ExposedDatabaseJobStatus.Failed)
                         )
                     it[run_at] = clock.now() + retryDelay
                 }
@@ -320,7 +320,7 @@ public class JobsRepositoryImpl(
     override suspend fun requestCancellation(jobId: Uuid) {
         withTransaction {
             table.update({ table.id eq jobId }) {
-                it[table.status] = DatabaseJobStatus.Cancelled
+                it[table.status] = ExposedDatabaseJobStatus.Cancelled
             }
         }
     }
@@ -338,7 +338,7 @@ public class JobsRepositoryImpl(
             if (jobStatus == null) {
                 // the row was deleted, cancel the job
                 true
-            } else if (jobStatus == DatabaseJobStatus.Cancelled) {
+            } else if (jobStatus == ExposedDatabaseJobStatus.Cancelled) {
                 // the row was manually cancelled, cancel the job
                 true
             } else {
@@ -360,7 +360,7 @@ public class JobsRepositoryImpl(
     ) {
         withTransaction {
             table.update({ table.id eq jobId }) {
-                it[table.status] = DatabaseJobStatus.Pending
+                it[table.status] = ExposedDatabaseJobStatus.Pending
 
                 it[run_at] = clock.now() + retryDelay
                 it[max_attempts] = max_attempts + 1

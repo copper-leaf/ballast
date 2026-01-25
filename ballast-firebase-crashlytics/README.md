@@ -2,6 +2,8 @@
 
 ## Overview
 
+TODO
+
 ## Supported Platforms
 
 | Platform | Supported |
@@ -14,11 +16,13 @@
 
 ## See Also
 
-- [Ballast Analytics](./../ballast-analytics/README.md)
-- [Ballast Firebase Analytics](./../ballast-firebase-analytics/README.md)
-- [Ballast Crash Reporting](./../ballast-crash-reporting/README.md)
+- [Ballast Analytics](./../ballast-analytics)
+- [Ballast Firebase Analytics](./../ballast-firebase-analytics)
+- [Ballast Crash Reporting](./../ballast-crash-reporting)
 
 ## Usage
+
+TODO
 
 ## Installation
 
@@ -27,7 +31,7 @@ repositories {
     mavenCentral()
 }
 
-// for plain JVM or Android projects
+// for plain Android projects
 dependencies {
     implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{ballastVersion}}")
 }
@@ -35,7 +39,7 @@ dependencies {
 // for multiplatform projects
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        val androidMain by getting {
             dependencies {
                 implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{ballastVersion}}")
             }

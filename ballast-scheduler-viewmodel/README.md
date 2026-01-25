@@ -1,6 +1,13 @@
 # Ballast Scheduler ViewModel
 
+> [!CAUTION]
+>
+> Experimental. This module may not still have issues or changes in its public API before being considered stable.
+> Please use at your own risk, and file Issues for any problems you may encounter.
+
 ## Overview
+
+TODO
 
 ## Supported Platforms
 
@@ -14,10 +21,12 @@
 
 ## See Also
 
-- [Ballast Scheduler Core](./../ballast-scheduler-core/README.md)
-- [Ballast Scheduler Cron](./../ballast-scheduler-cron/README.md)
+- [Ballast Scheduler Core](./../ballast-scheduler-core)
+- [Ballast Scheduler Cron](./../ballast-scheduler-cron)
 
 ## Usage
+
+TODO
 
 ## Installation
 

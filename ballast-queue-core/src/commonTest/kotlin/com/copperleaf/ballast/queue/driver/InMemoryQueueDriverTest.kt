@@ -1,6 +1,8 @@
 package com.copperleaf.ballast.queue.driver
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
+import com.copperleaf.ballast.queue.driver.memory.InMemoryJobStatus
+import com.copperleaf.ballast.queue.driver.memory.InMemoryQueueDriver
 import com.copperleaf.ballast.scheduler.TestClock
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.firstOrNull
@@ -36,7 +38,6 @@ class InMemoryQueueDriverTest {
                 priority = 0,
                 runAt = clock.now() + 1.minutes,
                 maxAttempts = 5,
-                attempts = 0,
                 lastRunDuration = null,
             )
         )
@@ -90,7 +91,6 @@ class InMemoryQueueDriverTest {
                 priority = 0,
                 runAt = clock.now(),
                 maxAttempts = 5,
-                attempts = 0,
                 lastRunDuration = null,
             )
         )
@@ -151,8 +151,7 @@ class InMemoryQueueDriverTest {
                 insertedAt = clock.now(),
                 priority = 0,
                 runAt = clock.now(),
-                maxAttempts = 5,
-                attempts = 4,
+                maxAttempts = 1,
                 lastRunDuration = null,
             )
         )

@@ -2,29 +2,29 @@ package com.copperleaf.ballast.queue.driver.db.repository
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import com.copperleaf.ballast.queue.SerializedJob
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
 import kotlin.time.Duration
 import kotlin.uuid.Uuid
 
 public interface JobsRepository {
 
-    public suspend fun getAllJobs(): List<SerializedJob<DatabaseQueueDriver.Metadata>>
+    public suspend fun getAllJobs(): List<SerializedJob<ExposedDatabaseQueueDriver.Metadata>>
 
     public suspend fun getAllJobsInQueue(
         queueName: String,
-    ): List<SerializedJob<DatabaseQueueDriver.Metadata>>
+    ): List<SerializedJob<ExposedDatabaseQueueDriver.Metadata>>
 
     public suspend fun claimNextAvailableJob(
         queueName: String,
         leaseBufferDuration: Duration,
-    ): SerializedJob<DatabaseQueueDriver.Metadata>?
+    ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>?
 
     public suspend fun insertJob(
         queueName: String,
         serializedPayload: String,
         serializedInitialState: String,
         timeoutDuration: Duration,
-        metadata: DatabaseQueueDriver.Metadata,
+        metadata: ExposedDatabaseQueueDriver.Metadata,
     ): Uuid
 
     public suspend fun completeJob(

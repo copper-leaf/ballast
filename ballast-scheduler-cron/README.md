@@ -17,10 +17,24 @@
 | JS       | ✅         |
 | WASM JS  | ✅         |
 
+## Supported OCPS Specification Versions
+
+This Cron implementation follows The Open Cron Pattern Specification (OCPS) standardization format, to avoid ambiguity
+and aid in expression compatibility between Ballast and other Cron implementations. This table shows Ballast's current
+level of support for the OCPS specification.
+
+| Platform                                                                                   | Supported | Notes                                  |
+|--------------------------------------------------------------------------------------------|-----------|----------------------------------------|
+| [1.0](https://github.com/open-source-cron/ocps/blob/main/specifications/OCPS-1.0.md)       | ✅         |                                        |
+| [1.1](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.1.md) | ❌         | Planned, development not started       |
+| [1.2](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.2.md) | ❌         | Planned, development not started       |
+| [1.3](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.3.md) | ❌         | Not Planned, but open for contribution |
+| [1.4](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.4.md) | ❌         | Not Planned, but open for contribution |
+
 ## See Also
 
-- [Ballast Scheduler Core](./../ballast-scheduler-core/README.md)
-- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel/README.md)
+- [Ballast Scheduler Core](./../ballast-scheduler-core)
+- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel)
 
 ## Usage
 
@@ -105,16 +119,6 @@ of the specification. Here's a summary of the OCPS syntax supported by Ballast:
 | `,`       | List Separator | `0,15,30,45` | Specifies a list of individual values.                                                                     |
 | `-`       | Range          | `9-17`       | Specifies an inclusive range of values.                                                                    |
 | `/`       | Step           | `5-59/15`    | Specifies an interval. The step operates on the range it modifies, yielding `5,20,35,50` for this example. |
-
-Refer to the table below for the roadmap for supporting other versions of the OCPS specification:
-
-| Version                                                                                    | Main Feature                                              | Supported in Ballast Version | Support Planned?            |
-|--------------------------------------------------------------------------------------------|-----------------------------------------------------------|------------------------------|-----------------------------|
-| [1.0](https://github.com/open-source-cron/ocps/blob/main/specifications/OCPS-1.0.md)       | 5-field syntax with minute precision                      | 5.1.0                        |                             |
-| [1.1](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.1.md) | Nicknames as aliases for common expressions               | Not Currently Supported      | Yes                         |
-| [1.2](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.2.md) | 6- and 7-field syntax for Second and Year-Level Precision | Not Currently Supported      | Yes                         |
-| [1.3](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.3.md) | Quartz-style field modifiers (`L`, `#`, `W`)              | Not Currently Supported      | With community contribution |
-| [1.4](https://github.com/open-source-cron/ocps/blob/main/increments/OCPS-increment-1.4.md) | Logical operators                                         | Not Currently Supported      | With community contribution |
 
 ### Timezones
 

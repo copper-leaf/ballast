@@ -1,20 +1,29 @@
-package com.copperleaf.ballast.queue.driver
+package com.copperleaf.ballast.queue.driver.db
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import com.copperleaf.ballast.queue.QueueDriver
+import com.copperleaf.ballast.queue.QueueThrottle
 import com.copperleaf.ballast.queue.SerializedJob
 import com.copperleaf.ballast.queue.driver.db.repository.JobsRepository
+import com.copperleaf.ballast.queue.pollingFlow
+import com.copperleaf.ballast.queue.queueDriverPollingFlow
+import com.copperleaf.ballast.queue.throttle.UnlimitedThrottle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 import kotlin.uuid.Uuid
 
-public class DatabaseQueueDriver(
+public class ExposedDatabaseQueueDriver(
     private val repository: JobsRepository,
+    private val throttle: QueueThrottle = UnlimitedThrottle(),
     private val leaseBufferDuration: Duration = 30.seconds,
-) : QueueDriver<DatabaseQueueDriver.Metadata> {
+) : QueueDriver<ExposedDatabaseQueueDriver.Metadata> {
+
+// Types
+// ---------------------------------------------------------------------------------------------------------------------
 
     public data class Metadata(
         val insertedAt: Instant,
@@ -24,17 +33,32 @@ public class DatabaseQueueDriver(
 
         val priority: Int = 0,
         val runAt: Instant = insertedAt,
-        val status: DatabaseJobStatus = DatabaseJobStatus.Pending,
+        val status: ExposedDatabaseJobStatus = ExposedDatabaseJobStatus.Pending,
         val leasedAt: Instant? = null,
         val leasedUntil: Instant? = null,
 
-        val attempts: Int = 0,
         val lastRunFinishedAt: Instant? = null,
         val lastRunDuration: Duration? = null,
         val lastResultType: JobCompletionResultType? = null,
         val lastErrorMessage: String? = null,
         val lastStacktrace: String? = null,
     )
+
+    public class DefaultAdapter<
+            Payload : Any,
+            Result : Any,
+            State : Any,
+            >(
+        private val clock: Clock = Clock.System,
+    ) : QueueDriver.Adapter<Metadata, Payload, Result, State> {
+        override fun getJobMetadata(payload: Payload): Metadata {
+            val now = clock.now()
+            return Metadata(
+                insertedAt = now,
+                maxAttempts = 5,
+            )
+        }
+    }
 
 // Insert/Query Operations
 // ---------------------------------------------------------------------------------------------------------------------
@@ -58,7 +82,9 @@ public class DatabaseQueueDriver(
     }
 
     override fun observeQueue(queueName: String): Flow<SerializedJob<Metadata>> {
-        return pollingFlow(
+        return queueDriverPollingFlow(
+            queueName = queueName,
+            throttle = throttle,
             pollNext = { pollNext(queueName) },
             awaitNext = { delay(1.seconds) }
         )

@@ -37,7 +37,7 @@ public class JsonBallastEncoder<Inputs : Any, Events : Any, State : Any>(
     }
 }
 
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>.withSerialization(
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>.withJsonSerialization(
     inputsSerializer: KSerializer<Inputs>,
     eventsSerializer: KSerializer<Events>,
     stateSerializer: KSerializer<State>,

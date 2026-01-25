@@ -50,6 +50,12 @@ public data class SerializedJob<JobMetadata : Any>(
     val serializedResultData: String?,
 
     /**
+     * The number of times this job has been attempted. This starts at 0, and in incremented by 1 each time it is run.
+     * The very first time a job is attempted, this will be 1. If it fails ad is retried, the first retry is 2, etc.
+     */
+    val attempts: Int = 0,
+
+    /**
      * Arbitrary data about this job that the [QueueDriver] uses to manage the job in the queue and implement its own
      * queuing policies. This data is expected to be irrelevant to the processing of the job itself, but may be needed
      * to determine how and when to process or retry the job.

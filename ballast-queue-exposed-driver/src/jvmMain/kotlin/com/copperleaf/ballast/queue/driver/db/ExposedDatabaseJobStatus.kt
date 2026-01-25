@@ -1,6 +1,6 @@
-package com.copperleaf.ballast.queue.driver
+package com.copperleaf.ballast.queue.driver.db
 
-public enum class DatabaseJobStatus {
+public enum class ExposedDatabaseJobStatus {
 
     /**
      * The job is available to be selected once it has reached its scheduled time.

@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.queue.driver
+package com.copperleaf.ballast.queue.driver.memory
 
 import com.copperleaf.ballast.queue.QueueDriver
 

@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.queue.driver
+package com.copperleaf.ballast.queue.driver.db
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import kotlinx.serialization.json.Json
@@ -75,14 +75,14 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
         .default(null)
 
     // updated when a job is selected for processing
-    public val status: Column<DatabaseJobStatus> =
+    public val status: Column<ExposedDatabaseJobStatus> =
         enumerationByName(
             name = "status",
             length = 10,
-            klass = DatabaseJobStatus::class
+            klass = ExposedDatabaseJobStatus::class
         )
-            .check { it inList DatabaseJobStatus.entries }
-            .default(DatabaseJobStatus.Pending)
+            .check { it inList ExposedDatabaseJobStatus.entries }
+            .default(ExposedDatabaseJobStatus.Pending)
     public val attempts: Column<Int> = integer("attempts")
         .default(0)
 
@@ -126,12 +126,12 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
      * Jobs with the same [deduplication_key] are unique until the [unique_until] has passed, while they are in one of
      * the following states:
      *
-     * - [DatabaseJobStatus.Pending]: The job is enqueued. Don't enqueue another, even if it's run_at would be later
+     * - [ExposedDatabaseJobStatus.Pending]: The job is enqueued. Don't enqueue another, even if it's run_at would be later
      *   than this jobs's [unique_until], since it's possible that this job fails and will get scheduled for retry.
-     * - [DatabaseJobStatus.Running]: The unique job has been selected for processing. Don't enqueue another, since
+     * - [ExposedDatabaseJobStatus.Running]: The unique job has been selected for processing. Don't enqueue another, since
      *   it's possible that this job fails and will get scheduled for retry.
-     * - [DatabaseJobStatus.Cooldown]: The job has completed, but is now in cooldown mode. A maintenance task will
-     *   eventually move this job's [state] to [DatabaseJobStatus.Succeeded] once the cooldown period has expired. Until
+     * - [ExposedDatabaseJobStatus.Cooldown]: The job has completed, but is now in cooldown mode. A maintenance task will
+     *   eventually move this job's [state] to [ExposedDatabaseJobStatus.Succeeded] once the cooldown period has expired. Until
      *   it has actually been moved to Succeeded, we must still consider it unique.
      */
     private val uniqueindex__jobs__unique_jobs = index(
@@ -140,7 +140,7 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
         *arrayOf(queue, deduplication_key),
     ) {
         unique_until.isNotNull() and
-                (status inList listOf(DatabaseJobStatus.Pending, DatabaseJobStatus.Running, DatabaseJobStatus.Cooldown))
+                (status inList listOf(ExposedDatabaseJobStatus.Pending, ExposedDatabaseJobStatus.Running, ExposedDatabaseJobStatus.Cooldown))
     }
 
     /**
@@ -153,7 +153,7 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
         "index__${tableName}__eligible_pending_jobs",
         false,
         *arrayOf(queue, status, priority, run_at),
-    ) { status eq DatabaseJobStatus.Pending }
+    ) { status eq ExposedDatabaseJobStatus.Pending }
 
     /**
      * Index to efficiently find completed jobs eligible for deletion by a maintenance task.
@@ -164,11 +164,11 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
         "index__${tableName}__age_expired",
         false,
         *arrayOf(status, last_run_finished_at),
-    ) { status eq DatabaseJobStatus.Succeeded }
+    ) { status eq ExposedDatabaseJobStatus.Succeeded }
 
     /**
      * Index to efficiently find jobs that are in cooldown mode, but beyond their [unique_until] time. These jobs
-     * can be moved to [DatabaseJobStatus.Succeeded] by a maintenance task.
+     * can be moved to [ExposedDatabaseJobStatus.Succeeded] by a maintenance task.
      *
      * @see [com.copperleaf.ballast.queue.driver.db.repository.JobsMaintenanceRepository.freeJobCooldowns]
      */
@@ -176,7 +176,7 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
         "index__${tableName}__cooldown_expired",
         false,
         *arrayOf(status, unique_until),
-    ) { status eq DatabaseJobStatus.Cooldown }
+    ) { status eq ExposedDatabaseJobStatus.Cooldown }
 
     /**
      * Index to efficiently find running jobs that have exceeded their lease period, and are eligible to be retried.
@@ -187,5 +187,5 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
         "index__${tableName}__lease_timeout_expired",
         false,
         *arrayOf(status, leased_until),
-    ) { (status eq DatabaseJobStatus.Running) }
+    ) { (status eq ExposedDatabaseJobStatus.Running) }
 }

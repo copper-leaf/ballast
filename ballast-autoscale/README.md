@@ -25,16 +25,16 @@ job to start, etc.
 
 ## See Also
 
-- [Ballast Ktor Server](./../ballast-ktor-server/README.md)
-- [Ballast Queue Core](./../ballast-queue-core/README.md)
-- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel/README.md)
+- [Ballast Ktor Server](./../ballast-ktor-server)
+- [Ballast Queue Core](./../ballast-queue-core)
+- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel)
 
 ## Usage
 
 This module introduces a new implementation of `BallastViewModel`: `AutoscalingViewModel`. This new ViewModel type acts
 as a wrapper around a pool of ViewModels of the same type, automatically adding or removing instances as needed to 
 respond to system pressure. It's intended to be used in a server-side context, most specifically in conjunction with
-[Ballast Queue](./../ballast-queue-core/README.md), though it intentionally does not depend on any functionality that 
+[Ballast Queue](./../ballast-queue-core), though it intentionally does not depend on any functionality that 
 would prevent it from being used in frontend apps or anywhere else.
 
 Your application code should treat the `AutoscalingViewModel` exactly the same as it if were a `BasicViewModel`, sending
@@ -51,7 +51,7 @@ ID which should be used to give the VM a unique name.
 The ID provided to the factory function is the numerical index indicating its position in the current pool. IDs may be 
 reused if the cluster scales down, then back up, so it's not globally unique. However, it is intended to be stable such
 that it can be used as a property to determine how configure the ViewModel. For example, you may want to attach a
-`SchedulingInterceptor` from [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel/README.md) to enqueue 
+`SchedulingInterceptor` from [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel) to enqueue 
 maintenance tasks on a schedule, but you only want 1 replica to enqueue those tasks so you don't have to manually
 deduplicate those jobs. For this case, you could configure the ViewModel to only attach the SchedulerInterceptor at 
 `ID: 0`.

@@ -1,8 +1,8 @@
 package com.copperleaf.ballast.queue.vm
 
-import com.copperleaf.ballast.queue.QueueExecutor
+import com.copperleaf.ballast.queue.QueueDriver
 
-class TestSyncQueueAdapter : QueueExecutor.Adapter<
+class TestSyncQueueAdapter : QueueDriver.Adapter<
         Unit,
         TestContract.Inputs,
         TestContract.Events,

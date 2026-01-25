@@ -7,7 +7,7 @@ public class JobFailureException(
 
     /**
      * If set, indicates that the job should be retried after this delay period if it has any attempts left. If null,
-     * the retry delay will be set by [com.copperleaf.ballast.queue.QueueExecutor.Adapter.getDefaultRetryDelayTimeout].
+     * the retry delay will be set by [com.copperleaf.ballast.queue.QueueDriver.Adapter.getDefaultRetryDelayTimeout].
      */
     public val retryDelay: Duration?,
 

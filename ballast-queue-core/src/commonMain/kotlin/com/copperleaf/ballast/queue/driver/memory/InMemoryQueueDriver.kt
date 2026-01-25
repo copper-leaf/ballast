@@ -1,9 +1,11 @@
-package com.copperleaf.ballast.queue.driver
+package com.copperleaf.ballast.queue.driver.memory
 
 import com.copperleaf.ballast.queue.JobCompletionResultType
 import com.copperleaf.ballast.queue.QueueDriver
-import com.copperleaf.ballast.queue.QueueExecutor
+import com.copperleaf.ballast.queue.QueueThrottle
 import com.copperleaf.ballast.queue.SerializedJob
+import com.copperleaf.ballast.queue.queueDriverPollingFlow
+import com.copperleaf.ballast.queue.throttle.UnlimitedThrottle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -42,11 +44,11 @@ import kotlin.uuid.Uuid
  */
 public class InMemoryQueueDriver(
     private val clock: Clock = Clock.System,
+    private val throttle: QueueThrottle = UnlimitedThrottle(),
 ) : QueueDriver<InMemoryQueueDriver.Metadata> {
 
-    private val mutex = Mutex()
-    private val queue = MutableStateFlow(emptyList<SerializedJob<Metadata>>())
-    private val cancellations = MutableSharedFlow<String>()
+// Types
+// ---------------------------------------------------------------------------------------------------------------------
 
     public data class Metadata(
         val insertedAt: Instant,
@@ -56,7 +58,6 @@ public class InMemoryQueueDriver(
         val runAt: Instant = insertedAt,
         val status: InMemoryJobStatus = InMemoryJobStatus.Pending,
 
-        val attempts: Int = 0,
         val lastRunDuration: Duration? = null,
         val lastResultType: JobCompletionResultType? = null,
         val lastErrorMessage: String? = null,
@@ -69,7 +70,7 @@ public class InMemoryQueueDriver(
             State : Any,
             >(
         private val clock: Clock = Clock.System,
-    ) : QueueExecutor.Adapter<Metadata, Payload, Result, State> {
+    ) : QueueDriver.Adapter<Metadata, Payload, Result, State> {
         override fun getJobMetadata(payload: Payload): Metadata {
             val now = clock.now()
             return Metadata(
@@ -78,6 +79,13 @@ public class InMemoryQueueDriver(
             )
         }
     }
+
+// Driver state
+// ---------------------------------------------------------------------------------------------------------------------
+
+    private val mutex = Mutex()
+    private val queue = MutableStateFlow(emptyList<SerializedJob<Metadata>>())
+    private val cancellations = MutableSharedFlow<String>()
 
 // Insert/Query Operations
 // ---------------------------------------------------------------------------------------------------------------------
@@ -107,9 +115,11 @@ public class InMemoryQueueDriver(
     override fun observeQueue(
         queueName: String,
     ): Flow<SerializedJob<Metadata>> {
-        return pollingFlow(
+        return queueDriverPollingFlow(
+            queueName = queueName,
+            throttle = throttle,
             pollNext = { pollNext(queueName) },
-            awaitNext = { delay(1.seconds) }
+            awaitNext = { delay(1.seconds) },
         )
     }
 
@@ -140,9 +150,9 @@ public class InMemoryQueueDriver(
             if (item != null) {
                 updateJobNoLock(item.jobId) {
                     it.copy(
+                        attempts = it.attempts + 1,
                         metadata = it.metadata.copy(
                             status = InMemoryJobStatus.Running,
-                            attempts = it.metadata.attempts + 1,
                         )
                     )
                 }
@@ -200,7 +210,7 @@ public class InMemoryQueueDriver(
         failureStacktrace: String?
     ) {
         updateJob(jobId) {
-            val shouldRetry = it.metadata.attempts < it.metadata.maxAttempts && !permanentlyFail
+            val shouldRetry = it.attempts < it.metadata.maxAttempts && !permanentlyFail
 
             it.copy(
                 serializedResultData = null,

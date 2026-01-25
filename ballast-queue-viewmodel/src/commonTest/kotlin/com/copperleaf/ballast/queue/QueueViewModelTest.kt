@@ -3,12 +3,12 @@
 package com.copperleaf.ballast.queue
 
 import com.copperleaf.ballast.eventHandler
-import com.copperleaf.ballast.queue.driver.SyncQueueDriver
+import com.copperleaf.ballast.queue.driver.sync.SyncQueueDriver
 import com.copperleaf.ballast.queue.vm.TestContract
 import com.copperleaf.ballast.queue.vm.TestInputHandler
 import com.copperleaf.ballast.queue.vm.TestSyncQueueAdapter
 import com.copperleaf.ballast.test.viewModelTest
-import com.copperleaf.ballast.withSerialization
+import com.copperleaf.ballast.withJsonSerialization
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import kotlinx.serialization.json.Json
@@ -38,7 +38,7 @@ class QueueViewModelTest {
                     )
                 }
                 customizeConfiguration {
-                    it.withSerialization(
+                    it.withJsonSerialization(
                         inputsSerializer = TestContract.Inputs.serializer(),
                         eventsSerializer = TestContract.Events.serializer(),
                         stateSerializer = TestContract.State.serializer(),

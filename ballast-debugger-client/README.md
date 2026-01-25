@@ -2,6 +2,8 @@
 
 ## Overview
 
+TODO
+
 ## Supported Platforms
 
 | Platform | Supported |
@@ -14,9 +16,11 @@
 
 ## See Also
 
-- [Ballast Kotlinx Serialization](./../ballast-kotlinx-serialization/README.md)
+- [Ballast Kotlinx Serialization](./../ballast-kotlinx-serialization)
 
 ## Usage
+
+TODO
 
 ## Installation
 

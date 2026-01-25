@@ -4,18 +4,18 @@ import com.copperleaf.ballast.examples.presentation.models.JobsTableCell
 import com.copperleaf.ballast.examples.presentation.models.JobsTableColumn
 import com.copperleaf.ballast.examples.presentation.models.QueueName
 import com.copperleaf.ballast.queue.SerializedJob
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
 
 object MainScreenContract {
     data class State(
-        val jobs: List<SerializedJob<DatabaseQueueDriver.Metadata>> = emptyList(),
+        val jobs: List<SerializedJob<ExposedDatabaseQueueDriver.Metadata>> = emptyList(),
         val tableColumns: List<JobsTableColumn> = JobsTableColumn.defaultTableColumns(),
         val detailColumns: List<JobsTableColumn> = JobsTableColumn.defaultDetailsColumns(),
 
         val selectedJobId: String? = null,
         val selectedJobs: Set<String> = emptySet(),
     ) {
-        val selectedJob: SerializedJob<DatabaseQueueDriver.Metadata>? = jobs.find { it.jobId == selectedJobId }
+        val selectedJob: SerializedJob<ExposedDatabaseQueueDriver.Metadata>? = jobs.find { it.jobId == selectedJobId }
 
         val tableCells: List<JobsTableCell> = (listOf(null) + jobs).flatMapIndexed { rowIndex, job ->
             tableColumns.mapIndexed { columnIndex, column ->
@@ -31,7 +31,7 @@ object MainScreenContract {
 
     sealed interface Inputs {
         data object Initialize : Inputs
-        data class JobsUpdated(val jobs: List<SerializedJob<DatabaseQueueDriver.Metadata>>) : Inputs
+        data class JobsUpdated(val jobs: List<SerializedJob<ExposedDatabaseQueueDriver.Metadata>>) : Inputs
 
         // queue maintenance
         data object DeleteOldJobs : Inputs

@@ -16,7 +16,7 @@ Default implementations of `BallastViewModel`, as the base class your own ViewMo
 
 ## See Also
 
-- [Ballast Core](./../ballast-core/README.md)
+- [Ballast Core](./../ballast-core)
 
 ## Usage
 

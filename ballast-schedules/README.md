@@ -1,4 +1,4 @@
-# Ballast Schedulers
+# Ballast Schedules
 
 > [!CAUTION]
 >
@@ -8,7 +8,7 @@
 > for this library, while also providing some tweaks to the API that would be backwards-incompatible with this module.
 > Please migrate to the new modules linked in the [See Also](#see-also) section below.
 > 
-> At a high level, [Ballast Scheduler Core](./../ballast-scheduler-core/README.md) does not depend on any other Ballast
+> At a high level, [Ballast Scheduler Core](./../ballast-scheduler-core) does not depend on any other Ballast
 > modules, including Ballast ViewModels. The core scheduling logic can be used without bringing in any dependencies 
 > besides Kotlinx Coroutines and Kotlinx Datetime. Other scheduling functionality, such as sending Inputs to Ballast 
 > ViewModels on a schedule and integration with Android Workmanager, have been moved to their own modules.
@@ -35,9 +35,9 @@ for persistent work by running on [Android WorkManager][3].
 
 ## See Also
 
-- [Ballast Scheduler Core](./../ballast-scheduler-core/README.md)
-- [Ballast Scheduler Cron](./../ballast-scheduler-cron/README.md)
-- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel/README.md)
+- [Ballast Scheduler Core](./../ballast-scheduler-core)
+- [Ballast Scheduler Cron](./../ballast-scheduler-cron)
+- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel)
 
 ## Usage
 
@@ -364,7 +364,7 @@ repositories {
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-scheduler-schedules:{{ballastVersion}}")
+    implementation("io.github.copper-leaf:ballast-schedules:{{ballastVersion}}")
 }
 
 // for multiplatform projects
@@ -372,7 +372,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-scheduler-schedules:{{ballastVersion}}")
+                implementation("io.github.copper-leaf:ballast-schedules:{{ballastVersion}}")
             }
         }
     }

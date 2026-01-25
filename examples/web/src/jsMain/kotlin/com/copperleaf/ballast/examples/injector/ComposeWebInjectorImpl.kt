@@ -49,7 +49,7 @@ import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
 import com.copperleaf.ballast.undo.BallastUndoInterceptor
 import com.copperleaf.ballast.undo.state.StateBasedUndoController
-import com.copperleaf.ballast.withSerialization
+import com.copperleaf.ballast.withJsonSerialization
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -127,7 +127,7 @@ class ComposeWebInjectorImpl(
                     inputHandler = CounterInputHandler(),
                     name = "Counter",
                 )
-                .withSerialization(
+                .withJsonSerialization(
                     inputsSerializer = CounterContract.Inputs.serializer(),
                     eventsSerializer = CounterContract.Events.serializer(),
                     stateSerializer = CounterContract.State.serializer(),

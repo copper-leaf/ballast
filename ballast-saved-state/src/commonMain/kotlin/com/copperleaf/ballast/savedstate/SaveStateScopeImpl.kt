@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.savedstate
 
+import com.copperleaf.ballast.BallastDecoder
+import com.copperleaf.ballast.BallastEncoder
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastLogger
 
@@ -11,6 +13,8 @@ internal class SaveStateScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override val logger: BallastLogger = interceptorScope.logger
     override val hostViewModelName: String = interceptorScope.hostViewModelName
+    override val encoder: BallastEncoder<Inputs, Events, State> get() = interceptorScope.encoder
+    override val decoder: BallastDecoder<Inputs, Events, State>? get() = interceptorScope.decoder
 
     override suspend fun <Prop> saveDiff(
         computeProperty: State.() -> Prop,

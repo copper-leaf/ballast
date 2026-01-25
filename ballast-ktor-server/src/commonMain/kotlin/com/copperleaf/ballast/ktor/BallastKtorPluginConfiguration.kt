@@ -8,7 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 public class BallastKtorPluginConfiguration {
     internal var viewModels: MutableList<RegisteredViewModel<*, *, *>> = mutableListOf()
 
-    public fun <VM : BallastViewModel<Inputs, Events, State>, Inputs : Any, Events : Any, State : Any> registerViewModel(
+    public fun <VM : BallastViewModel<Inputs, Events, State>, Inputs : Any, Events : Any, State : Any> viewModel(
         attributeKey: AttributeKey<VM>,
         createViewModel: (CoroutineScope) -> VM,
     ) {

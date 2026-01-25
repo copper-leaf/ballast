@@ -1,7 +1,7 @@
 package com.copperleaf.ballast.queue
 
-import com.copperleaf.ballast.queue.driver.DatabaseQueueDriver
-import com.copperleaf.ballast.queue.driver.JobsTable
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.JobsTable
 import com.copperleaf.ballast.queue.driver.db.repository.JobsRepositoryImpl
 import com.copperleaf.ballast.scheduler.TestClock
 import kotlinx.coroutines.runBlocking
@@ -21,7 +21,7 @@ import kotlin.test.Test
 import kotlin.time.Duration.Companion.seconds
 
 @Ignore
-class PostgresqlQueueDriverTest {
+class ExposedDatabaseQueueDriverTest {
 
 // Test Setup
 // ---------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ class PostgresqlQueueDriverTest {
     fun addToQueueTest_success() = runTest {
         val clock = TestClock(startInstant)
         val repository = JobsRepositoryImpl(database, clock, table)
-        val driver = DatabaseQueueDriver(repository)
+        val driver = ExposedDatabaseQueueDriver(repository)
 
         suspendTransaction(database) {
             addLogger(StdOutSqlLogger)
@@ -67,7 +67,7 @@ class PostgresqlQueueDriverTest {
                 serializedPayload = """{"type":"TestJob","data":{"value":42}}""",
                 serializedInitialState = """{"type":"TestJob","data":{"value":42}}""",
                 timeoutDuration = 30.seconds,
-                metadata = DatabaseQueueDriver.Metadata(
+                metadata = ExposedDatabaseQueueDriver.Metadata(
                     insertedAt = clock.now(),
                     maxAttempts = 5,
                 )
@@ -83,7 +83,7 @@ class PostgresqlQueueDriverTest {
                         timeoutDuration = 30.seconds,
                         serializedState = """{"type":"TestJob","data":{"value":42}}""",
                         serializedResultData = null,
-                        metadata = DatabaseQueueDriver.Metadata(
+                        metadata = ExposedDatabaseQueueDriver.Metadata(
                             insertedAt = clock.now(),
                             maxAttempts = 5,
                         ),
@@ -97,7 +97,7 @@ class PostgresqlQueueDriverTest {
     fun insertAndUpdate() = runTest {
         val clock = TestClock(startInstant)
         val repository = JobsRepositoryImpl(database, clock, table)
-        val driver = DatabaseQueueDriver(repository)
+        val driver = ExposedDatabaseQueueDriver(repository)
 
         suspendTransaction(database) {
             addLogger(StdOutSqlLogger)
@@ -107,7 +107,7 @@ class PostgresqlQueueDriverTest {
                 serializedPayload = """{"type":"TestJob","data":{"value":42}}""",
                 serializedInitialState = """{"type":"TestJob","data":{"value":42}}""",
                 timeoutDuration = 30.seconds,
-                metadata = DatabaseQueueDriver.Metadata(
+                metadata = ExposedDatabaseQueueDriver.Metadata(
                     insertedAt = clock.now(),
                     maxAttempts = 5,
                 )
@@ -125,7 +125,7 @@ class PostgresqlQueueDriverTest {
                         timeoutDuration = 30.seconds,
                         serializedState = """{"type":"TestJob","data":{"value":42}}""",
                         serializedResultData = null,
-                        metadata = DatabaseQueueDriver.Metadata(
+                        metadata = ExposedDatabaseQueueDriver.Metadata(
                             insertedAt = clock.now(),
                             maxAttempts = 5,
                         ),

@@ -976,19 +976,19 @@ kotlin {
 ```
 
 
-[1]: ./../ballast-debugger-client/README.md
-[2]: ./../ballast-undo/README.md
-[3]: ./../ballast-sync/README.md
-[4]: ./../ballast-analytics/README.md
+[1]: ./../ballast-debugger-client
+[2]: ./../ballast-undo
+[3]: ./../ballast-sync
+[4]: ./../ballast-analytics
 [5]: ./
-[6]: ./../ballast-navigation/README.md
+[6]: ./../ballast-navigation
 [7]: https://ktor.io/docs/routing-in-ktor.html#match_url
 [8]: https://github.com/rjrjr/compose-backstack
 [9]: https://developer.android.com/guide/navigation/navigation-pass-data
 [10]: https://developer.mozilla.org/en-US/docs/Web/API/History_API
 [11]: https://github.com/gmazzo/gradle-buildconfig-plugin
 [12]: https://github.com/hfhbd/routing-compose#development-usage
-[13]: ./../ballast-saved-state/README.md
+[13]: ./../ballast-saved-state
 [14]: https://github.com/copper-leaf/ballast/tree/main/examples/web
 [15]: https://github.com/copper-leaf/ballast/tree/main/examples/desktop
 [16]: https://github.com/copper-leaf/ballast/tree/main/examples/android

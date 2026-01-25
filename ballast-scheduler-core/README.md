@@ -1,5 +1,10 @@
 # Ballast Scheduler Core
 
+> [!CAUTION]
+>
+> Experimental. This module may not still have issues or changes in its public API before being considered stable.
+> Please use at your own risk, and file Issues for any problems you may encounter.
+
 ## Overview
 
 Ballast Scheduler is a lightweight way to reliably run periodic work. This Core module is completely independent of 
@@ -22,8 +27,8 @@ linked in [See Also](#see-also) section below.
 
 ## See Also
 
-- [Ballast Scheduler Cron](./../ballast-scheduler-cron/README.md)
-- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel/README.md)
+- [Ballast Scheduler Cron](./../ballast-scheduler-cron)
+- [Ballast Scheduler ViewModel](./../ballast-scheduler-viewmodel)
 
 ## Usage
 
