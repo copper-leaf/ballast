@@ -96,11 +96,13 @@ public class JobsRepositoryImpl(
                         queueName,
                     )
                 }
+
                 is MysqlDialect -> {
                     claimNextAvailableJobForMysql(
                         queueName,
                     )
                 }
+
                 else -> {
                     error("Unsupported database dialect: $currentDialect")
                 }
@@ -153,7 +155,8 @@ public class JobsRepositoryImpl(
                     it[status] = ExposedDatabaseJobStatus.Running
                     it[attempts] = initialResultRow[outerQueryTable[table.attempts]] + 1
                     it[leased_at] = now
-                    it[leased_until] = now + initialResultRow[outerQueryTable[table.timeout_duration]] + initialResultRow[outerQueryTable[table.lease_buffer_duration]]
+                    it[leased_until] =
+                        now + initialResultRow[outerQueryTable[table.timeout_duration]] + initialResultRow[outerQueryTable[table.lease_buffer_duration]]
                 }
             )
             .single()
@@ -207,7 +210,8 @@ public class JobsRepositoryImpl(
                     it[status] = ExposedDatabaseJobStatus.Running
                     it[attempts] = initialResultRow[outerQueryTable[table.attempts]] + 1
                     it[leased_at] = now
-                    it[leased_until] = now + initialResultRow[outerQueryTable[table.timeout_duration]] + initialResultRow[outerQueryTable[table.lease_buffer_duration]]
+                    it[leased_until] =
+                        now + initialResultRow[outerQueryTable[table.timeout_duration]] + initialResultRow[outerQueryTable[table.lease_buffer_duration]]
                 }
             )
 
@@ -336,7 +340,13 @@ public class JobsRepositoryImpl(
     override suspend fun requestCancellation(jobId: Uuid) {
         withTransaction {
             table.update({ table.id eq jobId }) {
-                it[table.status] = ExposedDatabaseJobStatus.Cancelled
+                it[table.status] = Case()
+                    .When(
+                        cond = (table.status eq ExposedDatabaseJobStatus.Running) and
+                                (table.leased_until greater CurrentTimestamp),
+                        result = LiteralOp(table.status.columnType, ExposedDatabaseJobStatus.Cancelled),
+                    )
+                    .Else(table.status)
             }
         }
     }

@@ -6,6 +6,7 @@ import com.copperleaf.ballast.queue.driver.db.TimestampAdd
 import org.jetbrains.exposed.v1.core.SqlLogger
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.inList
 import org.jetbrains.exposed.v1.core.lessEq
 import org.jetbrains.exposed.v1.core.vendors.currentDialect
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
@@ -53,7 +54,7 @@ public class JobsMaintenanceRepositoryImpl(
     override suspend fun retryHungJobs() {
         withTransaction {
             table.update({
-                (table.status eq ExposedDatabaseJobStatus.Running) and
+                (table.status inList listOf(ExposedDatabaseJobStatus.Running, ExposedDatabaseJobStatus.Cancelled)) and
                         (table.leased_until lessEq CurrentTimestamp)
             }) {
                 retryOrFailStatusColumn(it)
