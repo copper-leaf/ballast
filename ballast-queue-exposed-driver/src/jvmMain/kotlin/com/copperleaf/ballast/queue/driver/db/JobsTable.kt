@@ -39,7 +39,7 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
 
     final override val primaryKey: PrimaryKey = PrimaryKey(id)
 
-    // set at job creation
+
     public val queue: Column<String> = text("queue")
 
     public val payload: Column<JsonElement> = jsonb("payload", Json, JsonElement.serializer())
@@ -53,9 +53,16 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
     public val run_at: Column<Instant> = timestamp("run_at")
         .databaseGenerated()
         .defaultExpression(CurrentTimestamp)
+
     public val max_attempts: Column<Int> = integer("max_attempts")
         .default(5)
+    public val retry_until: Column<Instant?> = timestamp("retry_until")
+        .nullable()
+        .default(null)
+
     public val timeout_duration: Column<Duration> = duration("timeout_duration")
+        .default(30.seconds)
+    public val lease_buffer_duration: Column<Duration> = duration("lease_buffer_duration")
         .default(30.seconds)
     public val leased_at: Column<Instant?> = timestamp("leased_at")
         .nullable()
@@ -71,6 +78,10 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
         .nullable()
         .default(null)
     public val unique_until: Column<Instant?> = timestamp("unique_until")
+        .nullable()
+        .default(null)
+
+    public val message_group: Column<String?> = text("message_group")
         .nullable()
         .default(null)
 

@@ -33,7 +33,7 @@ convert an object to a String, but does not include support for deserializing an
 This module adds a simple `withSerialization()` function to the `BallastViewModelConfiguration.TypedBuilder` allowing 
 you to register `KSerializers` which get used for all of a ViewModel's serialization and deserialization tasks.
 
-```kt
+```kotlin
 class ExampleViewModel(
     private val coroutineScope: CoroutineScope,
 ) : BasicViewModel<

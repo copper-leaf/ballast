@@ -22,6 +22,7 @@ object MainQueueContract {
             val processingTime: Duration,
             val deduplicationKey: String?,
             val deduplicationDuration: Duration,
+            val messageGroup: String?,
             val resultValue: String?,
         ) : Inputs
     }

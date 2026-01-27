@@ -77,7 +77,7 @@ Uses the following Ballast modules:
 - [Ballast Scheduler Cron](./../ballast-scheduler-cron)
 - [Ballast Autoscale](./../ballast-autoscale)
 
-```kt
+```kotlin
 
 // Create an AutoscalingViewModel to run 4 copies of your queue in parallel. Store this ViewModel as a singleton and 
 // send jobs to the queue with JobMaintenanceViewModel.send(), which get distributed to a worker and persisted in the 

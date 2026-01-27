@@ -5,18 +5,21 @@ import com.copperleaf.ballast.queue.SerializedJob
 import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseJobStatus
 import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
 import com.copperleaf.ballast.queue.driver.db.JobsTable
-import com.copperleaf.ballast.queue.driver.db.SerializedJobMapper
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.core.Case
 import org.jetbrains.exposed.v1.core.LiteralOp
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.SqlLogger
+import org.jetbrains.exposed.v1.core.alias
 import org.jetbrains.exposed.v1.core.and
 import org.jetbrains.exposed.v1.core.eq
 import org.jetbrains.exposed.v1.core.greater
+import org.jetbrains.exposed.v1.core.intLiteral
 import org.jetbrains.exposed.v1.core.isNotNull
-import org.jetbrains.exposed.v1.core.less
+import org.jetbrains.exposed.v1.core.isNull
 import org.jetbrains.exposed.v1.core.lessEq
+import org.jetbrains.exposed.v1.core.notExists
+import org.jetbrains.exposed.v1.core.or
 import org.jetbrains.exposed.v1.core.plus
 import org.jetbrains.exposed.v1.core.vendors.ForUpdateOption
 import org.jetbrains.exposed.v1.core.vendors.MysqlDialect
@@ -36,8 +39,8 @@ import kotlin.uuid.Uuid
 
 public class JobsRepositoryImpl(
     private val database: Database,
-    private val clock: Clock = Clock.System,
     private val table: JobsTable = JobsTable.Default,
+    private val clock: Clock = Clock.System,
     private val json: Json = Json.Default,
     private val logger: SqlLogger? = null,
 ) : JobsRepository {
@@ -56,7 +59,7 @@ public class JobsRepositoryImpl(
             table
                 .select(table.columns)
                 .map { resultRow ->
-                    SerializedJobMapper.mapResultRowToSerializedJob(
+                    mapResultRowToSerializedJob(
                         table,
                         resultRow,
                     )
@@ -70,7 +73,7 @@ public class JobsRepositoryImpl(
                 .select(table.columns)
                 .where { table.queue eq queueName }
                 .map { resultRow ->
-                    SerializedJobMapper.mapResultRowToSerializedJob(
+                    mapResultRowToSerializedJob(
                         table,
                         resultRow,
                     )
@@ -83,7 +86,6 @@ public class JobsRepositoryImpl(
 
     override suspend fun claimNextAvailableJob(
         queueName: String,
-        leaseBufferDuration: Duration,
     ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>? {
         // assumes an existing database in transaction from the caller. But we need a sub-transaction here to do
         // the FOR UPDATE SKIP LOCKED
@@ -92,13 +94,11 @@ public class JobsRepositoryImpl(
                 is PostgreSQLDialect -> {
                     claimNextAvailableJobForPostgres(
                         queueName,
-                        leaseBufferDuration,
                     )
                 }
                 is MysqlDialect -> {
                     claimNextAvailableJobForMysql(
                         queueName,
-                        leaseBufferDuration,
                     )
                 }
                 else -> {
@@ -110,46 +110,56 @@ public class JobsRepositoryImpl(
 
     private suspend fun claimNextAvailableJobForPostgres(
         queueName: String,
-        leaseBufferDuration: Duration,
     ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>? {
         // assumes an existing database in transaction from the caller. But we need a sub-transaction here to do
         // the FOR UPDATE SKIP LOCKED
 
         val now = clock.now()
 
+        val outerQueryTable = table.alias("outer_jobs")
+        val innerQueryTable = table.alias("inner_jobs")
+
         // Step 1: Find the next eligible job with FOR UPDATE SKIP LOCKED to ensure jobs are selected exactly once
-        val initialResultRow = table
-            .select(table.columns)
+        val initialResultRow = outerQueryTable
+            .select(outerQueryTable.columns)
             .where {
-                (table.queue eq queueName) and
-                        (table.status eq ExposedDatabaseJobStatus.Pending) and
-                        (table.run_at lessEq now)
+                (outerQueryTable[table.queue] eq queueName) and
+                        (outerQueryTable[table.status] eq ExposedDatabaseJobStatus.Pending) and
+                        (outerQueryTable[table.run_at] lessEq now) and
+                        ((outerQueryTable[table.message_group].isNull()) or notExists(
+                            innerQueryTable
+                                .select(intLiteral(1))
+                                .where {
+                                    (innerQueryTable[table.message_group] eq outerQueryTable[table.message_group]) and
+                                            (innerQueryTable[table.status] eq ExposedDatabaseJobStatus.Running)
+                                }
+                        ))
             }
             .orderBy(
-                table.priority to SortOrder.DESC,
-                table.run_at to SortOrder.DESC,
+                outerQueryTable[table.priority] to SortOrder.DESC,
+                outerQueryTable[table.run_at] to SortOrder.DESC,
             )
             .forUpdate(ForUpdateOption.PostgreSQL.ForUpdate(ForUpdateOption.PostgreSQL.MODE.SKIP_LOCKED))
             .limit(1)
             .singleOrNull()
-            ?: return@claimNextAvailableJobForPostgres null
+            ?: return null
 
         // Step 2: Update the job to mark it as in-progress, and return the updated job row
         val resultRow = table
             .updateReturning(
                 returning = table.columns,
-                where = { table.id eq initialResultRow[table.id].value },
+                where = { table.id eq initialResultRow[outerQueryTable[table.id]].value },
                 body = {
                     it[status] = ExposedDatabaseJobStatus.Running
-                    it[attempts] = initialResultRow[table.attempts] + 1
+                    it[attempts] = initialResultRow[outerQueryTable[table.attempts]] + 1
                     it[leased_at] = now
-                    it[leased_until] = now + initialResultRow[table.timeout_duration] + leaseBufferDuration
+                    it[leased_until] = now + initialResultRow[outerQueryTable[table.timeout_duration]] + initialResultRow[outerQueryTable[table.lease_buffer_duration]]
                 }
             )
             .single()
 
         // Step 3: map the selected row to SerializedJob
-        return SerializedJobMapper.mapResultRowToSerializedJob(
+        return mapResultRowToSerializedJob(
             table,
             resultRow,
         )
@@ -157,24 +167,34 @@ public class JobsRepositoryImpl(
 
     private suspend fun claimNextAvailableJobForMysql(
         queueName: String,
-        leaseBufferDuration: Duration,
     ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>? {
 
         val now = clock.now()
 
+        val outerQueryTable = table.alias("outer_jobs")
+        val innerQueryTable = table.alias("inner_jobs")
+
         // Step 1: Find the next eligible job with FOR UPDATE SKIP LOCKED to ensure jobs are selected exactly once
-        val initialResultRow = table
-            .select(table.columns)
+        val initialResultRow = outerQueryTable
+            .select(outerQueryTable.columns)
             .where {
-                (table.queue eq queueName) and
-                        (table.status eq ExposedDatabaseJobStatus.Pending) and
-                        (table.run_at lessEq now)
+                (outerQueryTable[table.queue] eq queueName) and
+                        (outerQueryTable[table.status] eq ExposedDatabaseJobStatus.Pending) and
+                        (outerQueryTable[table.run_at] lessEq now) and
+                        ((outerQueryTable[table.message_group].isNull()) or notExists(
+                            innerQueryTable
+                                .select(intLiteral(1))
+                                .where {
+                                    (innerQueryTable[table.message_group] eq outerQueryTable[table.message_group]) and
+                                            (innerQueryTable[table.status] eq ExposedDatabaseJobStatus.Running)
+                                }
+                        ))
             }
             .orderBy(
-                table.priority to SortOrder.DESC,
-                table.run_at to SortOrder.DESC,
+                outerQueryTable[table.priority] to SortOrder.DESC,
+                outerQueryTable[table.run_at] to SortOrder.DESC,
             )
-            .forUpdate(ForUpdateOption.MySQL.ForUpdate(ForUpdateOption.MySQL.MODE.SKIP_LOCKED))
+            .forUpdate(ForUpdateOption.PostgreSQL.ForUpdate(ForUpdateOption.PostgreSQL.MODE.SKIP_LOCKED))
             .limit(1)
             .singleOrNull()
             ?: return null
@@ -182,23 +202,23 @@ public class JobsRepositoryImpl(
         // Step 2: Update the job to mark it as in-progress, and return the updated job row
         table
             .update(
-                where = { table.id eq initialResultRow[table.id].value },
+                where = { table.id eq initialResultRow[outerQueryTable[table.id]].value },
                 body = {
                     it[status] = ExposedDatabaseJobStatus.Running
-                    it[attempts] = initialResultRow[table.attempts] + 1
+                    it[attempts] = initialResultRow[outerQueryTable[table.attempts]] + 1
                     it[leased_at] = now
-                    it[leased_until] = now + initialResultRow[table.timeout_duration] + leaseBufferDuration
+                    it[leased_until] = now + initialResultRow[outerQueryTable[table.timeout_duration]] + initialResultRow[outerQueryTable[table.lease_buffer_duration]]
                 }
             )
 
         val resultRow = table
             .select(table.columns)
-            .where { table.id eq initialResultRow[table.id].value }
+            .where { table.id eq initialResultRow[outerQueryTable[table.id]].value }
             .limit(1)
             .single()
 
         // Step 3: map the selected row to SerializedJob
-        return SerializedJobMapper.mapResultRowToSerializedJob(
+        return mapResultRowToSerializedJob(
             table,
             resultRow,
         )
@@ -222,7 +242,9 @@ public class JobsRepositoryImpl(
                 it[table.priority] = metadata.priority
                 it[table.run_at] = metadata.runAt
                 it[table.max_attempts] = metadata.maxAttempts
+                it[table.retry_until] = metadata.retryUntil
                 it[table.timeout_duration] = timeoutDuration
+                it[table.lease_buffer_duration] = metadata.leaseBufferDuration
 
                 if (metadata.deduplicationKey != null) {
                     requireNotNull(metadata.deduplicationDuration)
@@ -232,6 +254,7 @@ public class JobsRepositoryImpl(
                     it[table.deduplication_key] = null
                     it[table.unique_until] = null
                 }
+                it[table.message_group] = metadata.messageGroup
             }.value
         }
     }
@@ -281,14 +304,7 @@ public class JobsRepositoryImpl(
                 if (permanentlyFail) {
                     it[table.status] = ExposedDatabaseJobStatus.Failed
                 } else {
-                    it[table.status] = Case()
-                        .When(
-                            cond = table.attempts less table.max_attempts,
-                            result = LiteralOp(table.status.columnType, ExposedDatabaseJobStatus.Pending)
-                        )
-                        .Else(
-                            LiteralOp(table.status.columnType, ExposedDatabaseJobStatus.Failed)
-                        )
+                    retryOrFailStatusColumn(it)
                     it[run_at] = clock.now() + retryDelay
                 }
 

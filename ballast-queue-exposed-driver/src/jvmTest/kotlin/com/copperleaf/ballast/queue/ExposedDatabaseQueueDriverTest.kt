@@ -56,7 +56,7 @@ class ExposedDatabaseQueueDriverTest {
     @Test
     fun addToQueueTest_success() = runTest {
         val clock = TestClock(startInstant)
-        val repository = JobsRepositoryImpl(database, clock, table)
+        val repository = JobsRepositoryImpl(database, table, clock)
         val driver = ExposedDatabaseQueueDriver(repository)
 
         suspendTransaction(database) {
@@ -96,7 +96,7 @@ class ExposedDatabaseQueueDriverTest {
     @Test
     fun insertAndUpdate() = runTest {
         val clock = TestClock(startInstant)
-        val repository = JobsRepositoryImpl(database, clock, table)
+        val repository = JobsRepositoryImpl(database, table, clock)
         val driver = ExposedDatabaseQueueDriver(repository)
 
         suspendTransaction(database) {

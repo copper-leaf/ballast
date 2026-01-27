@@ -48,6 +48,7 @@ object MainScreenContract {
             val processingTimeSeconds: Int,
             val deduplicationKey: String,
             val deduplicationDuration: Int,
+            val messageGroup: String,
             val resultValue: String,
         ) : Inputs
 

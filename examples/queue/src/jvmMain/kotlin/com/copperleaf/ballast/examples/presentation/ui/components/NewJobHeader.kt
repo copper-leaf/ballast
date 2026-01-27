@@ -31,6 +31,7 @@ fun ColumnScope.NewJobHeader(
 
     var deduplicationKey: String by remember { mutableStateOf("") }
     var deduplicationDuration: Int by remember { mutableStateOf(0) }
+    var messageGroup: String by remember { mutableStateOf("") }
     var resultValue by remember { mutableStateOf("Result") }
 
     Row(
@@ -104,6 +105,13 @@ fun ColumnScope.NewJobHeader(
         )
 
         OutlinedTextField(
+            value = messageGroup,
+            onValueChange = { messageGroup = it },
+            label = { Text("Message Group") },
+            modifier = Modifier.weight(1f),
+        )
+
+        OutlinedTextField(
             value = resultValue,
             onValueChange = { resultValue = it },
             label = { Text("Result Value") },
@@ -123,6 +131,7 @@ fun ColumnScope.NewJobHeader(
                         processingTimeSeconds = processingTimeSeconds,
                         deduplicationKey = deduplicationKey,
                         deduplicationDuration = deduplicationDuration,
+                        messageGroup = messageGroup,
                         resultValue = resultValue,
                     )
                 )

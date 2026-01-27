@@ -56,7 +56,7 @@ public class JobsMaintenanceRepositoryImpl(
                 (table.status eq ExposedDatabaseJobStatus.Running) and
                         (table.leased_until lessEq CurrentTimestamp)
             }) {
-                it[table.status] = ExposedDatabaseJobStatus.Pending
+                retryOrFailStatusColumn(it)
             }
         }
     }

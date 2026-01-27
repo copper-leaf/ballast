@@ -19,7 +19,6 @@ import kotlin.uuid.Uuid
 public class ExposedDatabaseQueueDriver(
     private val repository: JobsRepository,
     private val throttle: QueueThrottle = UnlimitedThrottle(),
-    private val leaseBufferDuration: Duration = 30.seconds,
 ) : QueueDriver<ExposedDatabaseQueueDriver.Metadata> {
 
 // Types
@@ -27,13 +26,19 @@ public class ExposedDatabaseQueueDriver(
 
     public data class Metadata(
         val insertedAt: Instant,
-        val maxAttempts: Int,
+        val maxAttempts: Int = 5,
+        val retryUntil: Instant? = null,
+
         val deduplicationKey: String? = null,
         val deduplicationDuration: Duration? = null,
+
+        val messageGroup: String? = null,
 
         val priority: Int = 0,
         val runAt: Instant = insertedAt,
         val status: ExposedDatabaseJobStatus = ExposedDatabaseJobStatus.Pending,
+
+        val leaseBufferDuration: Duration = 30.seconds,
         val leasedAt: Instant? = null,
         val leasedUntil: Instant? = null,
 
@@ -93,7 +98,7 @@ public class ExposedDatabaseQueueDriver(
     internal suspend fun pollNext(
         queueName: String,
     ): SerializedJob<Metadata>? {
-        return repository.claimNextAvailableJob(queueName, leaseBufferDuration)
+        return repository.claimNextAvailableJob(queueName)
     }
 
 // Job Processing State/Results

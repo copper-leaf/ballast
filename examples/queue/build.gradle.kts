@@ -25,6 +25,9 @@ kotlin {
                 api("org.postgresql:postgresql:42.7.7")
                 api("com.mysql:mysql-connector-j:9.5.0")
 
+                api("org.jetbrains.exposed:exposed-r2dbc:1.0.0")
+                implementation("org.postgresql:r2dbc-postgresql:1.1.1.RELEASE")
+
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-queue-core"))
                 implementation(project(":ballast-queue-exposed-driver"))

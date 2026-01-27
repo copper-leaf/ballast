@@ -16,7 +16,6 @@ public interface JobsRepository {
 
     public suspend fun claimNextAvailableJob(
         queueName: String,
-        leaseBufferDuration: Duration,
     ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>?
 
     public suspend fun insertJob(

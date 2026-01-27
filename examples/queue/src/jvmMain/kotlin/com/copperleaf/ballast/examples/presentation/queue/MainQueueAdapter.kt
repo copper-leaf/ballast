@@ -32,15 +32,14 @@ class MainQueueAdapter(
     }
 
     override fun getJobMetadata(payload: MainQueueContract.Inputs): ExposedDatabaseQueueDriver.Metadata {
-        val now = clock.now()
-
         return when (payload) {
             is MainQueueContract.Inputs.MainJob -> {
                 ExposedDatabaseQueueDriver.Metadata(
-                    insertedAt = now,
+                    insertedAt = clock.now(),
                     maxAttempts = payload.maxAttempts,
                     deduplicationKey = payload.deduplicationKey,
                     deduplicationDuration = payload.deduplicationDuration,
+                    messageGroup = payload.messageGroup
                 )
             }
         }

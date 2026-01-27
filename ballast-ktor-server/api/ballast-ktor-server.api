@@ -1,6 +1,6 @@
 public final class com/copperleaf/ballast/ktor/BallastKtorPluginConfiguration {
 	public fun <init> ()V
-	public final fun registerViewModel (Lio/ktor/util/AttributeKey;Lkotlin/jvm/functions/Function1;)V
+	public final fun viewModel (Lio/ktor/util/AttributeKey;Lkotlin/jvm/functions/Function1;)V
 }
 
 public final class com/copperleaf/ballast/ktor/PluginKt {

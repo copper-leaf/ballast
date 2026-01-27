@@ -7,6 +7,8 @@ public final class com/copperleaf/ballast/savedstate/BallastSavedStateIntercepto
 }
 
 public abstract interface class com/copperleaf/ballast/savedstate/RestoreStateScope {
+	public abstract fun getDecoder ()Lcom/copperleaf/ballast/BallastDecoder;
+	public abstract fun getEncoder ()Lcom/copperleaf/ballast/BallastEncoder;
 	public abstract fun getHostViewModelName ()Ljava/lang/String;
 	public abstract fun getInitialState ()Ljava/lang/Object;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
@@ -16,6 +18,8 @@ public abstract interface class com/copperleaf/ballast/savedstate/RestoreStateSc
 
 public final class com/copperleaf/ballast/savedstate/RestoreStateScopeImpl : com/copperleaf/ballast/savedstate/RestoreStateScope {
 	public fun <init> (Lcom/copperleaf/ballast/BallastInterceptorScope;)V
+	public fun getDecoder ()Lcom/copperleaf/ballast/BallastDecoder;
+	public fun getEncoder ()Lcom/copperleaf/ballast/BallastEncoder;
 	public fun getHostViewModelName ()Ljava/lang/String;
 	public fun getInitialState ()Ljava/lang/Object;
 	public fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
@@ -24,6 +28,8 @@ public final class com/copperleaf/ballast/savedstate/RestoreStateScopeImpl : com
 }
 
 public abstract interface class com/copperleaf/ballast/savedstate/SaveStateScope {
+	public abstract fun getDecoder ()Lcom/copperleaf/ballast/BallastDecoder;
+	public abstract fun getEncoder ()Lcom/copperleaf/ballast/BallastEncoder;
 	public abstract fun getHostViewModelName ()Ljava/lang/String;
 	public abstract fun getLogger ()Lcom/copperleaf/ballast/BallastLogger;
 	public abstract fun saveAll (Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;

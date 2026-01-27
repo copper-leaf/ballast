@@ -35,7 +35,7 @@ ViewModels must be registered using an `AttributeKey` so it can be accessed from
 `ballastViewModel(key)`. This allows you to obtain a reference to the singleton ViewModel so you can send Inputs to it
 from Request handlers.
 
-```kt
+```kotlin
 class EmailQueueViewModel(
     private val coroutineScope: CoroutineScope,
 ) : BasicViewModel<

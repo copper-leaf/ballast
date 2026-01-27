@@ -80,6 +80,7 @@ class MainScreenInputHandler(
                         processingTime = input.processingTimeSeconds.seconds,
                         deduplicationKey = input.deduplicationKey.takeIf { it.isNotBlank() },
                         deduplicationDuration = input.deduplicationDuration.seconds,
+                        messageGroup = input.messageGroup.takeIf { it.isNotBlank() },
                         resultValue = input.resultValue.takeIf { it.isNotBlank() },
                     )
                 )

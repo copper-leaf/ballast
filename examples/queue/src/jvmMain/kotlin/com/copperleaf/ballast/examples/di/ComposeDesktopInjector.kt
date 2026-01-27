@@ -59,8 +59,8 @@ class ComposeDesktopInjectorImpl(
     )
     val db = postgresDatabase
 
-    //    val db = mysqlDatabase
-    private val jobsRepository: JobsRepository = JobsRepositoryImpl(db, clock, table, json, StdOutSqlLogger)
+//        val db = mysqlDatabase
+    private val jobsRepository: JobsRepository = JobsRepositoryImpl(db, table, clock, json, StdOutSqlLogger)
     private val jobsMaintenanceRepository: JobsMaintenanceRepository = JobsMaintenanceRepositoryImpl(
         db,
         table,
