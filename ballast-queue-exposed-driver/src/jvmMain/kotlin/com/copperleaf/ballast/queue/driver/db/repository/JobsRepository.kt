@@ -39,6 +39,7 @@ public interface JobsRepository {
         resultType: JobCompletionResultType,
         retryDelay: Duration,
         permanentlyFail: Boolean,
+        skipAttempt: Boolean,
         failureMessage: String?,
         failureStacktrace: String?,
     )

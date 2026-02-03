@@ -108,6 +108,7 @@ public class SyncQueueDriver() : QueueDriver<Unit> {
         resultType: JobCompletionResultType,
         retryDelay: Duration,
         permanentlyFail: Boolean,
+        skipAttempt: Boolean,
         failureMessage: String?,
         failureStacktrace: String?
     ) {

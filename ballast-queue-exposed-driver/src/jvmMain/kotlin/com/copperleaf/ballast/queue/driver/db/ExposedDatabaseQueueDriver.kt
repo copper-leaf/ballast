@@ -131,6 +131,7 @@ public class ExposedDatabaseQueueDriver(
         resultType: JobCompletionResultType,
         retryDelay: Duration,
         permanentlyFail: Boolean,
+        skipAttempt: Boolean,
         failureMessage: String?,
         failureStacktrace: String?
     ) {
@@ -140,6 +141,7 @@ public class ExposedDatabaseQueueDriver(
             resultType = resultType,
             retryDelay = retryDelay,
             permanentlyFail = permanentlyFail,
+            skipAttempt = skipAttempt,
             failureMessage = failureMessage ?: "Unknown error",
             failureStacktrace = failureStacktrace,
         )

@@ -104,6 +104,7 @@ public class DefaultQueueExecutor<
                         cause = e.cause as Exception,
                         retryDelay = e.retryDelay ?: adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
                         permanentlyFail = e.permanentlyFail,
+                        skipAttempt = e.skipAttempt,
                     ),
                 )
             } catch (e: CancellationException) {
@@ -118,6 +119,7 @@ public class DefaultQueueExecutor<
                         cause = e,
                         retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
                         permanentlyFail = false,
+                        skipAttempt = false,
                     ),
                 )
             }
@@ -172,6 +174,7 @@ public class DefaultQueueExecutor<
                     resultType = JobCompletionResultType.Cancelled,
                     retryDelay = result.result.retryDelay,
                     permanentlyFail = false,
+                    skipAttempt = false,
                     failureMessage = null,
                     failureStacktrace = null,
                 )
@@ -184,6 +187,7 @@ public class DefaultQueueExecutor<
                     resultType = JobCompletionResultType.Timeout,
                     retryDelay = result.result.retryDelay,
                     permanentlyFail = false,
+                    skipAttempt = false,
                     failureMessage = result.result.cause.message,
                     failureStacktrace = null
                 )
@@ -196,6 +200,7 @@ public class DefaultQueueExecutor<
                     resultType = JobCompletionResultType.Failure,
                     retryDelay = result.result.retryDelay,
                     permanentlyFail = result.result.permanentlyFail,
+                    skipAttempt = result.result.skipAttempt,
                     failureMessage = result.result.cause.message,
                     failureStacktrace = if (captureErrorStacktrace) {
                         result.result.cause.stackTraceToString()

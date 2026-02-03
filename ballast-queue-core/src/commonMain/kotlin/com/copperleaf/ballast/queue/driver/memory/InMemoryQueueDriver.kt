@@ -206,6 +206,7 @@ public class InMemoryQueueDriver(
         resultType: JobCompletionResultType,
         retryDelay: Duration,
         permanentlyFail: Boolean,
+        skipAttempt: Boolean,
         failureMessage: String?,
         failureStacktrace: String?
     ) {
@@ -226,6 +227,7 @@ public class InMemoryQueueDriver(
                             if (shouldRetry) InMemoryJobStatus.Pending else InMemoryJobStatus.Failed
                     },
                     runAt = if (shouldRetry) clock.now() + retryDelay else it.metadata.runAt,
+                    maxAttempts = if (skipAttempt) it.metadata.maxAttempts + 1 else it.metadata.maxAttempts,
                     lastRunDuration = processingTime,
                     lastResultType = resultType,
                     lastErrorMessage = failureMessage,

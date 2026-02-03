@@ -41,6 +41,7 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
 
 
     public val queue: Column<String> = text("queue")
+    public val original_queue: Column<String?> = text("queue").nullable().default(null)
 
     public val payload: Column<JsonElement> = jsonb("payload", Json, JsonElement.serializer())
     public val job_state: Column<JsonElement> = jsonb("job_state", Json, JsonElement.serializer())

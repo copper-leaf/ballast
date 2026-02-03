@@ -68,6 +68,7 @@ public interface QueueDriver<JobMetadata : Any> {
         resultType: JobCompletionResultType,
         retryDelay: Duration,
         permanentlyFail: Boolean,
+        skipAttempt: Boolean,
         failureMessage: String?,
         failureStacktrace: String?,
     )

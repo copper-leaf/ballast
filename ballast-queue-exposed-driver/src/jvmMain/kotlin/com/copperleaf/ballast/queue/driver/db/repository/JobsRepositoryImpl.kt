@@ -300,6 +300,7 @@ public class JobsRepositoryImpl(
         resultType: JobCompletionResultType,
         retryDelay: Duration,
         permanentlyFail: Boolean,
+        skipAttempt: Boolean,
         failureMessage: String?,
         failureStacktrace: String?,
     ) {
@@ -310,6 +311,7 @@ public class JobsRepositoryImpl(
                 } else {
                     retryOrFailStatusColumn(it)
                     it[run_at] = clock.now() + retryDelay
+                    it[max_attempts] = if (skipAttempt) max_attempts + 1 else max_attempts
                 }
 
                 it[leased_at] = null
