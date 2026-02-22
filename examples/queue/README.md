@@ -10,8 +10,8 @@ or MySQL database table.
 1. Run `docker compose up -d` using [this Docker Compose file](./../../ballast-queue-exposed-driver/docker-compose.yml)
 2. Manually apply the migration scripts to the database running on localhost (the Intellij Ultimate [Query Console](https://www.jetbrains.com/help/idea/run-a-query.html#run_statements_in_a_query_console))
   is handy for this).
-   a. Migration script for [PostgreSQL](./../../ballast-queue-exposed-driver/postgresql_jobs.sql)
-   b. Migration script for [MySQL](./../../ballast-queue-exposed-driver/mysql_jobs.sql)
+   a. Migration script for [PostgreSQL](./../../ballast-queue-exposed-driver/V01_create_table.sql)
+   b. Migration script for [MySQL](./../../ballast-queue-exposed-driver/V01_create_table.sql)
 3. Run `./gradlew :examples:queue:run` to start the example
 
 ## Using the example

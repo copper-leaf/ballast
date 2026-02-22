@@ -4,58 +4,31 @@ import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
 import com.copperleaf.ballast.queue.driver.db.JobsTable
 import com.copperleaf.ballast.queue.driver.db.repository.JobsRepositoryImpl
 import com.copperleaf.ballast.scheduler.TestClock
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import org.jetbrains.exposed.v1.core.StdOutSqlLogger
-import org.jetbrains.exposed.v1.jdbc.Database
-import org.jetbrains.exposed.v1.jdbc.deleteAll
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.suspendTransaction
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.time.Duration.Companion.seconds
 
-@Ignore
-class ExposedDatabaseQueueDriverTest {
+class ExposedDatabaseQueueDriverTest : BaseDatabaseTest() {
 
 // Test Setup
 // ---------------------------------------------------------------------------------------------------------------------
 
-    lateinit var database: Database
-    lateinit var table: JobsTable
-
     val timezone = TimeZone.UTC
     val startInstant = LocalDate(2025, 1, 1).atStartOfDayIn(timezone)
-
-    @BeforeTest
-    fun setup() {
-        database = Database.connect(
-            "jdbc:postgresql://localhost:5432/postgres",
-            driver = "org.postgresql.Driver",
-            user = "postgres",
-            password = "postgres"
-        )
-        table = JobsTable.Default
-    }
-
-    @AfterTest
-    fun teardown(): Unit = runBlocking {
-        suspendTransaction(database) {
-            table.deleteAll()
-        }
-    }
 
 // Tests
 // ---------------------------------------------------------------------------------------------------------------------
 
     @Test
-    fun addToQueueTest_success() = runTest {
-        val clock = TestClock(startInstant)
+    fun addToQueueTest_success() = runTestWithDatabase {
+        val clock = testScope.TestClock(startInstant)
+        val table = JobsTable.Default
         val repository = JobsRepositoryImpl(database, table, clock)
         val driver = ExposedDatabaseQueueDriver(repository)
 
@@ -94,8 +67,9 @@ class ExposedDatabaseQueueDriverTest {
     }
 
     @Test
-    fun insertAndUpdate() = runTest {
-        val clock = TestClock(startInstant)
+    fun insertAndUpdate() = runTestWithDatabase {
+        val clock = testScope.TestClock(startInstant)
+        val table = JobsTable.Default
         val repository = JobsRepositoryImpl(database, table, clock)
         val driver = ExposedDatabaseQueueDriver(repository)
 

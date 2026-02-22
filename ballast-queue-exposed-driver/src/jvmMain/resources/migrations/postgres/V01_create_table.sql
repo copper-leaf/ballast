@@ -1,7 +1,8 @@
-CREATE TABLE IF NOT EXISTS jobs
+CREATE TABLE ${tableName}
 (
     id                          uuid PRIMARY KEY,
     queue                       TEXT                                  NOT NULL,
+    original_queue              TEXT        DEFAULT NULL              NULL,
     payload                     JSONB                                 NOT NULL,
     job_state                   JSONB                                 NOT NULL,
     result_data                 JSONB       DEFAULT NULL::jsonb       NULL,
@@ -29,9 +30,9 @@ CREATE TABLE IF NOT EXISTS jobs
     CONSTRAINT check_jobs_0 CHECK (status IN ('Pending', 'Running', 'Succeeded', 'Failed', 'Cooldown', 'Cancelled')),
     CONSTRAINT check_jobs_1 CHECK (last_run_result_type IN ('Success', 'Cancelled', 'Timeout', 'Failure'))
 );
-CREATE UNIQUE INDEX uniqueindex__jobs__unique_jobs ON jobs (queue, deduplication_key) WHERE
-    (jobs.unique_until IS NOT NULL) AND (jobs.status IN ('Pending', 'Running', 'Cooldown'));
-CREATE INDEX index__jobs__eligible_pending_jobs ON jobs (queue, status, priority, run_at) WHERE jobs.status = 'Pending';
-CREATE INDEX index__jobs__age_expired ON jobs (status, last_run_finished_at) WHERE jobs.status = 'Succeeded';
-CREATE INDEX index__jobs__cooldown_expired ON jobs (status, unique_until) WHERE jobs.status = 'Cooldown';
-CREATE INDEX index__jobs__lease_timeout_expired ON jobs (status, leased_until) WHERE jobs.status = 'Running';
+CREATE UNIQUE INDEX uniqueindex__jobs__unique_jobs ON ${tableName} (queue, deduplication_key) WHERE
+    (${tableName}.unique_until IS NOT NULL) AND (${tableName}.status IN ('Pending', 'Running', 'Cooldown'));
+CREATE INDEX index__jobs__eligible_pending_jobs ON ${tableName} (queue, status, priority, run_at) WHERE ${tableName}.status = 'Pending';
+CREATE INDEX index__jobs__age_expired ON ${tableName} (status, last_run_finished_at) WHERE ${tableName}.status = 'Succeeded';
+CREATE INDEX index__jobs__cooldown_expired ON ${tableName} (status, unique_until) WHERE ${tableName}.status = 'Cooldown';
+CREATE INDEX index__jobs__lease_timeout_expired ON ${tableName} (status, leased_until) WHERE ${tableName}.status = 'Running';

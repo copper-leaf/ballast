@@ -112,6 +112,7 @@ class InMemoryQueueDriverTest {
             permanentlyFail = false,
             failureMessage = "testError",
             failureStacktrace = null,
+            skipAttempt = false,
         )
 
         // job gets re-enqueued because it still had retries left
@@ -173,6 +174,7 @@ class InMemoryQueueDriverTest {
             permanentlyFail = false,
             failureMessage = "testError",
             failureStacktrace = null,
+            skipAttempt = false,
         )
 
         // job gets marked as Failed because it was on its last retry

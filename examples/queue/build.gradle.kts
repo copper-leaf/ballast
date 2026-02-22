@@ -24,6 +24,7 @@ kotlin {
             dependencies {
                 api("org.postgresql:postgresql:42.7.7")
                 api("com.mysql:mysql-connector-j:9.5.0")
+                api("org.testcontainers:testcontainers:2.0.2")
 
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-queue-core"))

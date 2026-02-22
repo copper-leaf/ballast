@@ -5,16 +5,19 @@ import com.copperleaf.ballast.examples.presentation.queue.MainQueueViewModel
 import com.copperleaf.ballast.examples.presentation.ui.MainScreenEventHandler
 import com.copperleaf.ballast.examples.presentation.ui.MainScreenInputHandler
 import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueDriver
+import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueMigrations
 import com.copperleaf.ballast.queue.driver.db.JobsTable
 import com.copperleaf.ballast.queue.driver.db.repository.JobsMaintenanceRepository
 import com.copperleaf.ballast.queue.driver.db.repository.JobsMaintenanceRepositoryImpl
 import com.copperleaf.ballast.queue.driver.db.repository.JobsRepository
 import com.copperleaf.ballast.queue.driver.db.repository.JobsRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.TimeZone
 import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.v1.core.StdOutSqlLogger
 import org.jetbrains.exposed.v1.jdbc.Database
+import org.testcontainers.containers.GenericContainer
 import kotlin.random.Random
 import kotlin.time.Clock
 
@@ -45,26 +48,14 @@ class ComposeDesktopInjectorImpl(
     private val table: JobsTable = JobsTable.Default
     private val random: Random = Random
 
-    private val postgresDatabase: Database = Database.connect(
-        "jdbc:postgresql://localhost:5432/postgres",
-        driver = "org.postgresql.Driver",
-        user = "postgres",
-        password = "postgres"
-    )
-    private val mysqlDatabase: Database = Database.connect(
-        "jdbc:mysql://localhost:3306/mysql",
-        driver = "com.mysql.cj.jdbc.Driver",
-        user = "mysql",
-        password = "mysql"
-    )
-    val db = postgresDatabase
+    val db = connectToPostgres().second
 
-//        val db = mysqlDatabase
     private val jobsRepository: JobsRepository = JobsRepositoryImpl(db, table, clock, json, StdOutSqlLogger)
     private val jobsMaintenanceRepository: JobsMaintenanceRepository = JobsMaintenanceRepositoryImpl(
-        db,
-        table,
-        StdOutSqlLogger,
+        database = db,
+        table = table,
+        clock = clock,
+        logger = StdOutSqlLogger,
     )
     override val driver: ExposedDatabaseQueueDriver = ExposedDatabaseQueueDriver(
         repository = jobsRepository,
@@ -83,5 +74,27 @@ class ComposeDesktopInjectorImpl(
 
     override fun mainScreenEventHandler(): MainScreenEventHandler {
         return MainScreenEventHandler(snackbarHostState)
+    }
+
+    private fun connectToPostgres(): Pair<GenericContainer<*>, Database> = runBlocking {
+        val postgresContainer = GenericContainer("postgres:latest")
+            .withExposedPorts(5432)
+            .withEnv("POSTGRES_USER", "postgres")
+            .withEnv("POSTGRES_PASSWORD", "postgres")
+        postgresContainer.start()
+
+        val host = postgresContainer.host
+        val port = postgresContainer.firstMappedPort
+
+        val database = Database.connect(
+            "jdbc:postgresql://$host:$port/postgres",
+            driver = "org.postgresql.Driver",
+            user = "postgres",
+            password = "postgres"
+        )
+
+        ExposedDatabaseQueueMigrations(database, JobsTable.Default).applyMigrations()
+
+        postgresContainer to database
     }
 }

@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS jobs
 (
-    id BINARY (16) PRIMARY KEY,
+    id                          BINARY(16) PRIMARY KEY,
     queue                       text                                     NOT NULL,
+    original_queue              text        DEFAULT NULL                 NULL,
     payload                     JSON                                     NOT NULL,
     job_state                   JSON                                     NOT NULL,
     result_data                 JSON        DEFAULT (NULL)               NULL,
@@ -29,3 +30,8 @@ CREATE TABLE IF NOT EXISTS jobs
     CONSTRAINT check_jobs_0 CHECK (status IN ('Pending', 'Running', 'Succeeded', 'Failed', 'Cooldown', 'Cancelled')),
     CONSTRAINT check_jobs_1 CHECK (last_run_result_type IN ('Success', 'Cancelled', 'Timeout', 'Failure'))
 );
+CREATE UNIQUE INDEX uniqueindex__jobs__unique_jobs ON jobs (queue(255), deduplication_key(255));
+CREATE INDEX index__jobs__eligible_pending_jobs ON jobs (queue(255), status, priority, run_at);
+CREATE INDEX index__jobs__age_expired ON jobs (status, last_run_finished_at);
+CREATE INDEX index__jobs__cooldown_expired ON jobs (status, unique_until);
+CREATE INDEX index__jobs__lease_timeout_expired ON jobs (status, leased_until);

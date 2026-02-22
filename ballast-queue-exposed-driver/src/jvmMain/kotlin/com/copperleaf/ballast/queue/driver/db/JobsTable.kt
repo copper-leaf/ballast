@@ -39,9 +39,8 @@ public abstract class JobsTable(tableName: String) : IdTable<Uuid>(tableName) {
 
     final override val primaryKey: PrimaryKey = PrimaryKey(id)
 
-
     public val queue: Column<String> = text("queue")
-    public val original_queue: Column<String?> = text("queue").nullable().default(null)
+    public val original_queue: Column<String?> = text("original_queue").nullable().default(null)
 
     public val payload: Column<JsonElement> = jsonb("payload", Json, JsonElement.serializer())
     public val job_state: Column<JsonElement> = jsonb("job_state", Json, JsonElement.serializer())
