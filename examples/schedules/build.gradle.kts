@@ -7,6 +7,7 @@ plugins {
     id("copper-leaf-tests")
     id("copper-leaf-compose")
     id("copper-leaf-lint")
+    id("copper-leaf-serialization")
 }
 
 kotlin {
@@ -47,8 +48,8 @@ kotlin {
                 implementation(libs.androidx.activityCompose)
                 implementation(project(":ballast-debugger-client"))
                 implementation(libs.ktor.client.cio)
-                implementation("androidx.work:work-runtime-ktx:2.8.1")
-                implementation("androidx.core:core:1.12.0")
+                implementation(libs.androidx.workmanager)
+                implementation(libs.androidx.core)
                 implementation(project(":ballast-scheduler-android-workmanager"))
                 implementation(project(":ballast-scheduler-android-alarmmanager"))
             }

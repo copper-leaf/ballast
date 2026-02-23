@@ -3,11 +3,10 @@ package com.copperleaf.ballast.scheduler.alarmmanager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.copperleaf.ballast.scheduler.Schedule
-import com.copperleaf.ballast.scheduler.SchedulerCallback
-import com.copperleaf.ballast.scheduler.alarmmanager.state.PreferencesAlarmStateRepository
+import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlin.time.Clock
@@ -25,34 +24,27 @@ public class BallastAlarmManagerBootCompletedWorker : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context == null || intent == null) return
 
+        // Validate that this is actually a BOOT_COMPLETED intent to prevent spoofing
+        if (intent.action != Intent.ACTION_BOOT_COMPLETED) {
+            Log.w("BallastAlarmManager", "Received intent with unexpected action: ${intent.action}")
+            return
+        }
+
         val pendingResult = goAsync()
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             try {
-                restartAllAlarms(context)
+                onReceived(context, intent)
+            } catch (e: Exception) {
+                Log.e("BallastAlarmManager", "Error processing schedule", e)
             } finally {
                 pendingResult.finish()
             }
         }
     }
 
-    private suspend fun restartAllAlarms(context: Context) {
-        val alarmStateRepository = PreferencesAlarmStateRepository(context, json)
-        alarmStateRepository.getAllSchedules().forEach {
-            val schedule = createScheduleThroughReflection(it.scheduleClassName)
-            val callback = createCallbackThroughReflection(it.callbackClassName)
-
-            context.createSchedule(schedule, callback, json, clock)
-        }
-    }
-
-    private fun createCallbackThroughReflection(className: String): SchedulerCallback {
-        val callbackClass = Class.forName(className)
-        return callbackClass.getDeclaredConstructor().newInstance() as SchedulerCallback
-    }
-
-    private fun createScheduleThroughReflection(className: String): Schedule {
-        val callbackClass = Class.forName(className)
-        return callbackClass.getDeclaredConstructor().newInstance() as Schedule
+    private suspend fun onReceived(context: Context, intent: Intent) {
+        val ballastAlarmManager = BallastAlarmManager.getInstance()
+        ballastAlarmManager.executor.synchronizeSchedules()
     }
 }

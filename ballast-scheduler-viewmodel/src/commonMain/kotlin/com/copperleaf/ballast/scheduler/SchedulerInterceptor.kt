@@ -7,7 +7,7 @@ import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.awaitViewModelStart
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.internal.BallastViewModelImpl
-import com.copperleaf.ballast.scheduler.executor.DelayScheduleExecutor
+import com.copperleaf.ballast.scheduler.executor.delay.DelayScheduleExecutor
 import com.copperleaf.ballast.scheduler.vm.SchedulerContract
 import com.copperleaf.ballast.scheduler.vm.SchedulerEventHandler
 import kotlinx.coroutines.CoroutineStart

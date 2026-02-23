@@ -1,9 +1,9 @@
-package com.copperleaf.ballast.examples.scheduler
+package com.copperleaf.ballast.examples.scheduler.memory
 
 import kotlinx.datetime.LocalDateTime
 import kotlin.time.Duration
 
-object SchedulerExampleContract {
+object InMemorySchedulesContract {
     data class State(
         val count: Int = 0,
         val scheduledUpdateTimes: List<Pair<String, LocalDateTime>> = emptyList(),

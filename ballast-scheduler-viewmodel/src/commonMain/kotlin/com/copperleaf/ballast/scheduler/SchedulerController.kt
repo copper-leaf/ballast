@@ -3,7 +3,7 @@ package com.copperleaf.ballast.scheduler
 import com.copperleaf.ballast.BallastViewModel
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.SideJobScope
-import com.copperleaf.ballast.scheduler.executor.DelayScheduleExecutor
+import com.copperleaf.ballast.scheduler.executor.delay.DelayScheduleExecutor
 import com.copperleaf.ballast.scheduler.vm.SchedulerContract
 import com.copperleaf.ballast.scheduler.vm.SchedulerFifoInputStrategy
 import com.copperleaf.ballast.scheduler.vm.SchedulerInputHandler

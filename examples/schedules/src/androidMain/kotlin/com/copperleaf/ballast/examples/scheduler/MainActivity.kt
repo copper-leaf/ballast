@@ -11,18 +11,12 @@ import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import com.copperleaf.ballast.examples.scheduler.layout.SchedulerExampleLayout
 
 public class MainActivity : ComponentActivity() {
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (!isGranted) {
-            Notifications.notify(
-                title = "Permission Denied",
-                message = "Notification permission is required for this app"
-            )
-        }
-    }
+    ) { isGranted -> }
 
     private val exactAlarmSettingsLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -32,7 +26,7 @@ public class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            SchedulerExampleUi.Content()
+            SchedulerExampleLayout.Content()
         }
     }
 

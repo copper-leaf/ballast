@@ -32,7 +32,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.work:work-runtime-ktx:2.10.4")
+                api(libs.androidx.workmanager)
             }
         }
         val jsMain by getting {

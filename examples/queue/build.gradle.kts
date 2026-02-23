@@ -22,9 +22,9 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                api("org.postgresql:postgresql:42.7.7")
-                api("com.mysql:mysql-connector-j:9.5.0")
-                api("org.testcontainers:testcontainers:2.0.2")
+                api(libs.jdbc.postgres)
+                api(libs.jdbc.mysql)
+                api(libs.testcontainers)
 
                 implementation(project(":ballast-core"))
                 implementation(project(":ballast-queue-core"))
@@ -37,7 +37,7 @@ kotlin {
                 implementation(compose.material3)
                 implementation(libs.kotlinx.coroutines.swing)
 
-                implementation("io.github.oleksandrbalan:lazytable:1.10.0")
+                implementation(libs.lazytable)
             }
         }
     }

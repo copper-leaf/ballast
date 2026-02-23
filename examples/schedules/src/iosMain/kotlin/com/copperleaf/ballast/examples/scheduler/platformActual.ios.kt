@@ -6,6 +6,8 @@ import com.copperleaf.ballast.core.OSLogLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.plusAssign
+import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleData
+import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleExecutor
 import io.ktor.client.engine.darwin.Darwin
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CoroutineScope
@@ -31,4 +33,28 @@ internal actual fun BallastViewModelConfiguration.Builder.installDebugger(): Bal
 @OptIn(ExperimentalForeignApi::class, ExperimentalNativeApi::class)
 internal actual fun platformLogger(loggerName: String): BallastLogger {
     return OSLogLogger(loggerName)
+}
+
+actual class Notifications actual constructor() {
+    actual fun notify(
+        title: String,
+        message: String,
+    ) { }
+
+    actual fun getNotificationLogs(): List<String> {
+        return emptyList()
+    }
+}
+
+actual class PersistentScheduleState : EventDrivenScheduleExecutor.State {
+    actual override suspend fun getAllSchedules(): Sequence<EventDrivenScheduleData> {
+        return emptySequence()
+    }
+    actual override suspend fun getState(scheduleUniqueName: String): EventDrivenScheduleData? {
+        return null
+    }
+    actual override suspend fun storeScheduleData(data: EventDrivenScheduleData) {
+    }
+    actual override suspend fun removeScheduleData(scheduleUniqueName: String) {
+    }
 }

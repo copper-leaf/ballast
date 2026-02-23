@@ -16,21 +16,19 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api(project(":ballast-queue-core"))
-                api("org.jetbrains.exposed:exposed-core:1.0.0")
-                api("org.jetbrains.exposed:exposed-jdbc:1.0.0")
-                api("org.jetbrains.exposed:exposed-kotlin-datetime:1.0.0")
-                api("org.jetbrains.exposed:exposed-json:1.0.0")
-                api("org.jetbrains.exposed:exposed-migration-core:1.0.0")
-                api("org.jetbrains.exposed:exposed-migration-jdbc:1.0.0")
+                api(libs.exposed.core)
+                api(libs.exposed.jdbc)
+                api(libs.exposed.kotlindatetime)
+                api(libs.exposed.json)
+                api(libs.exposed.migration.core)
+                api(libs.exposed.migration.jdbc)
             }
         }
         val jvmTest by getting {
             dependencies {
-                api("org.postgresql:postgresql:42.7.7")
-                api("com.mysql:mysql-connector-j:9.5.0")
-                api("org.jetbrains.exposed:exposed-migration-core:1.0.0")
-                api("org.jetbrains.exposed:exposed-migration-jdbc:1.0.0")
-                api("org.testcontainers:testcontainers:2.0.2")
+                api(libs.jdbc.postgres)
+                api(libs.jdbc.mysql)
+                api(libs.testcontainers)
             }
         }
     }

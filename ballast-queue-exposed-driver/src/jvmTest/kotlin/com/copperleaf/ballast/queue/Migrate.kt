@@ -33,7 +33,6 @@ class Migrate {
                 println(it)
             }
         }
-
     }
 
     @OptIn(ExperimentalDatabaseMigrationApi::class)

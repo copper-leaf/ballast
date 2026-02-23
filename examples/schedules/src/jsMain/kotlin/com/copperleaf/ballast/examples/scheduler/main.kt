@@ -6,6 +6,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
+import com.copperleaf.ballast.examples.scheduler.layout.SchedulerExampleLayout
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -23,7 +24,7 @@ public fun main() {
 
         CanvasBasedWindow("Ballast Examples > Scheduler") {
             Box(Modifier.requiredWidth(400.dp)) {
-                SchedulerExampleUi.Content()
+                SchedulerExampleLayout.Content()
             }
         }
     }

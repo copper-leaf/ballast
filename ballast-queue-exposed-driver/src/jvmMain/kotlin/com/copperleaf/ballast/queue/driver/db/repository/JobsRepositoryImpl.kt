@@ -171,7 +171,6 @@ public class JobsRepositoryImpl(
     private suspend fun claimNextAvailableJobForMysql(
         queueName: String,
     ): SerializedJob<ExposedDatabaseQueueDriver.Metadata>? {
-
         val now = clock.now()
 
         val outerQueryTable = table.alias("outer_jobs")

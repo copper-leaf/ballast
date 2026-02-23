@@ -42,5 +42,5 @@ public enum class ExposedDatabaseJobStatus {
      * as Cancelled, it will be treated like a timeout or exception failure for purposes of retrys and backoff, assuming
      * it has retries left.
      */
-    Cancelled;
+    Cancelled
 }

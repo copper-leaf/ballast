@@ -1,6 +1,6 @@
 package com.copperleaf.ballast.scheduler.docs
 
-import com.copperleaf.ballast.scheduler.executor.DelayScheduleExecutor
+import com.copperleaf.ballast.scheduler.executor.delay.DelayScheduleExecutor
 import com.copperleaf.ballast.scheduler.operators.named
 import com.copperleaf.ballast.scheduler.schedule.EveryMinuteSchedule
 import com.copperleaf.ballast.scheduler.schedule.EverySecondSchedule

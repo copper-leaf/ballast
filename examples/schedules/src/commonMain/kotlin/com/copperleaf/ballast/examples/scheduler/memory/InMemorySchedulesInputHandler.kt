@@ -1,7 +1,8 @@
-package com.copperleaf.ballast.examples.scheduler
+package com.copperleaf.ballast.examples.scheduler.memory
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
+import com.copperleaf.ballast.examples.scheduler.memory.schedule.InMemorySchedulesAdapter
 import com.copperleaf.ballast.scheduler.scheduler
 import com.copperleaf.ballast.scheduler.vm.SchedulerContract
 import kotlinx.coroutines.delay
@@ -9,20 +10,20 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
-class SchedulerExampleInputHandler(
+class InMemorySchedulesInputHandler(
     private val clock: Clock = Clock.System,
     private val timeZone: TimeZone = TimeZone.UTC,
 ) : InputHandler<
-        SchedulerExampleContract.Inputs,
-        SchedulerExampleContract.Events,
-        SchedulerExampleContract.State> {
+        InMemorySchedulesContract.Inputs,
+        InMemorySchedulesContract.Events,
+        InMemorySchedulesContract.State> {
     override suspend fun InputHandlerScope<
-            SchedulerExampleContract.Inputs,
-            SchedulerExampleContract.Events,
-            SchedulerExampleContract.State>.handleInput(
-        input: SchedulerExampleContract.Inputs
+            InMemorySchedulesContract.Inputs,
+            InMemorySchedulesContract.Events,
+            InMemorySchedulesContract.State>.handleInput(
+        input: InMemorySchedulesContract.Inputs
     ) = when (input) {
-        is SchedulerExampleContract.Inputs.Increment -> {
+        is InMemorySchedulesContract.Inputs.Increment -> {
             updateState {
                 it.copy(
                     count = it.count + input.amount,
@@ -37,7 +38,7 @@ class SchedulerExampleInputHandler(
             delay(input.processingTime)
         }
 
-        is SchedulerExampleContract.Inputs.StartSchedules -> {
+        is InMemorySchedulesContract.Inputs.StartSchedules -> {
             updateState {
                 it.copy(
                     scheduledUpdateTimes = emptyList()
@@ -48,27 +49,27 @@ class SchedulerExampleInputHandler(
                 scheduler()
                     .send(
                         SchedulerContract.Inputs.StartSchedules(
-                            SchedulerExampleAdapter()
+                            InMemorySchedulesAdapter()
                         )
                     )
             }
         }
 
-        is SchedulerExampleContract.Inputs.PauseSchedule -> {
+        is InMemorySchedulesContract.Inputs.PauseSchedule -> {
             sideJob("Pause ${input.key}") {
                 scheduler()
                     .send(SchedulerContract.Inputs.PauseSchedule(input.key))
             }
         }
 
-        is SchedulerExampleContract.Inputs.ResumeSchedule -> {
+        is InMemorySchedulesContract.Inputs.ResumeSchedule -> {
             sideJob("Resume ${input.key}") {
                 scheduler()
                     .send(SchedulerContract.Inputs.ResumeSchedule(input.key))
             }
         }
 
-        is SchedulerExampleContract.Inputs.StopSchedule -> {
+        is InMemorySchedulesContract.Inputs.StopSchedule -> {
             updateState {
                 it.copy(
                     scheduledUpdateTimes = it

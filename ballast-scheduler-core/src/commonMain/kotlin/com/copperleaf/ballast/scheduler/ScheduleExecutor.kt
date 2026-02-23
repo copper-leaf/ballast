@@ -1,7 +1,6 @@
 package com.copperleaf.ballast.scheduler
 
 import kotlinx.coroutines.flow.Flow
-import kotlin.time.Instant
 
 public interface ScheduleExecutor {
     /**
@@ -30,19 +29,6 @@ public interface ScheduleExecutor {
      * dispatch the scheduled tasks to another system that can handle backpressure, such as Ballast Queue.
      */
     public fun runSchedules(schedules: List<NamedSchedule>): Flow<TriggeredTask>
-
-    public interface State {
-        public suspend fun getLastExecution(
-            scheduleName: String?,
-            schedule: Schedule,
-        ): Instant?
-
-        public suspend fun storeExecution(
-            scheduleName: String?,
-            schedule: Schedule,
-            instant: Instant,
-        )
-    }
 
     public enum class CatchUpBehavior {
         Skip,

@@ -16,7 +16,7 @@ kotlin {
     sourceSets {
         val androidMain by getting {
             dependencies {
-                api("androidx.work:work-runtime-ktx:2.11.1")
+                api(libs.androidx.workmanager)
                 implementation(project(":ballast-scheduler-core"))
             }
         }

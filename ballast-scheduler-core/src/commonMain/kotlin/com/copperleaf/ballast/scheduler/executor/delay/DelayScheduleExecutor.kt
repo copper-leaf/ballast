@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.scheduler.executor
+package com.copperleaf.ballast.scheduler.executor.delay
 
 import com.copperleaf.ballast.scheduler.NamedSchedule
 import com.copperleaf.ballast.scheduler.Schedule

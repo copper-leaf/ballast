@@ -1,7 +1,6 @@
-package com.copperleaf.ballast.scheduler.executor
+package com.copperleaf.ballast.scheduler.executor.poll
 
 import com.copperleaf.ballast.scheduler.Schedule
-import com.copperleaf.ballast.scheduler.ScheduleExecutor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -10,7 +9,7 @@ import kotlin.time.Instant
 
 public class InMemoryScheduleState(
     initialState: Map<String?, Instant> = emptyMap()
-) : ScheduleExecutor.State {
+) : PollingScheduleExecutor.State {
     private val _lastExecutions = MutableStateFlow(initialState)
     public val lastExecutions: StateFlow<Map<String?, Instant>> get() = _lastExecutions.asStateFlow()
 

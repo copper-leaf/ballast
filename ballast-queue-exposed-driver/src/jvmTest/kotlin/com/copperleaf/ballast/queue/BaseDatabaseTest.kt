@@ -78,5 +78,4 @@ abstract class BaseDatabaseTest {
         val database: Database,
         val table: JobsTable,
     )
-
 }

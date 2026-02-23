@@ -1,4 +1,4 @@
-package com.copperleaf.ballast.scheduler.executor
+package com.copperleaf.ballast.scheduler.executor.poll
 
 import com.copperleaf.ballast.scheduler.NamedSchedule
 import com.copperleaf.ballast.scheduler.Schedule
@@ -18,9 +18,9 @@ import kotlin.time.Clock
 import kotlin.time.Instant
 
 public class PollingScheduleExecutor(
-    private val scheduleState: ScheduleExecutor.State,
+    private val scheduleState: PollingScheduleExecutor.State,
     private val clock: Clock = Clock.System,
-    private val timeZone: TimeZone = TimeZone.UTC,
+    private val timeZone: TimeZone = TimeZone.Companion.UTC,
     private val pollingSchedule: Schedule = EveryMinuteSchedule(0, timeZone = timeZone),
     private val catchUpBehavior: ScheduleExecutor.CatchUpBehavior = ScheduleExecutor.CatchUpBehavior.ExecuteOne,
 ) : ScheduleExecutor {
@@ -174,5 +174,18 @@ public class PollingScheduleExecutor(
                 }
             }
         }
+    }
+
+    public interface State {
+        public suspend fun getLastExecution(
+            scheduleName: String?,
+            schedule: Schedule,
+        ): Instant?
+
+        public suspend fun storeExecution(
+            scheduleName: String?,
+            schedule: Schedule,
+            instant: Instant,
+        )
     }
 }
