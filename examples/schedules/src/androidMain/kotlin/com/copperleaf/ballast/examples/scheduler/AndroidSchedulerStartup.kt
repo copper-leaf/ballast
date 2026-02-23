@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi
 import androidx.startup.Initializer
 import androidx.work.WorkManager
 import androidx.work.WorkManagerInitializer
+import com.copperleaf.ballast.scheduler.alarmmanager.createSchedule
 import com.copperleaf.ballast.scheduler.workmanager.createSchedule
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -16,9 +17,19 @@ public class AndroidSchedulerStartup : Initializer<Unit> {
 
         val workManager = WorkManager.getInstance(context)
 
+        Notifications.notify(
+            title = "Ballast Scheduler",
+            message = "App Launch",
+            context = context
+        )
+
         workManager.createSchedule(
-            schedule = HourlySchedule(),
-            callback = HourlyCallback()
+            schedule = WorkManagerSchedule(),
+            callback = WorkManagerCallback()
+        )
+        context.createSchedule(
+            schedule = AlarmManagerSchedule(),
+            callback = AlarmManagerCallback()
         )
     }
 

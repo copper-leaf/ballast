@@ -7,6 +7,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.copperleaf.ballast.scheduler.Schedule
+import com.copperleaf.ballast.scheduler.SchedulerCallback
 import com.copperleaf.ballast.scheduler.operators.getNext
 import com.copperleaf.ballast.scheduler.workmanager.WorkManagerConstants.KEY_INPUT_DATA_PAYLOAD
 import com.google.common.util.concurrent.ListenableFuture
@@ -46,11 +47,13 @@ public fun WorkManager.createSchedule(
         .setInitialDelay(initialDelay.toJavaDuration())
         .build()
 
-    this.beginUniqueWork(
-        scheduleData.scheduleClassName,
-        ExistingWorkPolicy.APPEND_OR_REPLACE,
-        scheduleWorkRequest
-    )
+    this
+        .beginUniqueWork(
+            scheduleData.scheduleClassName,
+            ExistingWorkPolicy.APPEND_OR_REPLACE,
+            scheduleWorkRequest
+        )
+        .enqueue()
 }
 
 internal suspend fun WorkManager.updateExistingSchedule(
@@ -77,13 +80,22 @@ internal suspend fun WorkManager.updateExistingSchedule(
         .setId(existingWorkRequestId)
         .build()
 
-    // Pass the new WorkRequest to updateWork().
+    // Pass the new WorkRequest to updateWork()
     this.updateWork(scheduleWorkRequest)
 }
 
-internal fun WorkManager.cancelSchedule(
+public suspend fun WorkManager.cancelSchedule(
     schedule: Schedule,
 ) {
+    // Retrieve the work request ID. In this example, the work being updated is unique
+    // work so we can retrieve the ID using the unique work name.
+    val existingWorkRequestId = this
+        .getWorkInfosForUniqueWork(schedule::class.qualifiedName!!)
+        .await()
+        .firstOrNull()
+        ?.id ?: return
+
+    this.cancelWorkById(existingWorkRequestId)
 }
 
 public suspend fun <T> ListenableFuture<T>.await(): T {

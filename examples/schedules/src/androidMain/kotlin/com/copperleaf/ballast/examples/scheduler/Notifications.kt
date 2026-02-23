@@ -28,7 +28,7 @@ object Notifications {
 
         with(NotificationManagerCompat.from(this)) {
             // notificationId is a unique int for each notification that you must define.
-            if (ActivityCompat.checkSelfPermission(MainApp.INSTANCE!!, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
