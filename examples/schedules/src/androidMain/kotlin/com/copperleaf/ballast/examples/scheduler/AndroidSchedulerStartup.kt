@@ -5,12 +5,21 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.startup.Initializer
+import androidx.work.WorkManager
 import androidx.work.WorkManagerInitializer
+import com.copperleaf.ballast.scheduler.workmanager.createSchedule
 
 @RequiresApi(Build.VERSION_CODES.O)
 public class AndroidSchedulerStartup : Initializer<Unit> {
     override fun create(context: Context) {
         Log.d("BallastWorkManager", "Running AndroidSchedulerStartup")
+
+        val workManager = WorkManager.getInstance(context)
+
+        workManager.createSchedule(
+            schedule = HourlySchedule(),
+            callback = HourlyCallback()
+        )
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {

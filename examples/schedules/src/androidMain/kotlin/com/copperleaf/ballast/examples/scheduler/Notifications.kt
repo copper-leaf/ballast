@@ -13,7 +13,11 @@ import com.copperleaf.schedules.R
 
 object Notifications {
 
-    public fun notify(context: Context, title: String, message: String) = with(context) {
+    public fun notify(
+        title: String,
+        message: String,
+        context: Context = MainApp.INSTANCE!!,
+    ) = with(context) {
         val channelName = createNotificationChannel()
 
         val builder = NotificationCompat.Builder(this, channelName)

@@ -49,6 +49,7 @@ kotlin {
                 implementation(libs.ktor.client.cio)
                 implementation("androidx.work:work-runtime-ktx:2.8.1")
                 implementation("androidx.core:core:1.12.0")
+                implementation(project(":ballast-scheduler-android-workmanager"))
             }
         }
 

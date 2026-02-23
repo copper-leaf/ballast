@@ -8,7 +8,6 @@ public class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Notifications.notify(
-            context = MainApp.INSTANCE!!,
             title = "Ballast Scheduler",
             message = "App Launch"
         )
