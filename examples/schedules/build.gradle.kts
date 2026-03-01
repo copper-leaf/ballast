@@ -48,9 +48,7 @@ kotlin {
                 implementation(libs.androidx.activityCompose)
                 implementation(project(":ballast-debugger-client"))
                 implementation(libs.ktor.client.cio)
-                implementation(libs.androidx.workmanager)
                 implementation(libs.androidx.core)
-                implementation(project(":ballast-scheduler-android-workmanager"))
                 implementation(project(":ballast-scheduler-android-alarmmanager"))
             }
         }
