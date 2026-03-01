@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 
 @Suppress("UNCHECKED_CAST")
 public class BallastAlarmManagerScheduleWorker : BroadcastReceiver() {
@@ -32,11 +33,11 @@ public class BallastAlarmManagerScheduleWorker : BroadcastReceiver() {
 
     private suspend fun onReceived(context: Context, intent: Intent) {
         val payloadJson = intent.getStringExtra(KEY_INPUT_DATA_PAYLOAD) ?: error("Missing input data in extras")
+        val data = Json.Default.decodeFromString(EventDrivenScheduleData.serializer(), payloadJson)
 
-        val ballastAlarmManager = BallastAlarmManager.getInstance()
-        val executor = ballastAlarmManager.executor
-
-        val data = executor.json.decodeFromString(EventDrivenScheduleData.serializer(), payloadJson)
-        executor.handleTask(data)
+        BallastAlarmManager
+            .getInstance(data.configuration)
+            .executor
+            .handleTask(data)
     }
 }

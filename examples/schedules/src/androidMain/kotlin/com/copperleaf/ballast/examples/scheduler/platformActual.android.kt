@@ -17,8 +17,6 @@ import com.copperleaf.ballast.core.AndroidLogger
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
 import com.copperleaf.ballast.plusAssign
-import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleData
-import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleExecutor
 import com.copperleaf.schedules.R
 import io.ktor.client.engine.cio.CIO
 import kotlinx.coroutines.CoroutineScope
@@ -128,46 +126,5 @@ actual class Notifications {
         }
 
         return "ballast"
-    }
-}
-
-actual class PersistentScheduleState : EventDrivenScheduleExecutor.State {
-
-    private val json: Json = Json.Default
-    private val serializer = ListSerializer(EventDrivenScheduleData.serializer())
-    private val preferences: SharedPreferences by lazy {
-        MainApp.INSTANCE!!.getSharedPreferences("schedules", MODE_PRIVATE)
-    }
-
-    private var scheduleState: List<EventDrivenScheduleData>
-        get() = preferences.getString("scheduleState", null)
-            ?.let { json.decodeFromString(serializer, it) }
-            ?: emptyList()
-        set(value) {
-            preferences
-                .edit()
-                .putString("scheduleState", json.encodeToString(serializer, value))
-                .apply()
-        }
-
-    actual override suspend fun getAllSchedules(): Sequence<EventDrivenScheduleData> {
-        return scheduleState.asSequence()
-    }
-
-    actual override suspend fun getState(scheduleUniqueName: String): EventDrivenScheduleData? {
-        return scheduleState.find { it.scheduleUniqueName == scheduleUniqueName }
-    }
-
-    actual override suspend fun storeScheduleData(data: EventDrivenScheduleData) {
-        val existing = scheduleState.find { it.scheduleUniqueName == data.scheduleUniqueName }
-        if (existing != null) {
-            scheduleState = scheduleState - existing + data
-        } else {
-            scheduleState = scheduleState + data
-        }
-    }
-
-    actual override suspend fun removeScheduleData(scheduleUniqueName: String) {
-        scheduleState = scheduleState.filterNot { it.scheduleUniqueName == scheduleUniqueName }
     }
 }

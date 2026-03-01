@@ -4,7 +4,6 @@ import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.examples.scheduler.persistent.schedule.PersistentSchedule
 import com.copperleaf.ballast.examples.scheduler.persistent.schedule.PersistentScheduleCallback
-import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleData
 import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleExecutor
 
 internal expect fun BallastViewModelConfiguration.Builder.installDebugger(): BallastViewModelConfiguration.Builder
@@ -20,11 +19,4 @@ expect class Notifications() {
     )
 
     fun getNotificationLogs(): List<String>
-}
-
-expect class PersistentScheduleState : EventDrivenScheduleExecutor.State {
-    override suspend fun getAllSchedules(): Sequence<EventDrivenScheduleData>
-    override suspend fun getState(scheduleUniqueName: String): EventDrivenScheduleData?
-    override suspend fun storeScheduleData(data: EventDrivenScheduleData)
-    override suspend fun removeScheduleData(scheduleUniqueName: String)
 }

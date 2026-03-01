@@ -44,7 +44,8 @@ public class BallastAlarmManagerBootCompletedWorker : BroadcastReceiver() {
     }
 
     private suspend fun onReceived(context: Context, intent: Intent) {
-        val ballastAlarmManager = BallastAlarmManager.getInstance()
-        ballastAlarmManager.executor.synchronizeSchedules()
+        BallastAlarmManager.getAllConfigurations().forEach { ballastAlarmManager ->
+            ballastAlarmManager.executor.synchronizeSchedules()
+        }
     }
 }

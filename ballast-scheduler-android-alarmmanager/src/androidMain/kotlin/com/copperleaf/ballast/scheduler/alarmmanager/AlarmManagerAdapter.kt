@@ -10,16 +10,15 @@ import com.copperleaf.ballast.scheduler.alarmmanager.AlarmManagerConstants.KEY_I
 import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleData
 import com.copperleaf.ballast.scheduler.executor.event.EventDrivenScheduleExecutor
 import kotlinx.serialization.json.Json
-import kotlin.time.Clock
 
 public class AlarmManagerAdapter<S : NamedSchedule, C : SchedulerCallback>(
     private val context: Context,
-    private val clock: Clock = Clock.System,
     private val json: Json = Json.Default,
 ) : EventDrivenScheduleExecutor.Adapter {
     override suspend fun registerSchedule(data: EventDrivenScheduleData) {
         val dataJson = json.encodeToString(EventDrivenScheduleData.serializer(), data)
 
+        val ballastAlarmManagerConfiguration = BallastAlarmManager.getInstance(data.configuration)
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -31,32 +30,33 @@ public class AlarmManagerAdapter<S : NamedSchedule, C : SchedulerCallback>(
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            data.nextExecution.toEpochMilliseconds(),
-            pendingIntent,
-        )
+        when (ballastAlarmManagerConfiguration.precision) {
+            AlarmPrecision.Low -> {
+                alarmManager.set(
+                    AlarmManager.RTC,
+                    data.nextExecution.toEpochMilliseconds(),
+                    pendingIntent,
+                )
+            }
+            AlarmPrecision.Default -> {
+                alarmManager.setExact(
+                    AlarmManager.RTC,
+                    data.nextExecution.toEpochMilliseconds(),
+                    pendingIntent,
+                )
+            }
+            AlarmPrecision.High -> {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    data.nextExecution.toEpochMilliseconds(),
+                    pendingIntent,
+                )
+            }
+        }
     }
 
     override suspend fun updateSchedule(data: EventDrivenScheduleData) {
-        val dataJson = json.encodeToString(EventDrivenScheduleData.serializer(), data)
-
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            data.scheduleUniqueName.hashCode(),
-            Intent(context, BallastAlarmManagerScheduleWorker::class.java).apply {
-                putExtra(KEY_INPUT_DATA_PAYLOAD, dataJson)
-            },
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-        )
-
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            data.nextExecution.toEpochMilliseconds(),
-            pendingIntent,
-        )
+        registerSchedule(data)
     }
 
     override suspend fun cancelSchedule(data: EventDrivenScheduleData) {
@@ -73,7 +73,7 @@ public class AlarmManagerAdapter<S : NamedSchedule, C : SchedulerCallback>(
 
     override suspend fun synchronizeSchedules(schedules: Sequence<EventDrivenScheduleData>) {
         schedules.forEach {
-            updateSchedule(it)
+            registerSchedule(it)
         }
     }
 }

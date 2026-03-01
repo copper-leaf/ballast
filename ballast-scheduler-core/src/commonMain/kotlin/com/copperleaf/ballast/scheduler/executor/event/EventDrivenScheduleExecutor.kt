@@ -18,7 +18,7 @@ public class EventDrivenScheduleExecutor<S : NamedSchedule, C : SchedulerCallbac
     public val json: Json = Json.Default,
     private val clock: Clock = Clock.System,
 ) {
-    public suspend fun registerSchedule(schedule: S, callback: C) {
+    public suspend fun registerSchedule(schedule: S, callback: C, configuration: String? = null) {
         val existingScheduleState = state.getState(schedule.name)
 
         if (existingScheduleState != null) {
@@ -27,6 +27,7 @@ public class EventDrivenScheduleExecutor<S : NamedSchedule, C : SchedulerCallbac
         val next = schedule.getNext(clock.now()) ?: return
 
         val newScheduleState = EventDrivenScheduleData(
+            configuration = configuration,
             scheduleUniqueName = schedule.name,
             scheduleJson = json.encodeToJsonElement(scheduleSerializer, schedule) as JsonObject,
             callbackJson = json.encodeToJsonElement(callbackSerializer, callback) as JsonObject,
@@ -44,13 +45,14 @@ public class EventDrivenScheduleExecutor<S : NamedSchedule, C : SchedulerCallbac
         }
     }
 
-    public suspend fun registerOrUpdateSchedule(schedule: S, callback: C) {
+    public suspend fun registerOrUpdateSchedule(schedule: S, callback: C, configuration: String? = null) {
         val existingScheduleState = state.getState(schedule.name)
 
         val updatedScheduleState = if (existingScheduleState == null) {
             val next = schedule.getNext(clock.now()) ?: return
 
             EventDrivenScheduleData(
+                configuration = configuration,
                 scheduleUniqueName = schedule.name,
                 scheduleJson = json.encodeToJsonElement(scheduleSerializer, schedule) as JsonObject,
                 callbackJson = json.encodeToJsonElement(callbackSerializer, callback) as JsonObject,

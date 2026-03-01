@@ -6,6 +6,7 @@ import kotlin.time.Instant
 
 @Serializable
 public data class EventDrivenScheduleData(
+    val configuration: String?,
     val scheduleUniqueName: String,
     val scheduleJson: JsonObject,
     val callbackJson: JsonObject,
