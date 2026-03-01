@@ -13,16 +13,18 @@ public final class com/copperleaf/ballast/queue/JobCompletionResult$Cancelled : 
 }
 
 public final class com/copperleaf/ballast/queue/JobCompletionResult$Failure : com/copperleaf/ballast/queue/JobCompletionResult {
-	public synthetic fun <init> (Ljava/lang/Exception;JZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/Exception;JZZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Ljava/lang/Exception;
 	public final fun component2-UwyO8pc ()J
 	public final fun component3 ()Z
-	public final fun copy-8Mi8wO0 (Ljava/lang/Exception;JZ)Lcom/copperleaf/ballast/queue/JobCompletionResult$Failure;
-	public static synthetic fun copy-8Mi8wO0$default (Lcom/copperleaf/ballast/queue/JobCompletionResult$Failure;Ljava/lang/Exception;JZILjava/lang/Object;)Lcom/copperleaf/ballast/queue/JobCompletionResult$Failure;
+	public final fun component4 ()Z
+	public final fun copy-dWUq8MI (Ljava/lang/Exception;JZZ)Lcom/copperleaf/ballast/queue/JobCompletionResult$Failure;
+	public static synthetic fun copy-dWUq8MI$default (Lcom/copperleaf/ballast/queue/JobCompletionResult$Failure;Ljava/lang/Exception;JZZILjava/lang/Object;)Lcom/copperleaf/ballast/queue/JobCompletionResult$Failure;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getCause ()Ljava/lang/Exception;
 	public final fun getPermanentlyFail ()Z
 	public final fun getRetryDelay-UwyO8pc ()J
+	public final fun getSkipAttempt ()Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -64,7 +66,7 @@ public final class com/copperleaf/ballast/queue/JobCompletionResultType : java/l
 public abstract interface class com/copperleaf/ballast/queue/QueueDriver {
 	public abstract fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun completeJobWithFailure-3FA4DCs (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun completeJobWithFailure-3c68mSE (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observeQueue (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public abstract fun requestJobCancellation (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun subscribeToJobCancellation (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
@@ -157,7 +159,7 @@ public final class com/copperleaf/ballast/queue/driver/memory/InMemoryQueueDrive
 	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/memory/InMemoryQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun completeJobWithFailure-3FA4DCs (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun completeJobWithFailure-3c68mSE (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun observeJobState (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public fun observeQueue (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
 	public final fun observeQueueState ()Lkotlinx/coroutines/flow/StateFlow;
@@ -209,7 +211,7 @@ public final class com/copperleaf/ballast/queue/driver/sync/SyncQueueDriver : co
 	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLkotlin/Unit;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun completeJobWithFailure-3FA4DCs (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun completeJobWithFailure-3c68mSE (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getLastJob ()Lcom/copperleaf/ballast/queue/SerializedJob;
 	public final fun getLastJobFailureMessage ()Ljava/lang/String;
 	public final fun getLastJobResultData ()Ljava/lang/String;
@@ -228,10 +230,11 @@ public final class com/copperleaf/ballast/queue/executor/DefaultQueueExecutor : 
 }
 
 public final class com/copperleaf/ballast/queue/executor/JobFailureException : java/lang/RuntimeException {
-	public synthetic fun <init> (Ljava/lang/Exception;Lkotlin/time/Duration;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (Ljava/lang/Exception;Lkotlin/time/Duration;ZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/Exception;Lkotlin/time/Duration;ZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/Exception;Lkotlin/time/Duration;ZZLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getPermanentlyFail ()Z
 	public final fun getRetryDelay-FghU774 ()Lkotlin/time/Duration;
+	public final fun getSkipAttempt ()Z
 }
 
 public final class com/copperleaf/ballast/queue/executor/JobProcessingResult {
