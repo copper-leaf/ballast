@@ -101,7 +101,7 @@ public class DefaultQueueExecutor<
                     jobId = job.jobId,
                     processingTime = mark.elapsedNow(),
                     result = JobCompletionResult.Failure(
-                        cause = e.cause as Exception,
+                        cause = (e.cause as? Exception?) ?: e,
                         retryDelay = e.retryDelay ?: adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
                         permanentlyFail = e.permanentlyFail,
                         skipAttempt = e.skipAttempt,
