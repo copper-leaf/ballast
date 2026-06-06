@@ -31,12 +31,13 @@ public interface JobsMaintenanceRepository {
     /**
      * Moves all jobs in the [Failed] state to the given [deadLetterQueueName], so the permanent failure can be
      * reported and inspected. It's assumed that the DLQ will do little more than log an error or trigger an alert
-     * to notify operators of the failure, so they issue can be addressed.
+     * to notify operators of the failure, so they issue can be addressed. If [originalQueueName] is non-null, then
+     * only the jobs from that queue will be sep
      *
      * Once the root issue has been resolved, jobs can be moved back from the DLQ to their original queue for
      * reprocessing with [moveFromDeadLetterQueue].
      */
-    public suspend fun moveToDeadLetterQueue(deadLetterQueueName: String)
+    public suspend fun moveToDeadLetterQueue(deadLetterQueueName: String, originalQueueName: String? = null)
 
     /**
      * Moves jobs in the [Succeeded] state from the Dead Letter Queue with the given [deadLetterQueueName] back to their

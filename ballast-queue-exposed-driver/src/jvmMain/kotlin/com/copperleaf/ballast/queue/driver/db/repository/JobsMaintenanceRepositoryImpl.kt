@@ -66,20 +66,16 @@ public class JobsMaintenanceRepositoryImpl(
         }
     }
 
-    override suspend fun moveToDeadLetterQueue(deadLetterQueueName: String) {
+    override suspend fun moveToDeadLetterQueue(deadLetterQueueName: String, originalQueueName: String?) {
         withTransaction {
             table.update({
-                table.status eq ExposedDatabaseJobStatus.Failed
+                if (originalQueueName != null) {
+                    (table.status eq ExposedDatabaseJobStatus.Failed) and (table.queue eq originalQueueName)
+                } else {
+                    table.status eq ExposedDatabaseJobStatus.Failed
+                }
             }) {
-                it[table.queue] = deadLetterQueueName
-                it[table.status] = ExposedDatabaseJobStatus.Pending
-
-                // give the job one more attempt, intended for the DLQ processor to handle. The DLQ must be able to
-                // successfully report on the failed job with a single attempt, so failed jobs don't get stuck forever
-                // in the DLQ
-                it[run_at] = clock.now()
-                it[max_attempts] = max_attempts + 1
-                it[original_queue] = queue
+                moveToDeadLetterQueue(it, deadLetterQueueName, clock)
             }
         }
     }

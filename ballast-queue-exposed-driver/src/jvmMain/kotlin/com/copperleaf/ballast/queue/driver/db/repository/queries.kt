@@ -12,8 +12,10 @@ import org.jetbrains.exposed.v1.core.isNull
 import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.core.lessEq
 import org.jetbrains.exposed.v1.core.or
+import org.jetbrains.exposed.v1.core.plus
 import org.jetbrains.exposed.v1.core.statements.UpdateStatement
 import org.jetbrains.exposed.v1.datetime.CurrentTimestamp
+import kotlin.time.Clock
 
 internal fun JobsTable.retryOrFailStatusColumn(update: UpdateStatement) {
     update[status] = Case()
@@ -60,4 +62,20 @@ internal fun mapResultRowToSerializedJob(
             lastStacktrace = resultRow[table.last_run_failure_stacktrace],
         ),
     )
+}
+
+internal fun JobsTable.moveToDeadLetterQueue(
+    update: UpdateStatement,
+    deadLetterQueueName: String,
+    clock: Clock,
+) {
+    update[this.queue] = deadLetterQueueName
+    update[this.status] = ExposedDatabaseJobStatus.Pending
+
+    // give the job one more attempt, intended for the DLQ processor to handle. The DLQ must be able to
+    // successfully report on the failed job with a single attempt, so failed jobs don't get stuck forever
+    // in the DLQ
+    update[run_at] = clock.now()
+    update[max_attempts] = max_attempts + 1
+    update[original_queue] = queue
 }
