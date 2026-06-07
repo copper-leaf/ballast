@@ -1,8 +1,9 @@
-# Ballast Analytics
+# Ballast Utils
 
 ## Overview
 
-TODO
+Helper functions and a configuration DSL used throughout the Ballast framework. This module is included transitively
+via [Ballast Core](./../ballast-core) and you generally do not need to depend on it directly.
 
 ## Supported Platforms
 
@@ -20,7 +21,9 @@ TODO
 
 ## Usage
 
-TODO
+`ballast-utils` is not intended for direct use in application code. It is pulled in transitively when you depend on
+[Ballast Core](./../ballast-core). The utilities and DSL helpers it provides are used internally by other Ballast
+modules.
 
 ## Installation
 
@@ -45,3 +48,4 @@ kotlin {
     }
 }
 ```
+

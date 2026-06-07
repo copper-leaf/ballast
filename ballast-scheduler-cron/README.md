@@ -7,6 +7,11 @@
 
 ## Overview
 
+Adds a `CronSchedule` implementation to [Ballast Scheduler Core](./../ballast-scheduler-core) for scheduling tasks
+using the familiar Unix-style Cron syntax. Supports the
+[Open Cron Pattern Specification (OCPS)](https://github.com/open-source-cron/ocps) for unambiguous, interoperable cron
+expressions.
+
 ## Supported Platforms
 
 | Platform | Supported |

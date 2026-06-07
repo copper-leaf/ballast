@@ -25,6 +25,8 @@ out-of-the-box integration with `SavedStateHandle`.
 
 ## See Also
 
+- [Ballast Kotlinx Serialization](./../ballast-kotlinx-serialization)
+
 ## Usage
 
 Start by creating a `SavedStateAdapter` for your ViewModel. This adapter includes functions to `save()` and `restore()`

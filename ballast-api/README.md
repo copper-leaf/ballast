@@ -23,7 +23,10 @@ base functionality, this is the module you should depend on so you don't pull in
 
 ## Usage
 
-TODO
+`ballast-api` is not intended for direct use in application code. It contains the interfaces and core abstractions that
+other Ballast modules and libraries build on. If you are using Ballast in an application, depend on
+[Ballast Core](./../ballast-core) instead. If you are building a Ballast extension library or integration, depend on
+`ballast-api` to avoid pulling in unnecessary platform-specific dependencies.
 
 ## Installation
 

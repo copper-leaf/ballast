@@ -2,7 +2,9 @@
 
 ## Overview
 
-TODO
+Shared data models used by both [Ballast Debugger Client](./../ballast-debugger-client) and the Ballast IntelliJ Plugin
+for inspecting the internal state and activity of Ballast ViewModels. Typically you do not need to depend on this module
+directly; use [Ballast Debugger Client](./../ballast-debugger-client) instead.
 
 ## Supported Platforms
 
@@ -16,11 +18,12 @@ TODO
 
 ## See Also
 
-TODO
+- [Ballast Debugger Client](./../ballast-debugger-client)
 
 ## Usage
 
-TODO
+`ballast-debugger-models` is not intended for direct use in application code. Use
+[Ballast Debugger Client](./../ballast-debugger-client) to connect your ViewModels to the Ballast IntelliJ Plugin.
 
 ## Installation
 
