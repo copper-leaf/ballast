@@ -1,5 +1,3 @@
----
----
 
 # High-level Feature Overview
 
@@ -97,13 +95,11 @@ modeled simultaneously.
 For these reasons, Ballast's opinion is that the Contract's State class should be a `data class`. But `sealed classes`
 work great as individual properties within that State!
 
-!!! info
-
-    Pro tip: data classes are great because they make it easy to update the state with `.copy()` and are built-in to the 
-    Kotlin language, but there are other ways to update immutable data classes that you might find nicer to work with. Try
-    checking out [Arrow Optics](https://arrow-kt.io/learn/immutable-data/intro/#meet-optics) or [KopyKat](https://kopyk.at/)
-    as an alternative!
-
+> **Note:**
+> Pro tip: data classes are great because they make it easy to update the state with `.copy()` and are built-in to the 
+> Kotlin language, but there are other ways to update immutable data classes that you might find nicer to work with. Try
+> checking out [Arrow Optics](https://arrow-kt.io/learn/immutable-data/intro/#meet-optics) or [KopyKat](https://kopyk.at/)
+> as an alternative!
 ### Inputs
 
 Inputs are the core of how Ballast does all its processing. The "intent" a user has when interacting with the UI is
@@ -125,11 +121,9 @@ A good rule of thumb is to avoid re-using any Inputs for more than 1 purpose. It
 will do to the State _without having to look at its implementation or the State_. If you are tempted to re-send the same
 input to do 2 different things, it should just be 2 different Inputs.
 
-!!! info
-
-    Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
-    You can also use a `sealed interface` instead of `sealed class`.
-
+> **Note:**
+> Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
+> You can also use a `sealed interface` instead of `sealed class`.
 ### Events
 
 A necessary feature of UI programming is to handle some actions once, only once, and only at the appropriate time (such
@@ -147,18 +141,14 @@ sealed interface Events {
 }
 ```
 
-!!! info
-
-    Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
-    You can also use a `sealed interface` instead of `sealed class`.
-
-!!! warning
-
-    In a strict MVI model, using "one-off events" is sometimes [considered an anti-pattern](https://manuelvivo.dev/viewmodel-events-antipatterns).
-    Ballast processes Events with a `Channel`, making for an "at-most once" delivery model, which may not offer strong
-    enough guarantees for your application. If this model is not strong enough for your needs, it's best to take the
-    suggestion from the above article and reduce your Events to State instead of using Ballast's Events system.
-
+> **Note:**
+> Pro tip: try using the new `data object`, available as a preview in [Kotlin 1.8.20](https://kotlinlang.org/docs/whatsnew1820.html#preview-of-data-objects-for-symmetry-with-data-classes)!
+> You can also use a `sealed interface` instead of `sealed class`.
+> **Warning:**
+> In a strict MVI model, using "one-off events" is sometimes [considered an anti-pattern](https://manuelvivo.dev/viewmodel-events-antipatterns).
+> Ballast processes Events with a `Channel`, making for an "at-most once" delivery model, which may not offer strong
+> enough guarantees for your application. If this model is not strong enough for your needs, it's best to take the
+> suggestion from the above article and reduce your Events to State instead of using Ballast's Events system.
 ## Handlers
 
 Everything in the Contract is entirely declarative, but at some point Ballast needs to _do something_ with what you
@@ -301,11 +291,9 @@ public class CustomInterceptor<Inputs : Any, Events : Any, State : Any>(
 }
 ```
 
-!!! danger
-
-    Note that this style of writing Interceptors is deprecated since v3.0.0, and the `onNotify` method will be removed in
-    v4. Use the "advanced" Interceptor below for creating new Interceptors.
-
+> **Warning:**
+> Note that this style of writing Interceptors is deprecated since v3.0.0, and the `onNotify` method will be removed in
+> v4. Use the "advanced" Interceptor below for creating new Interceptors.
 More advanced Interceptors are given additional privileges and are able to push changes back to the ViewModel. Rather
 than being notified when something interesting happens, they are notified when the ViewModel starts up and are given
 direct access to the Notifications flow, as well as a way to send data directly back into the ViewModel's processing
@@ -393,5 +381,5 @@ maintains a list of all Inputs and a copy of the latest State, so it may consume
 sensitive information to the logger, and as such should never be used in production.
 
 [1]: https://en.wikipedia.org/wiki/Decorator_pattern
-[3]: wiki/modules/ballast-repository.md
-[4]: wiki/modules/ballast-core.md
+[3]: ../ballast-repository/
+[4]: ../ballast-core/

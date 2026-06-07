@@ -1,5 +1,3 @@
----
----
 
 # Thinking in Ballast MVI
 
@@ -802,16 +800,13 @@ in mind:
 The process of deciding which strategy to use ultimately comes down to what should happen to one running Input is
 another is sent at the same time.
 
-{% alert 'info' :: compileAs('md') %}
-**Info**
-
-Pro Tip: The text descriptions of these InputStrategies can be a bit confusing, but seeing them play out in real-time
-should make it obvious how they work. Playing with the [Kitchen Sink][1] with the [Debugger][2] gives you a simple way
-of experiencing these behaviors to get an intuition for when to use each one.
-
-[1]: {{ 'Kitchen Sink' | link }}
-[2]: {{ 'Ballast Debugger' | link }}
-{% endalert %}
+> **Note:**
+> Pro Tip: The text descriptions of these InputStrategies can be a bit confusing, but seeing them play out in real-time
+> should make it obvious how they work. Playing with the [Kitchen Sink][1] with the [Debugger][2] gives you a simple way
+> of experiencing these behaviors to get an intuition for when to use each one.
+>
+> [1]: the Kitchen Sink example
+> [2]: the Ballast Debugger
 
 ### FIFO
 
@@ -847,15 +842,12 @@ another 1 second from `LoadLatestPostContent`, so it will take a total of 3 seco
 
 You can play with an interactive example [here][12].
 
-{% alert 'danger' :: compileAs('md') %}
-**Danger**
-
-For historical reasons, `FifoInputStrategy` is not the default, so you should manually choose to use
-`FifoInputStrategy` if you aren't sure which you need.
-
-This default input strategy will likely be changed to `FifoInputStrategy` in a future version, so it would be best to
-start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default.
-{% endalert %}
+> **Warning:**
+> For historical reasons, `FifoInputStrategy` is not the default, so you should manually choose to use
+> `FifoInputStrategy` if you aren't sure which you need.
+>
+> This default input strategy will likely be changed to `FifoInputStrategy` in a future version, so it would be best to
+> start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default.
 
 ### LIFO
 
@@ -904,17 +896,14 @@ sense.
   will be cancelled each time they type or change the filter/sort data, and only when they've finished making all
   changes does the API call actually get executed and the results loaded from the server.
 
-{% alert 'danger' :: compileAs('md') %}
-**Danger**
-
-For historical reasons, `LifoInputStrategy` is the default, but can be unintuitive to work with and cause subtle issues
-in your application. For this reason, it is recommended to manually choose to use `FifoInputStrategy` unless you are
-familiar enough with Ballast and it's workflow to understand the full implications `LifoInputStrategy`.
-
-This default input strategy will likely be changed to `FifoInputStrategy` in a future version, so it would be best to
-start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default or
-having your application start behaving differently in a future version of Ballast.
-{% endalert %}
+> **Warning:**
+> For historical reasons, `LifoInputStrategy` is the default, but can be unintuitive to work with and cause subtle issues
+> in your application. For this reason, it is recommended to manually choose to use `FifoInputStrategy` unless you are
+> familiar enough with Ballast and it's workflow to understand the full implications `LifoInputStrategy`.
+>
+> This default input strategy will likely be changed to `FifoInputStrategy` in a future version, so it would be best to
+> start by explicitly choosing the strategy you wish to use for every ViewModel, rather than relying on the default or
+> having your application start behaving differently in a future version of Ballast.
 
 ## Side-jobs
 
@@ -1124,10 +1113,10 @@ viewModel.trySend(Inputs.RequestLogout)
 [5]: https://www.raywenderlich.com/817602-mvi-architecture-for-android-tutorial-getting-started
 [6]: https://developer.android.com/jetpack/compose/architecture
 [7]: https://proandroiddev.com/modelling-ui-state-on-android-26314a5975b9
-[8]: {{ 'Feature Overview' | link }}
-[9]: {{ 'Ballast Repository' | link }}
+[8]: feature-overview.md
+[9]: ../ballast-repository/
 [10]: https://developer.android.com/topic/architecture/ui-layer/stateholders
-[11]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Lifo
-[12]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Fifo
-[13]: {{site.baseUrl}}/wiki/examples/navigation#/examples/kitchen-sink?inputStrategy=Parallel
-[14]: {{ 'Feature Overview' | link }}
+[11]: https://github.com/copper-leaf/ballast/tree/main/examples/navigationWithEnumRoutes
+[12]: https://github.com/copper-leaf/ballast/tree/main/examples/navigationWithEnumRoutes
+[13]: https://github.com/copper-leaf/ballast/tree/main/examples/navigationWithEnumRoutes
+[14]: feature-overview.md
