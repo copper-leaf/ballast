@@ -125,13 +125,15 @@ public abstract interface class com/copperleaf/ballast/queue/driver/db/repositor
 	public abstract fun freeJobCooldowns (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun moveFromDeadLetterQueue (Ljava/lang/String;Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public static synthetic fun moveFromDeadLetterQueue$default (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository;Ljava/lang/String;Ljava/lang/String;ILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
-	public abstract fun moveToDeadLetterQueue (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun moveToDeadLetterQueue (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun moveToDeadLetterQueue$default (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public abstract fun retryHungJobs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository$DefaultImpls {
 	public static synthetic fun deleteOldJobs-VtjQ1oo$default (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository;JLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 	public static synthetic fun moveFromDeadLetterQueue$default (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository;Ljava/lang/String;Ljava/lang/String;ILkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun moveToDeadLetterQueue$default (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository;Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepositoryImpl : com/copperleaf/ballast/queue/driver/db/repository/JobsMaintenanceRepository {
@@ -141,7 +143,7 @@ public final class com/copperleaf/ballast/queue/driver/db/repository/JobsMainten
 	public fun deleteOldJobs-VtjQ1oo (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun freeJobCooldowns (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun moveFromDeadLetterQueue (Ljava/lang/String;Ljava/lang/String;ILkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public fun moveToDeadLetterQueue (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun moveToDeadLetterQueue (Ljava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun retryHungJobs (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 

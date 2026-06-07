@@ -607,6 +607,7 @@ public final class com/copperleaf/ballast/navigation/routing/RoutingUtilsKt {
 	public static final fun optionalStringQuery (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;)Lkotlin/properties/PropertyDelegateProvider;
 	public static synthetic fun optionalStringQuery$default (Lcom/copperleaf/ballast/navigation/routing/Destination$ParametersProvider;Ljava/lang/String;ILjava/lang/Object;)Lkotlin/properties/PropertyDelegateProvider;
 	public static final fun path (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;[Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
+	public static final fun pathFormat (Lcom/copperleaf/ballast/navigation/routing/Route;)Ljava/lang/String;
 	public static final fun pathParameter (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/lang/String;Ljava/lang/Iterable;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
 	public static final fun pathParameter (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/lang/String;[Ljava/lang/String;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
 	public static final fun pathParameters (Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;Ljava/util/Map;)Lcom/copperleaf/ballast/navigation/routing/Destination$Directions;
