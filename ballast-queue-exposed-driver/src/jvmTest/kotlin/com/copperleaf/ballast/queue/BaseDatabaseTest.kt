@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.copperleaf.ballast.queue
 
 import com.copperleaf.ballast.queue.driver.db.ExposedDatabaseQueueMigrations

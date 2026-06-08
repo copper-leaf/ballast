@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.copperleaf.ballast.utils
 
 import com.copperleaf.ballast.core.BootstrapInterceptor

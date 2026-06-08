@@ -9,7 +9,7 @@ public interface ScheduleExecutor {
      * emissions, dropping emissions from the upstream schedule that would have been emitted while the previous task
      * was still being handled.
      *
-     * All [TriggeredTask] emitted by this Flow will have a `null`, even if the [Schedule] is actually a [NamedSchedule].
+     * All [TriggeredTask] emitted by this Flow will have a `null` name, even if the [Schedule] is actually a [NamedSchedule].
      */
     public fun runSchedule(schedule: Schedule): Flow<TriggeredTask>
 
@@ -31,8 +31,22 @@ public interface ScheduleExecutor {
     public fun runSchedules(schedules: List<NamedSchedule>): Flow<TriggeredTask>
 
     public enum class CatchUpBehavior {
+        /**
+         * Skip all missed tasks. The schedule state is updated to the current time, and no missed executions
+         * are triggered.
+         */
         Skip,
+
+        /**
+         * Execute exactly one missed task (the earliest one), then update the schedule state to the current time.
+         * Any additional tasks that were missed beyond the first are dropped.
+         */
         ExecuteOne,
+
+        /**
+         * Execute all missed tasks sequentially before resuming the normal schedule. Use with care if many
+         * tasks could have been missed during downtime, as this may cause a burst of work upon startup.
+         */
         ExecuteAll,
     }
 }

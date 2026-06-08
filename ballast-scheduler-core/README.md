@@ -167,7 +167,11 @@ need to generate more custom scheduling behavior.
 
 - `schedule.adaptive()`: mostly useful for the `FixedDelaySchedule`, to adjust the time between tasks by the amount of
   time it takes to process them.
-- `schedule.alignTo(DurationUnit)`: TODO
+- `schedule.alignTo(DurationUnit, TimeZone)`: Aligns each scheduled instant to the next boundary of the given
+  time unit. For example, a schedule that fires at `:30` seconds past the minute, when aligned to
+  `DurationUnit.MINUTES`, will instead fire at the top of the next minute (`:00`). Supported units are `SECONDS`,
+  `MINUTES`, `HOURS`, and `DAYS`. This is particularly useful for aligning schedules to the
+  `PollingScheduleExecutor`'s polling interval.
 - `schedule.between(ClosedRange<Instant>)`: Filter emissions so that they are only handled during the given time range.
   Once the end of the range has been passed, the schedule will complete
 - `schedule.startingAt(Instant)`: Delay the start of a schedule until a specified Instant

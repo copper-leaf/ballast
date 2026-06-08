@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.copperleaf.ballast.examples.di
 
 import androidx.compose.material3.SnackbarHostState

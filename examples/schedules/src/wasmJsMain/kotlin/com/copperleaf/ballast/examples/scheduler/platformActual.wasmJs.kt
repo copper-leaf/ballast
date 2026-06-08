@@ -1,3 +1,5 @@
+@file:Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+
 package com.copperleaf.ballast.examples.scheduler
 
 import com.copperleaf.ballast.BallastLogger
