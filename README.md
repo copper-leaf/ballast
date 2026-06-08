@@ -94,6 +94,20 @@ kotlin {
 
 Other modules can be added as needed. See [docs/README.md](docs/README.md) for the full list.
 
+## AI Coding Assistance
+
+Ballast ships an [`llms.txt`](llms.txt) file — a plain-Markdown context file for AI coding assistants. It covers core concepts, APIs, module list, and common pitfalls.
+
+To use it, copy the file into your project's agent rules location:
+
+| Agent          | Location                                   |
+|----------------|--------------------------------------------|
+| Claude Code    | `CLAUDE.md` or `.claude/rules/ballast.md`  |
+| Cursor         | `.cursor/rules/ballast.mdc`                |
+| GitHub Copilot | `.github/copilot-instructions.md`          |
+| Windsurf       | `.windsurfrules`                           |
+| Other          | Wherever your agent reads Markdown context |
+
 ## Documentation
 
 Full documentation is in the [docs/](docs/) directory:
