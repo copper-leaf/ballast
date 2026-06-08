@@ -65,6 +65,7 @@ public final class com/copperleaf/ballast/queue/JobCompletionResultType : java/l
 
 public abstract interface class com/copperleaf/ballast/queue/QueueDriver {
 	public abstract fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun completeJobWithFailure-3c68mSE (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun observeQueue (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
@@ -82,6 +83,10 @@ public abstract interface class com/copperleaf/ballast/queue/QueueDriver$Adapter
 public final class com/copperleaf/ballast/queue/QueueDriver$Adapter$DefaultImpls {
 	public static fun getDefaultRetryDelayTimeout-3nIYWDw (Lcom/copperleaf/ballast/queue/QueueDriver$Adapter;Ljava/lang/Object;I)J
 	public static fun getJobTimeout-5sfh64U (Lcom/copperleaf/ballast/queue/QueueDriver$Adapter;Ljava/lang/Object;)J
+}
+
+public final class com/copperleaf/ballast/queue/QueueDriver$DefaultImpls {
+	public static fun awaitShutdown (Lcom/copperleaf/ballast/queue/QueueDriver;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/copperleaf/ballast/queue/QueueExecutor {
@@ -105,6 +110,11 @@ public abstract interface class com/copperleaf/ballast/queue/QueueExecutorScope 
 
 public abstract interface class com/copperleaf/ballast/queue/QueueThrottle {
 	public abstract fun acquirePermit (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/queue/QueueThrottle$DefaultImpls {
+	public static fun awaitShutdown (Lcom/copperleaf/ballast/queue/QueueThrottle;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public abstract interface class com/copperleaf/ballast/queue/QueueThrottle$Permit {
@@ -158,6 +168,7 @@ public final class com/copperleaf/ballast/queue/driver/memory/InMemoryQueueDrive
 	public synthetic fun <init> (Lkotlin/time/Clock;Lcom/copperleaf/ballast/queue/QueueThrottle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/memory/InMemoryQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobWithFailure-3c68mSE (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun observeJobState (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;
@@ -210,6 +221,7 @@ public final class com/copperleaf/ballast/queue/driver/sync/SyncQueueDriver : co
 	public fun <init> ()V
 	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLkotlin/Unit;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobWithFailure-3c68mSE (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public final fun getLastJob ()Lcom/copperleaf/ballast/queue/SerializedJob;
@@ -266,25 +278,30 @@ public final class com/copperleaf/ballast/queue/executor/JsonSerializers : com/c
 public final class com/copperleaf/ballast/queue/throttle/CompositeThrottle : com/copperleaf/ballast/queue/QueueThrottle {
 	public fun <init> ([Lcom/copperleaf/ballast/queue/QueueThrottle;)V
 	public fun acquirePermit (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/queue/throttle/ConcurrencyLimitThrottle : com/copperleaf/ballast/queue/QueueThrottle {
 	public fun <init> (I)V
 	public fun acquirePermit (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/queue/throttle/PerQueueThrottle : com/copperleaf/ballast/queue/QueueThrottle {
 	public fun <init> (Ljava/util/Map;Lcom/copperleaf/ballast/queue/QueueThrottle;)V
 	public fun acquirePermit (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/queue/throttle/TokenBucketThrottle : com/copperleaf/ballast/queue/QueueThrottle {
 	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;IIJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun acquirePermit (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/copperleaf/ballast/queue/throttle/UnlimitedThrottle : com/copperleaf/ballast/queue/QueueThrottle {
 	public fun <init> ()V
 	public fun acquirePermit (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 

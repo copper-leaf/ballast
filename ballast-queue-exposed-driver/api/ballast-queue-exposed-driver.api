@@ -15,6 +15,7 @@ public final class com/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDr
 	public synthetic fun <init> (Lcom/copperleaf/ballast/queue/driver/db/repository/JobsRepository;Lcom/copperleaf/ballast/queue/QueueThrottle;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLcom/copperleaf/ballast/queue/driver/db/ExposedDatabaseQueueDriver$Metadata;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public synthetic fun addToQueue-gwCluXo (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JLjava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun awaitShutdown (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobSuccessfully-WPwdCS8 (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun completeJobWithFailure-3c68mSE (Ljava/lang/String;JLcom/copperleaf/ballast/queue/JobCompletionResultType;JZZLjava/lang/String;Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun observeQueue (Ljava/lang/String;)Lkotlinx/coroutines/flow/Flow;

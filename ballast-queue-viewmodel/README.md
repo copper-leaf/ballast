@@ -33,8 +33,12 @@ through a Ballast ViewModel. This allows you to use all of the classes you're al
 and apply it to persistent queues. 
 
 A Job Queue is created as described in [Ballast Queue Core](./../ballast-queue-core/README.md#setting-up-a-queue). 
-However, instead of creating an using a `DefaultQueueExecutor`, you will create a ViewModel and set its InputStrategy
-to `JobQueueInputStrategy`, which internally creates and interacts with the executor.
+You should familiarize yourself with the concepts of the base Queue module, as all that functionality will be supported 
+here, but will be exposed through the Ballast ViewModel API. 
+
+To use Ballast ViewModels as a queue executor, you will create a ViewModel and set its InputStrategy to 
+`JobQueueInputStrategy`, which internally creates and interacts with the executor. Internally, it will create the
+`DefaultQueueExecutor` and submit and pull jobs from that executor.
 
 From there, you can use all the features of normal ViewModels, such as sending Inputs, processing them with an 
 InputHandler, updating state, and using SideJobs. There are some notable differences to some features of the Viewmodel,
@@ -45,11 +49,11 @@ though:
   `getCurrentState()`, `updateState { }`, etc. are delegated to [the driver's job state](./../ballast-queue-core/README.md#step-5-processing-the-job-with-state).
 - The semantics of `Events` is different. Rather than using Events as a way to communicate with the UI, the `JobQueueInputStrategy`
   uses an Event as the way to provide a [success result](./../ballast-queue-core/README.md#step-6-job-results), since 
-  InputHandlers only return `Unit`. Only one Event may be posted during the processing of a job; attempts to post 
-  multiple events with throw an exception and fail the job. Events posted from SideJobs or Interceptors will similarly 
-  fail. Events may be posted anywhere in the InputHandler during the processing of a job, but the result will only be 
-  stored if the job completes successfully. Additionally, these Events are _not_ sent to an `EventHandler`, which is not
-  used by ViewModels using `JobQueueInputStrategy`.
+  InputHandlers only return `Unit` and cannot return a value. Only one Event may be posted during the processing of a 
+  job; attempts to post multiple events with throw an exception and fail the job. Events posted from SideJobs or 
+  Interceptors will similarly fail. Events may be posted anywhere in the InputHandler during the processing of a job, 
+  but the result will only be stored if the job completes successfully. Additionally, these Events are _not_ sent to an
+  `EventHandler`, which is not used by ViewModels using `JobQueueInputStrategy`.
 - Some Interceptors may not work correctly, since the semantics of state updates and events is different from a 
   traditional UI ViewModel. The `JobQueueInputStrategy` does send Notifications whenever relevant for the purposes of 
   logging an observability, but features like [Sync](./../ballast-sync), [Saved State](./../ballast-sync), etc. will not
@@ -82,7 +86,7 @@ Uses the following Ballast modules:
 // Create an AutoscalingViewModel to run 4 copies of your queue in parallel. Store this ViewModel as a singleton and 
 // send jobs to the queue with JobMaintenanceViewModel.send(), which get distributed to a worker and persisted in the 
 // database queue.
-class JobMaintenanceViewModel(
+class JobQueueViewModel(
     coroutineScope: CoroutineScope,
 ) : AutoscalingViewModel<
         JobQueueContract.Inputs,

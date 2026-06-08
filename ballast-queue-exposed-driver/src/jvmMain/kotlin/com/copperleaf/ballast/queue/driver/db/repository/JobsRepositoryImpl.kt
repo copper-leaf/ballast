@@ -139,7 +139,7 @@ public class JobsRepositoryImpl(
             }
             .orderBy(
                 outerQueryTable[table.priority] to SortOrder.DESC,
-                outerQueryTable[table.run_at] to SortOrder.ASC,  // oldest eligible job first (FIFO within same priority)
+                outerQueryTable[table.run_at] to SortOrder.ASC, // oldest eligible job first (FIFO within same priority)
             )
             .forUpdate(ForUpdateOption.PostgreSQL.ForUpdate(ForUpdateOption.PostgreSQL.MODE.SKIP_LOCKED))
             .limit(1)
@@ -194,7 +194,7 @@ public class JobsRepositoryImpl(
             }
             .orderBy(
                 outerQueryTable[table.priority] to SortOrder.DESC,
-                outerQueryTable[table.run_at] to SortOrder.ASC,  // oldest eligible job first (FIFO within same priority)
+                outerQueryTable[table.run_at] to SortOrder.ASC, // oldest eligible job first (FIFO within same priority)
             )
             .forUpdate(ForUpdateOption.MySQL.ForUpdate(ForUpdateOption.MySQL.MODE.SKIP_LOCKED))
             .limit(1)

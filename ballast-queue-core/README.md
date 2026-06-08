@@ -18,8 +18,8 @@ values. Other features like priority scheduling, unique jobs, or delayed job sta
 queue driver implementation.
 
 Ballast Queue is a multiplatform project, with semantics and safety guarantees suitable for both long-running
-server-side jobs queues meant to process large volumes of tasks, and also client applications for synchronizing local
-data with a server.
+server-side jobs queues meant to process large volumes of tasks, and also client-side applications for tasks such as 
+synchronizing local data with a server.
 
 ## Supported Platforms
 
@@ -62,7 +62,7 @@ processing your jobs, and additional necessary functionality that is not suitabl
 #### Processing Loop
 
 Ballast jobs are simple data classes which get serialized to JSON by the `QueueExecutor` and stored in a `QueueDriver`.
-The Driver then sets up a processing loop at a Flow, which emits values back to the Executor when a job is ready to be
+The Driver then sets up a processing loop as a Flow, which emits values back to the Executor when a job is ready to be
 processed. The executor then deserializes that JSON payload back to its original data class, and calls a lambda for you
 to handle the job execution. That execution can store intermediate state, which will be maintained if the job fails and
 needs to be retried. Jobs can also return a result if it runs to completion successfully.
@@ -79,7 +79,7 @@ Currently, the following drivers are available:
   a list in memory, held in a `StateFlow` for observing the state of the queue and its jobs. This is primarily useful
   for testing and debugging, as its jobs are NOT persisted between application restarts.
 - **SyncQueueDriver**: The Sync Queue Driver is a implementation of a QueueDriver that is intended for unit testing. It
-  does not actually kep a queue of jobs, but instead uses a `RENDEZVOUS` `Channel` to immediately process the job
+  does not actually keep a queue of jobs, but instead uses a `RENDEZVOUS` `Channel` to immediately process the job
   synchronously. This allows you to have guarantees in your unit tests that calling `addToQueue` will process the job
   before returning, as long as another coroutine is currently observing the queue.
 - **ExposedDatabaseQueueDriver**: The Exposed driver stores jobs in a database table, and uses the [Kotlin Exposed](https://www.jetbrains.com/exposed/)
@@ -89,19 +89,19 @@ Currently, the following drivers are available:
 
 #### Step 2: Set up an Executor
 
-The Executor provided a type-safe interface to the lower-leve, untyped driver. It requires 4 generic type parameters:
+The Executor provides a type-safe interface to the lower-level, untyped driver. It requires 4 generic type parameters:
 
 - **Payload**: The Payload is a simple data class which defines the actual work to be done. It should generally contain
   only the minimal info necessary to run the jobs, such as an ID to a database record which needs to be processed. You
-  may set up your queues with a single data class, or a `sealed class` to have one queue cpable of enqueuing and
+  may set up your queues with a single data class, or a `sealed class` to have one queue capable of enqueuing and
   dispatching multiple types of jobs.
 - **State**: Jobs are able to maintain internal state which is only visible to that job. If a job fails and is retried,
   the state updates from the first run will be maintained, and the re-run will start with that state. This should be
   used primarily for building a system of "checkpoints" in the processing of a job, so retries don't need to be started
   from the beginning every time. It can also be used to report progress to an observer.
 - **Result**: A job that runs to completion successfully is able to return a result. The library itself does not make
-  use of this value, but your application logic may use it to store a report of what was processed, or provide data that
-  needs to be passed to another job.
+  use of this value, but your application logic may use it to store a report of what was processed, or temporarily store
+  data that needs to be passed to another job.
 - **JobMetadata**: This is the connector between your job and the underlying driver. Unlike many other job queue
   systems, Ballast does not try to implement all possible queueing logic in the primary interface, since the semantics
   of queues, and thus the data needed to configure the queue, can be significantly different between server-side and
@@ -232,51 +232,105 @@ suspend fun QueueExecutorScope<State>.processJob(podcast: Mp3File) {
 
 #### Step 6: Job Results
 
-TODO
+The `Result` type parameter on your `QueueExecutor` is the value your job can return when it runs to completion
+successfully. It's fully optional — you can use `Unit` if there's nothing meaningful to return, or `null` if the job
+processed but produced no output in a particular run.
+
+**Returning a result from a job**
+
+Your `processJob` lambda simply returns a `Result?`. Return a value to signal success and attach data to the completed
+job record; return `null` to signal success without any result payload.
+
+```kotlin
+suspend fun QueueExecutorScope<State>.processJob(payload: TranscodeMp3File): TranscodeResult? {
+    val mp3File = fileService.findFileByPath(payload.uploadFilePath)
+        ?: throw JobFailureException(permanentlyFail = true)
+
+    performTranscoding(mp3File)
+
+    // return a result to record what the job produced
+    return TranscodeResult(outputPath = mp3File.transcodedPath, durationSeconds = mp3File.durationSeconds)
+}
+```
+
+The result value is serialized and stored by the driver alongside the job record, so it can be retrieved later for
+audit purposes or to be passed on to a subsequent job.
+
+**Inspecting results from the Flow**
+
+`runQueue()` returns a `Flow<JobProcessingResult<Result>>`. Each emission from this Flow represents a single job that
+has finished processing — successfully or not. The `JobProcessingResult` carries the job ID, how long processing took,
+and a `JobCompletionResult` describing the outcome:
+
+```kotlin
+executor
+    .runQueue("default", ::processJob)
+    .onEach { jobResult ->
+        when (val result = jobResult.result) {
+            is JobCompletionResult.Success -> {
+                logger.info("Job ${jobResult.jobId} succeeded in ${jobResult.processingTime}: ${result.resultData}")
+            }
+            is JobCompletionResult.Failure -> {
+                logger.error("Job ${jobResult.jobId} failed after ${jobResult.processingTime}: ${result.cause.message}")
+            }
+            is JobCompletionResult.Timeout -> {
+                logger.warn("Job ${jobResult.jobId} timed out after ${jobResult.processingTime}")
+            }
+            is JobCompletionResult.Cancelled -> {
+                logger.warn("Job ${jobResult.jobId} was manually cancelled")
+            }
+        }
+    }
+    .launchIn(applicationCoroutineScope)
+```
+
+These emissions are already handled internally — the driver has already been updated with the outcome by the time each
+value is emitted — so you are free to ignore the Flow entirely if you don't need to act on individual results.
 
 ### Dealing with errors
 
 #### Processing Failure
 
-Work is typically moved to a queue because it takes a long time, and has a nonzero chance of failure. Designing your
-application to move these points of failure to a job will help you maintain a fast, responsive application, while
-ensuring critical operations are guaranteed to be run successfully, eventually. Notably, queues operate on a principle
-of _eventual consistency_. Work may not complete immediately, but you can have assurance that it will at least complete
-_eventually_, being retried if it fails to recover from those errors.
+Work is typically moved to a queue because it takes a long time, has a nonzero chance of failure, and does not need to 
+be processed immediately. Designing your application to move these points of failure to a job will help you maintain a 
+fast, responsive application, while ensuring critical operations are guaranteed to be run successfully, eventually. 
+Notably, queues operate on a principle of _eventual consistency_. Work may not complete immediately, but you can have 
+assurance that it will at least complete _eventually_, being retried if it fails to recover from those errors.
 
 Ballast queues are designed to be safe against all kinds of failures, including:
 
-- **Normal application failure**: Exceptions thrown during the precessing of a job will be caught and logged, and the
+- **Normal processing errors**: Exceptions thrown during the precessing of a job will be caught and logged, and the
   job scheduled for retry according to the driver's retry policy
 - **Timeouts**: Background jobs are expected to be slow, but sometimes they take significantly longer to process than
   they should. For example, a dependent service may be running particularly slowly, or your application server has run
-  out of memory and is processing slowly. In these cases, Ballast will enforce a timeout on the job, so if it takes too
+  out of memory and the job gets hung. In these cases, Ballast will enforce a timeout on the job, so if it takes too
   long, it will cancel the job, report the error, and allow other jobs to continue which may be able to process faster.
   The cancelled job will be scheduled for retry according to the driver's retry policy.
 - **Cancellation**: In addition to cancellation due to timeouts, you can manually cancel a job. This will cancel the
   coroutine currently processing the job, ensuring prompt termination and cleanup of the job, and allow the next job to
   run. The cancelled job will be scheduled for retry according to the driver's retry policy.
 - **Application crashes**: Server processes are never guaranteed, and may sometimes be shutdown without any opportunity
-  for the application to close gracefully. In this case, any jobs that were claimed for processing will be stuck in the
+  for the application to close gracefully. In this case, any jobs that were claimed for processing will get stuck in the
   "running" state and ineligible for retry, which is obviously not an acceptable solution. When a job is claimed from
-  the driver, it is given a "lease" on that job for a short perioud of time (typically the timeout duration of the job,
-  plus a short buffer ~30 seconds). If the case of a server crash, this lease will eventually expire and allow the job
+  the driver, it is given a "lease" on that job for a short period of time (typically the timeout duration of the job,
+  plus a short buffer ~30 seconds). In the case of a server crash, this lease will eventually expire and allow the job
   to be retried.
 
 For cases of job exceptions or cancellation/timeouts, the job will immediately be released back to the queue for retries
-according to the jobs retry policy. This phrase is intentionally vague, as Ballast enforces no retry policy on its own,
+according to the job's retry policy. This phrase is intentionally vague, as Ballast enforces no retry policy on its own,
 and instead leaves the Queue Driver to define how and when to retry the job, and structure its `JobMetadata` to let each
 job configure that policy on its own. For example, the `ExposedDatabaseQueueDriver` allows jobs to be retried based on
-the number of attempts or will retry as many times as it needs until a specified expiry. The `InMemoryQueueDriver` only
-supports retries based on the number of attempts. Other queue systems, like Amazon SQS, may include their own policies,
-and Ballast will simply notify the driver of the failure and it figure out whether it should retry or not.
+the number of attempts or will retry as many times as it needs until a specified expiry time is exceeded. The 
+`InMemoryQueueDriver` only supports retries based on the number of attempts. Other queue systems, like Amazon SQS, may 
+include their own policies, and Ballast will simply notify the driver of the failure and it figure out whether it should
+retry or not.
 
 #### Retry Backoff
 
 When a job fails and may need to be retried, it can be given a delay as a buffer against temporal issues. A default
 retry for all jobs in the queue can be set in the `DriverQueue.Adapter.getDefaultRetryDelayTimeout()`, which can be
 configured individually for each payload. This method is also provided the number of times the job has already been
-attempted, so it can be used for determining the backoff delay. See example backoff strategies below:
+attempted, so it can be used for increasing the backoff delay after each attempt. See example backoff strategies below:
 
 ```kotlin
 public fun getDefaultRetryDelayTimeout(payload: Unit, attempts: Int): Duration {
@@ -317,14 +371,14 @@ suspend fun QueueExecutorScope<State>.processJob(podcast: Mp3File) {
 #### Permanent failures and Dead-Letter Queues
 
 Ballast does not enforce any specific concept of a "dead-letter queue" (DLQ) by itself. Like Retry Policies, it leaves
-this functionality up to the driver. Functionally, a DLQ is no different than any other queue. It simply defines the
+this functionality up to the driver. Functionally, a DLQ is no different from any other queue. It simply defines the
 "Queue Name" of a queue, and an alternate mode of processing that usually just notifies system admins of the failure
 rather than actually processing the job. So if your driver has a DLQ, you just need to collect from that queue by name.
 
 Ballast does not automatically move jobs to a different DLQ, but instead would prefer to simply mark a job as
-permanently failed and leave it in the queue, ineligible to be claimed and processed. Should you need a DLQ, it is
-either up to the driver to move the job to a DLQ immediately when marking it as failed, or else periodically scanning
-the jobs store and manually moving the job to a DLQ.
+permanently failed and leave it in the original queue, ineligible to be claimed and processed. Should you need a DLQ, 
+it is either up to the driver to move the job to a DLQ immediately when marking it as failed, or else periodically 
+scanning the jobs store and manually moving the job to a DLQ.
 
 Jobs are considered "permanently failed" if they fail during execution, and the queue does not permit an additional
 retry. They are moved to a "failed" state which indicates the permanent failure, so you can query the queue to
@@ -366,7 +420,7 @@ Consider this example:
 > However, an issue causes your queue processor to go down at the same time you receive a large spike in traffic. During
 > the outage, you end up with more than 50,000 jobs in the queue. When the service comes back online, it starts
 > processing those jobs as quickly as it can, a 50-fold increase in the normal rate of processing. As such, the
-> downstream process starts applying aggressive rate-limiting policies as DDoS protection. This DDoS protection causes
+> downstream service starts applying aggressive rate-limiting policies as DDoS protection. This DDoS protection causes
 > all the jobs in your queue to fail, getting enqueued for retry. Meanwhile, more jobs are continually being added. This
 > cascade of failures and retries continually prevents your server from being able to access the downstream service, and
 > you're never able to drain the queue. You're forced to take your application offline, wait for the 429 errors to
@@ -393,7 +447,8 @@ available job, suspending until the throttle permits the worker to try and claim
 Queue Throttles are intended to be created as a singleton, and passed into a supporting `QueueDriver`. The`QueuePolicy`
 itself must be a singleton, shared by all workers and/or drivers of your application.
 
-Example:
+In this example, there are a total of 7 Workers each running in parallel, but the ConcurrencyLimitThrottle limits the 
+queue to only 4 active jobs at a time amongst all 7 workers, regardless of the queue priority.
 
 ```kotlin
 val executor = DefaultQueueExecutor(
@@ -420,18 +475,18 @@ listOf("high" to 4, "default" to 2, "low" to 1).forEach { (queueName, replicaCou
 #### Available Policies
 
 By default, Ballast does not impose any rate-limiting, by using the `UnlimitedThrottle`, but you should ensure any
-production workloads do select and apply an appropriate policy, either from one of the below policies available by
-default, or with a custom policy.
+production workloads do select and apply an appropriate policy. You may choose from one of the below policies available, 
+or implement a custom policy.
 
 - **UnlimitedThrottle**: Applies no throttling to the queue. Not recommended for server-side workloads, but probably
   fine for low-volume client-side workloads.
 - **ConcurrencyLimitThrottle**: Limits the workers to at most `N` jobs being actively processed concurrently.
-- **TokenBucketThrottle**: A simple algorithm enforcing an upper-end on the rate of jobs, by continually filling a
-  "bucket" at a constant rate, and queues must wait for the bucket to fill before being allowed to claim and process a
-  job. In low-volume scenarios, jobs will be processed as quickly as possible, but as volume increases, jobs will only
-  be processed at the rate at which "tokens" are added to the bucket.
-- **PerQueueThrottle**: Apply different throttling policies to each queue by name
-- **CompositeThrottle**: Require multiple policies to become available before a worker can claim a job.
+- **TokenBucketThrottle**: A simple algorithm enforcing an upper-end on the rate of jobs. By continually filling a
+  "bucket" at a constant rate, queues must wait for the bucket to fill before being allowed to claim and process a
+  job. In low-volume scenarios, jobs will be processed as quickly as possible since the bucket will always have "tokens" 
+  available, but as volume increases, jobs will only be processed at the rate at which "tokens" are added to the bucket.
+- **PerQueueThrottle**: Delegate different throttling policies to each queue by name
+- **CompositeThrottle**: Require multiple delegated policies to become available before a worker can claim a job.
 
 These policies can be combined together, to create more complex policies. For example:
 
@@ -446,7 +501,7 @@ val highRateLimit = TokenBucketThrottle(
     tickDuration = 1.seconds,
 )
 
-// 1 job per second, processing bursts of up to 4 jobs
+// 1 job per minute, processing bursts of up to 4 jobs
 val defaultAndLowRateLimit = TokenBucketThrottle(
     scope = applicationCoroutineScope,
     capacity = 4,

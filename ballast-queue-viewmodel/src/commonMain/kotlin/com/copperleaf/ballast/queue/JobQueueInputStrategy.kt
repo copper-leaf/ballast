@@ -69,7 +69,8 @@ public class JobQueueInputStrategy<Inputs : Any, Events : Any, State : Any, JobM
                 // Launch the wait as a separate coroutine so enqueue() returns immediately. This keeps
                 // the strategy loop unblocked, allowing in-flight jobs to continue enqueuing sub-jobs
                 // (via insertJob) while we wait for the queue to drain. Only once the driver signals
-                // that all active jobs have finished do we forward the shutdown to Ballast.
+                // that all active jobs have finished do we forward the shutdown to the Ballast
+                // ViewModel itself.
                 inputStrategyScope.launch {
                     driver.awaitShutdown()
                     inputStrategyScope.acceptQueued(queued, DefaultGuardian()) { }

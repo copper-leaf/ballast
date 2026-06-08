@@ -8,7 +8,8 @@
 ## Overview
 
 A Driver implementation backed by a database table with Jetbrains Exposed for database access, designed for server-side 
-workloads needing high throughput and safe concurrency.
+workloads needing high throughput and safe concurrency, with several more advanced features commonly needed in 
+real-world job queues, including delayed jobs, cluster-wide unique jobs, and message groups.
 
 Supports PostgreSQL databases, with experimental support for MySQL and other dialects possibly supported in the future.
 
@@ -86,13 +87,13 @@ stateDiagram-v2
 
 ### Queue Features and Configuration
 
-This queue supports several features one commonly needs in production-ready applications. These features are all 
+This queue supports several features one commonly needs in production-scale applications. These features are all 
 derived from the Job payload into `ExposedDatabaseQueueDriver.Metadata`, and stored as columns in the jobs table. See 
 below for a description of these features and their related Metadata property and column name.
 
-Queue features are configured by creating an `Adapter` which takes in your type-sfe payload, and returns 
+Queue features are configured by creating an `Adapter` which takes in your type-safe payload, and returns 
 `ExposedDatabaseQueueDriver.Metadata` with the job's configuration. Configurations are always set individually for each
-job. YOu may instead use `ExposedDatabaseQueueDriver.DefaultAdapter()` to not use any per-job configuration, and always
+job. You may instead use `ExposedDatabaseQueueDriver.DefaultAdapter()` to not use any per-job configuration, and always
 use the driver's default values.
 
 ```kotlin
@@ -142,12 +143,13 @@ prevent jobs submitted later from being processed before a job submitted earlier
 Within a single queue, jobs with a higher priority will always be selected for processing before jobs with a lower 
 priority. If multiple jobs have the same priority, they will be selected in insertion order within that priority band.
 
-Higher priority will not entirely block lower priority jobs from being selected until all higher priority ones are. 
-Also, prioritization does not consider retries, so it's possible for the last job of priority `10` to be selected but 
-fail and be re-enqueued for retry, then a job at default priority `0` to be selected and succeed, allowing a lower 
-priority job to be processed before a higher-priority job in the same queue. 
+Higher priority will not entirely block lower priority jobs from being selected until all higher priority ones are, 
+since priority is only considered among jobs which are otherwise available for selection. For example, a job with 
+priority `10` but a `run_at` time in the future would not prevent a job with priority `0` from being selected if it has
+`run_at` in the past. However, within the same queue, if two jobs of different priority are both eligible for selection, 
+the highest priority will always be selected before the lower priority job.
 
-You must also be careful not to overuse priority, as jobs with lower priority can experience starvation if there are 
+You must be careful not to overuse priority, as jobs with lower priority can experience starvation if there are 
 consistently higher-priority jobs in the queue which always take precedence over lower priority ones.
 
 In general, think of priority as a general _suggestion_ of the order in which to run jobs, and use it rarely or ensure 
@@ -163,10 +165,10 @@ ordering guarantees, consider using [Message Groups](#message-groups) instead.
 |                         |             | `unique_until`           | `TIMESTAMP NULL` | null          |
 
 Uniqueness can be enforced across the entire system, preventing jobs with the same key from being inserted into the 
-queue. If `deduplicationKey` is set, `deduplicationDuration` must also be set, indicating period of time which the 
+queue. If `deduplicationKey` is set, `deduplicationDuration` must also be set, indicating the period of time which the 
 uniqueness is considered in "cooldown". As long as a job is currently in `Pending`, `Running`, or `Cooldown` states, 
 another job cannot be inserted into the queue with the same `deduplicationKey`. This is useful for situations like 
-debouncing jobs inserted into the job on a schedule, so you don't need to do synchronization between multiple pods
+debouncing jobs inserted into the job on a schedule, so you don't need to do synchronization between multiple containers
 each running and inserting jobs on a schedule in parallel.
 
 Jobs are unique from `run_at + deduplication_duration`, set in the `unique_until` column at the time of job creation.
@@ -187,11 +189,12 @@ Message groups allow you to make FIFO queues similar to Amazon SQS, where jobs i
 currently running at a time. Other jobs with the same `message_group` may be inserted into the queue, but only 1 job
 within that group will be able to run at a time, across the entire pool of workers. 
 
-While this may sound similar to [Deduplication](#deduplication), it serves different purpose. Deduplication is about 
+While this may sound similar to [Deduplication](#deduplication), it serves a different purpose. Deduplication is about 
 debouncing the same job so the same task doesn't accidentally get processed twice. Message groups are for protecting 
-access to the same shared resource across multiple jobs. As such, deduplication typiccally uses the name of the job as
+access to the same shared resource across multiple jobs. As such, deduplication typically uses the name of the job as
 the deduplication key, while message groups should us something like a `userId` to ensure jobs which modify data for the
-same user are not running in parallel, corrupting each other's work.
+same user are not running in parallel, corrupting each other's work. But because multiple users wouldn't be updating 
+each other's data, it's fine to allow the same job at the same key among different users.
 
 #### Automatic Retries
 
@@ -204,9 +207,9 @@ Whenever a job is unable to complete successfully, it may be moved to the `Faile
 moved back to the `Pending` state if it is eligible for retry. Jobs can fail for many reasons, including:
 
 - timeouts
+- exceptions thrown during processing
 - explicit cancellation
 - worker process crashes
-- exceptions thrown during processing
 
 In all cases, whenever we need to determine how to deal with the issue, the job will be checked for retry eligibility. 
 Jobs are eligible for retry if:
@@ -228,9 +231,9 @@ an arbitrarily high value like `Int.MAX_VALUE`.
 
 Sometimes things don't go as planned, and your application process crashes or is forcibly shut down while a worker is
 currently processing a job. Unfortunately, there's not much that can be done during the application process to recover
-the job gracefully at the time the server is shut down. But as a protection against this scenario, when a job is claimed
-from the queue by a worker, it is given a lease on that job to prevent it from being stuck in the `Running` state 
-indefinitely. 
+the job gracefully at the time the server is forcibly terminated. But as a protection against this scenario, when a job 
+is claimed from the queue by a worker, it is given a lease on that job to prevent it from being stuck in the `Running` 
+state indefinitely. 
 
 When a job starts running, the `leased_until` property is set to `currentTime + timeout_duration + lease_buffer_duration`.
 This means that if the job is actively running, it will either complete or timeout before the lease expires. But if the
@@ -263,7 +266,7 @@ The Driver itself delegates all SQL to the `JobsRepository`, implemented by `Job
 create and manage the state of this Repository yourself, providing an explicit [database connection](https://www.jetbrains.com/help/exposed/working-with-database.html).
 
 Internally, the `JobsRepository` is stateless apart from the database itself, and does not have any long-running jobs or
-in-memory caches. It's intended to be a stateless, and more semantic, interface to the underlying database table. All
+in-memory caches. It's intended to be a stateless and more semantic interface to the underlying database table. All
 SQL executes in a suspending transaction using the explicit `Database` instance passed to the `JobsRepositoryImpl` 
 constructor, to ensure consistent behavior throughout your app even if you use a different database for your Jobs table.
 This database has only been tested with JDBC, but support for R2DBC is planned.
@@ -278,7 +281,7 @@ left to you to actually schedule and call these tasks. Fortunately, these tasks 
 
 Maintenance needs for the Jobs table are:
 
-- `JobsMaintenanceRepository.deleteOldJobs()` -  Jobs are not automatically deleted when they complete successfully, 
+- `JobsMaintenanceRepository.deleteOldJobs()` - Jobs are not automatically deleted when they complete successfully, 
   since they may contain a result payload that's needed by other application logic. Periodically, old jobs should be 
   deleted once they've been fully handled, to ensure the table does not grow indefinitely with rows that are not needed.
 - `JobsMaintenanceRepository.freeJobCooldowns()` - Jobs with a deduplication key may hold a cooldown for an arbitrary 

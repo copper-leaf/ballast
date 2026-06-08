@@ -3,6 +3,7 @@ package com.copperleaf.ballast.queue.throttle
 import com.copperleaf.ballast.queue.QueueThrottle
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.sync.Semaphore
+import kotlin.concurrent.Volatile
 
 /**
  * A [QueueThrottle] implementation that limits the total number of active jobs across all queues to
