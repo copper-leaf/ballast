@@ -62,6 +62,9 @@ public class JobsMaintenanceRepositoryImpl(
                         (table.leased_until lessEq CurrentTimestamp)
             }) {
                 retryOrFailStatusColumn(it)
+                // Clear the stale lease so the row is clean regardless of which status was chosen above.
+                it[table.leased_at] = null
+                it[table.leased_until] = null
             }
         }
     }

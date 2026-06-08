@@ -139,7 +139,7 @@ public class JobsRepositoryImpl(
             }
             .orderBy(
                 outerQueryTable[table.priority] to SortOrder.DESC,
-                outerQueryTable[table.run_at] to SortOrder.DESC,
+                outerQueryTable[table.run_at] to SortOrder.ASC,  // oldest eligible job first (FIFO within same priority)
             )
             .forUpdate(ForUpdateOption.PostgreSQL.ForUpdate(ForUpdateOption.PostgreSQL.MODE.SKIP_LOCKED))
             .limit(1)
@@ -194,14 +194,14 @@ public class JobsRepositoryImpl(
             }
             .orderBy(
                 outerQueryTable[table.priority] to SortOrder.DESC,
-                outerQueryTable[table.run_at] to SortOrder.DESC,
+                outerQueryTable[table.run_at] to SortOrder.ASC,  // oldest eligible job first (FIFO within same priority)
             )
-            .forUpdate(ForUpdateOption.PostgreSQL.ForUpdate(ForUpdateOption.PostgreSQL.MODE.SKIP_LOCKED))
+            .forUpdate(ForUpdateOption.MySQL.ForUpdate(ForUpdateOption.MySQL.MODE.SKIP_LOCKED))
             .limit(1)
             .singleOrNull()
             ?: return null
 
-        // Step 2: Update the job to mark it as in-progress, and return the updated job row
+        // Step 2: Update the job to mark it as in-progress
         table
             .update(
                 where = { table.id eq initialResultRow[outerQueryTable[table.id]].value },
@@ -390,7 +390,10 @@ public class JobsRepositoryImpl(
                 it[table.status] = ExposedDatabaseJobStatus.Pending
 
                 it[run_at] = clock.now() + retryDelay
-                it[max_attempts] = max_attempts + 1
+                it[max_attempts] = max_attempts + additionalAttempts
+
+                it[leased_at] = null
+                it[leased_until] = null
             }
         }
     }

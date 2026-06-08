@@ -8,6 +8,7 @@ import org.jetbrains.exposed.v1.core.Case
 import org.jetbrains.exposed.v1.core.LiteralOp
 import org.jetbrains.exposed.v1.core.ResultRow
 import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.greater
 import org.jetbrains.exposed.v1.core.isNull
 import org.jetbrains.exposed.v1.core.less
 import org.jetbrains.exposed.v1.core.lessEq
@@ -20,9 +21,11 @@ import kotlin.time.Clock
 internal fun JobsTable.retryOrFailStatusColumn(update: UpdateStatement) {
     update[status] = Case()
         .When(
+            // Retry if: attempts remaining AND (no deadline OR deadline is still in the future).
+            // retry_until is a "do not retry after" deadline — so retry while it is still ahead of us.
             cond = (attempts less max_attempts) and
                     ((retry_until.isNull()) or
-                            (retry_until lessEq CurrentTimestamp)),
+                            (retry_until greater CurrentTimestamp)),
             result = LiteralOp(status.columnType, ExposedDatabaseJobStatus.Pending)
         )
         .Else(
