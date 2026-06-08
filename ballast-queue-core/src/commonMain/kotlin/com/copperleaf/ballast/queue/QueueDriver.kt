@@ -86,6 +86,17 @@ public interface QueueDriver<JobMetadata : Any> {
      */
     public fun subscribeToJobCancellation(jobId: String): Flow<Unit>
 
+// Shutdown
+// ---------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Signal that the queue should shut down gracefully. Drivers that use a [QueueThrottle] should delegate to
+     * [QueueThrottle.awaitShutdown] so that all in-flight jobs are allowed to finish before this method returns.
+     *
+     * The default implementation is a no-op.
+     */
+    public suspend fun awaitShutdown() {}
+
     public interface Adapter<
             JobMetadata : Any,
             Payload : Any,

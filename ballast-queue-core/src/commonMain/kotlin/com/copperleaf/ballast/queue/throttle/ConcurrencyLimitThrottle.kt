@@ -1,6 +1,7 @@
 package com.copperleaf.ballast.queue.throttle
 
 import com.copperleaf.ballast.queue.QueueThrottle
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.sync.Semaphore
 
 /**
@@ -23,11 +24,30 @@ public class ConcurrencyLimitThrottle(
 
     private val semaphore = Semaphore(maxConcurrentJobs)
 
+    @Volatile
+    private var shuttingDown = false
+
     override suspend fun acquirePermit(queueName: String): QueueThrottle.Permit {
+        if (shuttingDown) awaitCancellation()
+
         semaphore.acquire()
+
+        // Double-check after potentially blocking on the semaphore.
+        if (shuttingDown) {
+            semaphore.release()
+            awaitCancellation()
+        }
 
         return QueueThrottle.Permit {
             semaphore.release()
         }
+    }
+
+    override suspend fun awaitShutdown() {
+        shuttingDown = true
+        // Acquire every permit in the semaphore. The idle slots are grabbed immediately; slots held by active
+        // workers become available one-by-one as each job completes. Once we hold all maxConcurrentJobs permits
+        // we know every in-flight job has finished.
+        repeat(maxConcurrentJobs) { semaphore.acquire() }
     }
 }

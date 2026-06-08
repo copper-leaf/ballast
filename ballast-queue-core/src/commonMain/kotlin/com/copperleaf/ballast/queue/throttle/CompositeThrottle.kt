@@ -4,6 +4,7 @@ import com.copperleaf.ballast.queue.QueueThrottle
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * A [QueueThrottle] implementation that requires a worker to satisfy all the provided throttle [policies] before
@@ -26,5 +27,9 @@ public class CompositeThrottle(
         QueueThrottle.Permit {
             permits.forEach { it.release() }
         }
+    }
+
+    override suspend fun awaitShutdown(): Unit = coroutineScope {
+        policies.forEach { policy -> launch { policy.awaitShutdown() } }
     }
 }

@@ -2,12 +2,15 @@ package com.copperleaf.ballast.queue.throttle
 
 import com.copperleaf.ballast.queue.QueueThrottle
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlin.math.min
 import kotlin.time.Duration
 
@@ -34,6 +37,10 @@ public class TokenBucketThrottle(
 
     private val tokens = MutableStateFlow(capacity)
 
+    private val mutex = Mutex()
+    private var shuttingDown = false
+    private val activePermits = MutableStateFlow(0)
+
     init {
         scope.launch {
             while (isActive) {
@@ -46,13 +53,31 @@ public class TokenBucketThrottle(
     }
 
     override suspend fun acquirePermit(queueName: String): QueueThrottle.Permit {
-        // wait for the bucket to fill up enough to take a token. The result isn't actually used; we just need to
-        // wait until there's at least one token available.
+        // Atomically claim an active slot before suspending on the token wait. This ensures awaitShutdown() cannot
+        // return a count of zero while a worker is mid-acquisition waiting for a token.
+        val permit = mutex.withLock {
+            if (shuttingDown) {
+                null
+            } else {
+                activePermits.update { it + 1 }
+                QueueThrottle.Permit {
+                    activePermits.update { it - 1 }
+                }
+            }
+        }
+        if (permit == null) awaitCancellation()
+
+        // Wait for the bucket to fill up enough to take a token.
         tokens.first { it > 0 }
 
-        // once we've confirmed there's at least one token, take it out of the bucket
+        // Once we've confirmed there's at least one token, take it out of the bucket.
         tokens.update { it - 1 }
 
-        return QueueThrottle.Permit {}
+        return permit
+    }
+
+    override suspend fun awaitShutdown() {
+        mutex.withLock { shuttingDown = true }
+        activePermits.first { it == 0 }
     }
 }
