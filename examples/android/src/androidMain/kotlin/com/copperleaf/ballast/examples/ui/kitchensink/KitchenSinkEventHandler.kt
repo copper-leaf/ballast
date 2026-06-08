@@ -36,6 +36,5 @@ class KitchenSinkEventHandler(
         is KitchenSinkContract.Events.ErrorRunningEvent -> {
             error("error running event")
         }
-
     }
 }

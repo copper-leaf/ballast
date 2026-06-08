@@ -117,5 +117,4 @@ internal object QueryStringParser {
     internal fun parseQueryString(queryString: String): List<QueryParameter> {
         return queryStringParser.parse(ParserContext.fromString(queryString)).first.value
     }
-
 }

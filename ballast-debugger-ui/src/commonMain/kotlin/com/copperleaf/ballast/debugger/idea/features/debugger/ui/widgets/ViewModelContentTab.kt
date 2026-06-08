@@ -27,7 +27,8 @@ internal enum class ViewModelContentTab(
     SideJobs(Icons.Default.CloudUpload, "SideJobs"),
     Interceptors(Icons.Default.RestartAlt, "Interceptors"),
     Logs(Icons.Default.Description, "Logs");
-//    Timeline(Icons.Default.Timeline, "Timeline");
+
+    //    Timeline(Icons.Default.Timeline, "Timeline");
 
     fun isEnabled(
         connection: BallastConnectionState

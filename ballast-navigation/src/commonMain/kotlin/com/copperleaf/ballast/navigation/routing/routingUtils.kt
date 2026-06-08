@@ -21,6 +21,21 @@ public fun Route.isStatic(): Boolean {
 }
 
 /**
+ * Returns the Route's path in its original format, intended to be used for sharing a Route between a Ktor client and
+ * a Ktor server route.
+ */
+public fun Route.pathFormat(): String {
+    return matcher.path.joinToString(separator = "/", prefix = "/") {
+        when (it) {
+            is PathSegment.Static -> it.text
+            is PathSegment.Parameter -> if (it.optional) "{${it.name}?}" else "{${it.name}}"
+            is PathSegment.Wildcard -> "*"
+            is PathSegment.Tailcard -> if (it.name != null) "{${it.name}...}" else "{...}"
+        }
+    }
+}
+
+/**
  * Start building a destination with directions from [this] [Route].
  */
 public fun <T : Route> T.directions(): Destination.Directions<T> {
@@ -573,7 +588,6 @@ public fun <T : Route> BackstackNavigator<T>.popUntilRoute(
         it.originalRoute == route
     }
 }
-
 
 /**
  * Navigate backward in the backstack, removing all destinations that contain the given [annotation].

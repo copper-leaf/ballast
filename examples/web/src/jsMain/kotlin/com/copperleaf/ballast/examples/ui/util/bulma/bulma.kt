@@ -29,7 +29,7 @@ enum class BulmaSize(val cssClass: String) {
     Large("is-large"),
 }
 
-fun <T: Element> AttrsScope<T>.ClassList(
+fun <T : Element> AttrsScope<T>.ClassList(
     block: MutableSet<String>.() -> Unit,
 ) {
     classes(*buildSet<String> { block() }.toTypedArray())

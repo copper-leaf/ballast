@@ -43,5 +43,4 @@ public class CoffeeProductsApiImpl(
             .sortedWith(sortResultsBy.asComparator())
             .toList()
     }
-
 }

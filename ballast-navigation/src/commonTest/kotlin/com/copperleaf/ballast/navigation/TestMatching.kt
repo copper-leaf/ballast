@@ -4,6 +4,7 @@ import com.copperleaf.ballast.navigation.routing.Destination
 import com.copperleaf.ballast.navigation.routing.UnmatchedDestination
 import com.copperleaf.ballast.navigation.routing.matchDestination
 import com.copperleaf.ballast.navigation.routing.matchDestinationOrThrow
+import com.copperleaf.ballast.navigation.routing.pathFormat
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -28,6 +29,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one/two' does not match Route '/one': Path mismatch"
             )
+            assertEquals("/one", this.pathFormat())
         }
         SimpleRoute("/*").apply {
             "/one".shouldMatch(this)
@@ -40,6 +42,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one/two' does not match Route '/*': Path mismatch"
             )
+            assertEquals("/*", this.pathFormat())
         }
         SimpleRoute("/:one").apply {
             "/two".shouldMatch(
@@ -58,6 +61,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one/two' does not match Route '/:one': Path mismatch"
             )
+            assertEquals("/{one}", this.pathFormat())
         }
         SimpleRoute("/{one}").apply {
             "/two".shouldMatch(
@@ -76,6 +80,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one/two' does not match Route '/{one}': Path mismatch"
             )
+            assertEquals("/{one}", this.pathFormat())
         }
         SimpleRoute("/{one?}").apply {
             "/two".shouldMatch(
@@ -94,6 +99,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one/two' does not match Route '/{one?}': Path mismatch",
             )
+            assertEquals("/{one?}", this.pathFormat())
         }
         SimpleRoute("/{...}").apply {
             "/two".shouldMatch(
@@ -112,6 +118,7 @@ class TestMatching {
                 this,
                 expectedPathParameters = emptyMap(),
             )
+            assertEquals("/{...}", this.pathFormat())
         }
         SimpleRoute("/{one...}").apply {
             "/two".shouldMatch(
@@ -130,6 +137,7 @@ class TestMatching {
                 this,
                 expectedPathParameters = mapOf("one" to listOf("one", "two")),
             )
+            assertEquals("/{one...}", this.pathFormat())
         }
 
         SimpleRoute("/one/:two/three/{four}/*/{five...}").apply {
@@ -149,6 +157,7 @@ class TestMatching {
                     "five" to listOf("six", "seven", "eight"),
                 ),
             )
+            assertEquals("/one/{two}/three/{four}/*/{five...}", this.pathFormat())
         }
     }
 
@@ -183,6 +192,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one?one=two&one=three' does not match Route '/one?one=two': Query string mismatch"
             )
+            assertEquals("/one", this.pathFormat())
         }
         SimpleRoute("/one?one={!}").apply {
             "/one?one=two".shouldMatch(
@@ -213,6 +223,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one?one=two&one=three' does not match Route '/one?one={!}': Query string mismatch"
             )
+            assertEquals("/one", this.pathFormat())
         }
         SimpleRoute("/one?one={[!]}").apply {
             "/one?one=two".shouldMatch(
@@ -243,6 +254,7 @@ class TestMatching {
                 this,
                 expectedQueryParameters = mapOf("one" to listOf("two", "three")),
             )
+            assertEquals("/one", this.pathFormat())
         }
         SimpleRoute("/one?one={?}").apply {
             "/one?one=two".shouldMatch(
@@ -273,6 +285,7 @@ class TestMatching {
                 this,
                 expectedErrorMessage = "Destination '/one?one=two&one=three' does not match Route '/one?one={?}': Query string mismatch"
             )
+            assertEquals("/one", this.pathFormat())
         }
         SimpleRoute("/one?one={[?]}").apply {
             "/one?one=two".shouldMatch(
@@ -303,6 +316,7 @@ class TestMatching {
                 this,
                 expectedQueryParameters = mapOf("one" to listOf("two", "three")),
             )
+            assertEquals("/one", this.pathFormat())
         }
         SimpleRoute("/one?{...}").apply {
             "/one?one=two".shouldMatch(
@@ -333,6 +347,7 @@ class TestMatching {
                 this,
                 expectedQueryParameters = mapOf("one" to listOf("two", "three")),
             )
+            assertEquals("/one", this.pathFormat())
         }
     }
 
@@ -395,7 +410,6 @@ class TestMatching {
         assertTrue { destination is Destination.Match }
         assertSame(queryRoute, (destination as Destination.Match).originalRoute)
     }
-
 
     companion object {
         fun String.shouldMatch(

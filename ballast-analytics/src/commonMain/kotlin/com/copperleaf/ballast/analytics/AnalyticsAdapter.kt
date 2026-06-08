@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.analytics
 
+import com.copperleaf.ballast.BallastEncoder
+
 /**
  * An adapter for converting Inputs to data sent to an [AnalyticsTracker].
  *
@@ -22,5 +24,5 @@ public interface AnalyticsAdapter<Inputs : Any, Events : Any, State : Any> {
      * Get an identifier from the [input] for tracking an analytics event. Corresponds to `eventParameters` in
      * [AnalyticsTracker.trackAnalyticsEvent].
      */
-    public fun getEventParametersForInput(viewModelName: String, input: Inputs): Map<String, String>
+    public fun getEventParametersForInput(viewModelName: String, input: Inputs, encoder: BallastEncoder<Inputs, Events, State>): Map<String, String>
 }

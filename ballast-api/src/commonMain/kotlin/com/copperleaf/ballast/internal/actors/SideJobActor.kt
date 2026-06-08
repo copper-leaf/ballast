@@ -32,9 +32,9 @@ public class SideJobActor<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
-    private val _sideJobsRequestQueue: Channel<SideJobRequest<Inputs, Events, State>> =
+    private val sideJobsRequestQueue: Channel<SideJobRequest<Inputs, Events, State>> =
         Channel(BUFFERED, BufferOverflow.SUSPEND)
-    private val _sideJobsRequestQueueDrained = CompletableDeferred<Unit>()
+    private val sideJobsRequestQueueDrained = CompletableDeferred<Unit>()
 
     private val sideJobsState: MutableStateFlow<Map<String, SideJobList>> = MutableStateFlow(
         emptyMap(),
@@ -43,7 +43,7 @@ public class SideJobActor<Inputs : Any, Events : Any, State : Any>(
     internal fun startSideJobsInternal() {
         // start sideJobs posted by Inputs
         impl.viewModelScope.launch {
-            _sideJobsRequestQueue
+            sideJobsRequestQueue
                 .receiveAsFlow()
                 .onEach { request ->
                     when (request) {
@@ -56,7 +56,7 @@ public class SideJobActor<Inputs : Any, Events : Any, State : Any>(
                         }
                     }
                 }
-                .onCompletion { _sideJobsRequestQueueDrained.complete(Unit) }
+                .onCompletion { sideJobsRequestQueueDrained.complete(Unit) }
                 .launchIn(this)
         }
     }
@@ -67,14 +67,14 @@ public class SideJobActor<Inputs : Any, Events : Any, State : Any>(
     ) {
         impl.coordinator.coordinatorState.value.checkSideJobsOpen()
         impl.interceptorActor.notifyImmediate(BallastNotification.SideJobQueued(impl.type, impl.name, key))
-        _sideJobsRequestQueue.trySend(SideJobRequest.StartOrRestartSideJob(key, block))
+        sideJobsRequestQueue.trySend(SideJobRequest.StartOrRestartSideJob(key, block))
     }
 
     public fun cancelSideJob(
         key: String,
     ) {
         impl.coordinator.coordinatorState.value.checkSideJobCancellationOpen()
-        _sideJobsRequestQueue.trySend(SideJobRequest.CancelSideJob(key))
+        sideJobsRequestQueue.trySend(SideJobRequest.CancelSideJob(key))
     }
 
     internal fun cancelAllSideJobs() {
@@ -220,8 +220,8 @@ public class SideJobActor<Inputs : Any, Events : Any, State : Any>(
         try {
             withTimeout(gracePeriod) {
                 // close the sideJobs request queue and wait for all requests to be handled
-                _sideJobsRequestQueue.close()
-                _sideJobsRequestQueueDrained.await()
+                sideJobsRequestQueue.close()
+                sideJobsRequestQueueDrained.await()
 
                 // without forcibly cancelling, wait for all sideJobs to complete
                 sideJobsState.value
@@ -239,7 +239,7 @@ public class SideJobActor<Inputs : Any, Events : Any, State : Any>(
     }
 
     internal fun close() {
-        _sideJobsRequestQueue.close()
+        sideJobsRequestQueue.close()
     }
 
     private sealed class SideJobRequest<Inputs : Any, Events : Any, State : Any> {

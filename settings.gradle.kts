@@ -44,6 +44,19 @@ include(":ballast-debugger-server")
 include(":ballast-debugger-ui")
 include(":ballast-idea-plugin")
 
+include(":ballast-scheduler-core")
+include(":ballast-scheduler-cron")
+include(":ballast-scheduler-viewmodel")
+include(":ballast-scheduler-android-alarmmanager")
+
+include(":ballast-queue-core")
+include(":ballast-queue-viewmodel")
+include(":ballast-queue-exposed-driver")
+
+include(":ballast-kotlinx-serialization")
+include(":ballast-ktor-server")
+include(":ballast-autoscale")
+
 include(":ballast-test")
 
 include(":examples:android")
@@ -53,5 +66,4 @@ include(":examples:counter")
 include(":examples:schedules")
 include(":examples:navigationWithEnumRoutes")
 include(":examples:navigationWithCustomRoutes")
-
-//include(":docs")
+include(":examples:queue")

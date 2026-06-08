@@ -18,5 +18,4 @@ public interface Route {
      * directly to the router when navigating to a destination.
      */
     public val annotations: Set<RouteAnnotation>
-
 }

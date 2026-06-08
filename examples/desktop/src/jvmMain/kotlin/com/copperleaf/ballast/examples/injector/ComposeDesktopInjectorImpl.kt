@@ -4,7 +4,6 @@ import androidx.compose.material.SnackbarHostState
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.BootstrapInterceptor
-import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.core.PrintlnLogger
@@ -61,6 +60,7 @@ import com.copperleaf.ballast.undo.BallastUndoInterceptor
 import com.copperleaf.ballast.undo.UndoController
 import com.copperleaf.ballast.undo.state.StateBasedUndoController
 import com.copperleaf.ballast.undo.state.withStateBasedUndoController
+import com.copperleaf.ballast.withJsonSerialization
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -72,7 +72,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 class ComposeDesktopInjectorImpl(
     private val applicationScope: CoroutineScope,
@@ -162,13 +161,13 @@ class ComposeDesktopInjectorImpl(
                     inputHandler = CounterInputHandler(),
                     name = "Counter",
                 )
+                .withJsonSerialization(
+                    inputsSerializer = CounterContract.Inputs.serializer(),
+                    eventsSerializer = CounterContract.Events.serializer(),
+                    stateSerializer = CounterContract.State.serializer(),
+                )
                 .apply {
-                    this += BallastDebuggerInterceptor(
-                        debuggerConnection,
-                        inputsSerializer = CounterContract.Inputs.serializer(),
-                        eventsSerializer = CounterContract.Events.serializer(),
-                        stateSerializer = CounterContract.State.serializer(),
-                    )
+                    this += BallastDebuggerInterceptor(debuggerConnection)
                 }
                 .build(),
             eventHandler = CounterEventHandler(),
@@ -283,20 +282,15 @@ class ComposeDesktopInjectorImpl(
         coroutineScope: CoroutineScope,
         inputStrategy: InputStrategySelection,
     ): KitchenSinkViewModel {
-        val killSwitch = KillSwitch<
-                KitchenSinkContract.Inputs,
-                KitchenSinkContract.Events,
-                KitchenSinkContract.State>(5.seconds)
         return KitchenSinkViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = commonBuilder()
                 .apply {
                     this.inputStrategy = inputStrategy.get()
-                    this += killSwitch
                 }
                 .withViewModel(
                     initialState = KitchenSinkContract.State(inputStrategy = inputStrategy),
-                    inputHandler = KitchenSinkInputHandler(killSwitch),
+                    inputHandler = KitchenSinkInputHandler(),
                     name = "KitchenSink",
                 )
                 .build(),

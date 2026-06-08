@@ -93,8 +93,6 @@ public fun Schedule.bounded(validRange: ClosedRange<Instant>): Schedule {
             while (iterator.hasNext()) {
                 val next = iterator.next()
 
-                println("checking $next")
-
                 when {
                     next < validRange.start -> {
                         // we haven't entered the start of the range, don't quit yet

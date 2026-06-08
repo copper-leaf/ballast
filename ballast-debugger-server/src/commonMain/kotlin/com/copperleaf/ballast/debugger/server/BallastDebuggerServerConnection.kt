@@ -10,7 +10,7 @@ import com.copperleaf.ballast.debugger.versions.ClientModelSerializer
 import com.copperleaf.ballast.debugger.versions.ClientVersion
 import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerActionV5
 import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
-import io.github.copper_leaf.ballast_debugger_server.BALLAST_VERSION
+import io.github.copperleaf.ballastdebuggerserver.BALLAST_VERSION
 import io.ktor.server.application.install
 import io.ktor.server.cio.CIO
 import io.ktor.server.engine.embeddedServer

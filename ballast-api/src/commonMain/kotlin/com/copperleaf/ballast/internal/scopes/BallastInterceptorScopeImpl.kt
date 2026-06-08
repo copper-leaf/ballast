@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.internal.scopes
 
+import com.copperleaf.ballast.BallastDecoder
+import com.copperleaf.ballast.BallastEncoder
 import com.copperleaf.ballast.BallastInterceptorScope
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.Queued
@@ -17,6 +19,9 @@ internal class BallastInterceptorScopeImpl<Inputs : Any, Events : Any, State : A
 
     private val inputActor: InputActor<Inputs, Events, State>,
     private val eventActor: EventActor<Inputs, Events, State>,
+
+    override val encoder: BallastEncoder<Inputs, Events, State>,
+    override val decoder: BallastDecoder<Inputs, Events, State>?,
 ) : BallastInterceptorScope<Inputs, Events, State>,
     CoroutineScope by interceptorCoroutineScope {
 

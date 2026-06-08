@@ -1,6 +1,3 @@
----
----
-
 # Ballast
 
 > Opinionated Application State Management framework for Kotlin Multiplatform
@@ -11,12 +8,12 @@
 [![Intellij Plugin Version](https://img.shields.io/jetbrains/plugin/v/18702-ballast)](https://plugins.jetbrains.com/plugin/18702-ballast)
 
 ```kotlin
-object TodosContract { 
+object TodosContract {
     data class State(
-        val loading: Boolean = false, 
-        val todos: List<String> = emptyList(), 
+        val loading: Boolean = false,
+        val todos: List<String> = emptyList(),
     )
-  
+
     sealed interface Inputs {
         data object FetchSavedTodos : Inputs
         data class AddTodo(val text: String) : Inputs
@@ -28,85 +25,54 @@ class TodosInputHandler : InputHandler<Inputs, Events, State> {
     override suspend fun InputHandlerScope<Inputs, Events, State>.handleInput(
         input: TodosContract.Inputs
     ) = when (input) {
-        is FetchSavedTodos -> { 
-            updateState { it.copy(loading = true) }
+        is FetchSavedTodos -> {
+            updateState { copy(loading = true) }
             val todos = todosApi.fetchTodos()
-            updateState { it.copy(loading = false, todos = todos) }
+            updateState { copy(loading = false, todos = todos) }
         }
-        is AddTodo -> {
-            updateState { it.copy(todos = it.todos + input.text) }
-        }
-        is RemoveTodo -> {
-            updateState { it.copy(todos = it.todos - input.text) }
-        }
+        is AddTodo -> updateState { copy(todos = todos + input.text) }
+        is RemoveTodo -> updateState { copy(todos = todos - input.text) }
     }
 }
 
 @Composable
-fun App() { 
+fun App() {
     val coroutineScope = rememberCoroutineScope()
     val vm = remember(coroutineScope) { TodosViewModel(coroutineScope) }
     val vmState by vm.observeStates().collectAsState()
-    
-    LaunchedEffect(vm) { 
-        vm.send(TodosContract.FetchSavedTodos)
-    }
-    
-    TodosList(vmState) { vm.trySend(it) }
-}
 
-@Composable
-fun TodosList(
-    vmState: TodosContract.State,
-    postInput: (TodosContract.Inputs)->Unit,
-) {
-    // ...
+    LaunchedEffect(vm) { vm.send(TodosContract.FetchSavedTodos) }
+
+    TodosList(vmState, postInput = { vm.trySend(it) })
 }
 ```
 
-* _This snippet omits some details for brevity, to demonstrate the general idea_
+_This snippet omits some details for brevity. See [Getting Started](docs/getting-started.md) for a complete walkthrough._
 
-# Supported Platforms/Features
+## Supported Platforms
 
-Ballast was intentionally designed to not be tied directly to any particular platform or UI toolkit. In fact, while most
-Kotlin MVI libraries were initially developed for Android and show many artifacts of that initial base, Ballast started
-as a State Management solution for Compose Desktop.
+Ballast was intentionally designed to not be tied to any particular platform or UI toolkit. It works in any Kotlin
+target that supports Coroutines and Flows. The following platforms are officially supported and tested:
 
-Because Ballast was initially designed entirely in a non-Android context, it should work in any Kotlin target or
-platform as long as it works with Coroutines and Flows. However, the following targets are officially supported, in
-that they have been tested and are known to work there, or have specific features for that platform
+| Platform | Supported |
+|----------|-----------|
+| JVM      | ✅         |
+| Android  | ✅         |
+| iOS      | ✅         |
+| JS       | ✅         |
+| WASM JS  | ✅         |
 
-- [Android](https://copper-leaf.github.io/ballast/wiki/platforms/android)
-- [iOS](https://copper-leaf.github.io/ballast/wiki/platforms/ios)
-- [WasmJS](https://copper-leaf.github.io/ballast/wiki/platforms/wasmjs)
-- [Compose](https://copper-leaf.github.io/ballast/wiki/platforms/compose)
-- [KVision](https://copper-leaf.github.io/ballast/wiki/platforms/kvision)
-
-# Installation
+## Installation
 
 ```kotlin
 repositories {
     mavenCentral()
-  
-    // SNAPSHOT builds are available as well at the MavenCentral Snapshots repository
-    maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots")
 }
 
 // for plain JVM or Android projects
 dependencies {
-    implementation("io.github.copper-leaf:ballast-core:{{site.version}}")
-    
-    implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-sync:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-undo:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-navigation:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-schedules:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-crash-reporting:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-analytics:{{site.version}}")
-    implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")
-    
-    testImplementation("io.github.copper-leaf:ballast-test:{{site.version}}")
+    implementation("io.github.copper-leaf:ballast-core:{{ballastVersion}}")
+    testImplementation("io.github.copper-leaf:ballast-test:{{ballastVersion}}")
 }
 
 // for multiplatform projects
@@ -114,73 +80,68 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-core:{{site.version}}")
-
-                implementation("io.github.copper-leaf:ballast-repository:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-saved-state:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-sync:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-undo:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-navigation:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-schedules:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-crash-reporting:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-analytics:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-debugger-client:{{site.version}}")=
+                implementation("io.github.copper-leaf:ballast-core:{{ballastVersion}}")
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation("io.github.copper-leaf:ballast-test:{{site.version}}")
-            }
-        }
-        val androidMain by getting {
-            dependencies {
-                implementation("io.github.copper-leaf:ballast-firebase-crashlytics:{{site.version}}")
-                implementation("io.github.copper-leaf:ballast-firebase-analytics:{{site.version}}")
+                implementation("io.github.copper-leaf:ballast-test:{{ballastVersion}}")
             }
         }
     }
 }
 ```
 
-# Documentation
+Other modules can be added as needed. See [docs/README.md](docs/README.md) for the full list.
 
-See the [website](https://copper-leaf.github.io/ballast/) for detailed documentation and usage instructions.
+## AI Coding Assistance
 
-# Community Chat
+Ballast ships an [`llms.txt`](llms.txt) file — a plain-Markdown context file for AI coding assistants. It covers core concepts, APIs, module list, and common pitfalls.
 
-Join us at https://kotlinlang.slack.com in the `#ballast` channel for support, or to show off what you're building with Ballast!
+To use it, copy the file into your project's agent rules location:
 
-https://kotlinlang.slack.com/archives/C03GTEJ9Y3E
+| Agent          | Location                                   |
+|----------------|--------------------------------------------|
+| Claude Code    | `CLAUDE.md` or `.claude/rules/ballast.md`  |
+| Cursor         | `.cursor/rules/ballast.mdc`                |
+| GitHub Copilot | `.github/copilot-instructions.md`          |
+| Windsurf       | `.windsurfrules`                           |
+| Other          | Wherever your agent reads Markdown context |
 
-# License
+## Documentation
 
-Ballast is licensed under the BSD 3-Clause License, see [LICENSE.md](https://github.com/copper-leaf/ballast/tree/main/LICENSE.md).
+Full documentation is in the [docs/](docs/) directory:
 
-# References
+- **[Getting Started](docs/getting-started.md)** — step-by-step guide to building your first Ballast screen
+- **[Feature Overview](docs/feature-overview.md)** — core concepts: Contracts, Handlers, Side Jobs, Interceptors
+- **[Thinking in Ballast MVI](docs/mental-model.md)** — the MVI model and Ballast's design philosophy
+- **[Feature Comparison](docs/feature-comparison.md)** — Ballast vs Redux, Orbit, MVIKotlin, Uniflow-kt
+- **[Migration Guides](docs/migration/)** — upgrading between major versions
+- **[All modules and examples](docs/README.md)** — index of every module and example with descriptions
 
-Ballast is not new, it was built upon years of experience building UI applications in Android and observing the
-direction UI programming has gone in the past few years. The MVI model has proven itself to be robust to a wide array
-of applications, and there are different implementations of the pattern that focus on different aspects of the pattern.
+## Community
 
-The following are some of the main libraries I drew inspiration from while using Ballast. If Ballast does not fit your
-project's needs, maybe one of these will suit you better. See the [feature comparison][4] for a better breakdown of the
-specific features of these libraries, to demonstrate the similarities and differences between them.
+Join us on the Kotlin Slack in the [`#ballast`](https://kotlinlang.slack.com/archives/C03GTEJ9Y3E) channel for
+support or to show off what you're building with Ballast.
 
-- [Redux][1]: The OG of the MVI programming model. It also was not the first MVI library, but React+Redux has certainly
-  been one of the biggest contributors to this pattern's popularity today, especially in JS, but also in many other
-  tech spaces
-- [Orbit MVI][2]: A primary source of inspiration for Ballast. This library is mature and well-built, but in my opinion
-  was built a little too closely to Android, making it less useful on other KMP targets. It also uses terminology from
-  Redux like "reducer" and "transformer" that are intended to bridge the gap from users familiar with Redux, but are
-  a bit confusing for developers new to MVI. It is also missing some key features that one would expect from an MVI
-  library, like a graphical debugger.
-- [How to write your own MVI system and why you shouldn't][3]: An intro video to the [Orbit MVI][2] library, and one of
-  the best introductions to the MVI model I've seen. By walking you through the thought process behind developing a
-  simple MVI library, it reinforces the concepts of the pattern and helps you understand how to use a mature MVI library
-  like Orbit or Ballast.
+## License
 
+Ballast is licensed under the BSD 3-Clause License, see [LICENSE.md](LICENSE.md).
 
-[1]: https://github.com/reduxjs/redux
-[2]: https://github.com/orbit-mvi/orbit-mvi
-[3]: https://www.youtube.com/watch?v=E6obYmkkdko
-[4]: https://copper-leaf.github.io/ballast/wiki/feature-comparison/
+## References
+
+Ballast was built upon years of experience building UI applications and observing the direction UI programming has
+gone. The MVI model has proven itself robust across a wide range of applications, programming languages, and API 
+surfaces. Ballast is not the only MVI library in Kotlin, but it is unique in being a highly opinionated and highly 
+structured MVI library, which brings certain advantages. The [feature comparison](docs/feature-comparison.md) 
+is a detailed breakdown of similarities and differences among the many libraries that were consulted as a large 
+inspiration for Ballast. But by far, these 3 links were the most helpful in shaping how Ballast works and looks, and 
+studying these resources may give you a deeper understanding of why Ballast was built the way that it was.
+
+- [Redux](https://github.com/reduxjs/redux): The most widely-known implementation of the MVI/Flux pattern. React+Redux 
+  has been one of the biggest contributors to this pattern's popularity.
+- [Orbit MVI](https://github.com/orbit-mvi/orbit-mvi): A primary source of inspiration for Ballast. Mature and 
+  well-built, though oriented closely toward Android and missing some features like a graphical debugger.
+- [How to write your own MVI system and why you shouldn't](https://www.youtube.com/watch?v=E6obYmkkdko): An intro video 
+  to the Orbit MVI library and one of the best introductions to the MVI model available. Walking through building a 
+  simple MVI library from scratch helps cement the concepts behind using a mature one.

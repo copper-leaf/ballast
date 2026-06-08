@@ -4,7 +4,7 @@ plugins {
     id("copper-leaf-tests")
     id("copper-leaf-serialization")
     id("copper-leaf-compose")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 
@@ -14,7 +14,6 @@ kotlin {
             languageSettings.apply {
                 optIn("androidx.compose.material.ExperimentalMaterialApi")
                 optIn("androidx.compose.foundation.ExperimentalFoundationApi")
-                optIn("com.copperleaf.ballast.ExperimentalBallastApi")
                 optIn("org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi")
             }
         }

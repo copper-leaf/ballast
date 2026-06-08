@@ -26,19 +26,18 @@ public object StorefrontContract {
     public sealed class Inputs {
         data object Initialize : Inputs()
 
-        data class UpdateSearchQuery(val searchQuery: String): Inputs()
+        data class UpdateSearchQuery(val searchQuery: String) : Inputs()
 
-        data class ToggleColumnSort(val column: CoffeeProductColumn): Inputs()
-        data class ToggleTag(val tag: String): Inputs()
-        data object ToggleFilterInStock: Inputs()
+        data class ToggleColumnSort(val column: CoffeeProductColumn) : Inputs()
+        data class ToggleTag(val tag: String) : Inputs()
+        data object ToggleFilterInStock : Inputs()
 
-        data class UpdatePriceRangeMin(val minPrice: UInt): Inputs()
-        data class UpdatePriceRangeMax(val maxPrice: UInt): Inputs()
-        data class UpdateRating(val rating: UInt): Inputs()
+        data class UpdatePriceRangeMin(val minPrice: UInt) : Inputs()
+        data class UpdatePriceRangeMax(val maxPrice: UInt) : Inputs()
+        data class UpdateRating(val rating: UInt) : Inputs()
 
-        data object QueryCoffeeProducts: Inputs()
+        data object QueryCoffeeProducts : Inputs()
     }
 
-    public sealed class Events {
-    }
+    public sealed class Events
 }

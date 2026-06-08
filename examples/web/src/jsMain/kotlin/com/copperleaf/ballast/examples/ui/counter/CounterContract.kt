@@ -12,11 +12,11 @@ object CounterContract {
     sealed interface Inputs {
         @Serializable
         data class Increment(val amount: Int) : Inputs
+
         @Serializable
         data class Decrement(val amount: Int) : Inputs
     }
 
     @Serializable
-    sealed interface Events {
-    }
+    sealed interface Events
 }

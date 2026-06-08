@@ -9,8 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 /**
  * Create a default [BallastViewModelConfiguration] from a [BallastViewModelConfiguration.Builder].
  */
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.build(
-): BallastViewModelConfiguration<Inputs, Events, State> {
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.build(): BallastViewModelConfiguration<Inputs, Events, State> {
     val vmName = name ?: "$inputHandler-vm"
     @Suppress("DEPRECATION")
     return DefaultViewModelConfiguration<Inputs, Events, State>(
@@ -25,14 +24,16 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         interceptorDispatcher = interceptorDispatcher,
         name = vmName,
         logger = logger(vmName),
+        encoder = encoder.requireTyped("encoder"),
+        decoder = decoder.requireTypedIfPresent("decoder"),
+        shutDownGracePeriod = shutDownGracePeriod,
     )
 }
 
 /**
  * Create a default [BallastViewModelConfiguration] from a [BallastViewModelConfiguration.Builder].
  */
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.typedBuilder(
-): BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State> {
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.Builder.typedBuilder(): BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State> {
     val vmName = name ?: "$inputHandler-vm"
     return BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>(
         initialState = initialState.requireTypedIfPresent("initialState"),
@@ -46,6 +47,9 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         interceptorDispatcher = interceptorDispatcher,
         name = vmName,
         logger = logger,
+        encoder = encoder.requireTyped("encoder"),
+        decoder = decoder.requireTypedIfPresent("decoder"),
+        shutDownGracePeriod = shutDownGracePeriod,
     )
 }
 
@@ -135,7 +139,6 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
 // Internal Helpers
 // ---------------------------------------------------------------------------------------------------------------------
 
-
 @Suppress("UNCHECKED_CAST")
 internal fun <T : Any> Any?.requireTyped(name: String): T {
     if (this == null) error("$name required")
@@ -161,7 +164,6 @@ internal fun <Inputs : Any, Events : Any, State : Any> EventStrategy<*, *, *>?.r
 }
 
 @Suppress("UNCHECKED_CAST")
-internal fun <Inputs : Any, Events : Any, State : Any> List<BallastInterceptor<*, *, *>>.mapAsTyped(
-): List<BallastInterceptor<Inputs, Events, State>> {
+internal fun <Inputs : Any, Events : Any, State : Any> List<BallastInterceptor<*, *, *>>.mapAsTyped(): List<BallastInterceptor<Inputs, Events, State>> {
     return this.map { it as BallastInterceptor<Inputs, Events, State> }
 }

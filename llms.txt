@@ -1,0 +1,425 @@
+# Ballast — Kotlin Multiplatform MVI State Management
+
+Ballast is an opinionated Application State Management framework for Kotlin Multiplatform (KMP) that implements the MVI (Model-View-Intent) pattern with Unidirectional Data Flow. It works across JVM, Android, iOS, JS, and WASM targets and is not tied to any specific UI framework.
+
+## Core Concepts
+
+### The MVI Loop
+
+```
+ViewModel --State--> UI
+UI --Inputs--> ViewModel
+```
+
+- **State** — a single immutable `data class` representing everything the UI needs to render
+- **Inputs** — a `sealed interface` representing user intents or actions (one at a time via a queue)
+- **Events** — one-shot effects sent to the UI (navigation, dialogs, toasts)
+- **InputHandler** — processes Inputs, updates State, and dispatches Events
+- **EventHandler** — handles Events on the UI side (platform-specific)
+- **Interceptors** — cross-cutting concerns (logging, analytics, debugging, undo/redo)
+
+### The Contract
+
+Define all types for a screen in a single contract object. No Ballast types needed here.
+
+```kotlin
+object CounterContract {
+    data class State(val count: Int = 0)
+
+    sealed interface Inputs {
+        data object Increment : Inputs
+        data object Decrement : Inputs
+        data class SetCount(val count: Int) : Inputs
+    }
+
+    sealed interface Events {
+        data object NavigateBack : Events
+    }
+}
+```
+
+### InputHandler
+
+All business logic lives here. Runs Inputs one at a time from a coroutine Channel.
+
+```kotlin
+class CounterInputHandler : InputHandler<
+    CounterContract.Inputs,
+    CounterContract.Events,
+    CounterContract.State,
+> {
+    override suspend fun InputHandlerScope<
+        CounterContract.Inputs,
+        CounterContract.Events,
+        CounterContract.State,
+    >.handleInput(input: CounterContract.Inputs) = when (input) {
+        is CounterContract.Inputs.Increment -> updateState { copy(count = count + 1) }
+        is CounterContract.Inputs.Decrement -> updateState { copy(count = count - 1) }
+        is CounterContract.Inputs.SetCount  -> updateState { copy(count = input.count) }
+    }
+}
+```
+
+Key `InputHandlerScope` APIs:
+- `updateState { }` — atomically update and publish new State
+- `getCurrentState()` — read current State without updating
+- `postEvent(event)` — send a one-shot Event to the EventHandler
+- `sideJob(key) { }` — launch a background coroutine (see below)
+- `noOp()` — explicitly do nothing (useful in exhaustive `when` branches)
+
+### Side Jobs
+
+Use `sideJob` for long-running or async work that should not block the Input queue.
+
+```kotlin
+is CounterContract.Inputs.StartPolling -> sideJob("polling") {
+    ticker(5_000)
+        .map { CounterContract.Inputs.Refresh }
+        .onEach { postInput(it) }
+        .launchIn(this)
+}
+```
+
+- Identified by a string key; relaunching with the same key cancels the previous job
+- Cannot call `updateState` directly — post Inputs back instead
+- Bound to ViewModel lifecycle
+
+### EventHandler
+
+Handles one-shot Events on the UI/platform side. Can be attached/detached with UI lifecycle.
+
+```kotlin
+class CounterEventHandler(
+    private val navigator: Navigator,
+) : EventHandler<
+    CounterContract.Inputs,
+    CounterContract.Events,
+    CounterContract.State,
+> {
+    override suspend fun EventHandlerScope<
+        CounterContract.Inputs,
+        CounterContract.Events,
+        CounterContract.State,
+    >.handleEvent(event: CounterContract.Events) = when (event) {
+        is CounterContract.Events.NavigateBack -> navigator.goBack()
+    }
+}
+```
+
+### ViewModel
+
+Tie it all together with a ViewModel class.
+
+```kotlin
+class CounterViewModel(
+    coroutineScope: CoroutineScope,
+) : BasicViewModel<
+    CounterContract.Inputs,
+    CounterContract.Events,
+    CounterContract.State,
+>(
+    config = BallastViewModelConfiguration.Builder()
+        .apply {
+            inputStrategy = FifoInputStrategy.typed()  // always set this explicitly
+            this += LoggingInterceptor()
+            logger = { PrintlnLogger(it) }
+        }
+        .withViewModel(
+            initialState = CounterContract.State(),
+            inputHandler = CounterInputHandler(),
+            name = "Counter",
+        )
+        .build(),
+    eventHandler = CounterEventHandler(navigator),
+    coroutineScope = coroutineScope,
+)
+```
+
+Platform-specific base classes:
+- `BasicViewModel` — any platform, requires an explicit `CoroutineScope`
+- `AndroidViewModel` — extends `androidx.lifecycle.ViewModel`, manages its own scope
+- `IosViewModel` — tied to iOS ViewController lifecycle
+
+### UI Integration (Compose)
+
+Split screens into a `*Screen` composable (ViewModel access) and a `*Content` composable (pure State + postInput), so Content can be previewed and tested independently.
+
+```kotlin
+@Composable
+fun CounterScreen() {
+    val coroutineScope = rememberCoroutineScope()
+    val vm = remember(coroutineScope) { CounterViewModel(coroutineScope) }
+    val state by vm.observeStates().collectAsState()
+
+    LaunchedEffect(vm) { vm.send(CounterContract.Inputs.Initialize) }
+
+    CounterContent(
+        state = state,
+        postInput = { vm.trySend(it) },
+    )
+}
+
+@Composable
+fun CounterContent(
+    state: CounterContract.State,
+    postInput: (CounterContract.Inputs) -> Unit,
+) {
+    Text("Count: ${state.count}")
+    Button(onClick = { postInput(CounterContract.Inputs.Increment) }) { Text("+") }
+}
+```
+
+## Input Strategies
+
+Always set `inputStrategy` explicitly in the configuration builder.
+
+- **`FifoInputStrategy`** (recommended) — queues Inputs in order, never cancels
+- **`LifoInputStrategy`** — cancels the running Input when a new one arrives; useful for live search but easy to misuse
+- **`ParallelInputStrategy`** — runs all Inputs concurrently; rarely needed
+
+## Interceptors
+
+Interceptors observe (and optionally influence) everything happening in the ViewModel. Add them via `+=` in the builder before calling `.withViewModel()`.
+
+```kotlin
+BallastViewModelConfiguration.Builder()
+    .apply {
+        this += LoggingInterceptor()
+        this += BallastDebuggerInterceptor(connection)  // IntelliJ plugin
+        this += AnalyticsInterceptor()
+    }
+    .withViewModel(...)
+    .build()
+```
+
+Built-in interceptors:
+- `LoggingInterceptor` — logs all Inputs, State transitions, Events, Side Jobs
+- `BallastDebuggerInterceptor` — connects to the Ballast IntelliJ plugin for time-travel debugging
+- `BallastSavedStateInterceptor` — save/restore State across process death
+- `BallastUndoInterceptor` — undo/redo via State snapshots
+- `AnalyticsInterceptor` — auto-tracks Inputs to an analytics backend
+
+## Configuration Builder
+
+`BallastViewModelConfiguration.Builder` is the single entry point for configuring a Ballast ViewModel. It is a **one-time-use object** — create a new instance for each ViewModel. The builder holds a mutable `interceptors` list; reusing an instance across ViewModels will cause interceptors from the first build to carry over into the second.
+
+### Typed vs Untyped Builder
+
+The builder starts untyped (`Any?` for all generics), which lets you configure shared settings (dispatchers, logging, interceptors) before committing to concrete types. Calling `.withViewModel()` converts it to a `TypedBuilder<Inputs, Events, State>`, which is fully type-safe. After that point, no further untyped properties can be set.
+
+```kotlin
+// Untyped phase — shared/reusable settings go here
+val builder = BallastViewModelConfiguration.Builder().apply {
+    inputStrategy = FifoInputStrategy.typed()
+    logger = { PrintlnLogger(it) }
+    this += LoggingInterceptor()
+}
+
+// Typed phase — ViewModel-specific settings; converts to TypedBuilder
+val config = builder
+    .withViewModel(
+        initialState = CounterContract.State(),
+        inputHandler = CounterInputHandler(),
+        name = "Counter",
+    )
+    .build()
+```
+
+If you need to call `.typedBuilder()` manually (e.g. when building an extension), the signature is:
+
+```kotlin
+fun <Inputs : Any, Events : Any, State : Any>
+    BallastViewModelConfiguration.Builder.typedBuilder()
+    : BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>
+```
+
+### Input Strategy
+
+Always set `inputStrategy` explicitly. The historical default is `LifoInputStrategy`; this may change in a future release, so being explicit prevents silent behaviour changes.
+
+```kotlin
+BallastViewModelConfiguration.Builder().apply {
+    inputStrategy = FifoInputStrategy.typed()   // recommended default
+    // inputStrategy = LifoInputStrategy.typed() // cancels in-flight Input on new arrival
+    // inputStrategy = ParallelInputStrategy.typed() // all Inputs run concurrently
+}
+```
+
+Use `FifoInputStrategy` unless you have a specific reason not to.
+
+### Logging
+
+Supply a `logger` factory and add `LoggingInterceptor`. The factory receives the ViewModel name and returns a `BallastLogger`.
+
+```kotlin
+BallastViewModelConfiguration.Builder().apply {
+    logger = { viewModelName -> PrintlnLogger(viewModelName) }
+    this += LoggingInterceptor()
+}
+```
+
+`LoggingInterceptor` should be present in every debug build so you can observe all Inputs, State transitions, Events, and Side Job activity.
+
+### BootstrapInterceptor
+
+`BootstrapInterceptor` fires a single Input automatically when the ViewModel starts, without requiring the UI to trigger it. Use it for any "load initial data" or "initialize" Input.
+
+```kotlin
+BallastViewModelConfiguration.Builder()
+    .apply {
+        this += BootstrapInterceptor {
+            CounterContract.Inputs.Initialize  // sent once on ViewModel start
+        }
+    }
+    .withViewModel(
+        initialState = CounterContract.State(),
+        inputHandler = CounterInputHandler(),
+        name = "Counter",
+    )
+    .build()
+```
+
+The lambda is `suspend () -> Inputs`, so it can perform async work to build the initial Input if needed.
+
+### Coroutine Dispatchers
+
+Four dispatchers can be set independently. All default to `Dispatchers.Default`.
+
+| Property | What runs on it |
+|---|---|
+| `inputsDispatcher` | `InputHandler.handleInput()` |
+| `eventsDispatcher` | `EventHandler.handleEvent()` |
+| `sideJobsDispatcher` | `sideJob { }` coroutines |
+| `interceptorDispatcher` | Interceptor coroutines |
+
+Use the `.dispatchers()` extension to set them concisely:
+
+```kotlin
+BallastViewModelConfiguration.Builder().apply {
+    // Set all four at once:
+    dispatchers(Dispatchers.Default)
+
+    // Or override individually:
+    dispatchers(
+        inputsDispatcher     = Dispatchers.Default,
+        eventsDispatcher     = Dispatchers.Main,
+        sideJobsDispatcher   = Dispatchers.IO,
+        interceptorDispatcher = Dispatchers.Default,
+    )
+}
+```
+
+The `.dispatchers()` extension also exists on `TypedBuilder` with the same signature.
+
+## Ballast Navigation
+
+A type-safe URL-based router built on top of Ballast MVI.
+
+```kotlin
+enum class AppScreen(routeFormat: String) : Route {
+    Home("/app/home"),
+    PostList("/app/posts?sort={?}"),
+    PostDetails("/app/posts/{postId}"),
+    ;
+    override val matcher: RouteMatcher = RouteMatcher.create(routeFormat)
+}
+
+class RouterViewModel(viewModelScope: CoroutineScope) : BasicRouter<AppScreen>(
+    config = BallastViewModelConfiguration.Builder()
+        .withRouter(RoutingTable.fromEnum(AppScreen.values()), AppScreen.Home)
+        .build(),
+    eventHandler = eventHandler { },
+    coroutineScope = viewModelScope,
+)
+```
+
+Navigation Inputs:
+- `RouterContract.Inputs.GoToDestination("/app/posts/42")` — push to backstack
+- `RouterContract.Inputs.ReplaceTopDestination("/app/home")` — replace current entry
+- `RouterContract.Inputs.GoBack()` — pop backstack
+
+## Available Modules
+
+| Module | Artifact | Purpose |
+|--------|----------|---------|
+| Core | `ballast-core` | Aggregates api + viewmodel + logging + utils |
+| API only | `ballast-api` | Interfaces; use when building extensions |
+| Navigation | `ballast-navigation` | URL-based routing with backstack |
+| Saved State | `ballast-saved-state` | Persist State across process death |
+| Undo | `ballast-undo` | Undo/redo via State snapshots |
+| Sync | `ballast-sync` | Sync State across multiple ViewModel instances |
+| Analytics | `ballast-analytics` | Interceptor for analytics event tracking |
+| Firebase Analytics | `ballast-firebase-analytics` | Firebase Analytics backend |
+| Crash Reporting | `ballast-crash-reporting` | Interceptor for crash reporting |
+| Firebase Crashlytics | `ballast-firebase-crashlytics` | Firebase Crashlytics backend |
+| Debugger Client | `ballast-debugger-client` | Connect to IntelliJ Ballast plugin |
+| kotlinx.serialization | `ballast-kotlinx-serialization` | Serialization support for State/Inputs |
+| Testing | `ballast-test` | ViewModel test utilities |
+| Ktor Server | `ballast-ktor-server` | Server-side Ktor integration |
+| Scheduler | `ballast-scheduler-core` | Task scheduling core |
+| Scheduler (cron) | `ballast-scheduler-cron` | Cron expression support |
+
+## Testing
+
+```kotlin
+dependencies {
+    testImplementation("io.github.copper-leaf:ballast-test:$ballastVersion")
+}
+```
+
+Use the `viewModelTest` DSL — you do not instantiate your ViewModel class directly. Provide the `InputHandler` and `EventHandler` instead, and define scenarios with `running { }` / `resultsIn { }` blocks. `viewModelTest` is a suspending function; wrap it in `runBlocking`.
+
+```kotlin
+@Test
+fun testCounterViewModel() = runBlocking<Unit> {
+    viewModelTest(
+        inputHandler = CounterInputHandler(),
+        eventHandler = CounterEventHandler(),
+        filter = null,
+    ) {
+        defaultInitialState { CounterContract.State() }
+
+        scenario("increment once") {
+            running {
+                +CounterContract.Inputs.Increment
+            }
+            resultsIn {
+                assertEquals(1, latestState.count)
+            }
+        }
+
+        scenario("increment twice") {
+            running {
+                +CounterContract.Inputs.Increment
+                +CounterContract.Inputs.Increment
+            }
+            resultsIn {
+                assertEquals(2, latestState.count)
+            }
+        }
+    }
+}
+```
+
+- Use unary `+` to send an Input and wait for it to complete before continuing.
+- Use unary `-` to send an Input and continue immediately (for testing cancellation or concurrent behavior).
+- `latestState` in `resultsIn { }` gives the final State after all Inputs ran.
+- `TestResults` also exposes all intermediate states, events, and side job activity seen during the scenario.
+
+## Common Pitfalls
+
+- **Always set `inputStrategy` explicitly.** The default changes between major versions; be explicit.
+- **State must be an immutable `data class`.** Use `.copy()` inside `updateState { }`.
+- **Inputs must be a `sealed interface` or `sealed class`.** Use `data object` for no-arg variants.
+- **Do not call `updateState` from a `sideJob`.** Post an Input back instead.
+- **Do not share state mutation between multiple Inputs.** Each Input should have one clear purpose.
+- **Keep `InputHandler` in `commonMain`.** Platform-specific code belongs in `EventHandler` or the ViewModel constructor.
+- **Add `LoggingInterceptor` in debug builds** to observe all ViewModel activity during development.
+- **Interceptors must be added before `.withViewModel()`** in the configuration builder.
+
+## Further Reading
+
+- [Getting Started](https://github.com/copper-leaf/ballast/tree/main/docs/getting-started.md)
+- [Feature Overview](https://github.com/copper-leaf/ballast/tree/main/docs/feature-overview.md)
+- [Thinking in Ballast MVI](https://github.com/copper-leaf/ballast/tree/main/docs/mental-model.md)
+- [All modules](https://github.com/copper-leaf/ballast/tree/main/docs/README.md)

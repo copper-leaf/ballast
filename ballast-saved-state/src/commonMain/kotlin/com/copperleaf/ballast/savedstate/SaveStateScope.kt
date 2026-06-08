@@ -1,11 +1,15 @@
 package com.copperleaf.ballast.savedstate
 
+import com.copperleaf.ballast.BallastDecoder
+import com.copperleaf.ballast.BallastEncoder
 import com.copperleaf.ballast.BallastLogger
 
 public interface SaveStateScope<Inputs : Any, Events : Any, State : Any> {
 
     public val logger: BallastLogger
     public val hostViewModelName: String
+    public val encoder: BallastEncoder<Inputs, Events, State>
+    public val decoder: BallastDecoder<Inputs, Events, State>?
 
     /**
      * Save the value of [computeProperty] if it is not equal to the previous state's value. Equality is checked with

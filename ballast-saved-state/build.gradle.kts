@@ -3,7 +3,7 @@ plugins {
     id("copper-leaf-android-library")
     id("copper-leaf-targets")
     id("copper-leaf-tests")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 

@@ -1,13 +1,10 @@
-import com.copperleaf.gradle.projectVersion
-
 plugins {
     id("copper-leaf-base")
     id("copper-leaf-android-library")
     id("copper-leaf-targets")
-    id("copper-leaf-buildConfig")
     id("copper-leaf-serialization")
     id("copper-leaf-tests")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 
@@ -37,8 +34,4 @@ kotlin {
             dependencies { }
         }
     }
-}
-
-buildConfig {
-    projectVersion(project, "BALLAST_VERSION")
 }

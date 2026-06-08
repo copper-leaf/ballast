@@ -1,6 +1,6 @@
 public abstract interface class com/copperleaf/ballast/analytics/AnalyticsAdapter {
 	public abstract fun getEventIdForInput (Ljava/lang/Object;)Ljava/lang/String;
-	public abstract fun getEventParametersForInput (Ljava/lang/String;Ljava/lang/Object;)Ljava/util/Map;
+	public abstract fun getEventParametersForInput (Ljava/lang/String;Ljava/lang/Object;Lcom/copperleaf/ballast/BallastEncoder;)Ljava/util/Map;
 	public abstract fun shouldTrackInput (Ljava/lang/Object;)Z
 }
 
@@ -17,9 +17,11 @@ public abstract interface class com/copperleaf/ballast/analytics/AnalyticsTracke
 }
 
 public final class com/copperleaf/ballast/analytics/DefaultAnalyticsAdapter : com/copperleaf/ballast/analytics/AnalyticsAdapter {
+	public fun <init> ()V
 	public fun <init> (Lkotlin/jvm/functions/Function1;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function1;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public fun getEventIdForInput (Ljava/lang/Object;)Ljava/lang/String;
-	public fun getEventParametersForInput (Ljava/lang/String;Ljava/lang/Object;)Ljava/util/Map;
+	public fun getEventParametersForInput (Ljava/lang/String;Ljava/lang/Object;Lcom/copperleaf/ballast/BallastEncoder;)Ljava/util/Map;
 	public fun shouldTrackInput (Ljava/lang/Object;)Z
 }
 

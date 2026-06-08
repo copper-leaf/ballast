@@ -2,6 +2,8 @@ package com.copperleaf.ballast.debugger
 
 import io.ktor.http.ContentType
 
+@Suppress("DEPRECATION")
+@Deprecated("Set the serializers in the BallastViewModelConfiguration instead.")
 internal class LambdaDebuggerAdapter<Inputs : Any, Events : Any, State : Any>(
     private val serializeInput: ((Inputs) -> Pair<ContentType, String>)?,
     private val serializeEvent: ((Events) -> Pair<ContentType, String>)?,

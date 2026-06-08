@@ -16,6 +16,5 @@ object BggContract {
         data class HotListUpdated(val bggHotList: Cached<List<BggHotListItem>>) : Inputs
     }
 
-    sealed interface Events {
-    }
+    sealed interface Events
 }

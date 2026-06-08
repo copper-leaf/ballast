@@ -1,14 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.copperleaf.gradle.projectVersion
-
 plugins {
     id("copper-leaf-base")
     id("copper-leaf-android-application")
     id("copper-leaf-targets")
     id("copper-leaf-tests")
-//    id("copper-leaf-lint")
-    id("copper-leaf-buildConfig")
+    id("copper-leaf-lint")
 }
 
 android {
@@ -22,7 +19,7 @@ android {
     }
 }
 
-kotlin { 
+kotlin {
     sourceSets {
         val androidMain by getting {
             dependencies {
@@ -49,8 +46,4 @@ kotlin {
             }
         }
     }
-}
-
-buildConfig {
-    projectVersion(project, "BALLAST_VERSION")
 }

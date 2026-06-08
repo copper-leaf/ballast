@@ -9,8 +9,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 /**
  * Create a default [BallastViewModelConfiguration] from a [BallastViewModelConfiguration.Builder].
  */
-public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>.build(
-): BallastViewModelConfiguration<Inputs, Events, State> {
+public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfiguration.TypedBuilder<Inputs, Events, State>.build(): BallastViewModelConfiguration<Inputs, Events, State> {
     val vmName = name ?: "$inputHandler-vm"
     @Suppress("DEPRECATION")
     return DefaultViewModelConfiguration<Inputs, Events, State>(
@@ -25,6 +24,9 @@ public fun <Inputs : Any, Events : Any, State : Any> BallastViewModelConfigurati
         interceptorDispatcher = interceptorDispatcher,
         name = vmName,
         logger = logger(vmName),
+        encoder = encoder,
+        decoder = decoder,
+        shutDownGracePeriod = shutDownGracePeriod,
     )
 }
 

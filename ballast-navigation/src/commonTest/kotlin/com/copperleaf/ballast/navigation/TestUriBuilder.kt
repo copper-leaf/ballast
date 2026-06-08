@@ -25,9 +25,9 @@ class TestUriBuilder {
             encodedQueryString = "one=1&two=2",
         )
         val basePath = "/"
-        val updatedUrl = if(basePath != null) {
+        val updatedUrl = if (basePath != null) {
             UriBuilder.build(
-                encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
+                encodedPath = "$basePath/${url.encodedPath.trim('/')}",
                 encodedQueryString = url.encodedQueryString.trimStart('?'),
             )
         } else {
@@ -45,9 +45,9 @@ class TestUriBuilder {
             encodedQueryString = "one=1&two=2",
         )
         val basePath = "/one/two/three"
-        val updatedUrl = if(basePath != null) {
+        val updatedUrl = if (basePath != null) {
             UriBuilder.build(
-                encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
+                encodedPath = "$basePath/${url.encodedPath.trim('/')}",
                 encodedQueryString = url.encodedQueryString.trimStart('?'),
             )
         } else {
@@ -65,9 +65,9 @@ class TestUriBuilder {
             encodedQueryString = "one=1&two=2",
         )
         val basePath = null
-        val updatedUrl = if(basePath != null) {
+        val updatedUrl = if (basePath != null) {
             UriBuilder.build(
-                encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
+                encodedPath = "$basePath/${url.encodedPath.trim('/')}",
                 encodedQueryString = url.encodedQueryString.trimStart('?'),
             )
         } else {
@@ -86,9 +86,9 @@ class TestUriBuilder {
         )
         val basePath = "/"
         assertFails {
-            if(basePath != null) {
+            if (basePath != null) {
                 UriBuilder.build(
-                    encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
+                    encodedPath = "$basePath/${url.encodedPath.trim('/')}",
                     encodedQueryString = url.encodedQueryString,
                 )
             } else {

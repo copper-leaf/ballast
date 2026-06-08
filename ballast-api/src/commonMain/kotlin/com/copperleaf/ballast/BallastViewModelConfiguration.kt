@@ -3,8 +3,11 @@ package com.copperleaf.ballast
 import com.copperleaf.ballast.core.BufferedEventStrategy
 import com.copperleaf.ballast.core.LifoInputStrategy
 import com.copperleaf.ballast.core.NoOpLogger
+import com.copperleaf.ballast.core.ToStringEncoder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * This class collects all the configurable properties of a [BallastViewModel].
@@ -26,6 +29,11 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
     public val name: String
     public val logger: BallastLogger
 
+    public val encoder: BallastEncoder<Inputs, Events, State>
+    public val decoder: BallastDecoder<Inputs, Events, State>?
+
+    public val shutDownGracePeriod: Duration
+
     public data class Builder(
         public var name: String? = null,
         public var initialState: Any? = null,
@@ -43,6 +51,11 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
         public var interceptorDispatcher: CoroutineDispatcher = Dispatchers.Default,
 
         public var logger: (String) -> BallastLogger = { NoOpLogger() },
+
+        public var encoder: BallastEncoder<*, *, *> = ToStringEncoder<Any, Any, Any>(),
+        public var decoder: BallastDecoder<*, *, *>? = null,
+
+        public val shutDownGracePeriod: Duration = 10.seconds,
     )
 
     public data class TypedBuilder<Inputs : Any, Events : Any, State : Any>(
@@ -60,5 +73,10 @@ public interface BallastViewModelConfiguration<Inputs : Any, Events : Any, State
         public var interceptorDispatcher: CoroutineDispatcher,
 
         public var logger: (String) -> BallastLogger,
+
+        public var encoder: BallastEncoder<Inputs, Events, State>,
+        public var decoder: BallastDecoder<Inputs, Events, State>?,
+
+        public val shutDownGracePeriod: Duration,
     )
 }

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.copperleaf.ballast.utils
 
 import com.copperleaf.ballast.core.BootstrapInterceptor
@@ -6,6 +8,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+@Suppress("DEPRECATION")
 class BallastUtilsTests {
     @Test
     fun checkToStringValues() = runTest {

@@ -2,7 +2,6 @@ package com.copperleaf.ballast.debugger.idea.features.settings.vm
 
 import com.copperleaf.ballast.InputHandler
 import com.copperleaf.ballast.InputHandlerScope
-import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.debugger.idea.repository.RepositoryContract
 import com.copperleaf.ballast.debugger.idea.repository.RepositoryViewModel
 import com.copperleaf.ballast.observeFlows
@@ -71,7 +70,7 @@ class SettingsUiInputHandler(
 
         is SettingsUiContract.Inputs.CloseGracefully -> {
             sideJob("CloseGracefully") {
-                getInterceptor(KillSwitch.Key).requestGracefulShutdown()
+                requestGracefulShutdown()
             }
         }
     }

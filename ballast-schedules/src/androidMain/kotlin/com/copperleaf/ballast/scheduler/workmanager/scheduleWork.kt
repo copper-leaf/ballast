@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.work.WorkManager
-import com.copperleaf.ballast.ExperimentalBallastApi
 import com.copperleaf.ballast.scheduler.SchedulerAdapter
 import com.copperleaf.ballast.scheduler.internal.RegisteredSchedule
 import com.copperleaf.ballast.scheduler.schedule.Schedule
@@ -45,7 +44,6 @@ import kotlin.time.Instant
  * it will sync schedules every time the app is opened. This is useful if all your schedules are hardcoded and would
  * only change with an app update.
  */
-@ExperimentalBallastApi
 @RequiresApi(Build.VERSION_CODES.O)
 public fun <I : Any, E : Any, S : Any> WorkManager.syncSchedulesOnStartup(
     adapter: SchedulerAdapter<I, E, S>,
@@ -81,7 +79,6 @@ public fun <I : Any, E : Any, S : Any> WorkManager.syncSchedulesOnStartup(
  * dynamically and need to be updated without an app update or user-intervention (such as user-generated calendar
  * event notifications).
  */
-@ExperimentalBallastApi
 @RequiresApi(Build.VERSION_CODES.O)
 public fun <I : Any, E : Any, S : Any> WorkManager.syncSchedulesPeriodically(
     adapter: SchedulerAdapter<I, E, S>,

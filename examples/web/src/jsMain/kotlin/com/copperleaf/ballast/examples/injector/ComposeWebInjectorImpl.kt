@@ -3,7 +3,6 @@ package com.copperleaf.ballast.examples.injector
 import com.copperleaf.ballast.BallastViewModelConfiguration
 import com.copperleaf.ballast.build
 import com.copperleaf.ballast.core.JsConsoleLogger
-import com.copperleaf.ballast.core.KillSwitch
 import com.copperleaf.ballast.core.LoggingInterceptor
 import com.copperleaf.ballast.debugger.BallastDebuggerClientConnection
 import com.copperleaf.ballast.debugger.BallastDebuggerInterceptor
@@ -50,6 +49,7 @@ import com.copperleaf.ballast.sync.DefaultSyncConnection
 import com.copperleaf.ballast.sync.SyncConnectionAdapter
 import com.copperleaf.ballast.undo.BallastUndoInterceptor
 import com.copperleaf.ballast.undo.state.StateBasedUndoController
+import com.copperleaf.ballast.withJsonSerialization
 import com.copperleaf.ballast.withViewModel
 import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
@@ -61,7 +61,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.onEach
 import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 class ComposeWebInjectorImpl(
     private val applicationScope: CoroutineScope,
@@ -128,13 +127,13 @@ class ComposeWebInjectorImpl(
                     inputHandler = CounterInputHandler(),
                     name = "Counter",
                 )
+                .withJsonSerialization(
+                    inputsSerializer = CounterContract.Inputs.serializer(),
+                    eventsSerializer = CounterContract.Events.serializer(),
+                    stateSerializer = CounterContract.State.serializer(),
+                )
                 .apply {
-                    this += BallastDebuggerInterceptor(
-                        debuggerConnection,
-                        inputsSerializer = CounterContract.Inputs.serializer(),
-                        eventsSerializer = CounterContract.Events.serializer(),
-                        stateSerializer = CounterContract.State.serializer(),
-                    )
+                    this += BallastDebuggerInterceptor(debuggerConnection)
                 }
                 .build(),
             eventHandler = CounterEventHandler(),
@@ -248,20 +247,15 @@ class ComposeWebInjectorImpl(
         coroutineScope: CoroutineScope,
         inputStrategy: InputStrategySelection,
     ): KitchenSinkViewModel {
-        val killSwitch = KillSwitch<
-                KitchenSinkContract.Inputs,
-                KitchenSinkContract.Events,
-                KitchenSinkContract.State>(5.seconds)
         return KitchenSinkViewModel(
             viewModelCoroutineScope = coroutineScope,
             config = commonBuilder()
                 .apply {
                     this.inputStrategy = inputStrategy.get()
-                    this += killSwitch
                 }
                 .withViewModel(
                     initialState = KitchenSinkContract.State(inputStrategy = inputStrategy),
-                    inputHandler = KitchenSinkInputHandler(killSwitch),
+                    inputHandler = KitchenSinkInputHandler(),
                     name = "KitchenSink",
                 )
                 .build(),

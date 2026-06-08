@@ -38,7 +38,7 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
     override fun watchForUrlChanges(): Flow<Uri> {
         return callbackFlow {
             window.onpopstate = { event: PopStateEvent ->
-                if(event.state != null) {
+                if (event.state != null) {
                     this@callbackFlow.trySend(UriBuilder.parse(event.state.toString()))
                 }
                 Unit
@@ -54,9 +54,9 @@ public class BrowserHistoryNavigationInterceptor<T : Route>(
         try {
             val previousDestination = getInitialUrl()
             if (previousDestination != url) {
-                val updatedUrl = if(basePath != null) {
+                val updatedUrl = if (basePath != null) {
                     UriBuilder.build(
-                        encodedPath = "${basePath}/${url.encodedPath.trim('/')}",
+                        encodedPath = "$basePath/${url.encodedPath.trim('/')}",
                         encodedQueryString = url.encodedQueryString.trimStart('?'),
                     )
                 } else {

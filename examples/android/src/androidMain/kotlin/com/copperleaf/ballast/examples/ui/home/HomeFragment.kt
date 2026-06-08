@@ -51,7 +51,7 @@ class HomeFragment : Fragment() {
                     BallastExamples.Counter
                         .directions()
                         .build(),
-                    extraAnnotations = if(cbFloating.isChecked) setOf(Floating) else emptySet(),
+                    extraAnnotations = if (cbFloating.isChecked) setOf(Floating) else emptySet(),
                 )
             )
         }
@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
                     BallastExamples.Scorekeeper
                         .directions()
                         .build(),
-                    extraAnnotations = if(cbFloating.isChecked) setOf(Floating) else emptySet(),
+                    extraAnnotations = if (cbFloating.isChecked) setOf(Floating) else emptySet(),
                 )
             )
         }
@@ -75,7 +75,7 @@ class HomeFragment : Fragment() {
                     BallastExamples.Sync
                         .directions()
                         .build(),
-                    extraAnnotations = if(cbFloating.isChecked) setOf(Floating) else emptySet(),
+                    extraAnnotations = if (cbFloating.isChecked) setOf(Floating) else emptySet(),
                 )
             )
         }
@@ -87,7 +87,7 @@ class HomeFragment : Fragment() {
                     BallastExamples.Undo
                         .directions()
                         .build(),
-                    extraAnnotations = if(cbFloating.isChecked) setOf(Floating) else emptySet(),
+                    extraAnnotations = if (cbFloating.isChecked) setOf(Floating) else emptySet(),
                 )
             )
         }
@@ -99,7 +99,7 @@ class HomeFragment : Fragment() {
                     BallastExamples.ApiCall
                         .directions()
                         .build(),
-                    extraAnnotations = if(cbFloating.isChecked) setOf(Floating) else emptySet(),
+                    extraAnnotations = if (cbFloating.isChecked) setOf(Floating) else emptySet(),
                 )
             )
         }
@@ -111,7 +111,7 @@ class HomeFragment : Fragment() {
                     BallastExamples.KitchenSink
                         .directions()
                         .build(),
-                    extraAnnotations = if(cbFloating.isChecked) setOf(Floating) else emptySet(),
+                    extraAnnotations = if (cbFloating.isChecked) setOf(Floating) else emptySet(),
                 )
             )
         }

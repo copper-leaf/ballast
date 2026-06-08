@@ -56,7 +56,6 @@ internal object RouteParser {
 // ---------------------------------------------------------------------------------------------------------------------
 
     internal fun computeWeight(pathSegments: List<PathSegment>, queryParameters: List<QueryParameter>): Double {
-
         // we require 2 more query parameters than the number of path segments for query parameters to be considered more
         // specific than the path
         val pathPowerModifier = queryParameters.size + 1

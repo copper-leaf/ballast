@@ -87,7 +87,6 @@ public sealed class BallastDebuggerEventV5 {
         }
     }
 
-
 // Inputs
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -493,7 +492,9 @@ public sealed class BallastDebuggerEventV5 {
 
     @Serializable
     public enum class StatusV5 {
-        NotStarted, Running, ShuttingDown, Cleared
+        NotStarted,
+        Running,
+        ShuttingDown,
+        Cleared
     }
-
 }

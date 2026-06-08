@@ -27,11 +27,12 @@ public open class DefaultBallastScopeFactory<Inputs : Any, Events : Any, State :
             initialState = initialState,
             inputActor = inputActor,
             eventActor = eventActor,
+            encoder = encoder,
+            decoder = decoder,
         )
     }
 
-    override fun createEventHandlerScope(
-    ): InternalEventHandlerScope<Inputs, Events, State> = with(impl) {
+    override fun createEventHandlerScope(): InternalEventHandlerScope<Inputs, Events, State> = with(impl) {
         return EventHandlerScopeImpl(
             logger = logger,
             inputActor = inputActor,
@@ -89,6 +90,7 @@ public open class DefaultBallastScopeFactory<Inputs : Any, Events : Any, State :
             interceptorActor = interceptorActor,
             key = key,
             restartState = restartState,
+            shutDownGracePeriod = shutDownGracePeriod,
         )
     }
 

@@ -28,6 +28,5 @@ class ScorekeeperEventHandler(
         is ScorekeeperContract.Events.ShowErrorMessage -> {
             Toast.makeText(fragment.requireContext(), event.text, Toast.LENGTH_SHORT).show()
         }
-
     }
 }

@@ -9,5 +9,4 @@ interface BggRepository {
 
     fun clearAllCaches()
     fun getBggHotList(hotListType: HotListType, refreshCache: Boolean = false): Flow<Cached<List<BggHotListItem>>>
-
 }

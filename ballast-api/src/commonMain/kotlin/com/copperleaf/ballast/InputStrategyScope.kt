@@ -34,6 +34,17 @@ public interface InputStrategyScope<Inputs : Any, Events : Any, State : Any> : C
         onCancelled: suspend () -> Unit
     )
 
+    /**
+     * Send a Queued item back to the ViewModel for processing. It will be protected by its [InputStrategy.Guardian] to
+     * ensure that it is processed correctly.
+     */
+    public suspend fun acceptQueued(
+        queued: Queued<Inputs, Events, State>,
+        guardian: InputStrategy.Guardian,
+        onFailed: suspend (t: Throwable) -> Unit,
+        onCancelled: suspend () -> Unit
+    )
+
     public suspend fun rejectInput(input: Inputs, currentState: State)
 
     public suspend fun rollbackState(state: State)

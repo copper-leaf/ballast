@@ -1,0 +1,49 @@
+public class com/copperleaf/ballast/autoscale/AutoscalingViewModel : com/copperleaf/ballast/BallastViewModel {
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/autoscale/ViewModelFactory;Lcom/copperleaf/ballast/autoscale/ScalingPolicy;Lcom/copperleaf/ballast/autoscale/DistributionPolicy;JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lcom/copperleaf/ballast/autoscale/ViewModelFactory;Lcom/copperleaf/ballast/autoscale/ScalingPolicy;Lcom/copperleaf/ballast/autoscale/DistributionPolicy;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun close ()V
+	public final fun getShutDownGracePeriod-UwyO8pc ()J
+	public fun observeStates ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun send (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sendAndAwaitCompletion (Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun trySend-JP2dKIU (Ljava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface class com/copperleaf/ballast/autoscale/DistributionPolicy {
+	public abstract fun getPolicyState ()Lcom/copperleaf/ballast/autoscale/DistributionPolicy$PolicyState;
+}
+
+public abstract interface class com/copperleaf/ballast/autoscale/DistributionPolicy$PolicyState {
+	public abstract fun getNextViewModel (Ljava/lang/Object;Ljava/util/List;)Lcom/copperleaf/ballast/BallastViewModel;
+}
+
+public abstract interface class com/copperleaf/ballast/autoscale/ScalingPolicy {
+	public abstract fun getReplicaCount ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract interface class com/copperleaf/ballast/autoscale/ViewModelFactory {
+	public abstract fun createViewModel (Lkotlinx/coroutines/CoroutineScope;I)Lcom/copperleaf/ballast/BallastViewModel;
+}
+
+public final class com/copperleaf/ballast/autoscale/policies/FixedScalingPolicy : com/copperleaf/ballast/autoscale/ScalingPolicy {
+	public fun <init> (I)V
+	public fun getReplicaCount ()Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/copperleaf/ballast/autoscale/policies/LeaderDistributionPolicy : com/copperleaf/ballast/autoscale/DistributionPolicy {
+	public fun <init> ()V
+	public fun getPolicyState ()Lcom/copperleaf/ballast/autoscale/DistributionPolicy$PolicyState;
+}
+
+public final class com/copperleaf/ballast/autoscale/policies/RandomDistributionPolicy : com/copperleaf/ballast/autoscale/DistributionPolicy {
+	public fun <init> ()V
+	public fun <init> (Lkotlin/random/Random;)V
+	public synthetic fun <init> (Lkotlin/random/Random;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getPolicyState ()Lcom/copperleaf/ballast/autoscale/DistributionPolicy$PolicyState;
+}
+
+public final class com/copperleaf/ballast/autoscale/policies/RoundRobinDistributionPolicy : com/copperleaf/ballast/autoscale/DistributionPolicy {
+	public fun <init> ()V
+	public fun getPolicyState ()Lcom/copperleaf/ballast/autoscale/DistributionPolicy$PolicyState;
+}
+

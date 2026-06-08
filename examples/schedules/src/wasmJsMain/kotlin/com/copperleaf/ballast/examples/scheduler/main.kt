@@ -6,12 +6,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
+import com.copperleaf.ballast.examples.scheduler.layout.SchedulerExampleLayout
 
 @OptIn(ExperimentalComposeUiApi::class)
 public fun main() {
     CanvasBasedWindow("Ballast Examples > Scheduler") {
         Box(Modifier.requiredWidth(400.dp)) {
-            SchedulerExampleUi.Content()
+            SchedulerExampleLayout.Content()
         }
     }
 }

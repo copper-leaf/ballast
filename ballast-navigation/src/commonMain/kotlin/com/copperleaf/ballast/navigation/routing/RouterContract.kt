@@ -199,7 +199,6 @@ public object RouterContract {
     }
 }
 
-
 /*
 
 I'm glad to hear the migration has been going well for you! Ballast was very intentionally created to be easier to use

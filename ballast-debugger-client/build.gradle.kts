@@ -7,7 +7,7 @@ plugins {
     id("copper-leaf-buildConfig")
     id("copper-leaf-serialization")
     id("copper-leaf-tests")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 
@@ -43,20 +43,20 @@ kotlin {
 
 buildConfig {
     projectVersion(project, "BALLAST_VERSION")
+    packageName.set("io.github.copperleaf.ballastdebuggerclient")
 }
 
-
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+// tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
 //    compilerOptions {
-////        jvmTarget.set(ConventionConfig.repoInfo(project).javaVersion)
-////        freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
-////        freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
-////        freeCompilerArgs.add("-opt-in=androidx.compose.foundation.ExperimentalFoundationApi")
-////        freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalAnimationApi")
-////        freeCompilerArgs.add("-opt-in=androidx.compose.ui.ExperimentalComposeUiApi")
-////        freeCompilerArgs.add("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
-////        freeCompilerArgs.add("-opt-in=org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi")
-////        freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
+// //        jvmTarget.set(ConventionConfig.repoInfo(project).javaVersion)
+// //        freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
+// //        freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+// //        freeCompilerArgs.add("-opt-in=androidx.compose.foundation.ExperimentalFoundationApi")
+// //        freeCompilerArgs.add("-opt-in=androidx.compose.animation.ExperimentalAnimationApi")
+// //        freeCompilerArgs.add("-opt-in=androidx.compose.ui.ExperimentalComposeUiApi")
+// //        freeCompilerArgs.add("-opt-in=androidx.compose.material.ExperimentalMaterialApi")
+// //        freeCompilerArgs.add("-opt-in=org.jetbrains.compose.splitpane.ExperimentalSplitPaneApi")
+// //        freeCompilerArgs.add("-opt-in=kotlin.time.ExperimentalTime")
 //        freeCompilerArgs.add("-opt-in=kotlin.uuid.ExperimentalUuidApi")
 //    }
-//}
+// }

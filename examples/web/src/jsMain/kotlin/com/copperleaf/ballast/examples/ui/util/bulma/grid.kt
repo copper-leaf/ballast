@@ -10,10 +10,7 @@ import org.jetbrains.compose.web.dom.AttrBuilderContext
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLDivElement
 
-
-object ColumnScope {
-
-}
+object ColumnScope
 
 object RowScope {
     @Composable
@@ -43,7 +40,6 @@ object RowScope {
         }
     }
 }
-
 
 @Composable
 fun Row(

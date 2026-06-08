@@ -36,7 +36,7 @@ public class AnalyticsInterceptor<Inputs : Any, Events : Any, State : Any>(
                 .onEach { input ->
                     tracker.trackAnalyticsEvent(
                         adapter.getEventIdForInput(input),
-                        adapter.getEventParametersForInput(hostViewModelName, input),
+                        adapter.getEventParametersForInput(hostViewModelName, input, encoder),
                     )
                 }
                 .collect()

@@ -9,7 +9,7 @@ public class FirebaseAnalyticsTracker(
 ) : AnalyticsTracker {
     override fun trackAnalyticsEvent(eventId: String, eventParameters: Map<String, String>) {
         analytics.logEvent(eventId) {
-            for((key, value) in eventParameters.entries) {
+            for ((key, value) in eventParameters.entries) {
                 param(key, value)
             }
         }

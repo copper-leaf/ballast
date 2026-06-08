@@ -1,22 +1,41 @@
-This is an example of a Kotlin Multiplatform project that targets Android, iOS, Web, and Desktop platforms. The project follows a modular approach, with each feature being represented as a Ballast component. The Compose UI code is located in the shared module. For the web UI, you can find it in the web module, which is built using [Kobweb](https://github.com/varabyte/kobweb).
+# Shared Compose Multiplatform Example
 
-## Run projects:
+## Overview
 
-### Android
-- Run `androidsApp` from the _Run Configuration_
+A Kotlin Multiplatform application demonstrating Ballast as the shared state-management layer across Android, iOS,
+Desktop, and Web, all sharing a common Compose UI defined in the `shared` module. The web target uses
+[Kobweb](https://github.com/varabyte/kobweb).
 
-### iOS
-- Run `iosApp` from the _Run Configuration_
-- or open `iosApp/iosApp.xcodeproj` in Xcode and Run
+This example was contributed by [Adrian Witaszak](https://github.com/charlee-dev).
 
-### Web
-- Run `./gradlew :web:kobwebStart -t`
+## Platforms
 
-### Desktop
-- Run `./gradlew :shared:run`
+| Platform | Supported |
+|----------|-----------|
+| Android  | ✅         |
+| iOS      | ✅         |
+| JVM      | ✅         |
+| Web      | ✅         |
+
+## Running Locally
+
+**Android:** Run `androidApp` from the Run Configuration in Android Studio.
+
+**iOS:** Run `iosApp` from the Run Configuration, or open `iosApp/iosApp.xcodeproj` in Xcode and run.
+
+**Desktop:**
+```shell
+./gradlew :shared:run
+```
+
+**Web:**
+```shell
+./gradlew :web:kobwebStart -t
+```
 
 ## Screenshots
-![android](./screenshots/android.png)
-![ios](./screenshots/ios.png)
-![web](./screenshots/web.png)
-![desktop](./screenshots/desktop.png)
+
+![Android](./screenshots/android.png)
+![iOS](./screenshots/ios.png)
+![Web](./screenshots/web.png)
+![Desktop](./screenshots/desktop.png)

@@ -1,5 +1,7 @@
 package com.copperleaf.ballast.savedstate
 
+import com.copperleaf.ballast.BallastDecoder
+import com.copperleaf.ballast.BallastEncoder
 import com.copperleaf.ballast.BallastLogger
 import com.copperleaf.ballast.EventHandler
 
@@ -8,6 +10,8 @@ public interface RestoreStateScope<Inputs : Any, Events : Any, State : Any> {
     public val logger: BallastLogger
     public val hostViewModelName: String
     public val initialState: State
+    public val encoder: BallastEncoder<Inputs, Events, State>
+    public val decoder: BallastDecoder<Inputs, Events, State>?
 
     /**
      * Post an Input back to the ViewModel's queue after the state has been fully restored. This Input will not be

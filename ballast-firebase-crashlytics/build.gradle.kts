@@ -3,7 +3,7 @@ plugins {
     id("copper-leaf-android-library")
     id("copper-leaf-targets")
     id("copper-leaf-tests")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 
@@ -19,6 +19,11 @@ kotlin {
             dependencies {
                 implementation(project.dependencies.platform(libs.firebase.bom))
                 implementation(libs.firebase.crashlytics)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(project(":ballast-test"))
             }
         }
     }

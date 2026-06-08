@@ -1,0 +1,54 @@
+public final class com/copperleaf/ballast/scheduler/alarmmanager/AlarmManagerAdapter : com/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor$Adapter {
+	public fun <init> (Landroid/content/Context;Lkotlinx/serialization/json/Json;)V
+	public synthetic fun <init> (Landroid/content/Context;Lkotlinx/serialization/json/Json;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun cancelSchedule (Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleData;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun registerSchedule (Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleData;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun synchronizeSchedules (Lkotlin/sequences/Sequence;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun updateSchedule (Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleData;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision : java/lang/Enum {
+	public static final field Default Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;
+	public static final field High Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;
+	public static final field Low Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;
+	public static fun values ()[Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;
+}
+
+public final class com/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManager {
+	public static final field Companion Lcom/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManager$Companion;
+	public synthetic fun <init> (Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getExecutor ()Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;
+	public final fun getPrecision ()Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;
+}
+
+public final class com/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManager$Companion {
+	public final fun getAllConfigurations ()Ljava/util/List;
+	public final fun getInstance ()Lcom/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManager;
+	public final fun getInstance (Ljava/lang/String;)Lcom/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManager;
+	public final fun initialize (Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;)Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;
+	public final fun initialize (Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;)Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;
+	public static synthetic fun initialize$default (Lcom/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManager$Companion;Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;
+	public static synthetic fun initialize$default (Lcom/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManager$Companion;Ljava/lang/String;Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;Lcom/copperleaf/ballast/scheduler/alarmmanager/AlarmPrecision;ILjava/lang/Object;)Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor;
+}
+
+public final class com/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManagerBootCompletedWorker : android/content/BroadcastReceiver {
+	public fun <init> ()V
+	public fun onReceive (Landroid/content/Context;Landroid/content/Intent;)V
+}
+
+public final class com/copperleaf/ballast/scheduler/alarmmanager/BallastAlarmManagerScheduleWorker : android/content/BroadcastReceiver {
+	public fun <init> ()V
+	public fun onReceive (Landroid/content/Context;Landroid/content/Intent;)V
+}
+
+public final class com/copperleaf/ballast/scheduler/alarmmanager/SharedPreferencesScheduleState : com/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleExecutor$State {
+	public fun <init> (Landroid/content/Context;)V
+	public fun <init> (Landroid/content/SharedPreferences;)V
+	public fun getAllSchedules (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getState (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun removeScheduleData (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun storeScheduleData (Lcom/copperleaf/ballast/scheduler/executor/event/EventDrivenScheduleData;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

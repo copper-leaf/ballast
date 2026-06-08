@@ -2,7 +2,6 @@ package com.copperleaf.ballast.examples.ui.scorekeeper
 
 import com.copperleaf.ballast.examples.ui.scorekeeper.models.Player
 
-
 object ScorekeeperContract {
     data class State(
         val buttonValues: List<Int> = listOf(1, 5, 10),
@@ -21,6 +20,6 @@ object ScorekeeperContract {
     }
 
     sealed interface Events {
-        data class ShowErrorMessage(val text: String): Events
+        data class ShowErrorMessage(val text: String) : Events
     }
 }

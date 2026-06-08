@@ -31,7 +31,7 @@ internal fun List<ColumnSort<CoffeeProductColumn>>.asComparator(
     defaultSort: ColumnSort<CoffeeProductColumn> = ColumnSort(CoffeeProductColumn.Name, ColumnSort.Direction.Ascending)
 ): Comparator<CoffeeProduct> {
     val filterableColumns = this.filter { it.column.canSort }
-    if(filterableColumns.isEmpty()) {
+    if (filterableColumns.isEmpty()) {
         return defaultSort.asComparator()
     }
 
@@ -40,9 +40,9 @@ internal fun List<ColumnSort<CoffeeProductColumn>>.asComparator(
         .reduce { acc, comparator -> acc.thenComparing(comparator) }
 }
 
-internal fun ColumnSort<CoffeeProductColumn>.asComparator() : Comparator<CoffeeProduct> {
+internal fun ColumnSort<CoffeeProductColumn>.asComparator(): Comparator<CoffeeProduct> {
     val propertySelector = { coffeeProduct: CoffeeProduct ->
-        when(this.column) {
+        when (this.column) {
             CoffeeProductColumn.Name -> coffeeProduct.name
             CoffeeProductColumn.Description -> coffeeProduct.description
             CoffeeProductColumn.Tags -> error("cannot sort by tags")

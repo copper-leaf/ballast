@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
  * Practically-speaking, those platform-specific ViewModels just wrap an instance of [BallastViewModelImpl], which does
  * the actual work of implementing the pattern, and delegates all its internal calls to that internal implementation.
  */
-public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> {
+public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> : AutoCloseable {
 
     /**
      * Observe the flow of states from this ViewModel
@@ -43,4 +43,12 @@ public interface BallastViewModel<Inputs : Any, Events : Any, State : Any> {
      * has finished processing completely.
      */
     public suspend fun sendAndAwaitCompletion(element: Inputs)
+
+    /**
+     * Closes this Viewmodel gracefully, allowing a short grace period for any in-flight work to complete before being
+     * completely terminated. By closing this ViewModel, you are given no guarantee that it will be able to accept
+     * any more Inputs after this call returns. But it will do it's best to drain the current queue and allow all
+     * previously enqueued Inputs the chance to be processed.
+     */
+    override fun close()
 }

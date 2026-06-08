@@ -25,11 +25,15 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
                     impl.inputsDispatcher,
         )
         with(impl.inputStrategy) {
-            scope.start()
+            try {
+                scope.start()
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
         }
     }
 
-    internal suspend fun enqueueQueued(queued: Queued<Inputs, Events, State>, await: Boolean) {
+    public suspend fun enqueueQueued(queued: Queued<Inputs, Events, State>, await: Boolean) {
         impl.coordinator.coordinatorState.value.checkMainQueueOpen()
 
         when (queued) {
@@ -38,11 +42,9 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
             }
 
             is Queued.RestoreState -> {
-
             }
 
             is Queued.ShutDownGracefully -> {
-
             }
         }
 
@@ -68,11 +70,9 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
             }
 
             is Queued.RestoreState -> {
-
             }
 
             is Queued.ShutDownGracefully -> {
-
             }
         }
 
@@ -91,25 +91,24 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
                 }
 
                 is Queued.RestoreState -> {
-
                 }
 
                 is Queued.ShutDownGracefully -> {
-
                 }
             }
         }
         return result
     }
 
-    internal suspend fun safelyHandleQueued(
+    public suspend fun safelyHandleQueued(
         queued: Queued<Inputs, Events, State>,
         guardian: InputStrategy.Guardian,
-        onCancelled: suspend () -> Unit
+        onFailed: suspend (e: Throwable) -> Unit,
+        onCancelled: suspend () -> Unit,
     ) {
         when (queued) {
             is Queued.HandleInput -> {
-                safelyHandleInput(queued.input, queued.deferred, guardian, onCancelled)
+                safelyHandleInput(queued.input, queued.deferred, guardian, onFailed, onCancelled)
             }
 
             is Queued.RestoreState -> {
@@ -126,7 +125,8 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
         input: Inputs,
         deferred: CompletableDeferred<Unit>?,
         guardian: InputStrategy.Guardian,
-        onCancelled: suspend () -> Unit
+        onFailed: suspend (e: Throwable) -> Unit,
+        onCancelled: suspend () -> Unit,
     ) {
         impl.interceptorActor.notify(BallastNotification.InputAccepted(impl.type, impl.name, input))
 
@@ -161,6 +161,7 @@ public class InputActor<Inputs : Any, Events : Any, State : Any>(
             deferred?.complete(Unit)
         } catch (e: Throwable) {
             impl.interceptorActor.notify(BallastNotification.InputHandlerError(impl.type, impl.name, input, e))
+            onFailed(e)
             deferred?.complete(Unit)
         }
     }

@@ -27,21 +27,21 @@ public class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
     private val impl: BallastViewModelImpl<Inputs, Events, State>,
     private val scopeFactory: BallastScopeFactory<Inputs, Events, State>,
 ) {
-    private val _notificationsQueue: Channel<BallastNotification<Inputs, Events, State>> =
+    private val notificationsQueue: Channel<BallastNotification<Inputs, Events, State>> =
         Channel(BUFFERED, BufferOverflow.SUSPEND)
-    private val _notificationsQueueDrained: CompletableDeferred<Unit> = CompletableDeferred()
+    private val notificationsQueueDrained: CompletableDeferred<Unit> = CompletableDeferred()
 
-    private val _notifications: MutableSharedFlow<BallastNotification<Inputs, Events, State>> = MutableSharedFlow()
+    private val notifications: MutableSharedFlow<BallastNotification<Inputs, Events, State>> = MutableSharedFlow()
 
     internal fun close() {
-        _notificationsQueue.close()
+        notificationsQueue.close()
     }
 
     internal fun startInterceptorsInternal() {
         // send notifications to Interceptors
         impl.interceptors
             .forEach { interceptor ->
-                val notificationFlow: Flow<BallastNotification<Inputs, Events, State>> = _notifications
+                val notificationFlow: Flow<BallastNotification<Inputs, Events, State>> = notifications
                     .asSharedFlow()
                     .transformWhile {
                         emit(it)
@@ -92,31 +92,31 @@ public class InterceptorActor<Inputs : Any, Events : Any, State : Any>(
     internal fun startProcessingNotificationsInternal() {
         // observe and process Inputs
         impl.viewModelScope.launch {
-            _notificationsQueue
+            notificationsQueue
                 .receiveAsFlow()
-                .onEach { _notifications.emit(it) }
+                .onEach { notifications.emit(it) }
                 .flowOn(impl.sideJobsDispatcher)
-                .onCompletion { _notificationsQueueDrained.complete(Unit) }
+                .onCompletion { notificationsQueueDrained.complete(Unit) }
                 .launchIn(this)
         }
     }
 
-    internal suspend fun notify(value: BallastNotification<Inputs, Events, State>) {
-        _notificationsQueue.send(value)
+    public suspend fun notify(value: BallastNotification<Inputs, Events, State>) {
+        notificationsQueue.send(value)
     }
 
     internal fun notifyImmediate(value: BallastNotification<Inputs, Events, State>) {
-        _notificationsQueue.trySend(value)
+        notificationsQueue.trySend(value)
     }
 
     internal suspend fun gracefullyShutDownNotifications() {
         // close the Notifications queue and wait for all Notifications to be handled
-        _notificationsQueue.close()
-        _notificationsQueueDrained.await()
+        notificationsQueue.close()
+        notificationsQueueDrained.await()
     }
 
     @Suppress("UNCHECKED_CAST")
-    internal suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I {
+    public suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I {
         val interceptorsWithKey = impl.interceptors
             .filter {
                 if (it.key == null) {

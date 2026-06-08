@@ -34,6 +34,16 @@ public interface BallastInterceptorScope<Inputs : Any, Events : Any, State : Any
     public val initialState: State
 
     /**
+     * The encoder set in the [BallastViewModelConfiguration.encoder].
+     */
+    public val encoder: BallastEncoder<Inputs, Events, State>
+
+    /**
+     * The decoder set in the [BallastViewModelConfiguration.decoder].
+     */
+    public val decoder: BallastDecoder<Inputs, Events, State>?
+
+    /**
      * Send a [Queued] object back to the ViewModel to be processed. These items are queued just the same as if they
      * were sent to the ViewModel by something else through [BallastViewModel.send],
      * [BallastViewModel.sendAndAwaitCompletion], or [BallastViewModel.trySend].
@@ -49,5 +59,4 @@ public interface BallastInterceptorScope<Inputs : Any, Events : Any, State : Any
      * Post an Event back to the ViewModel.
      */
     public suspend fun postEvent(event: Events)
-
 }

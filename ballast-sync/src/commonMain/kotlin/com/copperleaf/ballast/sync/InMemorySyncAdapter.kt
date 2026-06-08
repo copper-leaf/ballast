@@ -14,8 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 public class InMemorySyncAdapter<
     Inputs : Any,
     Events : Any,
-    State : Any>(
-) : SyncConnectionAdapter<Inputs, Events, State> {
+    State : Any>() : SyncConnectionAdapter<Inputs, Events, State> {
     private val synchronizedState = MutableStateFlow<State?>(null)
     private val synchronizedInputs = Channel<Inputs>(capacity = UNLIMITED)
 

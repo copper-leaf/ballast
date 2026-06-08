@@ -69,7 +69,6 @@ public data class ClientVersion(val major: Int, val minor: Int?, val patch: Int?
         }
     }
 
-
     public companion object {
         public fun parse(connectionBallastVersion: String?): ClientVersion {
             return try {

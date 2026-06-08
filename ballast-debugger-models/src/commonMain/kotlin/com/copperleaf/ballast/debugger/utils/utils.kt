@@ -25,7 +25,7 @@ public operator fun LocalDateTime.minus(other: LocalDateTime): Duration {
 
 @Suppress("REDUNDANT_ELSE_IN_WHEN")
 public fun Duration.removeFraction(minUnit: DurationUnit): Duration {
-    return when(minUnit) {
+    return when (minUnit) {
         DurationUnit.NANOSECONDS -> this.inWholeNanoseconds.nanoseconds
         DurationUnit.MICROSECONDS -> this.inWholeMicroseconds.microseconds
         DurationUnit.MILLISECONDS -> this.inWholeMilliseconds.milliseconds

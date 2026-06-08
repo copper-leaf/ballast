@@ -176,7 +176,7 @@ object StorefrontUi {
                             modifier = Modifier.fillMaxSize(),
                             dimensions = lazyTableDimensions(
                                 columnSize = {
-                                    when(CoffeeProductColumn.entries[it]) {
+                                    when (CoffeeProductColumn.entries[it]) {
                                         CoffeeProductColumn.Name -> 180.dp
                                         CoffeeProductColumn.Description -> 240.dp
                                         CoffeeProductColumn.Tags -> 300.dp
@@ -187,7 +187,7 @@ object StorefrontUi {
                                     }
                                 },
                                 rowSize = {
-                                    if(it == 0) {
+                                    if (it == 0) {
                                         32.dp
                                     } else {
                                         96.dp
@@ -261,7 +261,7 @@ object StorefrontUi {
                                     ) {
                                         Text(column.name)
 
-                                        if(column.canSort) {
+                                        if (column.canSort) {
                                             val sortColumnIndex = uiState.sortResultsBy.indexOfFirst { it.column == column }
                                             val sortColumnCurrentDirection = uiState.sortResultsBy.getOrNull(sortColumnIndex)?.sortDirection
                                             val icon = when (sortColumnCurrentDirection) {
@@ -270,7 +270,7 @@ object StorefrontUi {
                                                 ColumnSort.Direction.Descending -> Icons.Default.ArrowDropUp
                                             }
 
-                                            if(icon != null) {
+                                            if (icon != null) {
                                                 Icon(icon, "")
                                             }
                                         }

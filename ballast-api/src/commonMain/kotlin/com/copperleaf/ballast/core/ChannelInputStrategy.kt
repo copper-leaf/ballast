@@ -19,33 +19,33 @@ public abstract class ChannelInputStrategy<Inputs : Any, Events : Any, State : A
     onBufferOverflow: BufferOverflow = BufferOverflow.SUSPEND,
     public val filter: InputFilter<Inputs, Events, State>?
 ) : InputStrategy<Inputs, Events, State> {
-    private val _mainQueue = Channel<Queued<Inputs, Events, State>>(capacity, onBufferOverflow)
-    private val _mainQueueDrained = CompletableDeferred<Unit>()
+    private val mainQueue = Channel<Queued<Inputs, Events, State>>(capacity, onBufferOverflow)
+    private val mainQueueDrained = CompletableDeferred<Unit>()
 
     final override fun InputStrategyScope<Inputs, Events, State>.start() {
         launch {
-            _mainQueue
+            mainQueue
                 .receiveAsFlow()
                 .filter { queued -> filterQueued(queued) }
-                .onCompletion { _mainQueueDrained.complete(Unit) }
+                .onCompletion { mainQueueDrained.complete(Unit) }
                 .let { processInputs(it) }
         }
     }
 
     final override suspend fun enqueue(queued: Queued<Inputs, Events, State>) {
-        _mainQueue.send(queued)
+        mainQueue.send(queued)
     }
 
     final override fun tryEnqueue(queued: Queued<Inputs, Events, State>): ChannelResult<Unit> {
-        return _mainQueue.trySend(queued)
+        return mainQueue.trySend(queued)
     }
 
     final override fun close() {
-        _mainQueue.close()
+        mainQueue.close()
     }
 
     final override suspend fun flush() {
-        _mainQueueDrained.await()
+        mainQueueDrained.await()
     }
 
     private suspend fun InputStrategyScope<Inputs, Events, State>.filterQueued(queued: Queued<Inputs, Events, State>): Boolean {

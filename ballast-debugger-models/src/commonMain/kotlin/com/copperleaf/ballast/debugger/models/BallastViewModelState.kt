@@ -420,8 +420,12 @@ public data class BallastViewModelState(
                 }
             }
 
-            is BallastDebuggerEventV5.Heartbeat -> { this }
-            is BallastDebuggerEventV5.UnhandledError -> { this }
+            is BallastDebuggerEventV5.Heartbeat -> {
+                this
+            }
+            is BallastDebuggerEventV5.UnhandledError -> {
+                this
+            }
         }
 
         val newHistory = when (event) {
@@ -441,5 +445,4 @@ public data class BallastViewModelState(
             fullHistory = newHistory
         )
     }
-
 }

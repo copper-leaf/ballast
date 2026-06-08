@@ -19,7 +19,6 @@ public sealed interface Status {
         }
 
         override fun checkCanClear() {
-
         }
 
         override fun checkStateChangeOpen() {
@@ -55,7 +54,6 @@ public sealed interface Status {
         override fun checkCanShutDown() {}
 
         override fun checkCanClear() {
-
         }
 
         override fun checkStateChangeOpen() {}
@@ -85,13 +83,11 @@ public sealed interface Status {
         }
 
         override fun checkCanClear() {
-
         }
 
         override fun checkStateChangeOpen() {
             if (!stateChangeOpen) error("VM is shutting down and the state can no longer be changed")
         }
-
 
         override fun checkMainQueueOpen() {
             if (!mainQueueOpen) error("VM is shutting down and no more Inputs can be accepted!")

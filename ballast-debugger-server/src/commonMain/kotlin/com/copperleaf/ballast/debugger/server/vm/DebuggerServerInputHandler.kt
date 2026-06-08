@@ -45,7 +45,6 @@ public class DebuggerServerInputHandler : InputHandler<
             )
         }
 
-
         is DebuggerServerContract.Inputs.ClearAll -> {
             updateState { DebuggerServerContract.State(actions = it.actions) }
         }
@@ -85,7 +84,6 @@ public class DebuggerServerInputHandler : InputHandler<
                 it.copy(
                     allMessages = it.allMessages + input.message,
                     applicationState = it.applicationState.updateConnection(input.message.connectionId) {
-
                         if (input.message is BallastDebuggerEventV5.Heartbeat) {
                             copy(connectionBallastVersion = input.message.connectionBallastVersion)
                         } else {

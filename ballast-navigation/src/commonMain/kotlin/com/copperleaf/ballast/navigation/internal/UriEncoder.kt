@@ -15,10 +15,10 @@ internal object UriEncoder {
         queryComponent: String,
         spaceToPlus: Boolean = false,
     ): String {
-        return if(spaceToPlus) {
+        return if (spaceToPlus) {
             UriCodec.encode(queryComponent)
                 .replace("%20", "+")
-        }  else {
+        } else {
             UriCodec.encode(queryComponent)
         }.replace(".", "%2E")
     }
@@ -27,10 +27,10 @@ internal object UriEncoder {
         queryComponent: String,
         spaceToPlus: Boolean = false,
     ): String {
-        return if(spaceToPlus) {
+        return if (spaceToPlus) {
             UriCodec.encode(queryComponent, allow = "?/=&")
                 .replace("%20", "+")
-        }  else {
+        } else {
             UriCodec.encode(queryComponent, allow = "?/=&")
         }.replace("%2E", ".")
     }

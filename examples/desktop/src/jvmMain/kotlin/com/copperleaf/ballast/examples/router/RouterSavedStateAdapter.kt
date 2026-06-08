@@ -48,7 +48,7 @@ public class RouterSavedStateAdapter<T : Route>(
             RouterContract.State<T>
             >.restore(): RouterContract.State<T> {
         val savedBackstack = prefs.backstack
-        if(savedBackstack.isEmpty()) {
+        if (savedBackstack.isEmpty()) {
             initialRoute?.let { initialRoute ->
                 check(initialRoute.isStatic()) {
                     "For a Route to be used as a Start Destination, it must be fully static. All path segments and " +
@@ -58,7 +58,7 @@ public class RouterSavedStateAdapter<T : Route>(
                     RouterContract.Inputs.GoToDestination<T>(initialRoute.directions().build())
                 )
             }
-        } else if(preserveDiscreteStates) {
+        } else if (preserveDiscreteStates) {
             savedBackstack.forEach { destinationUrl ->
                 postInput(
                     RouterContract.Inputs.GoToDestination(destinationUrl)
@@ -73,4 +73,3 @@ public class RouterSavedStateAdapter<T : Route>(
         return RouterContract.State(routingTable = routingTable)
     }
 }
-

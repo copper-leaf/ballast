@@ -3,7 +3,7 @@ plugins {
     id("copper-leaf-android-library")
     id("copper-leaf-targets")
     id("copper-leaf-tests")
-//    id("copper-leaf-lint")
+    id("copper-leaf-lint")
     id("copper-leaf-publish")
 }
 
@@ -12,6 +12,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":ballast-api"))
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(project(":ballast-test"))
+                implementation(project(":ballast-core"))
             }
         }
         val jvmMain by getting {

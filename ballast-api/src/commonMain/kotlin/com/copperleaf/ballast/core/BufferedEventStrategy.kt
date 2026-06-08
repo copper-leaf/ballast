@@ -5,8 +5,7 @@ import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 
-public class BufferedEventStrategy<Inputs : Any, Events : Any, State : Any> private constructor(
-) : ChannelEventStrategy<Inputs, Events, State>(
+public class BufferedEventStrategy<Inputs : Any, Events : Any, State : Any> private constructor() : ChannelEventStrategy<Inputs, Events, State>(
     capacity = Channel.BUFFERED,
     onBufferOverflow = BufferOverflow.SUSPEND,
 ) {

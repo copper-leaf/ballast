@@ -4,7 +4,7 @@ import com.copperleaf.ballast.debugger.models.BallastApplicationState
 import com.copperleaf.ballast.debugger.server.BallastDebuggerServerSettings
 import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerActionV5
 import com.copperleaf.ballast.debugger.versions.v5.BallastDebuggerEventV5
-import io.github.copper_leaf.ballast_debugger_server.BALLAST_VERSION
+import io.github.copperleaf.ballastdebuggerserver.BALLAST_VERSION
 import kotlinx.coroutines.flow.MutableSharedFlow
 
 public object DebuggerServerContract {
@@ -45,6 +45,6 @@ public object DebuggerServerContract {
     }
 
     public sealed interface Events {
-        public data class ConnectionEstablished(val connectionId: String): Events
+        public data class ConnectionEstablished(val connectionId: String) : Events
     }
 }

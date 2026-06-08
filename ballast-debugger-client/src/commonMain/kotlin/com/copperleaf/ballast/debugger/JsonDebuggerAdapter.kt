@@ -4,6 +4,8 @@ import io.ktor.http.ContentType
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
+@Suppress("DEPRECATION")
+@Deprecated("Set the serializers in the BallastViewModelConfiguration instead.")
 public class JsonDebuggerAdapter<Inputs : Any, Events : Any, State : Any>(
     private val inputsSerializer: KSerializer<Inputs>? = null,
     private val eventsSerializer: KSerializer<Events>? = null,

@@ -8,6 +8,7 @@ import com.copperleaf.ballast.internal.actors.EventActor
 import com.copperleaf.ballast.internal.actors.InputActor
 import com.copperleaf.ballast.internal.actors.InterceptorActor
 import kotlinx.coroutines.CoroutineScope
+import kotlin.time.Duration
 
 internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
     sideJobCoroutineScope: CoroutineScope,
@@ -20,6 +21,7 @@ internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override val key: String,
     override val restartState: SideJobScope.RestartState,
+    private val shutDownGracePeriod: Duration
 ) : SideJobScope<Inputs, Events, State>, CoroutineScope by sideJobCoroutineScope {
 
     override suspend fun postInput(input: Inputs) {
@@ -28,6 +30,10 @@ internal class SideJobScopeImpl<Inputs : Any, Events : Any, State : Any>(
 
     override suspend fun postEvent(event: Events) {
         eventActor.enqueueEvent(event, null, false)
+    }
+
+    override suspend fun requestGracefulShutdown() {
+        inputActor.enqueueQueued(Queued.ShutDownGracefully(null, shutDownGracePeriod), await = false)
     }
 
     override suspend fun <I : BallastInterceptor<*, *, *>> getInterceptor(key: BallastInterceptor.Key<I>): I {

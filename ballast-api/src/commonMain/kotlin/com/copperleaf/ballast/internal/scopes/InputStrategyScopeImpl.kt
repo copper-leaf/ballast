@@ -44,7 +44,16 @@ public class InputStrategyScopeImpl<Inputs : Any, Events : Any, State : Any>(
         guardian: InputStrategy.Guardian,
         onCancelled: suspend () -> Unit
     ) {
-        inputActor.safelyHandleQueued(queued, guardian, onCancelled)
+        inputActor.safelyHandleQueued(queued, guardian, {}, onCancelled)
+    }
+
+    override suspend fun acceptQueued(
+        queued: Queued<Inputs, Events, State>,
+        guardian: InputStrategy.Guardian,
+        onFailed: suspend (t: Throwable) -> Unit,
+        onCancelled: suspend () -> Unit
+    ) {
+        inputActor.safelyHandleQueued(queued, guardian, onFailed, onCancelled)
     }
 
     override suspend fun getCurrentState(): State {

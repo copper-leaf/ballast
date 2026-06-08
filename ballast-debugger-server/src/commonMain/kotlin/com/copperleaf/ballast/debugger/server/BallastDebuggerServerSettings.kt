@@ -10,4 +10,3 @@ package com.copperleaf.ballast.debugger.server
 public interface BallastDebuggerServerSettings {
     public val debuggerServerPort: Int
 }
-
