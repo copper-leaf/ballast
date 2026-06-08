@@ -26,15 +26,17 @@ jobs:
     name: 'KtlintCheck on macos-latst'
     runs-on: 'macos-latest'
     steps:
-      - uses: 'actions/checkout@v3'
+      - uses: 'actions/checkout@v4'
         with:
           submodules: 'recursive'
           fetch-depth: 0 # all commit history and tags
       - name: 'Set up JDK ${{ matrix.java }}'
-        uses: 'actions/setup-java@v2'
+        uses: 'actions/setup-java@v4'
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: 'Pin JAVA_HOME to JDK 17'
+        run: echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
       - name: 'Run checks with Gradle'
         run: './gradlew ktlintCheck --no-daemon --stacktrace'
 
@@ -53,14 +55,16 @@ jobs:
     name: 'Run ${{ matrix.config.target }} on ${{ matrix.config.os }} JDK ${{ matrix.config.java }}'
     runs-on: '${{ matrix.config.os }}'
     steps:
-      - uses: 'actions/checkout@v3'
+      - uses: 'actions/checkout@v4'
         with:
           submodules: 'recursive'
           fetch-depth: 0 # all commit history and tags
-      - uses: 'actions/setup-java@v2'
+      - uses: 'actions/setup-java@v4'
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.config.java }}
+      - name: 'Pin JAVA_HOME to JDK 17'
+        run: echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
       - run: './gradlew ${{ matrix.config.target }} --stacktrace'
 
   publishSnapshotArtifacts:
@@ -80,12 +84,14 @@ jobs:
     name: 'Publish ${{ matrix.config.target }} snapshot artifacts on ${{ matrix.config.os }} JDK ${{ matrix.config.java }}'
     runs-on: '${{ matrix.config.os }}'
     steps:
-      - uses: 'actions/checkout@v3'
+      - uses: 'actions/checkout@v4'
         with:
           submodules: 'recursive'
           fetch-depth: 0 # all commit history and tags
-      - uses: 'actions/setup-java@v2'
+      - uses: 'actions/setup-java@v4'
         with:
           distribution: 'temurin'
           java-version: ${{ matrix.config.java }}
+      - name: 'Pin JAVA_HOME to JDK 17'
+        run: echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
       - run: './gradlew publish${{ matrix.config.target }}PublicationToMavenCentralSnapshotsRepository'
