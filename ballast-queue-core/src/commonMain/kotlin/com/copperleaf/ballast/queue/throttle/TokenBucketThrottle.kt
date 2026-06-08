@@ -67,11 +67,21 @@ public class TokenBucketThrottle(
         }
         if (permit == null) awaitCancellation()
 
-        // Wait for the bucket to fill up enough to take a token.
-        tokens.first { it > 0 }
-
-        // Once we've confirmed there's at least one token, take it out of the bucket.
-        tokens.update { it - 1 }
+        // Wait for the bucket to fill up enough to take a token. Wrap in try/catch so that
+        // if this coroutine is cancelled while waiting, the active slot claimed above is
+        // released and awaitShutdown() is not left hanging.
+        try {
+            // Atomically wait for and consume a token using a CAS loop to avoid racing with
+            // concurrent workers that may observe the same positive count.
+            while (true) {
+                val current = tokens.value
+                if (current > 0 && tokens.compareAndSet(current, current - 1)) break
+                if (current <= 0) tokens.first { it > 0 }
+            }
+        } catch (e: CancellationException) {
+            activePermits.update { it - 1 }
+            throw e
+        }
 
         return permit
     }

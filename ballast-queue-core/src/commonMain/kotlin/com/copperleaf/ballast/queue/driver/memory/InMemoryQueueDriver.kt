@@ -144,7 +144,7 @@ public class InMemoryQueueDriver(
                 .asSequence()
                 .filter { it.queueName == queueName }
                 .filter { isReady(it, now) }
-                .sortedByDescending { it.metadata.insertedAt }
+                .sortedBy { it.metadata.insertedAt }  // oldest first so equal-priority jobs are FIFO
                 .maxByOrNull { it.metadata.priority }
 
             if (item != null) {

@@ -36,12 +36,15 @@ public inline fun <T : Any> queueDriverPollingFlow(
         val next = pollNext()
 
         if (next != null) {
-            // emit the job downstream for processing, suspending until processing is complete
-            emit(next)
+            // emit the job downstream for processing, suspending until processing is complete.
+            // The permit is released in a finally block to guarantee it is always released even
+            // if the collecting coroutine is cancelled while the job is in flight.
+            try {
+                emit(next)
+            } finally {
+                permit.release()
+            }
             emptyPollCount = 0
-
-            // release the permit, allowing the throttle to issue another permit
-            permit.release()
         } else {
             // release the permit, allowing the throttle to issue another permit
             permit.release()

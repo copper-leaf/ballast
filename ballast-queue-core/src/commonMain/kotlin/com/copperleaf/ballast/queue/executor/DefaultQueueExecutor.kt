@@ -7,6 +7,7 @@ import com.copperleaf.ballast.queue.QueueExecutor
 import com.copperleaf.ballast.queue.QueueExecutorScope
 import com.copperleaf.ballast.queue.SerializedJob
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
@@ -67,7 +68,11 @@ public class DefaultQueueExecutor<
         processJob: suspend QueueExecutorScope<State>.(Payload) -> Result?
     ): JobProcessingResult<Result> = coroutineScope {
         val mark = timeSource.markNow()
-        var result: JobProcessingResult<Result>? = null
+
+        // CompletableDeferred is used instead of a bare var so that concurrent writes from
+        // inputProcessorJob and cancellationJob are safe: complete() is a no-op after the
+        // first call, giving first-writer-wins semantics with no data race.
+        val result = CompletableDeferred<JobProcessingResult<Result>>()
 
         val inputProcessorJob: Job = launch {
             try {
@@ -80,47 +85,55 @@ public class DefaultQueueExecutor<
                     }
                 }
 
-                result = JobProcessingResult(
-                    jobId = job.jobId,
-                    processingTime = mark.elapsedNow(),
-                    result = JobCompletionResult.Success(processingResult),
+                result.complete(
+                    JobProcessingResult(
+                        jobId = job.jobId,
+                        processingTime = mark.elapsedNow(),
+                        result = JobCompletionResult.Success(processingResult),
+                    )
                 )
             } catch (e: TimeoutCancellationException) {
                 // job was cancelled due to timeout
-                result = JobProcessingResult(
-                    jobId = job.jobId,
-                    processingTime = mark.elapsedNow(),
-                    result = JobCompletionResult.Timeout(
-                        cause = e,
-                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
-                    ),
+                result.complete(
+                    JobProcessingResult(
+                        jobId = job.jobId,
+                        processingTime = mark.elapsedNow(),
+                        result = JobCompletionResult.Timeout(
+                            cause = e,
+                            retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
+                        ),
+                    )
                 )
             } catch (e: JobFailureException) {
                 // job failed with a known failure which is requesting a specific delay
-                result = JobProcessingResult(
-                    jobId = job.jobId,
-                    processingTime = mark.elapsedNow(),
-                    result = JobCompletionResult.Failure(
-                        cause = (e.cause as? Exception?) ?: e,
-                        retryDelay = e.retryDelay ?: adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
-                        permanentlyFail = e.permanentlyFail,
-                        skipAttempt = e.skipAttempt,
-                    ),
+                result.complete(
+                    JobProcessingResult(
+                        jobId = job.jobId,
+                        processingTime = mark.elapsedNow(),
+                        result = JobCompletionResult.Failure(
+                            cause = (e.cause as? Exception?) ?: e,
+                            retryDelay = e.retryDelay ?: adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
+                            permanentlyFail = e.permanentlyFail,
+                            skipAttempt = e.skipAttempt,
+                        ),
+                    )
                 )
             } catch (e: CancellationException) {
                 // cooperate with coroutine cancellation from the downstream collector
                 throw e
             } catch (e: Exception) {
                 // job failed with an unknown exception
-                result = JobProcessingResult(
-                    jobId = job.jobId,
-                    processingTime = mark.elapsedNow(),
-                    result = JobCompletionResult.Failure(
-                        cause = e,
-                        retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
-                        permanentlyFail = false,
-                        skipAttempt = false,
-                    ),
+                result.complete(
+                    JobProcessingResult(
+                        jobId = job.jobId,
+                        processingTime = mark.elapsedNow(),
+                        result = JobCompletionResult.Failure(
+                            cause = e,
+                            retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts),
+                            permanentlyFail = false,
+                            skipAttempt = false,
+                        ),
+                    )
                 )
             }
         }
@@ -129,12 +142,16 @@ public class DefaultQueueExecutor<
             driver
                 .subscribeToJobCancellation(job.jobId)
                 .onEach {
-                    result = JobProcessingResult(
-                        jobId = job.jobId,
-                        processingTime = mark.elapsedNow(),
-                        result = JobCompletionResult.Cancelled(
-                            retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts)
-                        ),
+                    // complete() is a no-op if inputProcessorJob already set a result, ensuring
+                    // the first outcome (job completion or cancellation signal) always wins.
+                    result.complete(
+                        JobProcessingResult(
+                            jobId = job.jobId,
+                            processingTime = mark.elapsedNow(),
+                            result = JobCompletionResult.Cancelled(
+                                retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts)
+                            ),
+                        )
                     )
                     inputProcessorJob.cancel()
                     inputProcessorJob.join()
@@ -148,7 +165,19 @@ public class DefaultQueueExecutor<
         cancellationJob.cancel()
         cancellationJob.join()
 
-        result!!
+        // Safety net: if neither coroutine completed the result (e.g. inputProcessorJob was
+        // cancelled by an external scope rather than by the cancellationJob), treat as cancelled.
+        result.complete(
+            JobProcessingResult(
+                jobId = job.jobId,
+                processingTime = mark.elapsedNow(),
+                result = JobCompletionResult.Cancelled(
+                    retryDelay = adapter.getDefaultRetryDelayTimeout(job.payload, job.attempts)
+                ),
+            )
+        )
+
+        result.await()
     }
 
     private suspend fun finalizeJob(result: JobProcessingResult<Result>): Result? {
