@@ -145,3 +145,4 @@ studying these resources may give you a deeper understanding of why Ballast was 
 - [How to write your own MVI system and why you shouldn't](https://www.youtube.com/watch?v=E6obYmkkdko): An intro video 
   to the Orbit MVI library and one of the best introductions to the MVI model available. Walking through building a 
   simple MVI library from scratch helps cement the concepts behind using a mature one.
+
